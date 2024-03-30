@@ -65,7 +65,9 @@ export class AuthService {
   }
 
   menu() {
-    return iif(() => this.check(), this.loginService.menu(), of([]));
+    //  return iif(() => this.check(), this.loginService.menu(), of([]));
+    //since this is not an api call, no need for above which is obervable
+    return this.loginService.menu();
   }
 
   private assignUser() {

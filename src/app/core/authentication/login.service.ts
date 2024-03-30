@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import menudata from './../../../assets/data/menu';
 
 import { Menu } from '@core';
 import { Token, User } from './interface';
@@ -28,6 +29,10 @@ export class LoginService {
   }
 
   menu() {
-    return this.http.get<{ menu: Menu[] }>('/api/auth/menu').pipe(map(res => res.menu));
+  //  return this.http.get<{ menu: Menu[] }>('/api/auth/menu').pipe(map(res => res.menu));
+//return this.http
+    //   .get<{ menu: Menu[] }>('/../../../assets/data/menu.json')
+    //   .pipe(map(res => res.menu));
+    return menudata.menu;
   }
 }
