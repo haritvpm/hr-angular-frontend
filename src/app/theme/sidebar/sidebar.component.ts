@@ -11,7 +11,9 @@ import { UserPanelComponent } from './user-panel.component';
   styleUrls: ['./sidebar.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [MatSlideToggleModule, BrandingComponent, SidemenuComponent, UserPanelComponent],
+  imports: [MatSlideToggleModule, BrandingComponent, SidemenuComponent,
+  //  UserPanelComponent
+  ],
 })
 export class SidebarComponent {
   @Input() showToggle = true;

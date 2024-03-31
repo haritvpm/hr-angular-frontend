@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { PageHeaderComponent } from '@shared';
+import { BreadcrumbComponent } from '@shared';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,7 +7,7 @@ import { PageHeaderComponent } from '@shared';
   styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [PageHeaderComponent],
+  imports: [BreadcrumbComponent],
 })
 export class DashboardComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {}
