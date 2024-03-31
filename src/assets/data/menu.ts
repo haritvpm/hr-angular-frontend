@@ -1,6 +1,15 @@
 export default {
   menu: [
     {
+      route: 'employee',
+      name: 'employee',
+      type: 'link',
+      icon: 'persons',
+      permissions: {
+        only: ['ASSISTANT', 'MANAGER'],
+      },
+    },
+    {
       route: 'files',
       name: 'files',
       type: 'sub',
