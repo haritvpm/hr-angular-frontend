@@ -9,7 +9,7 @@ export const routes: Routes = [
     canActivate: [ngxPermissionsGuard],
     data: {
       permissions: {
-        only: ['ADMIN', 'MODERATOR'],
+        only: ['section_access'],
         redirectTo: '/403',
       },
     },
