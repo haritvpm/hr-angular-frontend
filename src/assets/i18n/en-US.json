@@ -1,5 +1,10 @@
 {
   "menu": {
+    "mattable": "MattableApi",
+    "tabletest": "TableApi",
+    "sample": "Sample",
+    "subordinate": "Subordinate",
+    "attendance": "Attendance",
     "dashboard": "Dashboard",
     "design": "Design",
     "design.colors": "Color System",

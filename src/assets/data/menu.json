@@ -11,6 +11,16 @@
       }
     },
     {
+      "route": "users",
+      "name": "users",
+      "type": "link",
+      "icon": "dashboard",
+      "badge": {
+        "color": "red-500",
+        "value": "5"
+      }
+    },
+    {
       "route": "/",
       "name": "sessions",
       "type": "sub",
