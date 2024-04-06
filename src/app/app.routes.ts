@@ -24,6 +24,10 @@ export const routes: Routes = [
       { path: 'employee', loadChildren: () => import('./routes/employee/employee.routes').then(m => m.routes) },
       { path: 'attendence', loadChildren: () => import('./routes/attendence/attendence.routes').then(m => m.routes) },
       { path: 'reporttable', loadChildren: () => import('./routes/reporttable/reporttable.routes').then(m => m.routes) },
+      { path: 'subordinate', loadChildren: () => import('./routes/subordinate/subordinate.routes').then(m => m.routes) },
+      { path: 'sample', loadChildren: () => import('./routes/sample/sample.routes').then(m => m.routes) },
+      { path: 'tabletest', loadChildren: () => import('./routes/tabletest/tabletest.routes').then(m => m.routes) },
+      { path: 'mattable', loadChildren: () => import('./routes/mattable/mattable.routes').then(m => m.routes) },
     ],
   },
   {

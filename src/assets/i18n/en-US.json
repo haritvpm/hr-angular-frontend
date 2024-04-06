@@ -2,6 +2,10 @@
   "menu": {
     "reporttable": "Report",
     "attendence": "Attendence",
+    "mattable": "MattableApi",
+    "tabletest": "TableApi",
+    "sample": "Sample",
+    "subordinate": "Subordinate",
     "dashboard": "Dashboard",
     "design": "Design",
     "design.colors": "Color System",
