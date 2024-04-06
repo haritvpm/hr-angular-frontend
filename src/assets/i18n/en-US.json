@@ -1,5 +1,7 @@
 {
   "menu": {
+    "reporttable": "Report",
+    "attendence": "Attendence",
     "dashboard": "Dashboard",
     "design": "Design",
     "design.colors": "Color System",

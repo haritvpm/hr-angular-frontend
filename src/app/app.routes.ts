@@ -22,6 +22,8 @@ export const routes: Routes = [
       { path: '404', component: Error404Component },
       { path: '500', component: Error500Component },
       { path: 'employee', loadChildren: () => import('./routes/employee/employee.routes').then(m => m.routes) },
+      { path: 'attendence', loadChildren: () => import('./routes/attendence/attendence.routes').then(m => m.routes) },
+      { path: 'reporttable', loadChildren: () => import('./routes/reporttable/reporttable.routes').then(m => m.routes) },
     ],
   },
   {
