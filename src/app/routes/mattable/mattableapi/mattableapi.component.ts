@@ -8,10 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule, MatDatepickerInputEvent} from '@angular/material/datepicker';
 
 interface Post {
-  id: number;
+  // id: number;
   aadhaarid: string;
-  att_date: string;
-  att_time: string;
+  in: string;
+  out: string;
   }
 
   interface PostApi {
@@ -31,7 +31,7 @@ interface Post {
 })
 
 export class MattableMattableapiComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'aadhaarid','att_date', 'att_time'];
+  displayedColumns: string[] = ['aadhaarid','in', 'out'];
   dataSource = new MatTableDataSource<Post>();
   data: Post[] = [];
 
@@ -61,7 +61,8 @@ export class MattableMattableapiComponent implements OnInit {
     this.httpClient.get<PostApi>(url).subscribe((data) => {
 
       this.data= data.punchings;
-      // console.log(this.data);
+      console.log(this.data);
+
       this.dataSource.data = this.data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
