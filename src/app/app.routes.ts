@@ -28,6 +28,8 @@ export const routes: Routes = [
       { path: 'sample', loadChildren: () => import('./routes/sample/sample.routes').then(m => m.routes) },
       { path: 'tabletest', loadChildren: () => import('./routes/tabletest/tabletest.routes').then(m => m.routes) },
       { path: 'mattable', loadChildren: () => import('./routes/mattable/mattable.routes').then(m => m.routes) },
+      { path: 'monthwiseregister', loadChildren: () => import('./routes/monthwiseregister/monthwiseregister.routes').then(m => m.routes) },
+      { path: 'settings', loadChildren: () => import('./routes/settings/settings.routes').then(m => m.routes) },
     ],
   },
   {
