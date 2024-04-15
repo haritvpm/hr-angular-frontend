@@ -1,5 +1,8 @@
 {
   "menu": {
+    "settings": "Settings",
+    "settings.employee": "Employees",
+    "monthwiseregister": "Monthwise Register",
     "reporttable": "Report",
     "attendence": "Attendence",
     "mattable": "MattableApi",
