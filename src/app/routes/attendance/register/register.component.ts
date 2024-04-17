@@ -5,7 +5,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule, MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MattableService } from './mattable.service';
+import { RegisterService } from './register.service';
 
 interface Post {
   // id: number;
@@ -21,21 +21,20 @@ export interface PostApi {
 
 @Component({
   selector: 'app-mattable-mattableapi',
-  templateUrl: './mattableapi.component.html',
-  styleUrls: ['./mattableapi.component.css'],
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
   standalone: true,
   imports: [MatTableModule,
     MatPaginatorModule,
     MatSortModule, MatInputModule, MatDatepickerModule]
 })
 
-export class MattableMattableapiComponent implements OnInit {
+export class AttendanceRegisterComponent implements OnInit {
   displayedColumns: string[] = ['aadhaarid', 'in', 'out'];
   dataSource = new MatTableDataSource<Post>();
   data: Post[] = [];
 
-
-  constructor(private mattableService: MattableService, private _liveAnnouncer: LiveAnnouncer) { }
+  constructor(private registerService: RegisterService, private _liveAnnouncer: LiveAnnouncer) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -55,10 +54,11 @@ export class MattableMattableapiComponent implements OnInit {
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
   fetchData(date: string | null) {
     // const url = date?'/api/v1/punchings/' + date : '/api/v1/punchings/';
     // this.httpClient.get<PostApi>(url).subscribe((data) => {
-    this.mattableService.fetchData(date).subscribe((data) => {
+    this.registerService.fetchData(date).subscribe((data) => {
       this.data = data.punchings;
       // console.log(this.data);
 
@@ -68,6 +68,7 @@ export class MattableMattableapiComponent implements OnInit {
 
     });
   }
+
   dateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
     if (event.value !== null && event.value !== undefined) {
       // const formattedDate = event.value.toISOString().substring(0,10); // Or use any other format method

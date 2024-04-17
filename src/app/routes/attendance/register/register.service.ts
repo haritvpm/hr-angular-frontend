@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PostApi } from './mattableapi.component';
+import { PostApi } from './register.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MattableService {
+export class RegisterService {
 
   constructor(private httpClient: HttpClient) { }
 
