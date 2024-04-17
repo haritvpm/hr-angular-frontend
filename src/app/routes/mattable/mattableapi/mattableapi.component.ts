@@ -10,8 +10,15 @@ import { MattableService } from './mattable.service';
 interface Post {
   // id: number;
   aadhaarid: string;
-  in: string;
-  out: string;
+  name: string;
+  designation: string,
+  section:string,
+
+  in_datetime: string;
+
+  out_datetime: string;
+  grace_sec: number,
+  grace_str: string,
 }
 
 export interface PostApi {
@@ -30,7 +37,7 @@ export interface PostApi {
 })
 
 export class MattableMattableapiComponent implements OnInit {
-  displayedColumns: string[] = ['aadhaarid', 'in', 'out'];
+  displayedColumns: string[] = ['aadhaarid', 'name', 'designation', 'section',  'in_datetime', 'out_datetime', 'grace_sec', 'grace_str'];
   dataSource = new MatTableDataSource<Post>();
   data: Post[] = [];
 
@@ -60,7 +67,9 @@ export class MattableMattableapiComponent implements OnInit {
     // this.httpClient.get<PostApi>(url).subscribe((data) => {
     this.mattableService.fetchData(date).subscribe((data) => {
       this.data = data.punchings;
-      // console.log(this.data);
+      console.log(data);
+
+      console.log(this.data);
 
       this.dataSource.data = this.data;
       this.dataSource.paginator = this.paginator;
