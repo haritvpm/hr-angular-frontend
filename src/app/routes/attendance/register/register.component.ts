@@ -1,45 +1,92 @@
-import { Component, OnInit } from '@angular/core';
-import { PageHeaderComponent } from '@shared';
-import {MatTableModule} from '@angular/material/table';
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { RegisterService } from './register.service';
+
+interface Post {
+  // id: number;
+  aadhaarid: string;
+name:string;
+designation:string;
+section:string;
+in_datetime:string;
+out_datetime:string;
+grace_sec:number;
+grace_str:string;
+
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
+export interface PostApi {
+  punchings: Post[];
+
+}
 
 @Component({
-  selector: 'app-attendance-register',
+  selector: 'app-mattable-mattableapi',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   standalone: true,
-  imports: [PageHeaderComponent,MatTableModule]
+  imports: [MatTableModule,
+    MatPaginatorModule,
+    MatSortModule, MatInputModule, MatDatepickerModule]
 })
-export class AttendanceRegisterComponent implements OnInit {
- 
-    
 
-  constructor() {
-    
-   }
+export class AttendanceRegisterComponent implements OnInit {
+  displayedColumns: string[] = ['aadhaarid', 'name', 'designation', 'section', 'in_datetime','out_datetime','grace_sec', 'grace_str'];
+  dataSource = new MatTableDataSource<Post>();
+  data: Post[] = [];
+
+  constructor(private registerService: RegisterService, private _liveAnnouncer: LiveAnnouncer) { }
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
+    this.fetchData(null);
   }
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-    dataSource = ELEMENT_DATA;
-  
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  fetchData(date: string | null) {
+    // const url = date?'/api/v1/punchings/' + date : '/api/v1/punchings/';
+    // this.httpClient.get<PostApi>(url).subscribe((data) => {
+    this.registerService.fetchData(date).subscribe((data) => {
+      this.data = data.punchings;
+      console.log(data);
+
+      console.log(this.data);
+
+      this.dataSource.data = this.data;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+
+    });
+  }
+
+  dateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
+    if (event.value !== null && event.value !== undefined) {
+      // const formattedDate = event.value.toISOString().substring(0,10); // Or use any other format method
+      const formattedDate = new Date(event.value).toLocaleDateString('pt-br').split('/').reverse().join('-');
+      // console.log(formattedDate);
+      this.fetchData(formattedDate);
+    } else {
+      // Handle the case where event.value is undefined
+      console.log('Datepicker value is undefined');
+    }
+  }
 
 }
