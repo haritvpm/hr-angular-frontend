@@ -1,17 +1,54 @@
-.search-container {
-  display: flex;
-  justify-content: space-between;
+td {
+  text-align: center;
 }
 
-.datepicker-field {
-  /* flex: 1;  */
+th .mat-header-cell{
+  flex: 0 0 200px;
 
-  /* This will make the datepicker field occupy available space */
+  /* justify-content: center; */
+ text-align: center;
+  border-bottom: 1px solid #130606;
+
 }
 
-.search-field {
-  /* flex: 1; */
-
-   /* This will make the search field occupy available space */
-  margin-left: 10px; /* Add some margin between the two fields */
+td .mat-cell {
+  border-top: 1px solid #ffa600;
+  border-bottom: 1px solid #ffa600;
 }
+
+
+.mat-table-responsive {
+  overflow-x: auto;
+}
+
+.mat-column{
+  text-align: center;
+}
+
+.mat-column-aadhaarid {
+  padding-right: 24px;
+  text-align: center;
+  border-right: 1px solid currentColor;
+}
+
+.mat-column-extra_str {
+  padding-right: 24px;
+  text-align: center;
+  border-right: 1px solid currentColor;
+}
+
+.mat-column-total_extra_sec{
+  padding-right: 24px;
+  text-align: center;
+  border-right: 1px solid currentColor;
+}
+
+/* Adjust table layout for smaller screens */
+@media (max-width<= 768px) {
+  .mat-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+  }
+}
+

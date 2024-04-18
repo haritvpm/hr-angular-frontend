@@ -65,7 +65,8 @@ export class MonthwiseregisterAttendanceComponent {
   selectedMonth: Date | null = null;
   date = new FormControl(moment());
 
-  constructor(private _liveAnnouncer: LiveAnnouncer, private attendanceService: AttendanceService) { }
+  constructor(private _liveAnnouncer: LiveAnnouncer,
+    private attendanceService: AttendanceService) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -84,7 +85,7 @@ export class MonthwiseregisterAttendanceComponent {
 
   chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
     const ctrlValue = this.date.value;
-    var monthNumber = 0, yearNumber = 0;
+    let monthNumber = 0, yearNumber = 0;
     if (ctrlValue) {
       monthNumber = normalizedMonth.month() + 1;
       yearNumber = normalizedMonth.year();

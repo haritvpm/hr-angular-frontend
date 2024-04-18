@@ -1,28 +1,40 @@
 
-<div class="search-container">
-  <mat-form-field class="datepicker-field" #releasedAtPicker color="accent">
+<div class="m-x--4 d-flex justify-content-end">
+  <mat-form-field class="m-x-4" #releasedAtPicker color="accent" appearance="outline">
     <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="dateChanged('change', $event)">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 
-  <mat-form-field class="search-field">
+  <mat-form-field class="m-x-4" appearance="outline">
     <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" placeholder="Search">
   </mat-form-field>
-
 </div>
+<!-- <div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 order-lg-1 order-md-1 order-sm-2">
+      <mat-form-field class="datepicker-field" #releasedAtPicker color="accent">
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="dateChanged('change', $event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 order-lg-2 order-md-2 order-sm-1 justify-content-end">
+      <mat-form-field align-item-end>
+        <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" placeholder="Search">
+      </mat-form-field>
+    </div>
+  </div>
+</div> -->
 
-
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
-
+<div class="mat-elevation-z1 mat-table-responsive">
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" >
     <!-- <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">No.</th>
       <td mat-cell *matCellDef="let post">{{ post.id }}</td>
     </ng-container> -->
-
     <ng-container matColumnDef="aadhaarid">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by aadhaar number">Aadhar Id</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by aadhaar number">Attendance Id</th>
       <td mat-cell *matCellDef="let post">{{ post.aadhaarid }}</td>
     </ng-container>
     <ng-container matColumnDef="name">
@@ -37,27 +49,35 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by section">Section</th>
       <td mat-cell *matCellDef="let post">{{ post.section }}</td>
     </ng-container>
-
-
-
-    <ng-container matColumnDef="in_datetime">
+    <ng-container matColumnDef="inTrace">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by in date">Punch In</th>
-      <td mat-cell *matCellDef="let post">{{ post.in_datetime }}</td>
+      <td mat-cell *matCellDef="let post">{{ post.punchin_trace?.att_time }}</td>
     </ng-container>
-
-    <ng-container matColumnDef="out_datetime">
+    <ng-container matColumnDef="outTrace">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by out time">Out Time</th>
-      <td mat-cell *matCellDef="let post">{{ post.out_datetime }}</td>
+      <td mat-cell *matCellDef="let post">{{ post.punchout_trace?.att_time }}</td>
     </ng-container>
-
-    <ng-container matColumnDef="grace_sec">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by grace time">Grace Time(In Sec)</th>
-      <td mat-cell *matCellDef="let post">{{ post.grace_sec }}</td>
+    <ng-container matColumnDef="duration_str">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by out time">Duration</th>
+      <td mat-cell *matCellDef="let post">{{ post.duration_str }}</td>
+    </ng-container>
+    <ng-container matColumnDef="extra_str">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by out time">Extra Time</th>
+      <td mat-cell *matCellDef="let post">{{ post.extra_str }}</td>
+    </ng-container>
+    <ng-container matColumnDef="total_extra_sec">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by grace time">Total Extra Time</th>
+      <td mat-cell *matCellDef="let post">{{ roundValue(post.total_extra_sec/60) }}</td>
     </ng-container>
     <ng-container matColumnDef="grace_str">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by grace time">Grace Time(In Min)</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by grace time">Grace Time</th>
       <td mat-cell *matCellDef="let post">{{ post.grace_str }}</td>
     </ng-container>
+    <ng-container matColumnDef="total_grace_sec">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by grace time">Total Grace Time</th>
+      <td mat-cell *matCellDef="let post">{{ roundValue(post.total_grace_sec/60) }}</td>
+    </ng-container>
+
 
     <!-- Symbol Column -->
   <!-- <ng-container matColumnDef="symbol">

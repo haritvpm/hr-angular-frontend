@@ -9,7 +9,6 @@ import { PostApi } from './register.component';
 export class RegisterService {
 
   constructor(private httpClient: HttpClient) { }
-
   fetchData(date: string | null): Observable<PostApi> {
     const url = date ? '/api/v1/punchings/' + date : '/api/v1/punchings/';
     return this.httpClient.get<PostApi>(url);
