@@ -6,19 +6,9 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { RegisterService } from './register.service';
+import { Post } from './interface';
 
-interface Post {
-  // id: number;
-  aadhaarid: string;
-name:string;
-designation:string;
-section:string;
-in_datetime:string;
-out_datetime:string;
-grace_sec:number;
-grace_str:string;
 
-}
 
 export interface PostApi {
   punchings: Post[];
@@ -32,13 +22,20 @@ export interface PostApi {
   standalone: true,
   imports: [MatTableModule,
     MatPaginatorModule,
-    MatSortModule, MatInputModule, MatDatepickerModule]
+    MatSortModule, MatInputModule,
+    MatDatepickerModule]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
-  displayedColumns: string[] = ['aadhaarid', 'name', 'designation', 'section', 'in_datetime','out_datetime','grace_sec', 'grace_str'];
+  displayedColumns: string[] = ['aadhaarid', 'name', 'designation',
+  'section', 'inTrace','outTrace', 'duration_str', 'extra_str',
+   'total_extra_sec','grace_str', 'total_grace_sec'];
   dataSource = new MatTableDataSource<Post>();
   data: Post[] = [];
+
+   // Define an array to hold the combined data
+combinedData: { name: string, designation: string }[] = [];
+
 
   constructor(private registerService: RegisterService, private _liveAnnouncer: LiveAnnouncer) { }
 
@@ -68,13 +65,14 @@ export class AttendanceRegisterComponent implements OnInit {
       this.data = data.punchings;
       console.log(data);
 
-      console.log(this.data);
+      // console.log(this.data);
 
       this.dataSource.data = this.data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
 
     });
+
   }
 
   dateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -88,5 +86,12 @@ export class AttendanceRegisterComponent implements OnInit {
       console.log('Datepicker value is undefined');
     }
   }
+  roundValue(value: number): number {
+    return Math.round(value);
+  }
+
+
+
+
 
 }

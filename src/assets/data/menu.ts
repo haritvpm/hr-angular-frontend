@@ -17,6 +17,16 @@ export default {
       permissions: {
         only: ['section_access'],
       },
+
+    },
+    {
+      route: 'monthwiseregister/employee',
+      name: 'employee',
+      type: 'link',
+      icon: 'persons',
+      permissions: {
+        only: ['section_access'],
+      },
     },
     {
       route: 'settings',
