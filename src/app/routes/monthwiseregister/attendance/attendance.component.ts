@@ -1,23 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy,ViewEncapsulation } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule, MatDatepickerInputEvent, MatDatepicker } from '@angular/material/datepicker';
+import { MatDatepickerModule,  MatDatepicker } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { FormsModule, FormControl } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { AttendanceService } from './attendance.service';
-import { EmployeeAttendance } from './interfaces';
+import { MonthlyPunching, MonthlyApiData } from './interfaces';
+import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
-
 import { default as _rollupMoment, Moment } from 'moment';
-
+import {MatFormFieldModule} from '@angular/material/form-field';
 const moment = _rollupMoment || _moment;
 
 export const MY_FORMATS = {
@@ -37,7 +36,9 @@ export const MY_FORMATS = {
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css'],
   standalone: true,
-  imports: [HttpClientModule,
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [HttpClientModule,MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule, MatInputModule,
@@ -47,23 +48,33 @@ export const MY_FORMATS = {
     // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
     // application's root module. We provide it at the component level here, due to limitations of
     // our example generation script.
+ // Moment can be provided globally to your app by adding `provideMomentDateAdapter`
+    // to your app config. We provide it at the component level here, due to limitations
+    // of our example generation script.
+    provideMomentDateAdapter(MY_FORMATS),
+    // {
+    //   provide: DateAdapter,
+    //   useClass: MomentDateAdapter,
+    //   deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    // },
 
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    // { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
 
 
 export class MonthwiseregisterAttendanceComponent {
-  displayedColumns: string[] = ['empid', 'name', 'date1', 'date2'];
-  dataSource = new MatTableDataSource<EmployeeAttendance>();
-  selectedMonth: Date | null = null;
+  displayedColumns: string[] = ['aadhaarid', 'name'];
+  dataSource = new MatTableDataSource<MonthlyPunching>([]);
+  dayColumns : any
+  calendarInfo: any;
+ // selectedMonth: Date | null = null;
   date = new FormControl(moment());
+  //today's date
+  todayDate:Date = new Date();
+
+  //any date
+  beginDate: Date = new Date('2024-01-01');
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private attendanceService: AttendanceService) { }
@@ -83,22 +94,24 @@ export class MonthwiseregisterAttendanceComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.date.value;
-    let monthNumber = 0, yearNumber = 0;
-    if (ctrlValue) {
-      monthNumber = normalizedMonth.month() + 1;
-      yearNumber = normalizedMonth.year();
-    }
+  chosenMonthHandler(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+   // this.selectedMonth = normalizedMonth.format('YYYY-MM')
+   const ctrlValue = this.date.value ?? moment();
+    ctrlValue.month(normalizedMonthAndYear.month());
+    ctrlValue.year(normalizedMonthAndYear.year());
+    this.date.setValue(ctrlValue);
     datepicker.close();
-    this.attendanceService.fetchData(monthNumber, yearNumber).subscribe((data) => {
-      if (data) {
-        // Handle the data returned from the API
-        const empDetArray = data[0];
-        console.log(empDetArray.empDet);
+    console.log(normalizedMonthAndYear.format('YYYY-MM-DD'));
+    
+    this.attendanceService.fetchData( normalizedMonthAndYear.format('YYYY-MM-DD') ).subscribe((data) => {
+    
+        const empDetArray = data.monthlypunchings;
+        this.calendarInfo = data.calender_info;
+        this.dayColumns = Object.keys(data.calender_info);
+        this.displayedColumns = ['aadhaarid', 'name', ...this.dayColumns];
         // Assign the data to your dataSource for display in the table
-        this.dataSource = new MatTableDataSource<EmployeeAttendance>(empDetArray.empDet);
-      }
+        this.dataSource = new MatTableDataSource<MonthlyPunching>(empDetArray);
+        this.dataSource.paginator = this.paginator;
     });
   }
 }
