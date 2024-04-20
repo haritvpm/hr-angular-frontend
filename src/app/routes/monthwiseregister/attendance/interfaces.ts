@@ -16,6 +16,8 @@ export interface MonthlyPunching {
   designation_sortindex: number | null;
   default_time_group_id: number | null;
   seniority: number;
+  total_grace_sec : number | null;
+  total_extra_sec : number | null;
   day1: PunchingInfo | PunchingDay;
   day2: PunchingInfo | PunchingDay;
   day3: PunchingInfo | PunchingDay;
@@ -83,6 +85,7 @@ export interface PunchingInfo extends PunchingDay {
   punchin_trace_id: number | null;
   punchout_trace_id: number | null;
   leave_id: number | null;
+
 }
 
 export interface MonthlyApiData {
