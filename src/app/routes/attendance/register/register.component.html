@@ -79,7 +79,8 @@
         >
           Punch In
         </th>
-        <td mat-cell *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td>
+        <td mat-cell  *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td>
+        <!-- <td mat-cell [style]="getPunchInStyle(employee)" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
       </ng-container>
       <ng-container matColumnDef="outTrace">
         <th

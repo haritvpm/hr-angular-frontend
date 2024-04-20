@@ -59,9 +59,7 @@ export class AttendanceRegisterComponent implements OnInit {
 
 
   ngOnInit() {
-    const currentDate = new Date();
-    // this.picker.select(currentDate);
-    // this.dateChanged('change', { target: this.picker, targetElement: null, value: currentDate });
+
     this.fetchData(null);
   }
 
@@ -136,5 +134,14 @@ export class AttendanceRegisterComponent implements OnInit {
       'color': totalextraexceed ? 'red' : ''
     };
   }
+  // getPunchInStyle(employee: any) {
+  //   const punchinTime = new Date('2000-01-01 ' + employee.punchin_trace);
+  //   const comparisonTime = new Date('2000-01-01 11:15:00');
+  //   if (punchinTime >= comparisonTime) {
+  //     return 'red';
+  //   } else {
+  //     return '';
+  //   }
 
+  // }
 }

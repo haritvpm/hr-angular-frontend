@@ -36,9 +36,6 @@ font-weight: bold;
 
 }
 
-.mat-sort-header-container {
-  justify-content: center !important;
-}
 
 .mat-table-responsive {
   overflow-x: auto;

@@ -183,26 +183,26 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   getCellBackgroundColor( dayN : string, odd: boolean) {
     if(this.calendarInfo[dayN].holiday) return '#FFCDD23F';
 
-    return odd ? '#FAFAFA' : '#FFFFFF'
+    return odd ? '#FAFAFA' : '#FFFFFF';
   }
   graceLeft(row: MonthlyPunching){
     const grace = row?.total_grace_sec || 0;
-    return Math.ceil(300 - grace/60)
+    return Math.ceil(300 - grace/60);
   }
   getGraceStyle(row: MonthlyPunching){
     const grace = this.graceLeft(row);
     if(grace < 0) return 'color: red';
-    if(grace < 30) return 'color:  orange'; 
+    if(grace < 30) return 'color:  orange';
     if(grace < 60) return 'color: darkblue';
 
-    return ''
+    return '';
   }
   extraTime(row: MonthlyPunching){
     const extra = row?.total_extra_sec || 0;
-    return Math.ceil(Math.max(extra/60,0))
+    return Math.ceil(Math.max(extra/60,0));
   }
   getTooltip(dayN: string, row: any){
-    let tip = ''
+    const tip = '';
     if(row[dayN]?.punching_count == 0) return 'No Punching';
     if(row[dayN]?.punching_count == 1) return row[dayN]?.in_time || row[dayN]?.out_time;
 
