@@ -19,6 +19,7 @@ import { default as _rollupMoment, Moment } from 'moment';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { catchError } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 const moment = _rollupMoment || _moment;
 
 export const MY_FORMATS = {
@@ -42,7 +43,7 @@ export const MY_FORMATS = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HttpClientModule, MatFormFieldModule,
     MatTableModule,
-    MatPaginatorModule,
+    MatPaginatorModule,MatTooltipModule,
     MatSortModule, MatInputModule, MatSelectModule,
     MatDatepickerModule,MatIconModule,
     MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule],
@@ -55,7 +56,7 @@ export const MY_FORMATS = {
 
 
 export class MonthwiseregisterAttendanceComponent implements OnInit {
-  displayedColumns: string[] = ['name'];
+  displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<MonthlyPunching>([]);
   dayColumns: any;
   calendarInfo: any;
@@ -112,8 +113,9 @@ console.log('s'+section);
           console.log(data);
           this.calendarInfo = data.calender_info;
           this.dayColumns = Object.keys(data.calender_info);
-          this.displayedColumns = [ 'name', ...this.dayColumns, 'info'];
+          this.displayedColumns = [ 'name', ...this.dayColumns,'grace_left', 'extra' ,'info'];
 
+        //  this.sections =['All'];
           this.sections = data.sections ? ['All',...data.sections] : ['All'];
           // Assign the data to your dataSource for display in the table
           this.selectedMonthHint = moment(this.selectedMonth).format('MMMM YYYY');
@@ -153,14 +155,14 @@ console.log('s'+section);
       const filterArray = filters.split('$');
       const searchTxt = filterArray[0];
       const section = filterArray[1];
-      console.log('searchTxt'+searchTxt);
+     // console.log('searchTxt'+searchTxt);
       const matchFilter = [];
 
       // Fetch data from row
       const columnName = row.aadhaarid + row.name + row.designation;
       const columnSection = row?.section_name || '';
-      console.log('section'+section+';');
-      console.log('columnSection'+columnSection+';');
+     // console.log('section'+section+';');
+     // console.log('columnSection'+columnSection+';');
 
       // verify fetching data by our searching values
 
@@ -177,5 +179,33 @@ console.log('s'+section);
     };
   }
 
+  getCellBackgroundColor( dayN : string, odd: boolean) {
+    if(this.calendarInfo[dayN].holiday) return '#FFCDD23F';
 
+    return odd ? '#FAFAFA' : '#FFFFFF'
+  }
+  graceLeft(row: MonthlyPunching){
+    const grace = row?.total_grace_sec || 0;
+    return Math.ceil(300 - grace/60)
+  }
+  getGraceStyle(row: MonthlyPunching){
+    const grace = this.graceLeft(row);
+    if(grace < 0) return 'color: red';
+    if(grace < 30) return 'color:  orange'; 
+    if(grace < 60) return 'color: darkblue';
+
+    return ''
+  }
+  extraTime(row: MonthlyPunching){
+    const extra = row?.total_extra_sec || 0;
+    return Math.ceil(Math.max(extra/60,0))
+  }
+  getTooltip(dayN: string, row: any){
+    let tip = ''
+    if(row[dayN]?.punching_count == 0) return 'No Punching';
+    if(row[dayN]?.punching_count == 1) return row[dayN]?.in_time || row[dayN]?.out_time;
+
+    return '' + row[dayN]?.in_time + ' - ' + row[dayN]?.out_time;
+
+  }
 }
