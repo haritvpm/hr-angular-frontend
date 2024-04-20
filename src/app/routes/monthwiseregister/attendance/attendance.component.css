@@ -1,12 +1,30 @@
-.search-container {
-  display: flex;
-  justify-content: space-between;
+
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 0 0 0 0;
+}
+
+table {
+  width: 100%;
+}
+
+.table-container {
+  max-height: calc(100vh - 155px);
+  /* or height: calc(100vh - 155px); depending on your need  change */
+  overflow: auto;
 }
 
 
-.search-field {
-  /* flex: 1; */
+.menu-badge {
+  border-radius: 50rem;
+  padding: 2px 3px;
+  color: white;
+}
 
-   /* This will make the search field occupy available space */
-  margin-left: 10px; /* Add some margin between the two fields */
+.icon-small {
+  transform: scale(.8);
 }
