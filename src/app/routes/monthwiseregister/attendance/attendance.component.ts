@@ -8,16 +8,17 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule, MatDatepicker } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+
 import { AttendanceService } from './attendance.service';
-import { MonthlyPunching, MonthlyApiData } from './interfaces';
+import { PunchingInfo, MonthlyPunching, MonthlyApiData } from './interfaces';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { catchError } from 'rxjs';
+import { MatSelectModule } from '@angular/material/select';
 const moment = _rollupMoment || _moment;
 
 export const MY_FORMATS = {
@@ -42,8 +43,8 @@ export const MY_FORMATS = {
   imports: [HttpClientModule, MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule, MatInputModule,
-    MatDatepickerModule,
+    MatSortModule, MatInputModule, MatSelectModule,
+    MatDatepickerModule,MatIconModule,
     MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule],
   providers: [
 
@@ -61,24 +62,42 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   selectedMonth: string = moment().format('YYYY-MM-DD');
   selectedMonthHint: string = moment().format('MMMM YYYY');
   date = new FormControl(moment());
+
   //today's date
   todayDate: Date = new Date();
-
-  //any date
   beginDate: Date = new Date('2024-01-01');
+  sections: string[] = [];
+  public selectedSection = 'All';
+  public searchTxt = '';
+  public searchForm: FormGroup;
+
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private attendanceService: AttendanceService) { }
 
   ngOnInit(): void {
+    this.searchFormInit();
+
     this.loadData();
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter() {
+    const searchTxt = this.searchForm.get('searchTxt')?.value;
+    let section = this.searchForm.get('selectedSection')?.value;
+
+    this.searchTxt = searchTxt === null ? '' : searchTxt;
+    this.selectedSection = section === null ? '' : section;
+
+    if(section === 'All') section = '';
+
+console.log('t'+searchTxt);
+console.log('s'+section);
+
+    this.dataSource.filter = searchTxt  + '$' + section;
+
   }
 
   loadData() {
@@ -93,11 +112,15 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           console.log(data);
           this.calendarInfo = data.calender_info;
           this.dayColumns = Object.keys(data.calender_info);
-          this.displayedColumns = [ 'name', ...this.dayColumns];
+          this.displayedColumns = [ 'name', ...this.dayColumns, 'info'];
+
+          this.sections = data.sections ? ['All',...data.sections] : ['All'];
           // Assign the data to your dataSource for display in the table
           this.selectedMonthHint = moment(this.selectedMonth).format('MMMM YYYY');
           this.dataSource = new MatTableDataSource<MonthlyPunching>(empDetArray);
           this.dataSource.paginator = this.paginator;
+          this.dataSource.filterPredicate = this.getFilterPredicate();
+          this.applyFilter();
         } else {
           this.dataSource = new MatTableDataSource<MonthlyPunching>([]);
         }
@@ -114,4 +137,45 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     this.selectedMonth = normalizedMonthAndYear.format('YYYY-MM-DD');
     this.loadData();
   }
+
+  searchFormInit() {
+    this.searchForm = new FormGroup({
+      searchTxt: new FormControl(''),
+      selectedSection: new FormControl('')
+    });
+  }
+
+   /* this method well be called for each row in table  */
+   getFilterPredicate() {
+    return (row: MonthlyPunching, filters: string) => {
+
+      // split string per '$' to array
+      const filterArray = filters.split('$');
+      const searchTxt = filterArray[0];
+      const section = filterArray[1];
+      console.log('searchTxt'+searchTxt);
+      const matchFilter = [];
+
+      // Fetch data from row
+      const columnName = row.aadhaarid + row.name + row.designation;
+      const columnSection = row?.section_name || '';
+      console.log('section'+section+';');
+      console.log('columnSection'+columnSection+';');
+
+      // verify fetching data by our searching values
+
+      const customFilterN = columnName.toLowerCase().includes(searchTxt);
+      const customFilterS = columnSection.toLowerCase() == section.toLowerCase() || section == '' || section == 'All';
+
+      // push boolean values into array
+      matchFilter.push(customFilterN);
+      matchFilter.push(customFilterS);
+
+      // return true if all values in array is true
+      // else return false
+      return matchFilter.every(Boolean);
+    };
+  }
+
+
 }

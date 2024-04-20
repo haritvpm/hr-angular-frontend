@@ -5,7 +5,7 @@ export interface MonthlyPunching {
   end_date: string | null;
   aadhaarid: string;
   attendance_book_id: number | null;
-  attendance_book: any | null;
+  attendance_book: string | null;
   section_id: number;
   section_name: string | null;
   works_nights_during_session: number;
@@ -15,7 +15,7 @@ export interface MonthlyPunching {
   designation: string;
   designation_sortindex: number | null;
   default_time_group_id: number | null;
-  seniority: number; 
+  seniority: number;
   day1: PunchingInfo | PunchingDay;
   day2: PunchingInfo | PunchingDay;
   day3: PunchingInfo | PunchingDay;
@@ -88,5 +88,6 @@ export interface PunchingInfo extends PunchingDay {
 export interface MonthlyApiData {
   month: string;
   monthlypunchings: MonthlyPunching[];
+  sections : string[];
   calender_info: any; // You may want to specify a more specific type here
 }
