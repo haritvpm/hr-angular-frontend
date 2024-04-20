@@ -16,7 +16,7 @@ export interface monthly {
 // }
 
 
-export interface dateWise {
+export interface DailyPunching {
   // id: number;
   aadhaarid: string
   name: string
@@ -33,8 +33,8 @@ export interface dateWise {
   punchout_trace: outTrace
 }
 
-export interface dateWiseApi {
-  punchings: dateWise[];
+export interface DailyPunchingApi {
+  punchings: DailyPunching[];
   is_future: boolean
   is_today: boolean
   date_dmY: string

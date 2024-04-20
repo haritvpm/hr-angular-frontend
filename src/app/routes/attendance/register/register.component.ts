@@ -6,9 +6,15 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule, MatDatepickerInputEvent, MatDatepicker } from '@angular/material/datepicker';
 import { RegisterService } from './register.service';
-import { dateWise } from './interface';
+import { DailyPunching } from './interface';
 import { MatIcon } from '@angular/material/icon';
-import {MatBadgeModule} from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import * as _moment from 'moment';
+import { default as _rollupMoment, Moment } from 'moment';
+
+const moment = _rollupMoment || _moment;
 
 @Component({
   selector: 'app-mattable-mattableapi',
@@ -18,22 +24,31 @@ import {MatBadgeModule} from '@angular/material/badge';
   imports: [MatTableModule,
     MatPaginatorModule,
     MatSortModule, MatInputModule,
-    MatDatepickerModule, MatIcon, MatBadgeModule]
+    MatDatepickerModule, MatIcon, MatBadgeModule,
+    FormsModule, ReactiveFormsModule]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
-  displayedColumns: string[] = ['aadhaarid', 'name',
-  'section', 'inTrace','outTrace', 'duration_str', 'extra_str',
-   'total_extra_sec','grace_str', 'total_grace_sec'];
-  dataSource = new MatTableDataSource<dateWise>();
-  data: dateWise[] = [];
+  displayedColumns: string[] = ['name', 'section', 'inTrace', 'outTrace', 'duration_str', 'extra_str',
+    'total_extra_sec', 'grace_str', 'total_grace_sec'];
+  dataSource = new MatTableDataSource<DailyPunching>();
+  data: DailyPunching[] = [];
   is_future: boolean;
-  is_today:boolean;
+  is_today: boolean;
   date_dmY: string;
+  selectedDateHint: string = moment().format('DD MMMM YYYY');
+  date = new FormControl(moment());
+
+  //today's date
+  todayDate: Date = new Date();
+  beginDate: Date = new Date('2024-01-01');
+  sections: string[] = [];
+  public searchTxt = '';
+  public searchForm: FormGroup;
 
 
-   // Define an array to hold the combined data
-combinedData: { name: string, designation: string }[] = [];
+  // Define an array to hold the combined data
+  combinedData: { name: string, designation: string }[] = [];
 
 
   constructor(private registerService: RegisterService, private _liveAnnouncer: LiveAnnouncer) { }
@@ -59,17 +74,17 @@ combinedData: { name: string, designation: string }[] = [];
   }
 
   applyFilter(filterValue: string) {
+
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   fetchData(date: string | null) {
-    // const url = date?'/api/v1/punchings/' + date : '/api/v1/punchings/';
-    // this.httpClient.get<dateWiseApi>(url).subscribe((data) => {
     this.registerService.fetchData(date).subscribe((data) => {
       this.data = data.punchings;
       this.is_future = data.is_future;
       this.is_today = data.is_today;
       this.date_dmY = data.date_dmY;
+      // this.selectedDate = moment(this.selectedDate).format('DD MMMM YYYY');
       console.log(data);
       // console.log(this.data);
       this.dataSource.data = this.data;
@@ -84,7 +99,9 @@ combinedData: { name: string, designation: string }[] = [];
     if (event.value !== null && event.value !== undefined) {
       // const formattedDate = event.value.toISOString().substring(0,10); // Or use any other format method
       const formattedDate = new Date(event.value).toLocaleDateString('pt-br').split('/').reverse().join('-');
-      console.log(formattedDate);
+      const newdate = new Date(event.value);
+      this.selectedDateHint = moment(newdate).format('DD MMMM YYYY');
+      // console.log(formattedDate);
       this.fetchData(formattedDate);
     } else {
       // Handle the case where event.value is undefined
@@ -98,25 +115,25 @@ combinedData: { name: string, designation: string }[] = [];
   // graceExeeded(employee : any){
   //   return roundValue(employee.total_grace_sec/60)>30;
   // }
-  getGraceColor(employee : any){
-    return Math.round(employee.total_grace_sec/60)>300? 'red':'';
+  getGraceColor(employee: any) {
+    return Math.round(employee.total_grace_sec / 60) > 300 ? 'red' : '';
   }
-  getGraceStyle(employee : any){
-    const exeeded = this.roundValue(employee.total_grace_sec/60)>300;
+  getGraceStyle(employee: any) {
+    const exeeded = this.roundValue(employee.total_grace_sec / 60) > 300;
     return {
       // 'background-color':exeeded ? 'yellow':'',
-      'font-weight': exeeded? 'bold' : '',
-      'color': exeeded? 'red': ''
+      'font-weight': exeeded ? 'bold' : '',
+      'color': exeeded ? 'red' : ''
     };
   }
-  getExtratimeColor (employee : any){
-    return Math.round(employee.total_extra_sec/60)>600?'green':'';
+  getExtratimeColor(employee: any) {
+    return Math.round(employee.total_extra_sec / 60) > 600 ? 'green' : '';
   }
-  getTotalExtrStyle(employee : any){
-    const totalextraexceed = this.roundValue(employee.total_extra_sec/60)>600;
+  getTotalExtrStyle(employee: any) {
+    const totalextraexceed = this.roundValue(employee.total_extra_sec / 60) > 600;
     return {
-      'font-weight' : totalextraexceed? 'bold' : '',
-      'color' : totalextraexceed? 'red': ''
+      'font-weight': totalextraexceed ? 'bold' : '',
+      'color': totalextraexceed ? 'red' : ''
     };
   }
 

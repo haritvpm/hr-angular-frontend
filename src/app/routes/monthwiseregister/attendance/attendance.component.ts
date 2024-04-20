@@ -45,7 +45,8 @@ export const MY_FORMATS = {
     MatPaginatorModule,
     MatSortModule, MatInputModule, MatSelectModule,
     MatDatepickerModule,MatIconModule,
-    MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule],
+    MatNativeDateModule, FormsModule, CommonModule,
+   ReactiveFormsModule],
   providers: [
 
     provideMomentDateAdapter(MY_FORMATS),
