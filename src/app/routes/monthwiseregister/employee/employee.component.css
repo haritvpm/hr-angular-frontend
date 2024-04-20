@@ -1,0 +1,18 @@
+.employee-monthwise-table {
+  width: 100%;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+  cursor: pointer;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
+
+.date-row-is-clicked, th {
+  font-weight: bold;
+}
+

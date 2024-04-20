@@ -1,59 +1,53 @@
-<page-header></page-header>
-<mat-table [dataSource]="dataSource">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 employee-monthwise-table">
+  <ng-container matColumnDef="day">
+    <th mat-header-cell *matHeaderCellDef>Date</th>
+    <td mat-cell *matCellDef="let item" [style]="getDateStyle(item)">
+      {{ item.day_str | date: 'dd-MM-yyyy' }}
+    </td>
+  </ng-container>
+
   <ng-container matColumnDef="punchin">
-    <mat-header-cell *matHeaderCellDef> In Time </mat-header-cell>
-    <mat-cell *matCellDef="let item">
-      @if (item.attendance_trace_fetch_complete && item.punchin_trace || item.punchin_trace) {
+    <th mat-header-cell *matHeaderCellDef>In Time</th>
+    <td mat-cell *matCellDef="let item">
+      @if ((item.attendance_trace_fetch_complete && item.punchin_trace) || item.punchin_trace) {
         {{ item.punchin_trace.att_time }}
       }
-    </mat-cell>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="punchout">
-    <mat-header-cell *matHeaderCellDef> Out Time </mat-header-cell>
-    <mat-cell *matCellDef="let item">
+    <th mat-header-cell *matHeaderCellDef>Out Time</th>
+    <td mat-cell *matCellDef="let item">
       <ng-container *ngIf="item.punching_count == 2">
         {{ item.punchout_trace.att_time }}
       </ng-container>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="day">
-    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
-    <mat-cell *matCellDef="let item" [style]="getDateStyle(item)">
-    <!-- [style.color]="(item.punching_count == 0 && item.attendance_trace_fetch_complete)?'red':''"> -->
-      {{ item.day_str | date: 'dd-MM-yyyy' }}
-    </mat-cell>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="duration">
-    <mat-header-cell *matHeaderCellDef> Duration </mat-header-cell>
-    <mat-cell *matCellDef="let item">
-      <ng-container>
-        {{ item.duration_str }}
-      </ng-container>
-    </mat-cell>
+    <th mat-header-cell *matHeaderCellDef>Duration</th>
+    <td mat-cell *matCellDef="let item">{{ item.duration_str }}</td>
   </ng-container>
 
   <ng-container matColumnDef="xtratime">
-    <mat-header-cell *matHeaderCellDef> Extra Time (in minutes) </mat-header-cell>
-    <mat-cell *matCellDef="let item">
-      <ng-container>
-        {{ item.extra_str }}
-      </ng-container>
-    </mat-cell>
+    <th mat-header-cell *matHeaderCellDef>Extra Time (in minutes)</th>
+    <td mat-cell *matCellDef="let item">{{ item.extra_str }}</td>
   </ng-container>
 
   <ng-container matColumnDef="info">
-    <mat-header-cell *matHeaderCellDef> Remarks </mat-header-cell>
-    <mat-cell *matCellDef="let item">
+    <th mat-header-cell *matHeaderCellDef>Remarks</th>
+    <td mat-cell *matCellDef="let item">
       <ng-container *ngIf="item.punching_count == 0 && item.attendance_trace_fetch_complete">
         Leave
       </ng-container>
-    </mat-cell>
+    </td>
   </ng-container>
-  <!-- Add more ng-container blocks for each property in the EmployeePunchingInfo object -->
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
-</mat-table>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    (click)="clickedRows.add(row)"
+    [class.date-row-is-clicked]="clickedRows.has(row)"
+    *matRowDef="let row; columns: displayedColumns"
+  ></tr>
+</table>

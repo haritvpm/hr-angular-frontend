@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PageHeaderComponent } from '@shared';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from './employee.service';
 import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData } from './interface';
@@ -11,7 +10,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css'],
   standalone: true,
-  imports: [MatTableModule, DatePipe, PageHeaderComponent, NgIf]
+  imports: [MatTableModule, DatePipe, NgIf]
 })
 export class MonthwiseregisterEmployeeComponent implements OnInit {
   aadhaarid: string;
@@ -19,6 +18,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   data: MonthwiseEmployeeApiData;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
   displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
+  clickedRows = new Set<EmployeePunchingInfo>();
 
   constructor(
     private route: ActivatedRoute,
@@ -38,6 +38,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     this.apiService.getEmployeeData(this.aadhaarid, this.date)
       .subscribe(response => {
         this.data = response;
+        console.log(this.data.employee_punching);
         this.dataSource.data = this.data.employee_punching;
       });
   }
