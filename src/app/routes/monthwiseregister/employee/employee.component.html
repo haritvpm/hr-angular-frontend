@@ -1,0 +1,23 @@
+
+
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="aadhaarid">
+    <mat-header-cell *matHeaderCellDef> Column 1 </mat-header-cell>
+    <mat-cell *matCellDef="let item"> {{ item.aadhaarid }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Column 2 </mat-header-cell>
+    <mat-cell *matCellDef="let item"> {{ item.name }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="day">
+    <mat-header-cell *matHeaderCellDef> Column 3 </mat-header-cell>
+    <mat-cell *matCellDef="let item"> {{ item.day }} </mat-cell>
+  </ng-container>
+
+  <!-- Add more ng-container blocks for each property in the EmployeePunchingInfo object -->
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
+</mat-table>
