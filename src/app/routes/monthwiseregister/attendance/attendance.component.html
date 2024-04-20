@@ -51,10 +51,10 @@
         <td mat-cell [matTooltip]="getTooltip(dayN, row)" [matTooltipShowDelay]="500" [style.background-color]="getCellBackgroundColor(dayN,$odd)" [style.text-align]="'center'"  *matCellDef="let row">
 
           <!-- can be in the future. -->
-          @if (calendarInfo[dayN].hint) {
-            <span *ngIf="calendarInfo[dayN].hint === 'casual_an' || calendarInfo[dayN].hint === 'casual_fn'" style="color: blue;" >
+          @if (row[dayN].hint) {
+            <span *ngIf="row[dayN].hint === 'casual_an' || row[dayN].hint === 'casual_fn'" style="color: blue;" >
               <span class="menu-badge bg-red-300"> <small>CL</small> </span></span>
-              <span *ngIf="calendarInfo[dayN].hint === 'casual'" style="color: blue;" >
+              <span *ngIf="row[dayN].hint === 'casual'" style="color: blue;" >
                 <span class="menu-badge bg-red-300"> CL </span></span>
           }
 

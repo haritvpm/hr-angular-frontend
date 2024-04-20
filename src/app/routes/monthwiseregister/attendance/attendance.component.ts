@@ -201,11 +201,12 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     return Math.ceil(Math.max(extra/60,0))
   }
   getTooltip(dayN: string, row: any){
-    let tip = ''
-    if(row[dayN]?.punching_count == 0) return 'No Punching';
-    if(row[dayN]?.punching_count == 1) return row[dayN]?.in_time || row[dayN]?.out_time;
+    const hint = row[dayN].hint ? row[dayN].hint : '';
 
-    return '' + row[dayN]?.in_time + ' - ' + row[dayN]?.out_time;
+    if(row[dayN]?.punching_count == 0) return 'No Punching. ' + hint;
+    if(row[dayN]?.punching_count == 1) return (row[dayN]?.in_time || row[dayN]?.out_time) + hint;
+
+    return row[dayN]?.in_time + ' - ' + row[dayN]?.out_time + ' ' + hint;
 
   }
 }
