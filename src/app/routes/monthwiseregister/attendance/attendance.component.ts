@@ -40,7 +40,7 @@ export const MY_FORMATS = {
   styleUrls: ['./attendance.component.css'],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HttpClientModule, MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,MatTooltipModule,
@@ -94,10 +94,10 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
 
     if(section === 'All') section = '';
 
-console.log('t'+searchTxt);
-console.log('s'+section);
+// console.log('t'+searchTxt);
+// console.log('s'+section);
 
-    this.dataSource.filter = searchTxt  + '$' + section;
+    this.dataSource.filter = searchTxt.toLowerCase()  + '$' + section.toLowerCase();
 
   }
 
@@ -167,7 +167,7 @@ console.log('s'+section);
       // verify fetching data by our searching values
 
       const customFilterN = columnName.toLowerCase().includes(searchTxt);
-      const customFilterS = columnSection.toLowerCase() == section.toLowerCase() || section == '' || section == 'All';
+      const customFilterS = columnSection.toLowerCase() == section || section == '' || section == 'All';
 
       // push boolean values into array
       matchFilter.push(customFilterN);
