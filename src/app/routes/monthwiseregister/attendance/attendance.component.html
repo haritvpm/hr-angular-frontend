@@ -80,13 +80,20 @@
 
             } @else {
 
-              <span *ngIf="row[dayN].punching_count >= 2" style="color: gray;" ><mat-icon>looks_two</mat-icon></span>
+              <span *ngIf="row[dayN].punching_count >=6 " style="color: gray;" ><mat-icon>looks_6</mat-icon></span>
+              <span *ngIf="row[dayN].punching_count === 5" style="color: gray;" ><mat-icon>looks_5</mat-icon></span>
+              <span *ngIf="row[dayN].punching_count === 4" style="color: gray;" ><mat-icon>looks_4</mat-icon></span>
+              <span *ngIf="row[dayN].punching_count === 3" style="color: gray;" ><mat-icon>looks_3</mat-icon></span>
+              <span *ngIf="row[dayN].punching_count === 2" style="color: gray;" ><mat-icon>looks_two</mat-icon></span>
               <span *ngIf="row[dayN].punching_count === 1 && !calendarInfo[dayN].is_today" style="color: orange;" ><mat-icon>looks_one</mat-icon></span>
               <span *ngIf="row[dayN].punching_count === 1 && calendarInfo[dayN].is_today" style="color: blue;" ><mat-icon>looks_one</mat-icon></span>
 
               @if (row[dayN].punching_count === 0 && !calendarInfo[dayN].hint) {
                 <span class="menu-badge bg-red-300">&nbsp;L&nbsp;</span>
 
+              }
+
+              @if (row[dayN].total_grace_sec/60 > 300 ) {
               }
 
             }
