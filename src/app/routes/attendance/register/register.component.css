@@ -1,21 +1,16 @@
-td {
-  text-align: center;
+
+
+th{
+font-family: Arial, Helvetica, sans-serif;
+font-size: small;
+font-weight: bold;
+text-align: center !important;
+vertical-align: middle !important;
 }
 
-th .mat-header-cell{
-  flex: 0 0 200px;
-
-  /* justify-content: center; */
- text-align: center;
-  border-bottom: 1px solid #130606;
-
+.mat-sort-header-container {
+  justify-content: center !important;
 }
-
-td .mat-cell {
-  border-top: 1px solid #ffa600;
-  border-bottom: 1px solid #ffa600;
-}
-
 
 .mat-table-responsive {
   overflow-x: auto;
@@ -25,22 +20,38 @@ td .mat-cell {
   text-align: center;
 }
 
-.mat-column-aadhaarid {
+.mat-column-duration_str {
   padding-right: 24px;
   text-align: center;
-  border-right: 1px solid currentColor;
+
+  /* border-right: 1px solid currentColor; */
+}
+
+.mat-column-grace_str {
+  padding-right: 24px;
+  text-align: center;
+
+  /* border-right: 1px solid currentColor; */
+}
+
+.mat-column-total_grace_sec {
+  padding-right: 24px;
+  text-align: center;
+
 }
 
 .mat-column-extra_str {
   padding-right: 24px;
   text-align: center;
-  border-right: 1px solid currentColor;
+
+  /* border-right: 1px solid currentColor; */
 }
 
 .mat-column-total_extra_sec{
   padding-right: 24px;
   text-align: center;
-  border-right: 1px solid currentColor;
+
+  /* border-right: 1px solid currentColor; */
 }
 
 /* Adjust table layout for smaller screens */
