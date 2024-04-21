@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, ViewChild, ChangeDetectionStrategy, ViewEncapsulation, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -20,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { catchError } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 const moment = _rollupMoment || _moment;
 
 export const MY_FORMATS = {
@@ -41,7 +41,9 @@ export const MY_FORMATS = {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   // changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [HttpClientModule, MatFormFieldModule,
+  imports: [
+    RouterLink,
+    HttpClientModule, MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,MatTooltipModule,
     MatSortModule, MatInputModule, MatSelectModule,
@@ -72,9 +74,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   public searchTxt = '';
   public searchForm: FormGroup;
 
-
-  constructor(private _liveAnnouncer: LiveAnnouncer,
-    private attendanceService: AttendanceService) { }
+  constructor( private attendanceService: AttendanceService) { }
 
   ngOnInit(): void {
     this.searchFormInit();
@@ -180,25 +180,26 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   }
 
   getCellBackgroundColor( dayN : string, odd: boolean) {
-    if(this.calendarInfo[dayN].holiday) return '#FFCDD23F';
+    if(this.calendarInfo[dayN].holiday) return '#7f7f7f0e';
 
-    return odd ? '#FAFAFA' : '#FFFFFF'
+    return '#FFFFFF';
+  //  return odd ? '#FAFAFA' : '#FFFFFF';
   }
   graceLeft(row: MonthlyPunching){
     const grace = row?.total_grace_sec || 0;
-    return Math.ceil(300 - grace/60)
+    return Math.ceil(300 - grace/60);
   }
   getGraceStyle(row: MonthlyPunching){
     const grace = this.graceLeft(row);
     if(grace < 0) return 'color: red';
-    if(grace < 30) return 'color:  orange'; 
+    if(grace < 30) return 'color:  orange';
     if(grace < 60) return 'color: darkblue';
 
-    return ''
+    return '';
   }
   extraTime(row: MonthlyPunching){
     const extra = row?.total_extra_sec || 0;
-    return Math.ceil(Math.max(extra/60,0))
+    return Math.ceil(Math.max(extra/60,0));
   }
   getTooltip(dayN: string, row: any){
     const hint = row[dayN].hint ? row[dayN].hint : '';
@@ -206,7 +207,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     if(row[dayN]?.punching_count == 0) return 'No Punching. ' + hint;
     if(row[dayN]?.punching_count == 1) return (row[dayN]?.in_time || row[dayN]?.out_time) + hint;
 
-    return row[dayN]?.in_time + ' - ' + row[dayN]?.out_time + ' ' + hint;
+    return row[dayN]?.in_time + '-' + row[dayN]?.out_time + '\n' + hint;
 
   }
 }

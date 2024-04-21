@@ -5,6 +5,7 @@ import { EmployeeService } from './employee.service';
 import {CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData} from './interface';
 
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { switchMap } from 'rxjs';
 @Component({
   selector: 'app-monthwiseregister-employee',
   templateUrl: './employee.component.html',
@@ -26,21 +27,19 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.aadhaarid = params.aadhaarid;
-      this.date = params.date || new Date().toISOString().slice(0, 10);
-      this.loadData();
+    this.route.params
+    .pipe(
+      switchMap(params => {
+        this.aadhaarid = params.aadhaarid;
+        this.date = params.date || new Date().toISOString().slice(0, 10);
+        return this.apiService.getEmployeeData(this.aadhaarid, this.date);
+      })
+    )
+    .subscribe(response => {
+      console.log(response);
+      this.data = response;
+      this.dataSource.data = this.data.employee_punching;
     });
   }
 
-  loadData() {
-    // Call your API service to fetch data using Aadhaar ID and date
-    this.apiService.getEmployeeData(this.aadhaarid, this.date)
-      .subscribe(response => {
-        console.log(response);
-        this.data = response;
-        this.dataSource.data = this.data.employee_punching;
-
-      });
-  }
 }

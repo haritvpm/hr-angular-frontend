@@ -33,13 +33,22 @@
   <div class="table-container">
 
     <table mat-table [dataSource]="dataSource" >
+
+
       <ng-container matColumnDef="name" sticky>
         <th mat-header-cell  [style.text-align]="'right'"  [style.background-color]="'#EEEEEEF0'"  *matHeaderCellDef >
           <i> {{selectedMonthHint}} </i>
         </th>
-        <td mat-cell  [style.white-space]="'nowrap'" [style.background-color]="'#EEEEEEF0'" *matCellDef="let row"><small>{{ row.aadhaarid }}</small>&nbsp; <b> {{ row.name }} </b><br> <small>{{ row?.designation }}</small> </td>
-      </ng-container>
+        <td mat-cell  [style.white-space]="'nowrap'" [style.background-color]="'#EEEEEE'" *matCellDef="let row">
 
+          <a [routerLink]="['employee', row.aadhaarid ]" [queryParams]="{date: row.start_date}" >
+          <small>{{ row.aadhaarid }}</small>&nbsp; <b> {{ row.name }} </b><br> <small>{{ row?.designation }}</small>
+        </a>
+
+        </td>
+
+
+      </ng-container>
 
       @for (dayN of dayColumns; track dayN) {
       <ng-container  [matColumnDef]="dayN">
@@ -48,14 +57,14 @@
           <b> {{ $index+1 }}</b>
 
         </th>
-        <td mat-cell [matTooltip]="getTooltip(dayN, row)" [matTooltipShowDelay]="500" [style.background-color]="getCellBackgroundColor(dayN,$odd)" [style.text-align]="'center'"  *matCellDef="let row">
+        <td mat-cell [matTooltip]="getTooltip(dayN, row)"   matTooltipClass="allow-cr" [matTooltipShowDelay]="500" [style.background-color]="getCellBackgroundColor(dayN,$odd)" [style.text-align]="'center'"  *matCellDef="let row">
 
           <!-- can be in the future. -->
           @if (row[dayN].hint) {
             <span *ngIf="row[dayN].hint === 'casual_an' || row[dayN].hint === 'casual_fn'" style="color: blue;" >
-              <span class="menu-badge bg-red-300"> <small>CL</small> </span></span>
+              <span class="menu-badge bg-blue-300"> <small>CL</small> </span></span>
               <span *ngIf="row[dayN].hint === 'casual'" style="color: blue;" >
-                <span class="menu-badge bg-red-300"> CL </span></span>
+                <span class="menu-badge bg-blue-300"> CL </span></span>
           }
 
 
@@ -78,7 +87,7 @@
 
               @if ( !calendarInfo[dayN].holiday && row[dayN].punching_count === 0 && !calendarInfo[dayN].hint && !calendarInfo[dayN].is_today) {
                 <!-- <span class="menu-badge bg-red-300">&nbsp;L&nbsp;</span> -->
-                <span style="color: #FF1744;" > <mat-icon>close</mat-icon></span>
+                <span style="color: #6017ff;" > <mat-icon>close</mat-icon></span>
               }
 
               @if (row[dayN].grace_sec > 3600 ) {
@@ -88,7 +97,7 @@
             }
 
             <!--DONE half day leave and single or double punch-->
-            
+
           }
        </td>
       </ng-container>
@@ -114,7 +123,6 @@
       </th>
       <td mat-cell *matCellDef="let row"> {{ extraTime(row)  }} </td>
     </ng-container>
-
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>

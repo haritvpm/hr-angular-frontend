@@ -28,3 +28,31 @@ table {
 .icon-small {
   transform: scale(.8);
 }
+
+/* no blue color */
+a:link {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: blueviolet;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:active {
+  background-color: transparent;
+  text-decoration: none;
+}
+.allow-cr {
+  white-space: pre;
+}
