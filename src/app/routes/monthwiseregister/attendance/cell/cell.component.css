@@ -1,0 +1,9 @@
+.menu-badge {
+    border-radius: 50rem;
+    padding: 2px 3px;
+    color: white;
+  }
+  
+  .icon-small {
+    transform: scale(.8);
+  }

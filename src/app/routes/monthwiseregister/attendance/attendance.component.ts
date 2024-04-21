@@ -36,24 +36,24 @@ export const MY_FORMATS = {
 };
 
 @Component({
-    selector: 'app-monthwiseregister-attendance',
-    templateUrl: './attendance.component.html',
-    styleUrls: ['./attendance.component.css'],
-    standalone: true,
-    encapsulation: ViewEncapsulation.None,
-    providers: [
-        provideMomentDateAdapter(MY_FORMATS),
-    ],
-    imports: [
-        RouterLink,
-        HttpClientModule, MatFormFieldModule,
-        MatTableModule,
-        MatPaginatorModule, MatTooltipModule,
-        MatSortModule, MatInputModule, MatSelectModule,
-        MatDatepickerModule, MatIconModule,
-        MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
-        CellComponent
-    ]
+  selector: 'app-monthwiseregister-attendance',
+  templateUrl: './attendance.component.html',
+  styleUrls: ['./attendance.component.css'],
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+    provideMomentDateAdapter(MY_FORMATS),
+  ],
+  imports: [
+    RouterLink,
+    HttpClientModule, MatFormFieldModule,
+    MatTableModule,
+    MatPaginatorModule, MatTooltipModule,
+    MatSortModule, MatInputModule, MatSelectModule,
+    MatDatepickerModule, MatIconModule,
+    MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
+    CellComponent
+  ]
 })
 
 
@@ -74,7 +74,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   public searchTxt = '';
   public searchForm: FormGroup;
 
-  constructor( private attendanceService: AttendanceService) { }
+  constructor(private attendanceService: AttendanceService) { }
 
   ngOnInit(): void {
     this.searchFormInit();
@@ -92,12 +92,12 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     this.searchTxt = searchTxt === null ? '' : searchTxt;
     this.selectedSection = section === null ? '' : section;
 
-    if(section === 'All') section = '';
+    if (section === 'All') section = '';
 
-// console.log('t'+searchTxt);
-// console.log('s'+section);
+    // console.log('t'+searchTxt);
+    // console.log('s'+section);
 
-    this.dataSource.filter = searchTxt.toLowerCase()  + '$' + section.toLowerCase();
+    this.dataSource.filter = searchTxt.toLowerCase() + '$' + section.toLowerCase();
 
   }
 
@@ -113,10 +113,10 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           console.log(data);
           this.calendarInfo = data.calender_info;
           this.dayColumns = Object.keys(data.calender_info);
-          this.displayedColumns = [ 'name', ...this.dayColumns,'grace_left', 'extra' ,'info'];
+          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns , 'extra', 'info'];
 
-        //  this.sections =['All'];
-          this.sections = data.sections ? ['All',...data.sections] : ['All'];
+          //  this.sections =['All'];
+          this.sections = data.sections ? ['All', ...data.sections] : ['All'];
           // Assign the data to your dataSource for display in the table
           this.selectedMonthHint = moment(this.selectedMonth).format('MMMM YYYY');
           this.dataSource = new MatTableDataSource<MonthlyPunching>(empDetArray);
@@ -147,22 +147,22 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     });
   }
 
-   /* this method well be called for each row in table  */
-   getFilterPredicate() {
+  /* this method well be called for each row in table  */
+  getFilterPredicate() {
     return (row: MonthlyPunching, filters: string) => {
 
       // split string per '$' to array
       const filterArray = filters.split('$');
       const searchTxt = filterArray[0];
       const section = filterArray[1];
-     // console.log('searchTxt'+searchTxt);
+      // console.log('searchTxt'+searchTxt);
       const matchFilter = [];
 
       // Fetch data from row
       const columnName = row.aadhaarid + row.name + row.designation;
       const columnSection = row?.section_name || '';
-     // console.log('section'+section+';');
-     // console.log('columnSection'+columnSection+';');
+      // console.log('section'+section+';');
+      // console.log('columnSection'+columnSection+';');
 
       // verify fetching data by our searching values
 
@@ -179,35 +179,40 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     };
   }
 
-  getCellBackgroundColor( dayN : string, odd: boolean) {
-    if(this.calendarInfo[dayN].holiday) return '#7f7f7f0e';
+  getCellBackgroundColor(dayN: string, odd: boolean) {
+    if (this.calendarInfo[dayN].holiday) return '#7f7f7f0e';
 
     return '#FFFFFF';
-  //  return odd ? '#FAFAFA' : '#FFFFFF';
+    //  return odd ? '#FAFAFA' : '#FFFFFF';
   }
-  graceLeft(row: MonthlyPunching){
+  graceLeft(row: MonthlyPunching) {
     const grace = row?.total_grace_sec || 0;
-    return Math.ceil(300 - grace/60);
+    return Math.ceil(300 - grace / 60);
   }
-  getGraceStyle(row: MonthlyPunching){
+  getGraceStyle(row: MonthlyPunching) {
     const grace = this.graceLeft(row);
-    if(grace < 0) return 'color: red';
-    if(grace < 30) return 'color:  orange';
-    if(grace < 60) return 'color: darkblue';
+    if (grace < 0) return 'color: red; font-weight: bold';
+    if (grace < 30) return 'color:  orange';
+    if (grace < 60) return 'color: darkblue';
 
     return '';
   }
-  extraTime(row: MonthlyPunching){
+  extraTime(row: MonthlyPunching) {
     const extra = row?.total_extra_sec || 0;
-    return Math.ceil(Math.max(extra/60,0));
+    return Math.ceil(Math.max(extra / 60, 0));
   }
-  getTooltip(dayN: string, row: any){
-    const hint = row[dayN].hint ? row[dayN].hint : '';
+  getTooltip(dayN: string, row: any) {
+    const rowVal = row[dayN];
+    let tip = rowVal.name + '\n';
+    const hint = rowVal.hint ? rowVal.hint : '';
 
-    if(row[dayN]?.punching_count == 0) return 'No Punching. ' + hint;
-    if(row[dayN]?.punching_count == 1) return (row[dayN]?.in_time || row[dayN]?.out_time) + hint;
+    if (rowVal?.punching_count == 0) tip += 'No Punching. ' + hint;
+    else if (rowVal?.punching_count == 1) tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
-    return row[dayN]?.in_time + '-' + row[dayN]?.out_time + '\n' + hint;
-
+    else {
+      tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' +
+      hint + '\n' + Math.round(rowVal?.grace_sec / 60)
+    }
+    return tip;
   }
 }
