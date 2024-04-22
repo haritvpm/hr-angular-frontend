@@ -40,13 +40,14 @@ export const MY_FORMATS = {
   styleUrls: ['./attendance.component.css'],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [HttpClientModule, MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,MatTooltipModule,
     MatSortModule, MatInputModule, MatSelectModule,
     MatDatepickerModule,MatIconModule,
-    MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule],
+    MatNativeDateModule, FormsModule, CommonModule,
+   ReactiveFormsModule],
   providers: [
 
     provideMomentDateAdapter(MY_FORMATS),
@@ -94,10 +95,10 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
 
     if(section === 'All') section = '';
 
-console.log('t'+searchTxt);
-console.log('s'+section);
+// console.log('t'+searchTxt);
+// console.log('s'+section);
 
-    this.dataSource.filter = searchTxt  + '$' + section;
+    this.dataSource.filter = searchTxt.toLowerCase()  + '$' + section.toLowerCase();
 
   }
 
@@ -167,7 +168,7 @@ console.log('s'+section);
       // verify fetching data by our searching values
 
       const customFilterN = columnName.toLowerCase().includes(searchTxt);
-      const customFilterS = columnSection.toLowerCase() == section.toLowerCase() || section == '' || section == 'All';
+      const customFilterS = columnSection.toLowerCase() == section || section == '' || section == 'All';
 
       // push boolean values into array
       matchFilter.push(customFilterN);
@@ -182,26 +183,26 @@ console.log('s'+section);
   getCellBackgroundColor( dayN : string, odd: boolean) {
     if(this.calendarInfo[dayN].holiday) return '#FFCDD23F';
 
-    return odd ? '#FAFAFA' : '#FFFFFF'
+    return odd ? '#FAFAFA' : '#FFFFFF';
   }
   graceLeft(row: MonthlyPunching){
     const grace = row?.total_grace_sec || 0;
-    return Math.ceil(300 - grace/60)
+    return Math.ceil(300 - grace/60);
   }
   getGraceStyle(row: MonthlyPunching){
     const grace = this.graceLeft(row);
     if(grace < 0) return 'color: red';
-    if(grace < 30) return 'color:  orange'; 
+    if(grace < 30) return 'color:  orange';
     if(grace < 60) return 'color: darkblue';
 
-    return ''
+    return '';
   }
   extraTime(row: MonthlyPunching){
     const extra = row?.total_extra_sec || 0;
-    return Math.ceil(Math.max(extra/60,0))
+    return Math.ceil(Math.max(extra/60,0));
   }
   getTooltip(dayN: string, row: any){
-    let tip = ''
+    const tip = '';
     if(row[dayN]?.punching_count == 0) return 'No Punching';
     if(row[dayN]?.punching_count == 1) return row[dayN]?.in_time || row[dayN]?.out_time;
 
