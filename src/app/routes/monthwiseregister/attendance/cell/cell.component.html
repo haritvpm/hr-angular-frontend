@@ -1,10 +1,12 @@
   <!-- can be in the future. -->
 
-  <span *ngIf="casual"  class="menu-badge bg-blue-500"> CL </span>
-  <span *ngIf="casual_fn"  class="menu-badge bg-blue-500"> <small>&#xbd;CL</small>  </span>
+  <span *ngIf="casual"  class="menu-badge bg-red-500"> CL </span>
+  <span *ngIf="casual_fn"  class="menu-badge bg-red-500"> <small>&#xbd;CL</small>  </span>
+  <span *ngIf="time_exceeded_fn" [style.color]="'red'" ><small><mat-icon>alarm</mat-icon></small></span>
 
   <!-- not downloaded and not today -->
   <span *ngIf="fetch_pending && !calendarInfo.is_today"  style="color: lightgrey;" ><mat-icon  class="icon-small">cloud_download</mat-icon></span>
   <span [style.color]="icon_color" ><mat-icon>{{icon_name}}</mat-icon></span>
-  
-  <span *ngIf="casual_an"  class="menu-badge bg-blue-500"> <small>&#xbd;CL</small> </span>
+
+  <span *ngIf="casual_an"  class="menu-badge bg-red-500"> <small>&#xbd;CL</small> </span>
+  <span *ngIf="time_exceeded_an" [style.color]="'red'" ><small><mat-icon>alarm</mat-icon></small></span>

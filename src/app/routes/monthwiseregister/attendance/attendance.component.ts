@@ -204,14 +204,18 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   getTooltip(dayN: string, row: any) {
     const rowVal = row[dayN];
     let tip = rowVal.name + '\n';
-    const hint = rowVal.hint ? rowVal.hint : '';
+    const hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint : '';
 
     if (rowVal?.punching_count == 0) tip += 'No Punching. ' + hint;
     else if (rowVal?.punching_count == 1) tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
     else {
-      tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' +
-      hint + '\n' + Math.round(rowVal?.grace_sec / 60)
+      tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' +  hint ;
+
+      tip += '\n Gr (min): ' + Math.round(rowVal?.grace_sec / 60) ;
+      tip += '\n Ex (min): ' + Math.round(rowVal?.extra_sec / 60) ;
+      tip += '\n GrEx : ' + rowVal?.grace_total_exceeded_one_hour ;
+
     }
     return tip;
   }

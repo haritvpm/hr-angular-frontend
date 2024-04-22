@@ -76,6 +76,7 @@ export interface PunchingInfo extends PunchingDay {
   ot_sitting_sec: number | null;
   ot_nonsitting_sec: number | null;
   hint: any; // You may want to specify a more specific type here
+  computer_hint : string;
   controller_set_punch_in: any; // You may want to specify a more specific type here
   controller_set_punch_out: any; // You may want to specify a more specific type here
   grace_total_exceeded_one_hour: number;
