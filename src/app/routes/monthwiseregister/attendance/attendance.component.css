@@ -13,7 +13,7 @@ table {
 }
 
 .table-container {
-  max-height: calc(100vh - 155px);
+  max-height: calc(100vh - 255px);
 
   /* or height: calc(100vh - 155px); depending on your need  change */
   overflow: auto;
@@ -28,4 +28,32 @@ table {
 
 .icon-small {
   transform: scale(.8);
+}
+
+/* no blue color */
+a:link {
+  color: black;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:visited {
+  color: black;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color: blueviolet;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:active {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.allow-cr {
+  white-space: pre;
 }
