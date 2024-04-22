@@ -39,6 +39,7 @@ export const MY_FORMATS = {
   selector: 'app-monthwiseregister-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   providers: [
@@ -119,6 +120,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           this.sections = data.sections ? ['All', ...data.sections] : ['All'];
           // Assign the data to your dataSource for display in the table
           this.selectedMonthHint = moment(this.selectedMonth).format('MMMM YYYY');
+          console.log(empDetArray);
           this.dataSource = new MatTableDataSource<MonthlyPunching>(empDetArray);
           this.dataSource.paginator = this.paginator;
           this.dataSource.filterPredicate = this.getFilterPredicate();
@@ -212,9 +214,10 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     else {
       tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' +  hint ;
 
-      tip += '\n Gr (min): ' + Math.round(rowVal?.grace_sec / 60) ;
-      tip += '\n Ex (min): ' + Math.round(rowVal?.extra_sec / 60) ;
-      tip += '\n GrEx : ' + rowVal?.grace_total_exceeded_one_hour ;
+      tip += '\n Grace (min): ' + Math.round(rowVal?.grace_sec / 60) ;
+      tip += '\n Extra (min): ' + Math.round(rowVal?.extra_sec / 60) ;
+      if( rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min' ;
+      //tip += '\n Grace exceeded by (min) : ' + Math.round(rowVal?.grace_total_exceeded_one_hour/60) ;
 
     }
     return tip;

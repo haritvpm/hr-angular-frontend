@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { PunchingInfo, MonthlyPunching, MonthlyApiData } from './../interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [MatIconModule, CommonModule],
   templateUrl: './cell.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './cell.component.css'
 })
 export class CellComponent implements OnInit {
@@ -21,7 +22,6 @@ export class CellComponent implements OnInit {
   icon_name: string = '';
   time_exceeded_an : boolean = false;
   time_exceeded_fn : boolean = false;
-
   ngOnInit() {
     this.fetch_pending = !this.calendarInfo.future_date && !this.calendarInfo.attendance_trace_fetch_complete;
 
@@ -37,13 +37,12 @@ export class CellComponent implements OnInit {
           this.casual_fn = this.item.computer_hint === 'casual_fn';
           this.casual_an = this.item.computer_hint === 'casual_an';
         } else {
-          this.time_exceeded_fn = this.item.computer_hint === 'casual_fn';
-          this.time_exceeded_an = this.item.computer_hint === 'casual_an';
+         // this.time_exceeded_fn = this.item.computer_hint === 'casual_fn';
+        //  this.time_exceeded_an = this.item.computer_hint === 'casual_an';
         }
       }
 
       //icon to show
-      if (!this.fetch_pending && !this.calendarInfo.is_today) {
         if (this.item.punching_count >= 2) {
           this.icon_color = this.item.grace_sec > 3600 ? '#FF1744' : 'gray';
           this.icon_name = this.item.punching_count == 2 ? 'looks_two' :
@@ -53,16 +52,15 @@ export class CellComponent implements OnInit {
         }
         else if (this.item.punching_count === 1) {
           this.icon_name = 'looks_one';
-          this.icon_color = !this.calendarInfo.is_today ? 'orange' : 'primary';
+          this.icon_color = !this.calendarInfo.is_today ? 'orange' : 'black';
         } else if (!this.calendarInfo.holiday && !this.calendarInfo.is_today) {
           //zero punching
-          if (!this.calendarInfo.future_date && !this.item.hint) {
+          if (!this.calendarInfo.future_date/* && !this.item.hint*/) {
             this.icon_name = 'close';
             this.icon_color = '#6017ff';
           }
         }
-      }
-
+      
       // @if (item.grace_sec > 3600 ) {
       //   <span style="color: #FF1744;" > <mat-icon>alarm</mat-icon></span>
       // }
