@@ -43,13 +43,21 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       });
   }
 
-  getDateStyle(dateItem: any) {
-    const leave = (dateItem.punching_count == 0 && dateItem.attendance_trace_fetch_complete) ? 'red' : '';
-    return {
-      'font-weight': leave ? 'bold' : '',
-      'color': leave ? 'red' : ''
-    }
-  }
+  // getDateStyle(dateItem: any) {
+  //   console.log("ljfl");
+  //   const leave = (dateItem.punching_count = 0 && dateItem.attendance_trace_fetch_complete) ? 'yellow' : '';
+  //   return {
+  //     'font-weight': leave ? 'bold' : '',
+  //     'color': leave?'yellow':''
+  //   }
+  // }
+
+  // getHolidayStyle(dateItem: any) {
+  //   const holiday = (dateItem.is_holiday == 1) ? 'red' : '';
+  //   return {
+  //     'color': holiday,
+  //   }
+  // }
 
 }
 
