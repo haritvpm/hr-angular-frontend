@@ -99,6 +99,6 @@ export interface MonthlyApiData {
 export interface Month {
   month : number;
   year: number;
-  empDet:EmployeeAttendance[];
+  // empDet:EmployeeAttendance[];
   }
 
