@@ -31,7 +31,8 @@ export function TranslateHttpLoaderFactory(http: HttpClient) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimationsAsync('noop'),
+    provideAnimationsAsync(),
+    //provideAnimationsAsync('noop'),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(
       routes,

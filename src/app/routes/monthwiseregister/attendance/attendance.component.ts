@@ -103,9 +103,9 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   }
 
   filterNonFutureDays(obj: any): any {
-    let current_days: string[] = [];
+    const current_days: string[] = [];
     for (const key in obj) {
-       if (obj.hasOwnProperty(key)) {
+       if (Object.prototype.hasOwnProperty.call(obj, key)) {
           const value = obj[key];
            if(!value.future_date) {
             current_days.push(key);
@@ -114,7 +114,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     }
     return current_days;
  }
- 
+
   loadData() {
     this.attendanceService.fetchData(this.selectedMonth)
       .pipe(catchError(() => {
@@ -128,7 +128,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           this.calendarInfo = data.calender_info;
           //find keys where the object's value is not future_date
 
-          this.dayColumns = this.filterNonFutureDays(data.calender_info)// Object.keys(data.calender_info.filter( x => !x.future_date));
+          this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
           this.displayedColumns = ['name', 'grace_left', ...this.dayColumns , 'extra', 'info'];
 
           //  this.sections =['All'];
@@ -214,11 +214,11 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
 
     return '';
   }
-  getExtraStyle(row: MonthlyPunching) 
+  getExtraStyle(row: MonthlyPunching)
   {
     const extra = this.extraTime(row);
     return extra > 600 ? 'color: green; font-weight: bold' : '';
-    
+
   }
   extraTime(row: MonthlyPunching) {
     const extra = row?.total_extra_sec || 0;

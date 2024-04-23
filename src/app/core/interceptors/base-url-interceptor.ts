@@ -1,16 +1,16 @@
-import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { Injectable, InjectionToken, inject } from '@angular/core';
 
 export const BASE_URL = new InjectionToken<string>('BASE_URL');
 
 @Injectable()
 export class BaseUrlInterceptor implements HttpInterceptor {
+  private readonly baseUrl = inject(BASE_URL, { optional: true });
+
   private hasScheme = (url: string) => this.baseUrl && new RegExp('^http(s)?://', 'i').test(url);
 
-  constructor(@Optional() @Inject(BASE_URL) private baseUrl?: string) {}
 
-  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler) {
     //hari check if it is for asset, dont prepend
     const isasset = request.url.includes('asset');
     return this.hasScheme(request.url) === false && !isasset
