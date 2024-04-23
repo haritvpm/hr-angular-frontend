@@ -4,8 +4,8 @@
   height: auto;
 }
 
-.mat-cell {
-  padding: 0;
+.mat-cell, .mat-header-cell {
+  padding: 0px 0px 0px 0px;
 }
 
 table {
@@ -44,7 +44,7 @@ a:visited {
 }
 
 a:hover {
-  color: blueviolet;
+  color: darkblue;
   text-decoration: none;
   background-color: transparent;
 }

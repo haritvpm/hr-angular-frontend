@@ -46,7 +46,7 @@
         <th
           mat-header-cell
           [style.text-align]="'right'"
-          [style.background-color]="'#EEEEEEF0'"
+      
           *matHeaderCellDef
         >
           <i> {{ selectedMonthHint }} </i>
@@ -54,7 +54,7 @@
         <td
           mat-cell
           [style.white-space]="'nowrap'"
-          [style.background-color]="'#EEEEEE'"
+          
           *matCellDef="let row"
         >
           <a [routerLink]="['employee', row.aadhaarid]" [queryParams]="{ date: row.start_date }">
@@ -74,7 +74,6 @@
           <th
             mat-header-cell
             [style.color]="calendarInfo[dayN].holiday ? 'red' : ''"
-            [style.background-color]="$odd ? '#FAFAFA' : '#FFFFFF'"
             [style.text-align]="'center'"
             [style.padding]="'0 0'"
             *matHeaderCellDef

@@ -102,6 +102,19 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
 
   }
 
+  filterNonFutureDays(obj: any): any {
+    let current_days: string[] = [];
+    for (const key in obj) {
+       if (obj.hasOwnProperty(key)) {
+          const value = obj[key];
+           if(!value.future_date) {
+            current_days.push(key);
+          }
+       }
+    }
+    return current_days;
+ }
+ 
   loadData() {
     this.attendanceService.fetchData(this.selectedMonth)
       .pipe(catchError(() => {
@@ -113,7 +126,9 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           const empDetArray = data?.monthlypunchings;
           console.log(data);
           this.calendarInfo = data.calender_info;
-          this.dayColumns = Object.keys(data.calender_info);
+          //find keys where the object's value is not future_date
+
+          this.dayColumns = this.filterNonFutureDays(data.calender_info)// Object.keys(data.calender_info.filter( x => !x.future_date));
           this.displayedColumns = ['name', 'grace_left', ...this.dayColumns , 'extra', 'info'];
 
           //  this.sections =['All'];
@@ -184,7 +199,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   getCellBackgroundColor(dayN: string, odd: boolean) {
     if (this.calendarInfo[dayN].holiday) return '#7f7f7f0e';
 
-    return '#FFFFFF';
+    return '';
     //  return odd ? '#FAFAFA' : '#FFFFFF';
   }
   graceLeft(row: MonthlyPunching) {
@@ -194,7 +209,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   getGraceStyle(row: MonthlyPunching) {
     const grace = this.graceLeft(row);
     if (grace < 0) return 'color: red; font-weight: bold';
-    if (grace < 30) return 'color:  orange';
+    if (grace < 30) return 'color: orange;  font-weight: bold';
     if (grace < 60) return 'color: darkblue';
 
     return '';
