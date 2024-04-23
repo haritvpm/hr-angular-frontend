@@ -199,6 +199,12 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
 
     return '';
   }
+  getExtraStyle(row: MonthlyPunching) 
+  {
+    const extra = this.extraTime(row);
+    return extra > 600 ? 'color: green; font-weight: bold' : '';
+    
+  }
   extraTime(row: MonthlyPunching) {
     const extra = row?.total_extra_sec || 0;
     return Math.ceil(Math.max(extra / 60, 0));

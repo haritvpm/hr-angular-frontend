@@ -82,7 +82,7 @@
       <th mat-header-cell  *matHeaderCellDef>
         Extra(min)
       </th>
-      <td mat-cell [style.color]="extraTime(row) > 600 ? 'green' : ''"  *matCellDef="let row"> {{ extraTime(row)  }} </td>
+      <td mat-cell [style]="getExtraStyle(row)"  *matCellDef="let row"> {{ extraTime(row)  }} </td>
     </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" ></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
