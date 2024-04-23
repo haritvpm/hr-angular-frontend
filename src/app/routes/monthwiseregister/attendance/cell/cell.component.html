@@ -9,4 +9,4 @@
   <span [style.color]="icon_color" ><mat-icon>{{icon_name}}</mat-icon></span>
 
   <span *ngIf="casual_an"  class="menu-badge bg-red-500"> <small>&#xbd;CL</small> </span>
-  <span *ngIf="time_exceeded_an" [style.color]="'red'" ><small><mat-icon>alarm</mat-icon></small></span>
+  <span *ngIf="item.grace_exceeded300_and_today_has_grace" [style.color]="'red'" ><small><mat-icon>alarm</mat-icon></small></span>
