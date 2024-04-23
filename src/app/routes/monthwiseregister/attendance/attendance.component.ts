@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, ViewChild, ChangeDetectionStrategy, ViewEncapsulation, OnInit } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -20,6 +19,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { catchError } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
+import { CellComponent } from './cell/cell.component';
 const moment = _rollupMoment || _moment;
 
 export const MY_FORMATS = {
@@ -38,21 +39,22 @@ export const MY_FORMATS = {
   selector: 'app-monthwiseregister-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [HttpClientModule, MatFormFieldModule,
-    MatTableModule,
-    MatPaginatorModule,MatTooltipModule,
-    MatSortModule, MatInputModule, MatSelectModule,
-    MatDatepickerModule,MatIconModule,
-    MatNativeDateModule, FormsModule, CommonModule,
-   ReactiveFormsModule],
   providers: [
-
     provideMomentDateAdapter(MY_FORMATS),
-
   ],
+  imports: [
+    RouterLink,
+    HttpClientModule, MatFormFieldModule,
+    MatTableModule,
+    MatPaginatorModule, MatTooltipModule,
+    MatSortModule, MatInputModule, MatSelectModule,
+    MatDatepickerModule, MatIconModule,
+    MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
+    CellComponent
+  ]
 })
 
 
@@ -73,9 +75,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   public searchTxt = '';
   public searchForm: FormGroup;
 
-
-  constructor(private _liveAnnouncer: LiveAnnouncer,
-    private attendanceService: AttendanceService) { }
+  constructor(private attendanceService: AttendanceService) { }
 
   ngOnInit(): void {
     this.searchFormInit();
@@ -93,12 +93,12 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     this.searchTxt = searchTxt === null ? '' : searchTxt;
     this.selectedSection = section === null ? '' : section;
 
-    if(section === 'All') section = '';
+    if (section === 'All') section = '';
 
-// console.log('t'+searchTxt);
-// console.log('s'+section);
+    // console.log('t'+searchTxt);
+    // console.log('s'+section);
 
-    this.dataSource.filter = searchTxt.toLowerCase()  + '$' + section.toLowerCase();
+    this.dataSource.filter = searchTxt.toLowerCase() + '$' + section.toLowerCase();
 
   }
 
@@ -114,12 +114,13 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           console.log(data);
           this.calendarInfo = data.calender_info;
           this.dayColumns = Object.keys(data.calender_info);
-          this.displayedColumns = [ 'name', ...this.dayColumns,'grace_left', 'extra' ,'info'];
+          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns , 'extra', 'info'];
 
-        //  this.sections =['All'];
-          this.sections = data.sections ? ['All',...data.sections] : ['All'];
+          //  this.sections =['All'];
+          this.sections = data.sections ? ['All', ...data.sections] : ['All'];
           // Assign the data to your dataSource for display in the table
           this.selectedMonthHint = moment(this.selectedMonth).format('MMMM YYYY');
+          console.log(empDetArray);
           this.dataSource = new MatTableDataSource<MonthlyPunching>(empDetArray);
           this.dataSource.paginator = this.paginator;
           this.dataSource.filterPredicate = this.getFilterPredicate();
@@ -148,22 +149,22 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     });
   }
 
-   /* this method well be called for each row in table  */
-   getFilterPredicate() {
+  /* this method well be called for each row in table  */
+  getFilterPredicate() {
     return (row: MonthlyPunching, filters: string) => {
 
       // split string per '$' to array
       const filterArray = filters.split('$');
       const searchTxt = filterArray[0];
       const section = filterArray[1];
-     // console.log('searchTxt'+searchTxt);
+      // console.log('searchTxt'+searchTxt);
       const matchFilter = [];
 
       // Fetch data from row
       const columnName = row.aadhaarid + row.name + row.designation;
       const columnSection = row?.section_name || '';
-     // console.log('section'+section+';');
-     // console.log('columnSection'+columnSection+';');
+      // console.log('section'+section+';');
+      // console.log('columnSection'+columnSection+';');
 
       // verify fetching data by our searching values
 
@@ -180,33 +181,45 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     };
   }
 
-  getCellBackgroundColor( dayN : string, odd: boolean) {
-    if(this.calendarInfo[dayN].holiday) return '#FFCDD23F';
+  getCellBackgroundColor(dayN: string, odd: boolean) {
+    if (this.calendarInfo[dayN].holiday) return '#7f7f7f0e';
 
-    return odd ? '#FAFAFA' : '#FFFFFF';
+    return '#FFFFFF';
+    //  return odd ? '#FAFAFA' : '#FFFFFF';
   }
-  graceLeft(row: MonthlyPunching){
+  graceLeft(row: MonthlyPunching) {
     const grace = row?.total_grace_sec || 0;
-    return Math.ceil(300 - grace/60);
+    return Math.ceil(300 - grace / 60);
   }
-  getGraceStyle(row: MonthlyPunching){
+  getGraceStyle(row: MonthlyPunching) {
     const grace = this.graceLeft(row);
-    if(grace < 0) return 'color: red';
-    if(grace < 30) return 'color:  orange';
-    if(grace < 60) return 'color: darkblue';
+    if (grace < 0) return 'color: red; font-weight: bold';
+    if (grace < 30) return 'color:  orange';
+    if (grace < 60) return 'color: darkblue';
 
     return '';
   }
-  extraTime(row: MonthlyPunching){
+  extraTime(row: MonthlyPunching) {
     const extra = row?.total_extra_sec || 0;
-    return Math.ceil(Math.max(extra/60,0));
+    return Math.ceil(Math.max(extra / 60, 0));
   }
-  getTooltip(dayN: string, row: any){
-    const tip = '';
-    if(row[dayN]?.punching_count == 0) return 'No Punching';
-    if(row[dayN]?.punching_count == 1) return row[dayN]?.in_time || row[dayN]?.out_time;
+  getTooltip(dayN: string, row: any) {
+    const rowVal = row[dayN];
+    let tip = rowVal.name + '\n';
+    const hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint : '';
 
-    return '' + row[dayN]?.in_time + ' - ' + row[dayN]?.out_time;
+    if (rowVal?.punching_count == 0) tip += 'No Punching. ' + hint;
+    else if (rowVal?.punching_count == 1) tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
+    else {
+      tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' +  hint ;
+
+      tip += '\n Grace (min): ' + Math.round(rowVal?.grace_sec / 60) ;
+      tip += '\n Extra (min): ' + Math.round(rowVal?.extra_sec / 60) ;
+      if( rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min' ;
+      //tip += '\n Grace exceeded by (min) : ' + Math.round(rowVal?.grace_total_exceeded_one_hour/60) ;
+
+    }
+    return tip;
   }
 }
