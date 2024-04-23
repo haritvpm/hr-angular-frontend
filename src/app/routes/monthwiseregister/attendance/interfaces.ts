@@ -94,3 +94,9 @@ export interface MonthlyApiData {
   sections : string[];
   calender_info: any; // You may want to specify a more specific type here
 }
+export interface Month {
+  month : number;
+  year: number;
+  empDet:EmployeeAttendance[];
+  }
+

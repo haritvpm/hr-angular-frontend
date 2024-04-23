@@ -2,23 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { PageHeaderComponent } from '@shared';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from './employee.service';
-import {CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData} from './interface';
-
+import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData } from './interface';
+import { DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+
 @Component({
   selector: 'app-monthwiseregister-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css'],
   standalone: true,
-  imports: [MatTableModule]
+  imports: [MatTableModule, DatePipe, PageHeaderComponent, NgIf]
 })
 export class MonthwiseregisterEmployeeComponent implements OnInit {
   aadhaarid: string;
   date: string;
-  data: MonthwiseEmployeeApiData ;
+  data: MonthwiseEmployeeApiData;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
-  displayedColumns: string[] = ['day','aadhaarid', 'name'];
-
+  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
 
   constructor(
     private route: ActivatedRoute,
@@ -37,10 +37,18 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     // Call your API service to fetch data using Aadhaar ID and date
     this.apiService.getEmployeeData(this.aadhaarid, this.date)
       .subscribe(response => {
-        console.log(response);
         this.data = response;
         this.dataSource.data = this.data.employee_punching;
-
       });
   }
+
+  getDateStyle(dateItem: any) {
+    const leave = (dateItem.punching_count == 0 && dateItem.attendance_trace_fetch_complete) ? 'red' : '';
+    return {
+      'font-weight': leave ? 'bold' : '',
+      'color': leave ? 'red' : ''
+    }
+  }
+
 }
+
