@@ -28,18 +28,18 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params
-    .pipe(
-      switchMap(params => {
-        this.aadhaarid = params.aadhaarid;
-        this.date = params.date || new Date().toISOString().slice(0, 10);
-        return this.apiService.getEmployeeData(this.aadhaarid, this.date);
-      })
-    )
-    .subscribe(response => {
-      console.log(response);
-      this.data = response;
-      this.dataSource.data = this.data.employee_punching;
-    });
+      .pipe(
+        switchMap(params => {
+          this.aadhaarid = params.aadhaarid;
+          this.date = params.date || new Date().toISOString().slice(0, 10);
+          return this.apiService.getEmployeeData(this.aadhaarid, this.date);
+        })
+      )
+      .subscribe(response => {
+        console.log(response);
+        this.data = response;
+        this.dataSource.data = this.data.employee_punching;
+      });
   }
 
   loadData() {
@@ -52,6 +52,34 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       });
   }
 
+  getCellBgcolor(dateItem: any) {
+    let dayColor = '';
+    if (dateItem.is_holiday != '1' && !dateItem.is_future) {
+      dayColor = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
+    } else {
+      dayColor = '#eeeeeef0';
+    }
+    return dayColor;
+  }
+
+  getDateStyle(dateItem: any) {
+    let dateColorSet = '';
+    const dateColorDef = '#eeeeeef0';
+    if (dateItem.attendance_trace_fetch_complete) {
+      if (!dateItem.is_holiday && !dateItem.is_future) {
+        dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
+        if(dateItem.punching_count<='1') {
+          dateColorSet = ''
+        }
+      }
+
+    }
+    return {
+      //     'color': holiday,
+      'background-color': dateColorSet ? dateColorSet : dateColorDef,
+      'font-weight': dateColorSet ? 'bold' : '',
+    }
+  }
   // getDateStyle(dateItem: any) {
   //   console.log("ljfl");
   //   const leave = (dateItem.punching_count = 0 && dateItem.attendance_trace_fetch_complete) ? 'yellow' : '';
