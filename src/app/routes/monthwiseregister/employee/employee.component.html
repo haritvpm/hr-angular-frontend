@@ -1,4 +1,4 @@
-{{aadhaarid}}
+{{ aadhaarid }}
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 employee-monthwise-table">
   <ng-container matColumnDef="day">
     <th mat-header-cell *matHeaderCellDef sticky>Date</th>
@@ -21,7 +21,7 @@
   <ng-container matColumnDef="punchout">
     <th mat-header-cell *matHeaderCellDef sticky>Out Time</th>
     <td mat-cell *matCellDef="let item" [style.background-color]="getCellBgcolor(item)">
-      <ng-container *ngIf="item.punching_count >= 2 ">
+      <ng-container *ngIf="item.punching_count >= 2">
         {{ item.punchout_trace.att_time }}
         <!-- <ng-template #thenBlock> {{ item.punchout_trace.att_time }}</ng-template>
         <ng-template #elseBlock> {{ item.punchout_trace.att_time }}</ng-template>-->
@@ -64,6 +64,8 @@
       >
         No Punching
       </ng-container>
+      <ng-container *ngIf="item.punching_count == '1'"> Miss Punching </ng-container
+      >
     </td>
   </ng-container>
 

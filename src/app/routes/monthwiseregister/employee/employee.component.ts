@@ -56,6 +56,9 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     let dayColor = '';
     if (dateItem.is_holiday != '1' && !dateItem.is_future) {
       dayColor = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
+      if(dateItem.punching_count =='1') {
+        dayColor = '#FFE082';
+      }
     } else {
       dayColor = '#eeeeeef0';
     }
@@ -68,8 +71,8 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     if (dateItem.attendance_trace_fetch_complete) {
       if (!dateItem.is_holiday && !dateItem.is_future) {
         dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
-        if(dateItem.punching_count<='1') {
-          dateColorSet = ''
+        if(dateItem.punching_count =='1') {
+          dateColorSet = '#FFE082';
         }
       }
 
