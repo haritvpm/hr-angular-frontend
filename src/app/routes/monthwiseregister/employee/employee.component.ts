@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { PageHeaderComponent } from '@shared';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from './employee.service';
-import {CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData} from './interface';
-
+import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData } from './interface';
+import { DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { switchMap } from 'rxjs';
+
 @Component({
   selector: 'app-monthwiseregister-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css'],
   standalone: true,
-  imports: [MatTableModule]
+  imports: [MatTableModule, DatePipe, NgIf]
 })
 export class MonthwiseregisterEmployeeComponent implements OnInit {
   aadhaarid: string;
   date: string;
-  data: MonthwiseEmployeeApiData ;
+  data: MonthwiseEmployeeApiData;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
-  displayedColumns: string[] = ['day','aadhaarid', 'name'];
-
+  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
+  clickedRows = new Set<EmployeePunchingInfo>();
 
   constructor(
     private route: ActivatedRoute,
@@ -28,18 +28,73 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params
-    .pipe(
-      switchMap(params => {
-        this.aadhaarid = params.aadhaarid;
-        this.date = params.date || new Date().toISOString().slice(0, 10);
-        return this.apiService.getEmployeeData(this.aadhaarid, this.date);
-      })
-    )
-    .subscribe(response => {
-      console.log(response);
-      this.data = response;
-      this.dataSource.data = this.data.employee_punching;
-    });
+      .pipe(
+        switchMap(params => {
+          this.aadhaarid = params.aadhaarid;
+          this.date = params.date || new Date().toISOString().slice(0, 10);
+          return this.apiService.getEmployeeData(this.aadhaarid, this.date);
+        })
+      )
+      .subscribe(response => {
+        console.log(response);
+        this.data = response;
+        this.dataSource.data = this.data.employee_punching;
+      });
   }
 
+  loadData() {
+    // Call your API service to fetch data using Aadhaar ID and date
+    this.apiService.getEmployeeData(this.aadhaarid, this.date)
+      .subscribe(response => {
+        this.data = response;
+        console.log(this.data.employee_punching);
+        this.dataSource.data = this.data.employee_punching;
+      });
+  }
+
+  getCellBgcolor(dateItem: any) {
+    let dayColor = '';
+    if (dateItem.is_holiday != '1' && !dateItem.is_future) {
+      dayColor = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
+    } else {
+      dayColor = '#eeeeeef0';
+    }
+    return dayColor;
+  }
+
+  getDateStyle(dateItem: any) {
+    let dateColorSet = '';
+    const dateColorDef = '#eeeeeef0';
+    if (dateItem.attendance_trace_fetch_complete) {
+      if (!dateItem.is_holiday && !dateItem.is_future) {
+        dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
+        if(dateItem.punching_count<='1') {
+          dateColorSet = '';
+        }
+      }
+
+    }
+    return {
+      //     'color': holiday,
+      'background-color': dateColorSet ? dateColorSet : dateColorDef,
+      'font-weight': dateColorSet ? 'bold' : '',
+    };
+  }
+  // getDateStyle(dateItem: any) {
+  //   console.log("ljfl");
+  //   const leave = (dateItem.punching_count = 0 && dateItem.attendance_trace_fetch_complete) ? 'yellow' : '';
+  //   return {
+  //     'font-weight': leave ? 'bold' : '',
+  //     'color': leave?'yellow':''
+  //   }
+  // }
+
+  // getHolidayStyle(dateItem: any) {
+  //   const holiday = (dateItem.is_holiday == 1) ? 'red' : '';
+  //   return {
+  //     'color': holiday,
+  //   }
+  // }
+
 }
+

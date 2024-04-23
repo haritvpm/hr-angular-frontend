@@ -5,7 +5,7 @@
 }
 
 .mat-cell {
-  padding: 0 0 0 0;
+  padding: 0;
 }
 
 table {
@@ -14,15 +14,16 @@ table {
 
 .table-container {
   max-height: calc(100vh - 255px);
+
   /* or height: calc(100vh - 155px); depending on your need  change */
   overflow: auto;
 }
 
 
 .menu-badge {
-  border-radius: 50rem;
   padding: 2px 3px;
   color: white;
+  border-radius: 50rem;
 }
 
 .icon-small {
@@ -32,27 +33,27 @@ table {
 /* no blue color */
 a:link {
   color: black;
-  background-color: transparent;
   text-decoration: none;
+  background-color: transparent;
 }
 
 a:visited {
   color: black;
-
-  background-color: transparent;
   text-decoration: none;
+  background-color: transparent;
 }
 
 a:hover {
   color: blueviolet;
-  background-color: transparent;
   text-decoration: none;
+  background-color: transparent;
 }
 
 a:active {
-  background-color: transparent;
   text-decoration: none;
+  background-color: transparent;
 }
+
 .allow-cr {
   white-space: pre;
 }

@@ -6,12 +6,12 @@ import { Employee } from './employee.component';
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeserviceService {
+export class EmployeeService {
 
   constructor(private httpClient: HttpClient) { }
 
   fetchData(): Observable<Employee[]> {
-    const url = `http://localhost:3000/employee`;
+    const url = `http://172.20.100.9:3000/employee`;
     return this.httpClient.get<Employee[]>(url);
   }
 }
