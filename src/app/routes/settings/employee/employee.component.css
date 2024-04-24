@@ -1,9 +1,0 @@
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.search-container {
-  margin-right: auto; /* Pushes the search container to the left */
-}
