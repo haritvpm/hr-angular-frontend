@@ -43,7 +43,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       });
     } else {
       console.error('ERROR', error);
-      //this.toast.error(this.getMessage(error));
+      this.toast.error(this.getMessage(error));
       if (error.status === STATUS.UNAUTHORIZED) {
         this.router.navigateByUrl('/api/auth/login');
       }

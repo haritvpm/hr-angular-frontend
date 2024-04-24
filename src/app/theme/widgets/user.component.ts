@@ -26,6 +26,10 @@ import { AuthService, SettingsService, User } from '@core';
         <mat-icon>edit</mat-icon>
         <span>{{ 'edit_profile' | translate }}</span>
       </button>
+      <button routerLink="/profile/password-reset" mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>Reset Password</span>
+      </button>
       <button mat-menu-item (click)="restore()">
         <mat-icon>restore</mat-icon>
         <span>{{ 'restore_defaults' | translate }}</span>
