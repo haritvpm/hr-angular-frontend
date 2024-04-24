@@ -81,7 +81,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       //     'color': holiday,
       'background-color': dateColorSet ? dateColorSet : dateColorDef,
       'font-weight': dateColorSet ? 'bold' : '',
-    }
+    };
   }
   // getDateStyle(dateItem: any) {
   //   console.log("ljfl");

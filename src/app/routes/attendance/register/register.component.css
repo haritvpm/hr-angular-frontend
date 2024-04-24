@@ -4,18 +4,25 @@
 }
 
 .mat-cell {
-  padding: 0;
+  padding: 0 0 0 0;
 }
 
-table {
+/* table {
   width: 100%;
-}
+} */
 
 .table-container {
-  max-height: calc(100vh - 155px);
+  max-height: calc(100vh - 255px);
 
   /* or height: calc(100vh - 155px); depending on your need  change */
   overflow: auto;
+}
+
+th{
+  font-family: Arial, Helvetica, sans-serif;
+font-size: small;
+font-weight: bold;
+  text-align: center;
 }
 
 
@@ -29,17 +36,11 @@ table {
   transform: scale(.8);
 }
 
-th{
-font-family: Arial, Helvetica, sans-serif;
-font-size: small;
-font-weight: bold;
-
-}
 
 
-.mat-table-responsive {
+/* .mat-table-responsive {
   overflow-x: auto;
-}
+} */
 
 .mat-column{
   text-align: center;
@@ -81,3 +82,26 @@ font-weight: bold;
 
 /* Adjust table layout for smaller screens */
 
+/* no blue color */
+a:link {
+  /* color: black; */
+  text-decoration: none;
+  /* background-color: transparent; */
+}
+
+a:visited {
+  /* color: black; */
+  text-decoration: none;
+  /* background-color: transparent; */
+}
+
+a:hover {
+  /* color: darkblue; */
+  text-decoration: none;
+  /* background-color: transparent; */
+}
+
+a:active {
+  text-decoration: none;
+  /* background-color: transparent; */
+}

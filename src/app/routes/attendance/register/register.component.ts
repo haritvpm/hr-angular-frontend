@@ -13,6 +13,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
+import { RouterLink } from '@angular/router';
 
 const moment = _rollupMoment || _moment;
 
@@ -21,7 +22,7 @@ const moment = _rollupMoment || _moment;
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   standalone: true,
-  imports: [MatTableModule,
+  imports: [MatTableModule,RouterLink,
     MatPaginatorModule,
     MatSortModule, MatInputModule,
     MatDatepickerModule, MatIcon, MatBadgeModule,
@@ -135,13 +136,12 @@ export class AttendanceRegisterComponent implements OnInit {
     };
   }
   // getPunchInStyle(employee: any) {
-  //   const punchinTime = new Date('2000-01-01 ' + employee.punchin_trace);
-  //   const comparisonTime = new Date('2000-01-01 11:15:00');
-  //   if (punchinTime >= comparisonTime) {
-  //     return 'red';
-  //   } else {
-  //     return '';
-  //   }
+  //   const pucnhInexeed = employee.punchin_trace.att_time > '11:15:00';
+  //   return  {
+  //     'font-weight': pucnhInexeed ? 'bold' : '',
+  //     'color': pucnhInexeed ? 'red' : ''
+  //   };
+
 
   // }
 }

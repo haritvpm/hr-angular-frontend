@@ -21,6 +21,10 @@ export const routes: Routes = [
       { path: '403', component: Error403Component },
       { path: '404', component: Error404Component },
       { path: '500', component: Error500Component },
+{
+        path: 'profile',
+        loadChildren: () => import('./routes/profile/profile.routes').then(m => m.routes),
+      },
       { path: 'attendance', loadChildren: () => import('./routes/attendance/attendance.routes').then(m => m.routes)},
       { path: 'monthwiseregister', loadChildren: () => import('./routes/monthwiseregister/monthwiseregister.routes').then(m => m.routes) },
       { path: 'settings', loadChildren: () => import('./routes/settings/settings.routes').then(m => m.routes) },

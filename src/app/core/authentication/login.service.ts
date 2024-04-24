@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { map } from 'rxjs';
 import menudata from './../../../assets/data/menu';
 
 import { Menu } from '@core';
@@ -10,7 +10,7 @@ import { Token, User } from './interface';
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(protected http: HttpClient) {}
+  protected readonly http = inject(HttpClient);
 
   login(username: string, password: string, rememberMe = false) {
     return this.http.post<Token>('/api/auth/login', { username, password, rememberMe });
@@ -18,6 +18,10 @@ export class LoginService {
 
   refresh(params: Record<string, any>) {
     return this.http.post<Token>('/api/auth/refresh', params);
+  }
+  resetPassword(formdata: any) {
+    console.log('resetPassword api');
+    return this.http.post<any>('/api/auth/resetpassword', { formdata });
   }
 
   logout() {
