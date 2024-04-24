@@ -19,9 +19,9 @@ export class LoginService {
   refresh(params: Record<string, any>) {
     return this.http.post<Token>('/api/auth/refresh', params);
   }
-  resetPassword(formdata: any) {
+  resetPassword(form: any) {
     console.log('resetPassword api');
-    return this.http.post<any>('/api/auth/resetpassword', { formdata });
+    return this.http.post<any>('/api/auth/resetpassword', form);
   }
 
   logout() {
