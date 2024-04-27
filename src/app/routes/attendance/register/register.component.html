@@ -1,5 +1,5 @@
 <div>
-  <form [formGroup]="searchForm" class="row justify-content-between">
+  <form class="row justify-content-between">
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Date</mat-label>
       <!-- <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="dateChanged('change', $event)"> -->
@@ -79,7 +79,14 @@
         >
           Punch In
         </th>
-        <td mat-cell *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td>
+        <td mat-cell *matCellDef="let employee">
+          {{ employee.punchin_trace?.att_time }}
+          <span
+            *ngIf="employee.punching_count === 0"
+            style="color: rgb(61, 25, 221); text-align: center; font-weight: bold; font-size: large"
+            >X</span
+          >
+        </td>
         <!-- <td mat-cell [style.color]="employee.punchin_trace?.att_time > '10:30:00'? 'red': ''" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
         <!-- <td mat-cell [style]="getPunchInStyle(employee)" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
       </ng-container>
@@ -93,7 +100,16 @@
         >
           Punch Out
         </th>
-        <td mat-cell *matCellDef="let employee">{{ employee.punchout_trace?.att_time }}</td>
+        <td mat-cell *matCellDef="let employee">
+          {{ employee.punchout_trace?.att_time }}
+          <span
+            *ngIf="employee.punching_count < 2"
+            style="color: rgb(61, 25, 221); text-align: center; font-weight: bold; font-size: large"
+            [matTooltip]="getTooltipText(employee)"
+            matTooltipPosition="above"
+            >X</span
+          >
+        </td>
       </ng-container>
       <ng-container matColumnDef="duration_str">
         <th
@@ -105,7 +121,14 @@
         >
           Duration
         </th>
-        <td mat-cell *matCellDef="let employee">{{ employee.duration_str }}</td>
+        <td mat-cell *matCellDef="let employee">
+          {{ employee.duration_str }}
+          <span
+            *ngIf="employee.punching_count < 2"
+            style="color: red; text-align: center; font-weight: bold; font-size: small"
+            >0</span
+          >
+        </td>
       </ng-container>
       <ng-container matColumnDef="extra_str">
         <th
@@ -127,7 +150,7 @@
         >
           Total Extra Time
         </th>
-        <td mat-cell [style.color]="getTotalExtrStyle(employee)" *matCellDef="let employee">
+        <td mat-cell [style]="getExtratimeColor(employee)" *matCellDef="let employee">
           {{ roundValue(employee.total_extra_sec / 60) }}
         </td>
       </ng-container>
@@ -140,7 +163,9 @@
         >
           Grace Time
         </th>
-        <td mat-cell *matCellDef="let employee">{{ employee.grace_str }}</td>
+        <td mat-cell [style]="getGraceStyle(employee)" *matCellDef="let employee">
+          {{ employee.grace_str }}
+        </td>
       </ng-container>
       <ng-container matColumnDef="total_grace_sec">
         <th
@@ -151,7 +176,7 @@
         >
           Total Grace Time
         </th>
-        <td mat-cell [style]="getGraceStyle(employee)" *matCellDef="let employee">
+        <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
           {{ roundValue(employee.total_grace_sec / 60) }}
         </td>
       </ng-container>
