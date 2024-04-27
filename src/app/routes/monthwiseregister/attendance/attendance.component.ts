@@ -21,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { CellComponent } from './cell/cell.component';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 const moment = _rollupMoment || _moment;
 
 export const MY_FORMATS = {
@@ -36,25 +37,26 @@ export const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'app-monthwiseregister-attendance',
-  templateUrl: './attendance.component.html',
-  styleUrls: ['./attendance.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  encapsulation: ViewEncapsulation.None,
-  providers: [
-    provideMomentDateAdapter(MY_FORMATS),
-  ],
-  imports: [
-    RouterLink,
-    HttpClientModule, MatFormFieldModule,
-    MatTableModule,
-    MatPaginatorModule, MatTooltipModule,
-    MatSortModule, MatInputModule, MatSelectModule,
-    MatDatepickerModule, MatIconModule,
-    MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
-    CellComponent
-  ]
+    selector: 'app-monthwiseregister-attendance',
+    templateUrl: './attendance.component.html',
+    styleUrls: ['./attendance.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    encapsulation: ViewEncapsulation.None,
+    providers: [
+        provideMomentDateAdapter(MY_FORMATS),
+    ],
+    imports: [
+        RouterLink,
+        HttpClientModule, MatFormFieldModule,
+        MatTableModule,
+        MatPaginatorModule, MatTooltipModule,
+        MatSortModule, MatInputModule, MatSelectModule,
+        MatDatepickerModule, MatIconModule,
+        MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
+        CellComponent,
+        BreadcrumbComponent
+    ]
 })
 
 
@@ -102,6 +104,19 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
 
   }
 
+  filterNonFutureDays(obj: any): any {
+    const current_days: string[] = [];
+    for (const key in obj) {
+       if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          const value = obj[key];
+           if(!value.future_date) {
+            current_days.push(key);
+          }
+       }
+    }
+    return current_days;
+ }
+
   loadData() {
     this.attendanceService.fetchData(this.selectedMonth)
       .pipe(catchError(() => {
@@ -113,7 +128,9 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           const empDetArray = data?.monthlypunchings;
           console.log(data);
           this.calendarInfo = data.calender_info;
-          this.dayColumns = Object.keys(data.calender_info);
+          //find keys where the object's value is not future_date
+
+          this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
           this.displayedColumns = ['name', 'grace_left', ...this.dayColumns , 'extra', 'info'];
 
           //  this.sections =['All'];
@@ -184,7 +201,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   getCellBackgroundColor(dayN: string, odd: boolean) {
     if (this.calendarInfo[dayN].holiday) return '#7f7f7f0e';
 
-    return '#FFFFFF';
+    return '';
     //  return odd ? '#FAFAFA' : '#FFFFFF';
   }
   graceLeft(row: MonthlyPunching) {
@@ -194,10 +211,16 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   getGraceStyle(row: MonthlyPunching) {
     const grace = this.graceLeft(row);
     if (grace < 0) return 'color: red; font-weight: bold';
-    if (grace < 30) return 'color:  orange';
+    if (grace < 30) return 'color: orange;  font-weight: bold';
     if (grace < 60) return 'color: darkblue';
 
     return '';
+  }
+  getExtraStyle(row: MonthlyPunching)
+  {
+    const extra = this.extraTime(row);
+    return extra > 600 ? 'color: green; font-weight: bold' : '';
+
   }
   extraTime(row: MonthlyPunching) {
     const extra = row?.total_extra_sec || 0;

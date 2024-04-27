@@ -4,7 +4,7 @@ export default {
       route: 'attendance',
       name: 'attendance',
       type: 'link',
-      icon: 'persons',
+      icon: 'fingerprint',
       permissions: {
         only: ['section_access'],
       },
@@ -13,21 +13,21 @@ export default {
       route: 'monthwiseregister',
       name: 'monthwiseregister',
       type: 'link',
-      icon: 'persons',
+      icon: 'perm_contact_calendar',
       permissions: {
         only: ['section_access'],
       },
 
     },
-    {
-      route: 'monthwiseregister/employee',
-      name: 'employee',
-      type: 'link',
-      icon: 'persons',
-      permissions: {
-        only: ['section_access'],
-      },
-    },
+    // {
+    //   route: 'monthwiseregister/employee',
+    //   name: 'employee',
+    //   type: 'link',
+    //   icon: 'persons',
+    //   permissions: {
+    //     only: ['section_access'],
+    //   },
+    // },
     {
       route: 'settings',
       name: 'settings',

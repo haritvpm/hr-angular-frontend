@@ -8,100 +8,44 @@ import { MatInputModule } from '@angular/material/input';
 import { EmployeeService } from './employee.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent } from '@angular/material/dialog';
-
-
-export interface Employee {
-  id: string;
-  employee: string;
-  section: string;
-  startDate: string;
-  endDate: string;
-}
-
-
-
-
-export interface DialogData {
-  animal: 'panda' | 'unicorn' | 'lion';
-}
-
-/**
- * @title Injecting data when opening a dialog
- */
-// @Component({
-//   selector: 'dialog-data-example',
-//   templateUrl: './employee.component.html',
-//   standalone: true,
-//   imports: [MatButtonModule],
-// })
-// export class DialogDataExample {
-//   constructor(public dialog: MatDialog) {}
-
-//   openDialog() {
-//     this.dialog.open(DialogDataExampleDialog, {
-//       data: {
-//         animal: 'panda',
-//       },
-//     });
-//   }
-// }
+import { Employee, MySectionEmployees } from './interfaces';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { MtxDialog } from '@ng-matero/extensions/dialog';
+import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
+import { filter, switchMap, take } from 'rxjs';
 
 @Component({
-  selector: 'dialog-data-example-dialog',
-  templateUrl: './dialog-data-example-dialog.html',
-  standalone: true,
-  imports: [MatDialogTitle, MatDialogContent],
-})
-export class DialogDataExampleDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Employee) {}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@Component({
-  selector: 'app-settings-employee',
-  templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css'],
-  standalone: true,
-  imports: [PageHeaderComponent,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule, MatInputModule, MatIconModule,
-    MatButtonModule]
+    selector: 'app-settings-employee',
+    templateUrl: './employee.component.html',
+    standalone: true,
+    imports: [PageHeaderComponent,
+        MatTableModule,
+        MatPaginatorModule, MatFormFieldModule,
+        MatSortModule, MatInputModule, MatIconModule,
+        FormsModule, CommonModule, ReactiveFormsModule,
+        MatButtonModule, BreadcrumbComponent]
 })
 
 export class SettingsEmployeeComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'employee', 'section', 'startDate', 'endDate', 'action'];
+  displayedColumns: string[] = ['aadhaarid', 'employee', 'section', 'startDate',  'action'];
   dataSource = new MatTableDataSource<Employee>();
   data: Employee[] = [];
 
   constructor(private employeeService: EmployeeService,
-    private _liveAnnouncer: LiveAnnouncer,public dialog: MatDialog) { }
+    private _liveAnnouncer: LiveAnnouncer, private mtxDialog: MtxDialog) { }
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -122,23 +66,33 @@ export class SettingsEmployeeComponent implements OnInit {
   }
 
   fetchData(): void {
-    // const url = `http://localhost:3000/employee`;
-    // this.httpClient.get<Employee[]>(url).subscribe((data) => {
-    this.employeeService.fetchData().subscribe((data: Employee[]) => {
-
-      this.dataSource.data = data;
+    this.employeeService.fetchData().subscribe((data: MySectionEmployees) => {
+      this.dataSource.data = data.employees_under_my_section;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
-  selectEmployee() {
-    console.log("shfdkjh");
-        this.dialog.open(DialogDataExampleDialog, {
-          data: {
-            animal: 'panda',
-          },
-        });
+  relieveEmployee(emp: Employee)
+  {
+    const dialogRef = this.mtxDialog.originalOpen(EmployeeEditComponent, {
+      //width: '550px',
+      data: { emp, end_date: ''},
+    });
+
+    dialogRef.afterClosed()
+    .pipe(
+      take(1),
+      filter((result: any) => result !== undefined),
+      switchMap((result: any) => {
+        return this.employeeService.removeEmployee(
+          emp.employee_id, result.end_date );
       }
+    )).subscribe(() => {
+      this.fetchData();
+    });
+
+  }
+
 
 }

@@ -94,11 +94,19 @@ export interface MonthlyApiData {
   month: string;
   monthlypunchings: MonthlyPunching[];
   sections : string[];
-  calender_info: any; // You may want to specify a more specific type here
+  calender_info: { [key: string]: CalInfo }; // You may want to specify a more specific type here
 }
 export interface Month {
   month : number;
   year: number;
   // empDet:EmployeeAttendance[];
   }
-
+  interface CalInfo {
+    attendance_trace_fetch_complete: number;
+    day: string;
+    future_date: boolean;
+    holiday: boolean;
+    is_today: boolean;
+    office_ends_at: string;
+    rh: boolean;
+}

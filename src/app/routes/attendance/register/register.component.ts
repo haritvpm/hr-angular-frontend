@@ -14,6 +14,7 @@ import { NgIf } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
+import { RouterLink } from '@angular/router';
 
 const moment = _rollupMoment || _moment;
 
@@ -22,7 +23,7 @@ const moment = _rollupMoment || _moment;
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   standalone: true,
-  imports: [MatTableModule,
+  imports: [MatTableModule,RouterLink,
     MatPaginatorModule,
     MatSortModule, MatInputModule,
     MatDatepickerModule, MatIcon, MatBadgeModule,
