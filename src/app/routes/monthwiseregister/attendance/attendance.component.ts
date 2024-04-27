@@ -21,6 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { CellComponent } from './cell/cell.component';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 const moment = _rollupMoment || _moment;
 
 export const MY_FORMATS = {
@@ -36,25 +37,26 @@ export const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'app-monthwiseregister-attendance',
-  templateUrl: './attendance.component.html',
-  styleUrls: ['./attendance.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  encapsulation: ViewEncapsulation.None,
-  providers: [
-    provideMomentDateAdapter(MY_FORMATS),
-  ],
-  imports: [
-    RouterLink,
-    HttpClientModule, MatFormFieldModule,
-    MatTableModule,
-    MatPaginatorModule, MatTooltipModule,
-    MatSortModule, MatInputModule, MatSelectModule,
-    MatDatepickerModule, MatIconModule,
-    MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
-    CellComponent
-  ]
+    selector: 'app-monthwiseregister-attendance',
+    templateUrl: './attendance.component.html',
+    styleUrls: ['./attendance.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    encapsulation: ViewEncapsulation.None,
+    providers: [
+        provideMomentDateAdapter(MY_FORMATS),
+    ],
+    imports: [
+        RouterLink,
+        HttpClientModule, MatFormFieldModule,
+        MatTableModule,
+        MatPaginatorModule, MatTooltipModule,
+        MatSortModule, MatInputModule, MatSelectModule,
+        MatDatepickerModule, MatIconModule,
+        MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
+        CellComponent,
+        BreadcrumbComponent
+    ]
 })
 
 

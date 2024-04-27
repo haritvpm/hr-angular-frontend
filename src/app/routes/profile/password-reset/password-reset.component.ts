@@ -14,7 +14,6 @@ import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '@core';
 import { TranslateModule } from '@ngx-translate/core';
 import { catchError, of } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-password-reset',
@@ -34,13 +33,12 @@ export class PasswordResetComponent {
 
 
   private readonly router = inject(Router);
-  private readonly toast = inject(ToastrService);
   private readonly fb = inject(FormBuilder);
   private readonly loginService = inject(LoginService);
   registerForm = this.fb.nonNullable.group(
     {
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     },
     {
       validators: [this.matchValidator('password', 'confirmPassword')],
@@ -70,14 +68,13 @@ export class PasswordResetComponent {
 
   }
 
-  onSubmit(formdata: any): void {
-    console.log(formdata);
+  onSubmit(form: any): void {
+    console.log(form);
     if (this.registerForm.valid) {
 
-      this.loginService.resetPassword(formdata)
+      this.loginService.resetPassword(form)
       .pipe(
         catchError( (_err) =>  {
-          this.toast.error(_err.error?.message);
           console.log(_err); return of(null);
         })
       )

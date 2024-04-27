@@ -1,76 +1,67 @@
-<page-header></page-header>
+<breadcrumb></breadcrumb>
+<div class="row d-flex justify-content-between">
 
-<div class="container">
-  <div class="search-container">
-    <mat-form-field class="search-field">
+    <mat-form-field class="m-l-8"  appearance="outline">
+      <mat-label>Search</mat-label>
+
       <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" placeholder="Search" />
     </mat-form-field>
-  </div>
-  <div class="example-button-row">
-    <button mat-flat-button color="accent" (click)="selectEmployee()">Add Employee</button>
-  </div>
+
+    <button class="m-r-8" mat-flat-button color="accent" >Add Employee</button>
+
 </div>
 
 <div class="mat-elevation-z1">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
-    <!-- <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">No.</th>
-      <td mat-cell *matCellDef="let employee">{{ employee.id }}</td>
-    </ng-container> -->
 
-    <ng-container matColumnDef="id">
+    <ng-container matColumnDef="aadhaarid">
       <th
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
         sortActionDescription="Sort by aadhaar number"
       >
-        Aadhar Id
+        AttendanceId
       </th>
-      <td mat-cell *matCellDef="let employee">{{ employee.id }}</td>
+      <td mat-cell *matCellDef="let employee">{{ employee.aadhaarid }}</td>
     </ng-container>
     <ng-container matColumnDef="employee">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">
         Employee
       </th>
-      <td mat-cell *matCellDef="let employee">{{ employee.employee }}</td>
+      <td mat-cell *matCellDef="let employee">{{ employee.name }}</td>
     </ng-container>
     <ng-container matColumnDef="section">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by views">
         Section
       </th>
-      <td mat-cell *matCellDef="let employee">{{ employee.section }}</td>
+      <td mat-cell *matCellDef="let employee">{{ employee.section_name }}</td>
     </ng-container>
 
     <ng-container matColumnDef="startDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
         Start Date
       </th>
-      <td mat-cell *matCellDef="let employee">{{ employee.startDate }}</td>
+      <td mat-cell *matCellDef="let employee">{{ employee.start_date }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="endDate">
+    <!-- <ng-container matColumnDef="endDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">
         End Date
       </th>
-      <td mat-cell *matCellDef="let employee">{{ employee.endDate }}</td>
-    </ng-container>
+      <td mat-cell *matCellDef="let employee">{{ employee.end_date }}</td>
+    </ng-container> -->
 
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
       <td mat-cell *matCellDef="let employee">
         <!-- <span (click)="openEditForm(row)" class="action-icon" style="margin-right: 5px;">
           <mat-icon color="primary">edit</mat-icon>
-        </span>
-        <span (click)="deleteEmployee(row.id)" class="action-icon">
-          <mat-icon color="warn">delete</mat-icon>
         </span> -->
-        <span class="action-icon" style="margin-right: 5px">
-          <mat-icon color="primary">edit</mat-icon>
-        </span>
-        <span class="action-icon">
+        <span (click)="relieveEmployee(employee)" class="action-icon">
           <mat-icon color="warn">delete</mat-icon>
         </span>
+
       </td>
     </ng-container>
 
@@ -81,9 +72,9 @@
   </table>
   <mat-paginator
     #paginator
-    [pageSizeOptions]="[5, 50, 100, 200]"
+    [pageSizeOptions]="[10, 15, 25, 50]"
     showFirstLastButtons
-    aria-label="Select page of periodic elements"
+    aria-label="Select page"
   >
   </mat-paginator>
 </div>
