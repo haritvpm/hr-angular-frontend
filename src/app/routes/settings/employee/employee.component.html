@@ -57,16 +57,11 @@
       <td mat-cell *matCellDef="let employee">
         <!-- <span (click)="openEditForm(row)" class="action-icon" style="margin-right: 5px;">
           <mat-icon color="primary">edit</mat-icon>
-        </span>
-        <span (click)="deleteEmployee(row.id)" class="action-icon">
-          <mat-icon color="warn">delete</mat-icon>
         </span> -->
-        <span class="action-icon" style="margin-right: 5px">
-          <mat-icon color="primary">edit</mat-icon>
-        </span>
-        <span class="action-icon">
+        <span (click)="relieveEmployee(employee)" class="action-icon">
           <mat-icon color="warn">delete</mat-icon>
         </span>
+
       </td>
     </ng-container>
 
@@ -77,9 +72,9 @@
   </table>
   <mat-paginator
     #paginator
-    [pageSizeOptions]="[5, 50, 100, 200]"
+    [pageSizeOptions]="[10, 15, 25, 50]"
     showFirstLastButtons
-    aria-label="Select page of periodic elements"
+    aria-label="Select page"
   >
   </mat-paginator>
 </div>

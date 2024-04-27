@@ -9,9 +9,12 @@ import { MySectionEmployees } from './interfaces';
 export class EmployeeService {
 
   constructor(private httpClient: HttpClient) { }
+  private apiUrl = '/api/v1/my-sectionemployees';
 
   fetchData(): Observable<MySectionEmployees> {
-    const url = `/api/v1/my-sectionemployees`;
-    return this.httpClient.get<MySectionEmployees>(url);
+    return this.httpClient.get<MySectionEmployees>(`${this.apiUrl}`);
+  }
+  removeEmployee(id: any, end_date : string): Observable<any> {
+    return this.httpClient.delete<any>( `${this.apiUrl}/${id}`, { params: { end_date } } );
   }
 }

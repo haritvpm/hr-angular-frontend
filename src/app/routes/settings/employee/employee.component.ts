@@ -8,13 +8,22 @@ import { MatInputModule } from '@angular/material/input';
 import { EmployeeService } from './employee.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent } from '@angular/material/dialog';
 import { Employee, MySectionEmployees } from './interfaces';
 import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import { MtxDialog } from '@ng-matero/extensions/dialog';
+import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
+import { filter, switchMap, take } from 'rxjs';
 
 @Component({
     selector: 'app-settings-employee',
@@ -35,7 +44,8 @@ export class SettingsEmployeeComponent implements OnInit {
   data: Employee[] = [];
 
   constructor(private employeeService: EmployeeService,
-    private _liveAnnouncer: LiveAnnouncer,public dialog: MatDialog) { }
+    private _liveAnnouncer: LiveAnnouncer, private mtxDialog: MtxDialog) { }
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -61,6 +71,27 @@ export class SettingsEmployeeComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+  }
+
+  relieveEmployee(emp: Employee)
+  {
+    const dialogRef = this.mtxDialog.originalOpen(EmployeeEditComponent, {
+      //width: '550px',
+      data: { emp, end_date: ''},
+    });
+
+    dialogRef.afterClosed()
+    .pipe(
+      take(1),
+      filter((result: any) => result !== undefined),
+      switchMap((result: any) => {
+        return this.employeeService.removeEmployee(
+          emp.employee_id, result.end_date );
+      }
+    )).subscribe(() => {
+      this.fetchData();
+    });
+
   }
 
 
