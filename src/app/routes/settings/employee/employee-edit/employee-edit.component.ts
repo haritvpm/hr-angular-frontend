@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import moment from 'moment';
 
 @Component({
   selector: 'app-employee-edit',
@@ -38,7 +39,7 @@ export class EmployeeEditComponent {
     public dialogRef: MatDialogRef<EmployeeEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
-
+  today = new Date(); 
   end_date: string = '';
   onNoClick(): void {
     this.dialogRef.close();
@@ -48,7 +49,7 @@ export class EmployeeEditComponent {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     console.log(`${type}: ${event.value}`);
     if (event.value) {
-      this.end_date  = event.value.toISOString().slice(0, 10);
+      this.end_date  = moment(event.value).format('YYYY-MM-DD');
     }
   }
 

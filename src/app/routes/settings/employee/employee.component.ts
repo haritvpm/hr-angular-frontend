@@ -39,7 +39,7 @@ import { filter, switchMap, take } from 'rxjs';
 
 export class SettingsEmployeeComponent implements OnInit {
 
-  displayedColumns: string[] = ['aadhaarid', 'employee', 'section', 'startDate',  'action'];
+  displayedColumns: string[] = ['aadhaarid', 'employee', 'section', 'startDate', 'endDate', 'action'];
   dataSource = new MatTableDataSource<Employee>();
   data: Employee[] = [];
 
@@ -66,7 +66,9 @@ export class SettingsEmployeeComponent implements OnInit {
   }
 
   fetchData(): void {
-    this.employeeService.fetchData().subscribe((data: MySectionEmployees) => {
+    this.employeeService.fetchData()
+    .pipe(take(1))
+    .subscribe((data: MySectionEmployees) => {
       this.dataSource.data = data.employees_under_my_section;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -83,10 +85,10 @@ export class SettingsEmployeeComponent implements OnInit {
     dialogRef.afterClosed()
     .pipe(
       take(1),
-      filter((result: any) => result !== undefined),
-      switchMap((result: any) => {
+      filter((data: any) => data !== undefined),
+      switchMap((data: any) => {
         return this.employeeService.removeEmployee(
-          emp.employee_id, result.end_date );
+          emp.id, data.end_date );
       }
     )).subscribe(() => {
       this.fetchData();

@@ -1,4 +1,5 @@
 export interface Employee {
+  id: number; //emp - section_id
   employee_id: number;
   name: string;
   start_date: string;
