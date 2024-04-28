@@ -31,15 +31,18 @@ import moment from 'moment';
     MatDialogActions,
     MatButton,
     MatDialogClose,],
-  templateUrl: './employee-edit.component.html',
-  styleUrl: './employee-edit.component.css'
+  templateUrl: './employee-posting-end.component.html',
+  styleUrl: './employee-posting-end.component.css'
 })
-export class EmployeeEditComponent {
+export class EmployeePostingEndComponent {
   constructor(
-    public dialogRef: MatDialogRef<EmployeeEditComponent>,
+    public dialogRef: MatDialogRef<EmployeePostingEndComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
-  today = new Date(); 
+  ) {
+
+  }
+
+  today = new Date();
   end_date: string = '';
   onNoClick(): void {
     this.dialogRef.close();
