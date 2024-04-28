@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Input  } from '@angular/core';
+import { Component, Inject, OnInit, Input } from '@angular/core';
 
 import { MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
@@ -8,13 +8,14 @@ import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/
 import { provideNativeDateAdapter } from '@angular/material/core';
 import moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AsyncPipe,JsonPipe  } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { AttendanceBook, Employee, Section } from '../interfaces';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { MtxSelect } from '@ng-matero/extensions/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonLoading } from '@ng-matero/extensions/button';
 import { Location } from '@angular/common';
+import { EmployeePostingService } from '../employee-posting.service';
 
 @Component({
   selector: 'app-employee-posting-add',
@@ -25,43 +26,44 @@ import { Location } from '@angular/common';
     MatFormField,
     MatInput,
     FormsModule,
-    MatButton, MatButtonLoading ,
-    AsyncPipe,
+    MatButton, MatButtonLoading,
+    AsyncPipe, JsonPipe,
     MatLabel, MtxSelect, MatHint, MatCardModule
-    ],
+  ],
   templateUrl: './employee-posting-add.component.html',
   styleUrl: './employee-posting-add.component.css'
 })
-export class EmployeePostingAddComponent  implements OnInit {
+export class EmployeePostingAddComponent implements OnInit {
 
-  start_date: string = '';
+
   today = new Date();
+  min_startdate = new Date();
+
   freeEmployees$!: Observable<Employee[]>;
-  attendancebooks: AttendanceBook[]  = [];
-  sections: Section[]  = [];
+  attendancebooks: AttendanceBook[] = [];
+  sections: Section[] = [];
 
   constructor(
     //private router: Router,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private location: Location
+    private location: Location,
+    private employeeService : EmployeePostingService
   ) {
-    const state:any = location.getState();
+    const state: any = location.getState();
     if (state) {
-      this.attendancebooks= state.attendancebooks;
-      this.sections= state.sections;
+      this.attendancebooks = state.attendancebooks;
+      this.sections = state.sections;
     }
   }
 
   isSubmitting = false;
 
   postingForm = this.fb.nonNullable.group({
-    section: ['', [Validators.required]],
-    selemployee: ['', [Validators.required]],
-    startdate: ['', [Validators.required]],
-    attendanceBook: [''],
-
-    rememberMe: [false],
+    section_id: ['', [Validators.required]],
+    employee_id: ['', [Validators.required]],
+    start_date: ['', [Validators.required]],
+    attendance_book_id: [''],
   });
 
 
@@ -73,10 +75,41 @@ export class EmployeePostingAddComponent  implements OnInit {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     console.log(`${type}: ${event.value}`);
     if (event.value) {
-      this.start_date  = moment(event.value).format('YYYY-MM-DD');
+      //this.start_date = moment(event.value).format('YYYY-MM-DD');
     }
   }
   addPosting() {
-    throw new Error('Method not implemented.');
+    this.isSubmitting = true;
+    const formValue = this.postingForm.value;
+    formValue.start_date = moment(formValue.start_date).format('YYYY-MM-DD');
+      this.employeeService.saveEmployee(formValue)
+      .pipe( catchError((error) => {
+        this.isSubmitting = false;
+        console.log(error);
+        return error;
+      }))
+      .subscribe(
+      (data) => {
+        console.log(data);
+        this.isSubmitting = false;
+        this.location.back();
+      });
+  }
+
+  employeeChange($event: any) {
+    const employee = $event ;
+    console.log(employee);
+
+    if(employee?.last_posting_end_date != ''){
+      // console.log(employee.last_posting_end_date);
+
+      const min_startdate = new Date(employee.last_posting_end_date);
+      min_startdate.setDate(min_startdate.getDate() + 1);
+      this.min_startdate = new Date(min_startdate);
+      // console.log(this.min_startdate.toDateString());
+    } else {
+      this.min_startdate = new Date('2024-01-01');
     }
+
+  }
 }

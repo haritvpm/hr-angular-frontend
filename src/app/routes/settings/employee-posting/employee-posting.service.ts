@@ -21,5 +21,9 @@ export class EmployeePostingService {
   getFreeEmployees(): Observable<Employee[]> {
     return this.httpClient.get<any>(`${this.apiUrl}/unposted-employees`);
   }
+  saveEmployee(formdata: any): Observable<any> {
+    console.log(formdata);
 
+    return this.httpClient.post<any>(`${this.apiUrl}`, formdata);
+  }
 }

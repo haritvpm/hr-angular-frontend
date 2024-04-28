@@ -16,6 +16,7 @@ export interface Employee {
   designation_sortindex: number | null;
   default_time_group_id: number | null;
   seniority: number | null;
+  last_posting_end_date: string;
 }
 
 export interface Section {
