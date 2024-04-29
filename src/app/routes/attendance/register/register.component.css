@@ -1,4 +1,9 @@
 
+
+.tooltip-multiline {
+  white-space: pre-line;
+}
+
 .mat-row {
   height: auto;
 }
@@ -118,3 +123,4 @@ a:active {
 
   /* background-color: transparent; */
 }
+

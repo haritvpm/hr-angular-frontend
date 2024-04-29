@@ -23,7 +23,7 @@ const moment = _rollupMoment || _moment;
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   standalone: true,
-  imports: [MatTableModule,RouterLink,
+  imports: [MatTableModule, RouterLink,
     MatPaginatorModule,
     MatSortModule, MatInputModule,
     MatDatepickerModule, MatIcon, MatBadgeModule,
@@ -158,10 +158,19 @@ export class AttendanceRegisterComponent implements OnInit {
   // tooltipText(employee : any){
 
   // }
-  getTooltipText(employee : any){
-    return employee.name + '\n' +  'No Punching';
+  getTooltipText(employee: any): string {
 
+const name = employee.name + '\n';
 
+      if(employee.punching_count === 0){
+        return name + 'No Punching';
+      }
+      else if(employee.punching_count < 2){
+      return name + 'Missing Punch Out';
+
+      }
+      return '';
+    }
   }
 
-}
+
