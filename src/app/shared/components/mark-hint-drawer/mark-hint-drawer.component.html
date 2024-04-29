@@ -1,0 +1,44 @@
+
+<p class="heading">
+  <!-- Mark Leave -->
+  <span class="flex-spacer"></span>
+  <button mat-icon-button (click)="onNoClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+</p>
+
+<div class="text-center" >
+<div style="font-weight: bold;"> {{data.punchingInfo.name}}</div>
+<small>{{data.punchingInfo.designation}}</small> <br>
+<mat-divider class="m-t-8"></mat-divider>
+<h4 class="text-center" >{{data.punchingInfo.date}}</h4>
+</div>
+<mat-divider></mat-divider>
+@if (!data.punchingInfo.in_section ) {
+  Was not posted in section
+} @else {
+
+
+
+  <mat-radio-group  aria-label="Select an option" [(ngModel)]="selected">
+<div class="row">
+
+
+    <ng-container    *ngFor="let option of list">
+      <div class="col-sm-6">
+      <mat-radio-button [value]="option.value"> <small> {{option.label}} </small> </mat-radio-button>
+    </div>
+    </ng-container>
+
+  </div>
+  </mat-radio-group>
+
+  <mat-divider></mat-divider>
+
+
+<div class="m-t-8">
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [color]="'accent'"  (click)="onOkClick()" cdkFocusInitial>Ok</button>
+</div>
+
+}

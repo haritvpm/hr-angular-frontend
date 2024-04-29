@@ -71,6 +71,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_DATE_LOCALE,
       useFactory: () => navigator.language, // <= This will be overrided by runtime setting
+      useValue: 'en-IN',
     },
     {
       provide: MAT_CARD_CONFIG,

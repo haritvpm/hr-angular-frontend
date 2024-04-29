@@ -1,0 +1,19 @@
+.heading {
+  display: flex;
+  align-items: center;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+.listContainer {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+
+.item {
+  flex-basis: 50%;
+  box-sizing: border-box;
+}

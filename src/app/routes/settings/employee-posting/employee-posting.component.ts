@@ -5,10 +5,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
-import { EmployeeService } from './employee.service';
+import { EmployeePostingService } from './employee-posting.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Employee, MySectionEmployees } from './interfaces';
+import { AttendanceBook, Employee, MySectionEmployees, Section } from './interfaces';
 import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,12 +22,13 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MtxDialog } from '@ng-matero/extensions/dialog';
-import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
 import { filter, switchMap, take } from 'rxjs';
+import { EmployeePostingEndComponent } from './employee-posting-end/employee-posting-end.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-settings-employee',
-    templateUrl: './employee.component.html',
+    templateUrl: './employee-posting.component.html',
     standalone: true,
     imports: [PageHeaderComponent,
         MatTableModule,
@@ -37,14 +38,17 @@ import { filter, switchMap, take } from 'rxjs';
         MatButtonModule, BreadcrumbComponent]
 })
 
-export class SettingsEmployeeComponent implements OnInit {
+export class EmployeePostingComponent implements OnInit {
 
-  displayedColumns: string[] = ['aadhaarid', 'employee', 'section', 'startDate',  'action'];
+
+  displayedColumns: string[] = ['aadhaarid', 'employee', 'section', 'startDate', 'endDate', 'action'];
   dataSource = new MatTableDataSource<Employee>();
   data: Employee[] = [];
+  attendancebooks: AttendanceBook[] = [];
+  sections : Section[] = [];
 
-  constructor(private employeeService: EmployeeService,
-    private _liveAnnouncer: LiveAnnouncer, private mtxDialog: MtxDialog) { }
+  constructor(private employeeService: EmployeePostingService,
+    private _liveAnnouncer: LiveAnnouncer, private mtxDialog: MtxDialog, private router: Router) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -66,16 +70,21 @@ export class SettingsEmployeeComponent implements OnInit {
   }
 
   fetchData(): void {
-    this.employeeService.fetchData().subscribe((data: MySectionEmployees) => {
+    this.employeeService.fetchData()
+    .pipe(take(1))
+    .subscribe((data: MySectionEmployees) => {
+      console.log(data);
       this.dataSource.data = data.employees_under_my_section;
       this.dataSource.paginator = this.paginator;
+      this.attendancebooks = data.attendancebooks;
+      this.sections = data.sections;
       this.dataSource.sort = this.sort;
     });
   }
 
   relieveEmployee(emp: Employee)
   {
-    const dialogRef = this.mtxDialog.originalOpen(EmployeeEditComponent, {
+    const dialogRef = this.mtxDialog.originalOpen(EmployeePostingEndComponent, {
       //width: '550px',
       data: { emp, end_date: ''},
     });
@@ -83,16 +92,21 @@ export class SettingsEmployeeComponent implements OnInit {
     dialogRef.afterClosed()
     .pipe(
       take(1),
-      filter((result: any) => result !== undefined),
-      switchMap((result: any) => {
+      filter((data: any) => data !== undefined),
+      switchMap((data: any) => {
         return this.employeeService.removeEmployee(
-          emp.employee_id, result.end_date );
+          emp.id, data.end_date );
       }
     )).subscribe(() => {
       this.fetchData();
     });
 
   }
+  // ...
 
+
+  addEmployee() {
+    this.router.navigate(['/settings/employee-posting-add'], { state: { attendancebooks: this.attendancebooks, sections : this.sections } });
+  }
 
 }

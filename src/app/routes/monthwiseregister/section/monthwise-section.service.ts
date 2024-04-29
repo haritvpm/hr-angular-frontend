@@ -7,7 +7,7 @@ import { MonthlyApiData } from './interfaces';
   providedIn: 'root'
 })
 
-export class AttendanceService {
+export class MonthwiseSectionService {
   private apiUrl = '/api/v1/punchings-monthly'; // Replace '...' with your API URL
 
   constructor(private httpClient: HttpClient) { }
