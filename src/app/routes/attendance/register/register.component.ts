@@ -149,28 +149,20 @@ export class AttendanceRegisterComponent implements OnInit {
         'font-weight': 'bold'
       };
   }
-  // getPunchInStyle(employee: any){
-  //   if(employee.punching_count == 0) return {
 
-  //   }
+  getTooltipText(employee: any): any {
 
-  // }
-  // tooltipText(employee : any){
+    const name = employee.name + '\n';
 
-  // }
-  getTooltipText(employee: any): string {
-
-const name = employee.name + '\n';
-
-      if(employee.punching_count === 0){
-        return name + 'No Punching';
-      }
-      else if(employee.punching_count < 2){
+    if (employee.punching_count === 0) {
+      return name + 'No Punching';
+    }
+    else if (employee.punching_count < 2) {
       return name + 'Missing Punch Out';
 
-      }
-      return '';
     }
+    return '';
   }
+}
 
 

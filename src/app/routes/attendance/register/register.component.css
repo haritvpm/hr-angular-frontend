@@ -1,7 +1,7 @@
 
 
-.tooltip-multiline {
-  white-space: pre-line;
+.allow-cr {
+  white-space: pre;
 }
 
 .mat-row {
