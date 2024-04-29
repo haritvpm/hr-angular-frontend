@@ -6,8 +6,7 @@ import { DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { switchMap } from 'rxjs';
-// import {FormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-monthwiseregister-employee',
@@ -16,6 +15,7 @@ import {MatInputModule} from '@angular/material/input';
   standalone: true,
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel, MatInputModule]
 })
+
 export class MonthwiseregisterEmployeeComponent implements OnInit {
   aadhaarid: string;
   date: string;
@@ -47,18 +47,6 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       });
   }
 
-  // loadData() {
-  //   // Call your API service to fetch data using Aadhaar ID and date
-  //   this.apiService.getEmployeeData(this.aadhaarid, this.date)
-  //     .subscribe(response => {
-  //       this.data = response;
-  //       console.log(this.data.employee_punching);
-  //       console.log(this.data.employee);
-  //       this.dataSource.data = this.data.employee_punching;
-  //       this.employeeInfo = this.data.employee;
-  //     });
-  // }
-
   getCellBgcolor(dateItem: any) {
     let dayColor = '';
     if (dateItem.is_holiday != '1' && !dateItem.is_future) {
@@ -66,15 +54,13 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       if(dateItem.punching_count =='1') {
         dayColor = '#FFE082';
       }
-    } else {
-      dayColor = '#eeeeeef0';
     }
     return dayColor;
   }
 
   getDateStyle(dateItem: any) {
     let dateColorSet = '';
-    const dateColorDef = '#eeeeeef0';
+    // const dateColorDef = '#eeeeeef0';
     if (dateItem.attendance_trace_fetch_complete) {
       if (!dateItem.is_holiday && !dateItem.is_future) {
         dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
@@ -82,11 +68,10 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
           dateColorSet = '#FFE082';
         }
       }
-
     }
     return {
       //     'color': holiday,
-      'background-color': dateColorSet ? dateColorSet : dateColorDef,
+      'background-color': dateColorSet ? dateColorSet : '',
       'font-weight': dateColorSet ? 'bold' : '',
     };
   }
