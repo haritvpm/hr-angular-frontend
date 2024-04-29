@@ -4,7 +4,7 @@
 }
 
 .mat-cell {
-  padding: 0 0 0 0;
+  padding: 0;
 }
 
 /* table {
@@ -73,6 +73,16 @@ font-weight: bold;
   /* border-right: 1px solid currentColor; */
 }
 
+.mat-column-inTrace{
+  text-align: center;
+
+}
+
+.mat-column-outTrace{
+  text-align: center;
+
+}
+
 .mat-column-total_extra_sec{
   padding-right: 24px;
   text-align: center;
@@ -80,28 +90,31 @@ font-weight: bold;
   /* border-right: 1px solid currentColor; */
 }
 
-/* Adjust table layout for smaller screens */
 
 /* no blue color */
 a:link {
   /* color: black; */
   text-decoration: none;
+
   /* background-color: transparent; */
 }
 
 a:visited {
   /* color: black; */
   text-decoration: none;
+
   /* background-color: transparent; */
 }
 
 a:hover {
   /* color: darkblue; */
   text-decoration: none;
+
   /* background-color: transparent; */
 }
 
 a:active {
   text-decoration: none;
+
   /* background-color: transparent; */
 }

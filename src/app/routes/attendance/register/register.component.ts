@@ -9,8 +9,9 @@ import { RegisterService } from './register.service';
 import { DailyPunching } from './interface';
 import { MatIcon } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { RouterLink } from '@angular/router';
@@ -26,7 +27,8 @@ const moment = _rollupMoment || _moment;
     MatPaginatorModule,
     MatSortModule, MatInputModule,
     MatDatepickerModule, MatIcon, MatBadgeModule,
-    FormsModule, ReactiveFormsModule]
+    FormsModule, ReactiveFormsModule, NgIf,
+    MatTooltipModule]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
@@ -45,7 +47,7 @@ export class AttendanceRegisterComponent implements OnInit {
   beginDate: Date = new Date('2024-01-01');
   sections: string[] = [];
   public searchTxt = '';
-  public searchForm: FormGroup;
+  // public searchForm: FormGroup;
 
 
   // Define an array to hold the combined data
@@ -111,13 +113,7 @@ export class AttendanceRegisterComponent implements OnInit {
     return Math.round(value);
   }
 
-  // graceExeeded(employee : any){
-  //   return roundValue(employee.total_grace_sec/60)>30;
-  // }
-  getGraceColor(employee: any) {
-    return Math.round(employee.total_grace_sec / 60) > 300 ? 'red' : '';
-  }
-  getGraceStyle(employee: any) {
+  getGraceStyleTotal(employee: any) {
     const exeeded = this.roundValue(employee.total_grace_sec / 60) > 300;
     return {
       // 'background-color':exeeded ? 'yellow':'',
@@ -125,23 +121,47 @@ export class AttendanceRegisterComponent implements OnInit {
       'color': exeeded ? 'red' : ''
     };
   }
+
   getExtratimeColor(employee: any) {
-    return Math.round(employee.total_extra_sec / 60) > 600 ? 'green' : '';
-  }
-  getTotalExtrStyle(employee: any) {
-    const totalextraexceed = this.roundValue(employee.total_extra_sec / 60) > 600;
+    const extraTimeexeed = this.roundValue(employee.total_extra_sec / 60) > 600;
     return {
-      'font-weight': totalextraexceed ? 'bold' : '',
-      'color': totalextraexceed ? 'red' : ''
+      'font-weight': extraTimeexeed ? 'bold' : '',
+      'color': extraTimeexeed ? 'green' : ''
     };
   }
-  // getPunchInStyle(employee: any) {
-  //   const pucnhInexeed = employee.punchin_trace.att_time > '11:15:00';
-  //   return  {
-  //     'font-weight': pucnhInexeed ? 'bold' : '',
-  //     'color': pucnhInexeed ? 'red' : ''
-  //   };
+  getGraceStyle(employee: any) {
+    if ((employee.total_grace_sec / 60) < 0) return {
+      'color': 'red',
+      'font-weight': 'bold'
+    };
+    if ((employee.total_grace_sec / 60) < 30) return {
+      'color': 'orange',
+      'font-weight': 'bold'
 
+    };
+    if (employee.total_grace_sec / 60 < 60) return {
+      'color': ' darkblue',
+      'font-weight': 'bold'
+    };
+    else
+      return {
+        'color': 'red',
+        'font-weight': 'bold'
+      };
+  }
+  // getPunchInStyle(employee: any){
+  //   if(employee.punching_count == 0) return {
+
+  //   }
 
   // }
+  // tooltipText(employee : any){
+
+  // }
+  getTooltipText(employee : any){
+    return employee.name + '\n' +  'No Punching';
+
+
+  }
+
 }

@@ -4,14 +4,17 @@ import { EmployeeService } from './employee.service';
 import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, Employee } from './interface';
 import { DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { switchMap } from 'rxjs';
+// import {FormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'app-monthwiseregister-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css'],
   standalone: true,
-  imports: [MatTableModule, DatePipe, NgIf]
+  imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel, MatInputModule]
 })
 export class MonthwiseregisterEmployeeComponent implements OnInit {
   aadhaarid: string;
@@ -40,21 +43,21 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         console.log(response);
         this.data = response;
         this.dataSource.data = this.data.employee_punching;
-        // this.employeeInfo = this.data.employee;
+        this.employeeInfo = this.data.employee;
       });
   }
 
-  loadData() {
-    // Call your API service to fetch data using Aadhaar ID and date
-    this.apiService.getEmployeeData(this.aadhaarid, this.date)
-      .subscribe(response => {
-        this.data = response;
-        console.log(this.data.employee_punching);
-        console.log(this.data.employee);
-        this.dataSource.data = this.data.employee_punching;
-        // this.employeeInfo = this.data.employee;
-      });
-  }
+  // loadData() {
+  //   // Call your API service to fetch data using Aadhaar ID and date
+  //   this.apiService.getEmployeeData(this.aadhaarid, this.date)
+  //     .subscribe(response => {
+  //       this.data = response;
+  //       console.log(this.data.employee_punching);
+  //       console.log(this.data.employee);
+  //       this.dataSource.data = this.data.employee_punching;
+  //       this.employeeInfo = this.data.employee;
+  //     });
+  // }
 
   getCellBgcolor(dateItem: any) {
     let dayColor = '';

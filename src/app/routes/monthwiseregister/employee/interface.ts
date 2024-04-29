@@ -91,5 +91,5 @@ export interface MonthwiseEmployeeApiData {
   calender_info: { [day: string]: CalendarDayInfo };
   data_monthly: { [aadhaarid: string]: MonthlyData };
   employee_punching: EmployeePunchingInfo[];
-  employee: Employee[];
+  employee: Employee;
 }
