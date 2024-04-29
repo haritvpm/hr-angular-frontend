@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from './employee.service';
-import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData } from './interface';
+import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, Employee } from './interface';
 import { DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { switchMap } from 'rxjs';
@@ -20,6 +20,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
   displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
   clickedRows = new Set<EmployeePunchingInfo>();
+  employeeInfo: Employee;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +40,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         console.log(response);
         this.data = response;
         this.dataSource.data = this.data.employee_punching;
+        // this.employeeInfo = this.data.employee;
       });
   }
 
@@ -48,7 +50,9 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       .subscribe(response => {
         this.data = response;
         console.log(this.data.employee_punching);
+        console.log(this.data.employee);
         this.dataSource.data = this.data.employee_punching;
+        // this.employeeInfo = this.data.employee;
       });
   }
 

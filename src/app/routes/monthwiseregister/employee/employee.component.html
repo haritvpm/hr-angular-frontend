@@ -1,4 +1,5 @@
-{{ aadhaarid }}
+{{aadhaarid}}
+{{employeeInfo}}
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 employee-monthwise-table">
   <ng-container matColumnDef="day">
     <th mat-header-cell *matHeaderCellDef sticky>Date</th>
@@ -10,7 +11,7 @@
   </ng-container>
 
   <ng-container matColumnDef="punchin">
-    <th mat-header-cell *matHeaderCellDef sticky>In Time</th>
+    <th mat-header-cell *matHeaderCellDef>In Time</th>
     <td mat-cell *matCellDef="let item" [style.background-color]="getCellBgcolor(item)">
       @if ((item.attendance_trace_fetch_complete && item.punchin_trace) || item.punchin_trace) {
         {{ item.punchin_trace.att_time }}
@@ -19,7 +20,7 @@
   </ng-container>
 
   <ng-container matColumnDef="punchout">
-    <th mat-header-cell *matHeaderCellDef sticky>Out Time</th>
+    <th mat-header-cell *matHeaderCellDef>Out Time</th>
     <td mat-cell *matCellDef="let item" [style.background-color]="getCellBgcolor(item)">
       <ng-container *ngIf="item.punching_count >= 2">
         {{ item.punchout_trace.att_time }}
@@ -30,14 +31,14 @@
   </ng-container>
 
   <ng-container matColumnDef="duration">
-    <th mat-header-cell *matHeaderCellDef sticky>Duration</th>
+    <th mat-header-cell *matHeaderCellDef>Duration</th>
     <td mat-cell *matCellDef="let item" [style.background-color]="getCellBgcolor(item)">
       {{ item.duration_str }}
     </td>
   </ng-container>
 
   <ng-container matColumnDef="xtratime">
-    <th mat-header-cell *matHeaderCellDef sticky>Extra Time (in minutes)</th>
+    <th mat-header-cell *matHeaderCellDef>Extra Time (in minutes)</th>
     <td mat-cell *matCellDef="let item" [style.background-color]="getCellBgcolor(item)">
       {{ item.extra_str }}
     </td>
@@ -55,7 +56,7 @@
   </ng-container> -->
 
   <ng-container matColumnDef="info">
-    <th mat-header-cell *matHeaderCellDef sticky>Remarks</th>
+    <th mat-header-cell *matHeaderCellDef>Remarks</th>
     <td mat-cell *matCellDef="let item" [style.background-color]="getCellBgcolor(item)">
       <ng-container
         *ngIf="
