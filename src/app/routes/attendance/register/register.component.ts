@@ -130,16 +130,16 @@ export class AttendanceRegisterComponent implements OnInit {
     };
   }
   getGraceStyle(employee: any) {
-    if (employee.grace_str < 0) return {
+    if ((employee.total_grace_sec / 60) < 0) return {
       'color': 'red',
       'font-weight': 'bold'
     };
-    if (employee.grace_str < 30) return {
+    if ((employee.total_grace_sec / 60) < 30) return {
       'color': 'orange',
       'font-weight': 'bold'
 
     };
-    if (employee.grace_str < 60) return {
+    if (employee.total_grace_sec / 60 < 60) return {
       'color': ' darkblue',
       'font-weight': 'bold'
     };
