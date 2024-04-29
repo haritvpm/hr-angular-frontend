@@ -39,6 +39,9 @@ export class SettingsService {
   reset() {
     this.store.remove(this.key);
   }
+  getOptions() {
+    return this.options;
+  }
 
   getThemeColor() {
     // Check whether the browser support `prefers-color-scheme`
