@@ -16,6 +16,7 @@ import { GithubButtonComponent } from '../widgets/github.component';
 import { NotificationComponent } from '../widgets/notification.component';
 import { TranslateComponent } from '../widgets/translate.component';
 import { UserComponent } from '../widgets/user.component';
+import { SettingsService } from '@core/bootstrap/settings.service';
 
 @Component({
   selector: 'app-header',
@@ -34,18 +35,33 @@ import { UserComponent } from '../widgets/user.component';
     UserComponent,
   ],
 })
-export class HeaderComponent {
+export class HeaderComponent{
   @HostBinding('class') class = 'matero-header';
 
   @Input() showToggle = true;
   @Input() showBranding = false;
+ // options = this.settingsService.getOptions();
 
   @Output() toggleSidenav = new EventEmitter<void>();
   @Output() toggleSidenavNotice = new EventEmitter<void>();
 
+
+  constructor( private settingsService: SettingsService) {}
+  
+  // OnInit() {
+  //  // this.options = this.settingsService.getOptions();
+  // }
   toggleFullscreen() {
     if (screenfull.isEnabled) {
       screenfull.toggle();
     }
+  }
+
+  toggleTheme(){
+
+    let options = this.settingsService.getOptions();
+    options.theme = this.settingsService.getThemeColor() === 'dark' ? 'light' : 'dark';
+    this.settingsService.setOptions(options);
+    this.settingsService.setTheme();
   }
 }

@@ -132,7 +132,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       .subscribe((data) => {
         if (data && data?.calender_info) {
           const empDetArray = data?.monthlypunchings;
-          console.log(data);
+          // console.log(data);
           this.calendarInfo = data.calender_info;
           //find keys where the object's value is not future_date
 
@@ -143,7 +143,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
           this.sections = data.sections ? ['All', ...data.sections] : ['All'];
           // Assign the data to your dataSource for display in the table
           this.selectedMonthHint = moment(this.selectedMonth).format('MMMM YYYY');
-          console.log(empDetArray);
+          // console.log(empDetArray);
           this.dataSource = new MatTableDataSource<MonthlyPunching>(empDetArray);
           this.dataSource.paginator = this.paginator;
           this.dataSource.filterPredicate = this.getFilterPredicate();
@@ -258,7 +258,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
   mark(day_number: string, dayNData: PunchingInfo) {
     console.log(dayNData);
     console.log( this.calendarInfo[day_number]);
-    if (this.calendarInfo[day_number].holiday  ) return;
+    if (this.calendarInfo[day_number].holiday && dayNData.punching_count == 0  ) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
