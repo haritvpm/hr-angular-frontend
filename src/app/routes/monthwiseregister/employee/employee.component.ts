@@ -60,7 +60,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   getDateStyle(dateItem: any) {
     let dateColorSet = '';
-    // const dateColorDef = '#eeeeeef0';
+    const dateColorDef = '';
     if (dateItem.attendance_trace_fetch_complete) {
       if (!dateItem.is_holiday && !dateItem.is_future) {
         dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
@@ -71,7 +71,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     }
     return {
       //     'color': holiday,
-      'background-color': dateColorSet ? dateColorSet : '',
+      'background-color': dateColorSet ? dateColorSet : dateColorDef,
       'font-weight': dateColorSet ? 'bold' : '',
     };
   }
