@@ -258,7 +258,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
   mark(day_number: string, dayNData: PunchingInfo) {
     console.log(dayNData);
     console.log( this.calendarInfo[day_number]);
-    if (this.calendarInfo[day_number].holiday  ) return;
+    if (this.calendarInfo[day_number].holiday && dayNData.punching_count == 0  ) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
