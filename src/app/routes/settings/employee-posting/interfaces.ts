@@ -1,4 +1,5 @@
 export interface Employee {
+  id: number; //emp - section_id
   employee_id: number;
   name: string;
   start_date: string;
@@ -15,6 +16,7 @@ export interface Employee {
   designation_sortindex: number | null;
   default_time_group_id: number | null;
   seniority: number | null;
+  last_posting_end_date: string;
 }
 
 export interface Section {
