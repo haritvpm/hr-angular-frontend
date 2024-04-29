@@ -41,22 +41,21 @@
           mat-header-cell
           mat-sort-header
           [style.text-align]="'right'"
-          [style.background-color]="'#EEEEEEF0'"
           sortActionDescription="Sort by aadhaar number"
           *matHeaderCellDef
           sticky
         >
           <i>{{ selectedDateHint }}</i>
         </th>
-        <td
-          mat-cell
-          [style.white-space]="'nowrap'"
-          [style.background-color]="'#EEEEEEDF'"
-          *matCellDef="let employee"
-        >
-          <small>{{ employee.aadhaarid }}</small
-          >&nbsp; <b>{{ employee.name }}</b
-          ><br /><small>{{ employee.designation }}</small>
+        <td mat-cell [style.white-space]="'nowrap'" *matCellDef="let employee">
+          <a
+            [routerLink]="['/monthwiseregister/employee', employee.aadhaarid]"
+            [queryParams]="{ date: employee.start_date }"
+          >
+            <small>{{ employee.aadhaarid }}</small
+            >&nbsp; <b>{{ employee.name }}</b
+            ><br /><small>{{ employee.designation }}</small>
+          </a>
         </td>
       </ng-container>
 
@@ -84,8 +83,11 @@
           {{ employee.punchin_trace?.att_time }}
           <span
             *ngIf="employee.punching_count === 0"
-            style="color: rgb(61, 25, 221); text-align: center; font-weight: bold; font-size: large"
-            >X</span
+            [style.color]="'rgb(96, 23, 255)'"
+            matTooltipClass="allow-cr"
+            [matTooltipShowDelay]="500"
+            [matTooltip]="getTooltipText(employee)"
+            ><small><mat-icon>close</mat-icon></small></span
           >
         </td>
         <!-- <td mat-cell [style.color]="employee.punchin_trace?.att_time > '10:30:00'? 'red': ''" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
@@ -105,10 +107,12 @@
           {{ employee.punchout_trace?.att_time }}
           <span
             *ngIf="employee.punching_count < 2"
-            style="color: rgb(61, 25, 221); text-align: center; font-weight: bold; font-size: large"
+            [style.color]="'rgb(96, 23, 255)'"
+            matTooltipClass="tooltip-multiline allow-cr"
+            [matTooltipShowDelay]="500"
             [matTooltip]="getTooltipText(employee)"
             matTooltipPosition="above"
-            >X</span
+            ><small><mat-icon>close</mat-icon></small></span
           >
         </td>
       </ng-container>
@@ -149,7 +153,7 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          Total Extra Time
+          Total Extra(Min)
         </th>
         <td mat-cell [style]="getExtratimeColor(employee)" *matCellDef="let employee">
           {{ roundValue(employee.total_extra_sec / 60) }}
@@ -175,7 +179,7 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          Total Grace Time
+          Total Grace Used(Min)
         </th>
         <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
           {{ roundValue(employee.total_grace_sec / 60) }}

@@ -17,7 +17,7 @@
       <ng-container matColumnDef="day" sticky>
         <th mat-header-cell *matHeaderCellDef>Date</th>
         <td mat-cell *matCellDef="let item" [style]="getDateStyle(item)">
-          <span [style.color]="item.is_holiday == '1' ? 'red' : ''">{{
+          <span [style.color]="item.is_holiday === '1' ? 'red' : ''">{{
             item.day_str | date: 'dd-MM-yyyy'
           }}</span>
         </td>
@@ -73,7 +73,7 @@
         <td mat-cell *matCellDef="let item" [style.background-color]="getCellBgcolor(item)">
           <ng-container
             *ngIf="
-              item.punching_count == 0 &&
+              item.punching_count === 0 &&
               item.attendance_trace_fetch_complete &&
               item.is_holiday != 1
             "

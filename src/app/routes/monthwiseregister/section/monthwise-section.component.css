@@ -5,7 +5,7 @@
 }
 
 .mat-cell, .mat-header-cell {
-  padding: 0px 0px 0px 0px;
+  padding: 0;
 }
 
 table {
@@ -34,23 +34,27 @@ table {
 a:link {
   /* color: black; */
   text-decoration: none;
+
   /* background-color: transparent; */
 }
 
 a:visited {
   /* color: black; */
   text-decoration: none;
+
   /* background-color: transparent; */
 }
 
 a:hover {
   /* color: darkblue; */
   text-decoration: none;
+
   /* background-color: transparent; */
 }
 
 a:active {
   text-decoration: none;
+
   /* background-color: transparent; */
 }
 
