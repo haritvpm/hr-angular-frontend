@@ -79,9 +79,17 @@ export interface PunchTrace {
   punching_id: number | null;
 }
 
+export interface Employee {
+  id: number;
+  aadhaarid: string;
+  is_shift: boolean;
+  name: string;
+}
+
 export interface MonthwiseEmployeeApiData {
   month: string;
   calender_info: { [day: string]: CalendarDayInfo };
   data_monthly: { [aadhaarid: string]: MonthlyData };
   employee_punching: EmployeePunchingInfo[];
+  employee: Employee;
 }

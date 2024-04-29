@@ -15,3 +15,10 @@
 .date-row-is-clicked, th {
   font-weight: bold;
 }
+
+.table-container {
+  max-height: calc(105vh - 255px);
+
+  /* or height: calc(100vh - 155px); depending on your need  change */
+  overflow: auto;
+}
