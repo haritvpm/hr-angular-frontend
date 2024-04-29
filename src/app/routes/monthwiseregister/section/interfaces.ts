@@ -64,6 +64,7 @@ export interface PunchingInfo extends PunchingDay {
   name: string;
   designation: string;
   section: string | null;
+  in_section : boolean;
   in_datetime: string | null;
   out_datetime: string | null;
   duration_sec: number;

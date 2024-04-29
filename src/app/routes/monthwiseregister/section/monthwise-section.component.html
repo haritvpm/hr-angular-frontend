@@ -1,5 +1,6 @@
 
-<div>
+<!-- search form -->
+<div *ngIf="!isLoading">
   <form [formGroup]="searchForm" class="row justify-content-between">
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Month and Year</mat-label>
@@ -38,9 +39,14 @@
   </form>
 </div>
 
+<!-- progress -->
+<div *ngIf="isLoading">
+  <mat-progress-bar [color]="'accent'" mode="query"></mat-progress-bar>
+  </div>
+
 <!-- table -->
 
-<div class="mat-elevation-z1">
+<div  class="mat-elevation-z1">
   <div class="table-container">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="name" sticky>
@@ -81,7 +87,7 @@
           >
             <b> {{ $index + 1 }}</b>
           </th>
-          <td
+          <td (click)="mark(dayN, row[dayN])"
             mat-cell
             [matTooltip]="getTooltip(dayN, row)"
             matTooltipClass="allow-cr"
@@ -90,7 +96,7 @@
             [style.text-align]="'center'"
             *matCellDef="let row"
           >
-            <app-cell [item]="row[dayN]" [calendarInfo]="calendarInfo[dayN]"></app-cell>
+            <app-cell  [item]="row[dayN]" [calendarInfo]="calendarInfo[dayN]"></app-cell>
           </td>
         </ng-container>
       }
@@ -122,3 +128,4 @@
   >
   </mat-paginator>
 </div>
+

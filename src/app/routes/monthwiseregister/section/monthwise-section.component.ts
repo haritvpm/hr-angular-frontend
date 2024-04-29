@@ -10,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 
-import { AttendanceService } from './attendance.service';
+import { MonthwiseSectionService } from './monthwise-section.service';
 import { PunchingInfo, MonthlyPunching, MonthlyApiData } from './interfaces';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
@@ -22,7 +22,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { CellComponent } from './cell/cell.component';
 import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 const moment = _rollupMoment || _moment;
+import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
+import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -37,30 +40,31 @@ export const MY_FORMATS = {
 };
 
 @Component({
-    selector: 'app-monthwiseregister-attendance',
-    templateUrl: './attendance.component.html',
-    styleUrls: ['./attendance.component.css'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    encapsulation: ViewEncapsulation.None,
-    providers: [
-        provideMomentDateAdapter(MY_FORMATS),
-    ],
-    imports: [
-        RouterLink,
-        HttpClientModule, MatFormFieldModule,
-        MatTableModule,
-        MatPaginatorModule, MatTooltipModule,
-        MatSortModule, MatInputModule, MatSelectModule,
-        MatDatepickerModule, MatIconModule,
-        MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
-        CellComponent,
-        BreadcrumbComponent
-    ]
+  selector: 'app-monthwiseregister-attendance',
+  templateUrl: './monthwise-section.component.html',
+  styleUrls: ['./monthwise-section.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+    provideMomentDateAdapter(MY_FORMATS),
+  ],
+  imports: [
+    RouterLink,
+    HttpClientModule, MatFormFieldModule,
+    MatTableModule,
+    MatPaginatorModule, MatTooltipModule,
+    MatSortModule, MatInputModule, MatSelectModule,
+    MatDatepickerModule, MatIconModule,
+    MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
+    CellComponent,
+    BreadcrumbComponent, MatProgressBarModule
+  ]
 })
 
 
-export class MonthwiseregisterAttendanceComponent implements OnInit {
+export class MonthwiseSectionAttendanceComponent implements OnInit {
+
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<MonthlyPunching>([]);
   dayColumns: any;
@@ -68,7 +72,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   selectedMonth: string = moment().format('YYYY-MM-DD');
   selectedMonthHint: string = moment().format('MMMM YYYY');
   date = new FormControl(moment());
-
+  isLoading = false;
   //today's date
   todayDate: Date = new Date();
   beginDate: Date = new Date('2024-01-01');
@@ -77,7 +81,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   public searchTxt = '';
   public searchForm: FormGroup;
 
-  constructor(private attendanceService: AttendanceService) { }
+  constructor(private attendanceService: MonthwiseSectionService, private drawer: MtxDrawer) { }
 
   ngOnInit(): void {
     this.searchFormInit();
@@ -107,20 +111,22 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
   filterNonFutureDays(obj: any): any {
     const current_days: string[] = [];
     for (const key in obj) {
-       if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          const value = obj[key];
-           if(!value.future_date) {
-            current_days.push(key);
-          }
-       }
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const value = obj[key];
+        if (!value.future_date) {
+          current_days.push(key);
+        }
+      }
     }
     return current_days;
- }
+  }
 
   loadData() {
+    this.isLoading = true;
     this.attendanceService.fetchData(this.selectedMonth)
       .pipe(catchError(() => {
         console.log('Error in fetching data');
+        this.isLoading = false;
         return [];
       }))
       .subscribe((data) => {
@@ -131,7 +137,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           //find keys where the object's value is not future_date
 
           this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
-          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns , 'extra', 'info'];
+          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'info'];
 
           //  this.sections =['All'];
           this.sections = data.sections ? ['All', ...data.sections] : ['All'];
@@ -142,9 +148,13 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
           this.dataSource.paginator = this.paginator;
           this.dataSource.filterPredicate = this.getFilterPredicate();
           this.applyFilter();
+
         } else {
           this.dataSource = new MatTableDataSource<MonthlyPunching>([]);
+
         }
+
+        this.isLoading = false;
       });
   }
 
@@ -216,8 +226,7 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
 
     return '';
   }
-  getExtraStyle(row: MonthlyPunching)
-  {
+  getExtraStyle(row: MonthlyPunching) {
     const extra = this.extraTime(row);
     return extra > 600 ? 'color: green; font-weight: bold' : '';
 
@@ -235,14 +244,31 @@ export class MonthwiseregisterAttendanceComponent implements OnInit {
     else if (rowVal?.punching_count == 1) tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
     else {
-      tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' +  hint ;
+      tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' + hint;
 
-      tip += '\n Grace (min): ' + Math.round(rowVal?.grace_sec / 60) ;
-      tip += '\n Extra (min): ' + Math.round(rowVal?.extra_sec / 60) ;
-      if( rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min' ;
+      tip += '\n Grace (min): ' + Math.round(rowVal?.grace_sec / 60);
+      tip += '\n Extra (min): ' + Math.round(rowVal?.extra_sec / 60);
+      if (rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min';
       //tip += '\n Grace exceeded by (min) : ' + Math.round(rowVal?.grace_total_exceeded_one_hour/60) ;
 
     }
     return tip;
   }
+
+  mark(day_number: string, dayNData: PunchingInfo) {
+    console.log(dayNData);
+    console.log( this.calendarInfo[day_number]);
+    if (this.calendarInfo[day_number].holiday  ) return;
+
+    const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
+      width: '300px',
+      data: { punchingInfo: dayNData },
+    });
+
+    drawerRef.afterDismissed().subscribe(result => {
+      console.log('The drawer was dismissed - ' + result);
+      // this.animal = result;
+    });
+  }
+
 }

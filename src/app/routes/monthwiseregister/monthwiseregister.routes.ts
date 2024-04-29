@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { MonthwiseregisterAttendanceComponent } from './attendance/attendance.component';
+import { MonthwiseSectionAttendanceComponent } from './section/monthwise-section.component';
 import { MonthwiseregisterEmployeeComponent } from './employee/employee.component';
 
-export const routes: Routes = [{ path: '', component: MonthwiseregisterAttendanceComponent },
+export const routes: Routes = [{ path: '', component: MonthwiseSectionAttendanceComponent },
 { path: 'employee/:aadhaarid', component: MonthwiseregisterEmployeeComponent },
 { path: 'employee/:aadhaarid/:date', component: MonthwiseregisterEmployeeComponent },
 ];

@@ -1,34 +1,28 @@
+<form class="form-field-full" [formGroup]="postingForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>New Posting</mat-card-title>
+    </mat-card-header>
 
-    <form  class="form-field-full" [formGroup]="postingForm">
+    <mat-card-content>
 
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>New Posting</mat-card-title>
-        </mat-card-header>
-
-        <mat-card-content>
-
-          <div class="row">
-
-          <div class="col-sm-12">
-
-          <mat-form-field class="w-full">
-            <mat-label>Employee</mat-label>
-            <mtx-select [items]="(freeEmployees$ | async)!" bindLabel="name" bindValue="id" autofocus
+        <mat-form-field class="w-full">
+          <mat-label>Employee</mat-label>
+          <mtx-select
+            [items]="(freeEmployees$ | async)!"
+            bindLabel="name"
+            bindValue="id"
+            autofocus
             (change)="employeeChange($event)"
-            formControlName="employee_id" >
-            </mtx-select>
-          </mat-form-field>
-        </div>
-    </div>
-    <div class="row">
-
-      <div class="col-sm-4">
+            formControlName="employee_id"
+          >
+          </mtx-select>
+        </mat-form-field>
 
         <mat-form-field>
           <mat-label>Starting date</mat-label>
           <input
-          formControlName="start_date"
+            formControlName="start_date"
             readonly
             matInput
             [min]="min_startdate"
@@ -40,34 +34,42 @@
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-      </div>
 
-      <div class="col-sm-4">
         <mat-form-field class="w-full">
           <mat-label>select section</mat-label>
-          <mtx-select [items]="sections" bindLabel="name" bindValue="id"
-          formControlName="section_id">
+          <mtx-select
+            [items]="sections"
+            bindLabel="name"
+            bindValue="id"
+            formControlName="section_id"
+          >
           </mtx-select>
         </mat-form-field>
 
-      </div>
-      <div class="col-sm-4">
-      <mat-form-field class="w-full">
-        <mat-label>select attendance-book</mat-label>
-        <mtx-select [items]="attendancebooks" bindLabel="name" bindValue="id"
-        formControlName="attendance_book_id">
-        </mtx-select>
-      </mat-form-field>
-    </div>
-    </div>
+        @if(attendancebooks.length){
+        <mat-form-field class="w-full">
+          <mat-label>select attendance-book</mat-label>
+          <mtx-select
+            [items]="attendancebooks"
+            bindLabel="name"
+            bindValue="id"
+            formControlName="attendance_book_id"
+          >
+          </mtx-select>
+        </mat-form-field>
+      }
 
-    <div class="row">
-      <button mat-flat-button color="accent"
-      [disabled]="!!postingForm.invalid" [loading]="isSubmitting"
-    (click)="addPosting()">Save</button>
-    </div>
+        <button
+          mat-flat-button
+          color="accent"
+          [disabled]="!!postingForm.invalid"
+          [loading]="isSubmitting"
+          (click)="addPosting()"
+        >
+          Save
+        </button>
 
-         </mat-card-content>
-      </mat-card>
+
+    </mat-card-content>
+  </mat-card>
 </form>
-
