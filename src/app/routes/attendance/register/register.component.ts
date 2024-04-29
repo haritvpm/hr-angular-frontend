@@ -23,7 +23,7 @@ const moment = _rollupMoment || _moment;
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   standalone: true,
-  imports: [MatTableModule,RouterLink,
+  imports: [MatTableModule, RouterLink,
     MatPaginatorModule,
     MatSortModule, MatInputModule,
     MatDatepickerModule, MatIcon, MatBadgeModule,
@@ -149,19 +149,20 @@ export class AttendanceRegisterComponent implements OnInit {
         'font-weight': 'bold'
       };
   }
-  // getPunchInStyle(employee: any){
-  //   if(employee.punching_count == 0) return {
 
-  //   }
+  getTooltipText(employee: any): any {
 
-  // }
-  // tooltipText(employee : any){
+    const name = employee.name + '\n';
 
-  // }
-  getTooltipText(employee : any){
-    return employee.name + '\n' +  'No Punching';
+    if (employee.punching_count === 0) {
+      return name + 'No Punching';
+    }
+    else if (employee.punching_count < 2) {
+      return name + 'Missing Punch Out';
 
-
+    }
+    return '';
   }
-
 }
+
+
