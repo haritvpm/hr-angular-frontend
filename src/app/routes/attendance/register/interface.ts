@@ -38,5 +38,5 @@ export interface DailyPunchingApi {
   is_future: boolean
   is_today: boolean
   date_dmY: string
-
+  sections : string[]
 }

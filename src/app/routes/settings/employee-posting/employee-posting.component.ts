@@ -41,10 +41,9 @@ import { Router } from '@angular/router';
 export class EmployeePostingComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['aadhaarid', 'employee', 'section', 'startDate', 'endDate', 'action'];
+  displayedColumns: string[] = ['aadhaarid', 'employee', 'section',  'startDate', 'endDate', 'action'];
   dataSource = new MatTableDataSource<Employee>();
   data: Employee[] = [];
-  attendancebooks: AttendanceBook[] = [];
   sections : Section[] = [];
 
   constructor(private employeeService: EmployeePostingService,
@@ -76,7 +75,6 @@ export class EmployeePostingComponent implements OnInit {
       console.log(data);
       this.dataSource.data = data.employees_under_my_section;
       this.dataSource.paginator = this.paginator;
-      this.attendancebooks = data.attendancebooks;
       this.sections = data.sections;
       this.dataSource.sort = this.sort;
     });
@@ -106,7 +104,7 @@ export class EmployeePostingComponent implements OnInit {
 
 
   addEmployee() {
-    this.router.navigate(['/settings/employee-posting-add'], { state: { attendancebooks: this.attendancebooks, sections : this.sections } });
+    this.router.navigate(['/settings/employee-posting-add'], { state: { sections : this.sections } });
   }
 
 }

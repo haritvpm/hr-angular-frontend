@@ -14,9 +14,16 @@ import { CommonModule } from '@angular/common';
 export class CellComponent implements OnInit {
   @Input() item: PunchingInfo;
   @Input() calendarInfo: any;
+  // @Input() isSectionOfficer: boolean;
+  // @Input() isController: boolean;
+
+
+
   casual_fn: boolean = false;
   casual_an: boolean = false;
   casual: boolean = false;
+  casual_color: string = 'red';
+
   fetch_pending: boolean = false;
   icon_color: string = 'primary';
   icon_name: string = '';
@@ -31,6 +38,7 @@ export class CellComponent implements OnInit {
         this.casual = this.item.hint === 'casual';
         this.casual_fn = this.item.hint === 'casual_fn';
         this.casual_an = this.item.hint === 'casual_an';
+        this.casual_color = 'blue';
       } else {
         this.casual = this.item.computer_hint === 'casual';
         if( this.item.grace_total_exceeded_one_hour > 1800 ){
@@ -60,7 +68,7 @@ export class CellComponent implements OnInit {
             this.icon_color = '#6017ff';
           }
         }
-      
+
       // @if (item.grace_sec > 3600 ) {
       //   <span style="color: #FF1744;" > <mat-icon>alarm</mat-icon></span>
       // }

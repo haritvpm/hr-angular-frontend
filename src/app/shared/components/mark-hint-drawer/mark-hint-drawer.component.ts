@@ -29,13 +29,14 @@ export class MarkHintDrawerComponent implements OnInit {
     { label: 'Casual FN', value: 'casual_fn' },
     { label: 'Casual AN', value: 'casual_an' },
     { label: 'Casual', value: 'casual' },
+    { label: 'Comp Leave', value: 'comp_leave' },
     { label: 'Earned', value: 'earned' },
     { label: 'Commutted', value: 'commuted' },
     { label: 'Half-Pay', value: 'halfpay' },
-    { label: 'Comp Off', value: 'comp_off' },
-    { label: 'Comp Leave', value: 'comp_leave' },
+    { label: 'Duty Off', value: 'duty_off' },
     { label: 'Duty', value: 'duty' },
-    { label: 'Other', value: 'Other' },
+    { label: 'Other', value: 'other' },
+    { label: 'Clear', value: 'clear' },
   ];
 
   selected: string = '';
@@ -49,6 +50,9 @@ export class MarkHintDrawerComponent implements OnInit {
   }
 
   onOkClick() {
+
+    //save the selected value
+
     this.drawerRef.dismiss(this.selected);
   }
 }

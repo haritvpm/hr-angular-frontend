@@ -6,7 +6,7 @@ export interface Employee {
   end_date: string | null;
   aadhaarid: string;
   attendance_book_id: number | null;
-  attendance_book: string;
+  attendance_book: AttendanceBook | null;
   section_id: number;
   section_name: string;
   seat_of_controlling_officer_id: number;
@@ -31,7 +31,9 @@ export interface Section {
   office_location_id: number;
   seat_of_reporting_officer_id: number;
   js_as_ss_employee_id: number;
+  section_attendance_books: AttendanceBook[];
 }
+
 export interface AttendanceBook {
   id: number;
   title: string;

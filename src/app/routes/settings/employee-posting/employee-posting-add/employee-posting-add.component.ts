@@ -36,6 +36,7 @@ import { EmployeePostingService } from '../employee-posting.service';
 export class EmployeePostingAddComponent implements OnInit {
 
 
+
   today = new Date();
   min_startdate = new Date();
 
@@ -52,7 +53,6 @@ export class EmployeePostingAddComponent implements OnInit {
   ) {
     const state: any = location.getState();
     if (state) {
-      this.attendancebooks = state.attendancebooks;
       this.sections = state.sections;
     }
   }
@@ -110,6 +110,11 @@ export class EmployeePostingAddComponent implements OnInit {
     } else {
       this.min_startdate = new Date('2024-01-01');
     }
-
   }
+
+  sectionChange($event: any) {
+    const section = $event ;
+    this.attendancebooks = section.section_attendance_books;
+  }
+
 }
