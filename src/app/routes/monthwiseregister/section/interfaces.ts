@@ -1,3 +1,10 @@
+export interface AttendanceBook{
+
+  id: number;
+  section_id: number;
+  title: string;
+}
+
 export interface MonthlyPunching {
   employee_id: number;
   name: string;
@@ -5,7 +12,7 @@ export interface MonthlyPunching {
   end_date: string | null;
   aadhaarid: string;
   attendance_book_id: number | null;
-  attendance_book: string | null;
+  attendance_book: AttendanceBook | null;
   section_id: number;
   section_name: string | null;
   works_nights_during_session: number;

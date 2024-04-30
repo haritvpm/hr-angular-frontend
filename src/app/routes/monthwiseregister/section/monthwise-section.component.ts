@@ -183,20 +183,21 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       // split string per '$' to array
       const filterArray = filters.split('$');
       const searchTxt = filterArray[0];
-      const section = filterArray[1];
+      const section = filterArray[1].replace('/', '');
       // console.log('searchTxt'+searchTxt);
       const matchFilter = [];
 
       // Fetch data from row
       const columnName = row.aadhaarid + row.name + row.designation;
       const columnSection = row?.section_name || '';
+      const attendance_book = row.attendance_book?.title || '';
       // console.log('section'+section+';');
       // console.log('columnSection'+columnSection+';');
 
       // verify fetching data by our searching values
 
       const customFilterN = columnName.toLowerCase().includes(searchTxt);
-      const customFilterS = columnSection.toLowerCase() == section || section == '' || section == 'All';
+      const customFilterS = columnSection.toLowerCase() == section || section == '' || section == 'All' || attendance_book.toLowerCase().includes(section);
 
       // push boolean values into array
       matchFilter.push(customFilterN);
