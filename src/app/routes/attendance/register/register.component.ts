@@ -149,19 +149,34 @@ export class AttendanceRegisterComponent implements OnInit {
         'font-weight': 'bold'
       };
   }
+  getDurationColour(employee: any) {
+    if (employee.punching_count < 2 && this.is_today === false) return {
+      'color': 'red',
+      'font-weight': 'bold',
+      'text-align': 'center',
+      'font-size': 'small'
+    };
+    if(employee.punching_count < 2 && this.is_today === true)
+    return {
+      'color': 'black',
+      'font-weight': 'bold',
+      'text-align': 'center',
+      'font-size': 'small'
 
-  getTooltipText(employee: any): any {
+    };else{
+      return {};
+    }
 
-    const name = employee.name + '\n';
+  }
 
+  getTooltipContent(employee: any): string {
+    let tooltipContent = employee.name + '\n';
     if (employee.punching_count === 0) {
-      return name + 'No Punching';
+      tooltipContent += '\n"No Punching"';
+    } else if (employee.punching_count < 2) {
+      tooltipContent += '\n"Missing Punch Out"';
     }
-    else if (employee.punching_count < 2) {
-      return name + 'Missing Punch Out';
-
-    }
-    return '';
+    return tooltipContent;
   }
 }
 

@@ -79,15 +79,18 @@
         >
           Punch In
         </th>
+
         <td mat-cell *matCellDef="let employee">
           {{ employee.punchin_trace?.att_time }}
           <span
             *ngIf="employee.punching_count === 0"
             [style.color]="'rgb(96, 23, 255)'"
-            matTooltipClass="allow-cr"
+            [matTooltip]="getTooltipContent(employee)"
+            matTooltipPosition="above"
             [matTooltipShowDelay]="500"
-            [matTooltip]="getTooltipText(employee)"
-            ><small><mat-icon>close</mat-icon></small></span
+            matTooltipClass="allow-cr"
+          >
+            <small><mat-icon>close</mat-icon></small></span
           >
         </td>
         <!-- <td mat-cell [style.color]="employee.punchin_trace?.att_time > '10:30:00'? 'red': ''" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
@@ -108,11 +111,12 @@
           <span
             *ngIf="employee.punching_count < 2"
             [style.color]="'rgb(96, 23, 255)'"
-            matTooltipClass="tooltip-multiline allow-cr"
-            [matTooltipShowDelay]="500"
-            [matTooltip]="getTooltipText(employee)"
+            [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
-            ><small><mat-icon>close</mat-icon></small></span
+            [matTooltipShowDelay]="500"
+            matTooltipClass="allow-cr"
+          >
+            <small><mat-icon>close</mat-icon></small></span
           >
         </td>
       </ng-container>
@@ -128,11 +132,14 @@
         </th>
         <td mat-cell *matCellDef="let employee">
           {{ employee.duration_str }}
-          <span
+          <!-- <span
             *ngIf="employee.punching_count < 2"
-            style="color: red; text-align: center; font-weight: bold; font-size: small"
-            >0</span
-          >
+            [style]="getDurationColour(employee)"
+            >-</span
+          > -->
+          <span *ngIf="is_today === true && employee.punching_count < 2" [style]="getDurationColour(employee)" > - </span>
+          <span *ngIf="is_today === false && employee.punching_count < 2" [style]="getDurationColour(employee)"> 0 </span>
+
         </td>
       </ng-container>
       <ng-container matColumnDef="extra_str">

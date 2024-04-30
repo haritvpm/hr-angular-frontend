@@ -1,7 +1,7 @@
 
 
 .allow-cr {
-  white-space: pre;
+  white-space: pre-line;
 }
 
 .mat-row {
