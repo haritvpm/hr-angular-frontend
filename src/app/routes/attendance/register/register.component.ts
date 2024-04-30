@@ -150,18 +150,14 @@ export class AttendanceRegisterComponent implements OnInit {
       };
   }
 
-  getTooltipText(employee: any): any {
-
-    const name = employee.name + '\n';
-
+  getTooltipContent(employee: any): string {
+    let tooltipContent = employee.name + '\n';
     if (employee.punching_count === 0) {
-      return name + 'No Punching';
+      tooltipContent += '\n"No Punching"';
+    } else if (employee.punching_count < 2) {
+      tooltipContent += '\n"Missing Punch Out"';
     }
-    else if (employee.punching_count < 2) {
-      return name + 'Missing Punch Out';
-
-    }
-    return '';
+    return tooltipContent;
   }
 }
 
