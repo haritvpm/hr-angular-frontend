@@ -1,4 +1,3 @@
-
 <p class="heading">
   <!-- Mark Leave -->
   <span class="flex-spacer"></span>
@@ -7,39 +6,44 @@
   </button>
 </p>
 
-<div class="text-center" >
-<div style="font-weight: bold;"> {{data.punchingInfo.name}}</div>
-<small>{{data.punchingInfo.designation}}</small> <br>
-<mat-divider class="m-t-8"></mat-divider>
-<h4>{{data.punchingInfo.date}}</h4>
-{{ data.punchingInfo.in_time }} - {{ data.punchingInfo.out_time }}
+<div class="text-center">
+  <div style="font-weight: bold;"> {{data.punchingInfo.name}}</div>
+  <small>{{data.punchingInfo.designation}}</small> <br>
+  <mat-divider class="m-t-8"></mat-divider>
+  <h4>{{data.punchingInfo.date}}</h4>
+  {{ data.punchingInfo.in_time }} - {{ data.punchingInfo.out_time }}
 </div>
-<mat-divider></mat-divider>
+<mat-divider class="m-b-8" ></mat-divider>
 @if (!data.punchingInfo.in_section ) {
   Not posted in section
-} @else {
+  } @else {
 
+  @if(canMarkLeave){
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="selected">
+    <div class="row">
 
-
-  <mat-radio-group  aria-label="Select an option" [(ngModel)]="selected">
-<div class="row">
-
-
-    <ng-container    *ngFor="let option of list">
-      <div class="col-sm-6">
-      <mat-radio-button [value]="option.value"> <small> {{option.label}} </small> </mat-radio-button>
+      <ng-container *ngFor="let option of list">
+        <div class="col-sm-6">
+          <mat-radio-button [value]="option.value"> <small> {{option.label}} </small>
+          </mat-radio-button>
+        </div>
+      </ng-container>
     </div>
-    </ng-container>
 
-  </div>
   </mat-radio-group>
 
+  } @else {
+
+  {{selectedLabel}}
+
+  }
+
+  @if(canMarkLeave){
   <mat-divider></mat-divider>
-
-
-<div class="m-t-8">
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [color]="'accent'"  (click)="onOkClick()" cdkFocusInitial>Ok</button>
-</div>
+  <div class="m-t-8">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [color]="'accent'" (click)="onOkClick()" cdkFocusInitial>Ok</button>
+  </div>
+  }
 
 }

@@ -40,9 +40,22 @@ export class MarkHintDrawerComponent implements OnInit {
   ];
 
   selected: string = '';
-
+  canMarkLeave: boolean = false;
+  selectedLabel: string = '';
   ngOnInit() {
     this.selected = this.data.punchingInfo.hint || this.data.punchingInfo.computer_hint;
+
+    this.selectedLabel = this.list.find((x:any) => x.value == this.selected)?.label || '';
+
+    if(this.data.monthlyPunching.logged_in_user_is_controller || 
+       this.data.monthlyPunching.logged_in_user_is_section_officer && !this.data.punchingInfo.finalized_by_controller)
+    {
+      this.canMarkLeave = true;
+      
+    }
+    
+
+
   }
 
   onNoClick(): void {

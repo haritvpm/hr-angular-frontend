@@ -137,7 +137,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       .subscribe((data) => {
         if (data && data?.calender_info) {
           const empDetArray = data?.monthlypunchings;
-          // console.log(data);
+          console.log(data);
           this.calendarInfo = data.calender_info;
           //find keys where the object's value is not future_date
 
@@ -270,7 +270,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
-      data: { punchingInfo: dayNData },
+      data: { punchingInfo: dayNData, monthlyPunching: row },
     });
 
     drawerRef.afterDismissed().subscribe(hint => {
