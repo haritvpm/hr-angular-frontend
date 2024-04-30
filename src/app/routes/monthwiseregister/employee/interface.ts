@@ -59,7 +59,7 @@ export interface EmployeePunchingInfo {
   leave_id?: number | null;
   punchin_trace?: PunchTrace | null;
   punchout_trace?: PunchTrace | null;
-  leave?: any | null;
+  leave?: any ;
 }
 
 export interface PunchTrace {

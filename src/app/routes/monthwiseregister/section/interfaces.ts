@@ -25,6 +25,8 @@ export interface MonthlyPunching {
   seniority: number;
   total_grace_sec : number | null;
   total_extra_sec : number | null;
+  total_grace_str : string | null;
+  total_extra_str : string | null;
   total_grace_exceeded300_date : string | null;
   day1: PunchingInfo | PunchingDay;
   day2: PunchingInfo | PunchingDay;
@@ -72,6 +74,8 @@ export interface PunchingInfo extends PunchingDay {
   designation: string;
   section: string | null;
   in_section : boolean;
+  in_time: string | null;
+  out_time: string | null;
   in_datetime: string | null;
   out_datetime: string | null;
   duration_sec: number;
@@ -81,7 +85,7 @@ export interface PunchingInfo extends PunchingDay {
   grace_str: string;
   extra_str: string;
   remarks: string | null;
-  finalized_by_controller: any; // You may want to specify a more specific type here
+  finalized_by_controller: number; // You may want to specify a more specific type here
   ot_sitting_sec: number | null;
   ot_nonsitting_sec: number | null;
   hint: any; // You may want to specify a more specific type here
@@ -96,6 +100,7 @@ export interface PunchingInfo extends PunchingDay {
   punchout_trace_id: number | null;
   leave_id: number | null;
   grace_exceeded300_and_today_has_grace : boolean;
+  cl_taken: number;
 }
 
 export interface MonthlyApiData {

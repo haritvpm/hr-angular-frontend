@@ -26,6 +26,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 const moment = _rollupMoment || _moment;
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
+import { EmployeeService } from '../employee/employee.service';
 
 export const MY_FORMATS = {
   parse: {
@@ -81,7 +82,11 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
   public searchTxt = '';
   public searchForm: FormGroup;
 
-  constructor(private attendanceService: MonthwiseSectionService, private drawer: MtxDrawer) { }
+  constructor(
+    private attendanceService: MonthwiseSectionService,
+    private drawer: MtxDrawer,
+    private employeeService: EmployeeService
+  ) { }
 
   ngOnInit(): void {
     this.searchFormInit();
@@ -137,7 +142,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
           //find keys where the object's value is not future_date
 
           this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
-          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'info'];
+          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'CL'];
 
           //  this.sections =['All'];
           this.sections = data.sections ? ['All', ...data.sections] : ['All'];
@@ -228,14 +233,15 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     return '';
   }
   getExtraStyle(row: MonthlyPunching) {
-    const extra = this.extraTime(row);
-    return extra > 600 ? 'color: green; font-weight: bold' : '';
+    const extra = row?.total_extra_sec || 0;
+    const extraMin = Math.ceil(Math.max(extra / 60, 0));
+    return extraMin > 600 ? 'color: green; font-weight: bold' : '';
 
   }
-  extraTime(row: MonthlyPunching) {
-    const extra = row?.total_extra_sec || 0;
-    return Math.ceil(Math.max(extra / 60, 0));
-  }
+  // extraTime(row: MonthlyPunching) {
+  //   const extra = row?.total_extra_sec || 0;
+  //   return Math.ceil(Math.max(extra / 60, 0));
+  // }
   getTooltip(dayN: string, row: any) {
     const rowVal = row[dayN];
     let tip = rowVal.name + '\n';
@@ -247,8 +253,9 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     else {
       tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' + hint;
 
-      tip += '\n Grace (min): ' + Math.round(rowVal?.grace_sec / 60);
-      tip += '\n Extra (min): ' + Math.round(rowVal?.extra_sec / 60);
+      tip += '\n Grace (min): ' +rowVal?.grace_str;
+      tip += '\n Extra (min): ' + rowVal?.extra_str;
+
       if (rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min';
       //tip += '\n Grace exceeded by (min) : ' + Math.round(rowVal?.grace_total_exceeded_one_hour/60) ;
 
@@ -256,19 +263,26 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     return tip;
   }
 
-  mark(day_number: string, dayNData: PunchingInfo) {
+  mark(day_number: string, dayNData: PunchingInfo, row: MonthlyPunching) {
     console.log(dayNData);
-    console.log( this.calendarInfo[day_number]);
-    if (this.calendarInfo[day_number].holiday && dayNData.punching_count == 0  ) return;
+    console.log(this.calendarInfo[day_number]);
+    if (this.calendarInfo[day_number].holiday && dayNData.punching_count == 0) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
       data: { punchingInfo: dayNData },
     });
 
-    drawerRef.afterDismissed().subscribe(result => {
-      console.log('The drawer was dismissed - ' + result);
-      // this.animal = result;
+    drawerRef.afterDismissed().subscribe(hint => {
+      console.log('The drawer was dismissed - ' + hint);
+      if (!hint) return;
+      if(!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
+      if(row.logged_in_user_is_section_officer && dayNData.finalized_by_controller) return;
+
+      this.employeeService.saveHint(dayNData.aadhaarid, dayNData.date, hint).subscribe((data) => {
+        console.log(data);
+        this.loadData();
+      });
     });
   }
 
