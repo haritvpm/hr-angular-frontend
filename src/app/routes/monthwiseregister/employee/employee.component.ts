@@ -23,7 +23,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
   displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
   clickedRows = new Set<EmployeePunchingInfo>();
-  employeeInfo: Employee;
+  employeeInfo: Employee | null;
 
   constructor(
     private route: ActivatedRoute,

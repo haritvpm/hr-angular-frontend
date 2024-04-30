@@ -2,11 +2,23 @@
   <form class="row justify-content-between">
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Name</mat-label>
-      <input readonly matInput value="{{ employeeInfo.name }}" />
+      <input readonly matInput [value]="employeeInfo?.name" />
     </mat-form-field>
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Attendance Id</mat-label>
-      <input readonly matInput value="{{ employeeInfo.aadhaarid }}" />
+      <input readonly matInput [value]="employeeInfo?.aadhaarid" />
+    </mat-form-field>
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Attendance Id</mat-label>
+      <input readonly matInput [value]="employeeInfo?.aadhaarid" />
+    </mat-form-field>
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Attendance Id</mat-label>
+      <input readonly matInput [value]="employeeInfo?.aadhaarid" />
+    </mat-form-field>
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Attendance Id</mat-label>
+      <input readonly matInput [value]="employeeInfo?.aadhaarid" />
     </mat-form-field>
   </form>
 </div>
@@ -17,7 +29,7 @@
       <ng-container matColumnDef="day" sticky>
         <th mat-header-cell *matHeaderCellDef>Date</th>
         <td mat-cell *matCellDef="let item" [style]="getDateStyle(item)">
-          <span [style.color]="item.is_holiday === '1' ? 'red' : ''">{{
+          <span [style.color]="item.is_holiday === 1 ? 'red' : ''">{{
             item.day_str | date: 'dd-MM-yyyy'
           }}</span>
         </td>
