@@ -149,6 +149,25 @@ export class AttendanceRegisterComponent implements OnInit {
         'font-weight': 'bold'
       };
   }
+  getDurationColour(employee: any) {
+    if (employee.punching_count < 2 && employee.is_today === false) return {
+      'color': 'red',
+      'font-weight': 'bold',
+      'text-align': 'center',
+      'font-size': 'small'
+    };
+    else if(employee.punching_count < 2 && employee.is_today === true)
+    return {
+      'color': 'black',
+      'font-weight': 'bold',
+      'text-align': 'center',
+      'font-size': 'small'
+
+    };else{
+      return {};
+    }
+
+  }
 
   getTooltipContent(employee: any): string {
     let tooltipContent = employee.name + '\n';
