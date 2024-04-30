@@ -11,7 +11,8 @@
 <div style="font-weight: bold;"> {{data.punchingInfo.name}}</div>
 <small>{{data.punchingInfo.designation}}</small> <br>
 <mat-divider class="m-t-8"></mat-divider>
-<h4 class="text-center" >{{data.punchingInfo.date}}</h4>
+<h4>{{data.punchingInfo.date}}</h4>
+{{ data.punchingInfo.in_time }} - {{ data.punchingInfo.out_time }}
 </div>
 <mat-divider></mat-divider>
 @if (!data.punchingInfo.in_section ) {
