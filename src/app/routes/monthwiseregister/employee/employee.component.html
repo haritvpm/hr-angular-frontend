@@ -1,15 +1,30 @@
-<div class="m-x-8 flex-grow-1">
-  <form class="row justify-content-between">
+<div class="row m-x-8 flex-grow-1 justify-content-between">
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Name</mat-label>
-      <input readonly matInput value="{{ employeeInfo.name }}" />
+      <input readonly matInput [value]="employeeInfo?.name" />
     </mat-form-field>
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Attendance Id</mat-label>
-      <input readonly matInput value="{{ employeeInfo.aadhaarid }}" />
+      <input readonly matInput [value]="employeeInfo?.aadhaarid" />
     </mat-form-field>
-  </form>
-</div>
+    </div>
+    <div class="row m-x-8 flex-grow-1">
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Total Extra Time</mat-label>
+      <input readonly matInput [value]="monthlyData?.total_extra_str" />
+    </mat-form-field>
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Total Grace Used</mat-label>
+      <input readonly matInput [value]="monthlyData?.total_grace_str" />
+    </mat-form-field>
+
+    @if ((monthlyData?.total_grace_exceeded300_date)) {
+      <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+        <mat-label>Grace 300 Exceeded Date</mat-label>
+        <input readonly matInput [value]="monthlyData?.total_grace_exceeded300_date | date: 'dd-MM-yyyy'" />
+      </mat-form-field>
+    }
+    </div>
 
 <div class="mat-elevation-z1">
   <div class="table-container">
@@ -17,7 +32,7 @@
       <ng-container matColumnDef="day" sticky>
         <th mat-header-cell *matHeaderCellDef>Date</th>
         <td mat-cell *matCellDef="let item" [style]="getDateStyle(item)">
-          <span [style.color]="item.is_holiday === '1' ? 'red' : ''">{{
+          <span [style.color]="item.is_holiday === 1 ? 'red' : ''">{{
             item.day_str | date: 'dd-MM-yyyy'
           }}</span>
         </td>
@@ -87,8 +102,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr
         mat-row
-        (click)="clickedRows.add(row)"
-        [class.date-row-is-clicked]="clickedRows.has(row)"
+
         *matRowDef="let row; columns: displayedColumns"
       ></tr>
     </table>
