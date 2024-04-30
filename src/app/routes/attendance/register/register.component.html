@@ -137,12 +137,8 @@
             [style]="getDurationColour(employee)"
             >-</span
           > -->
-          <span *ngIf="employee.punching_count < 2 && employee.is_today">
-            -
-          </span>
-          <span *ngIf="employee.punching_count < 2 && !employee.is_today">
-            0
-          </span>
+          <span *ngIf="is_today === true && employee.punching_count < 2" [style]="getDurationColour(employee)" > - </span>
+          <span *ngIf="is_today === false && employee.punching_count < 2" [style]="getDurationColour(employee)"> 0 </span>
 
         </td>
       </ng-container>

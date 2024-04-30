@@ -150,13 +150,13 @@ export class AttendanceRegisterComponent implements OnInit {
       };
   }
   getDurationColour(employee: any) {
-    if (employee.punching_count < 2 && employee.is_today === false) return {
+    if (employee.punching_count < 2 && this.is_today === false) return {
       'color': 'red',
       'font-weight': 'bold',
       'text-align': 'center',
       'font-size': 'small'
     };
-    else if(employee.punching_count < 2 && employee.is_today === true)
+    if(employee.punching_count < 2 && this.is_today === true)
     return {
       'color': 'black',
       'font-weight': 'bold',
