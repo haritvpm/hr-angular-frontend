@@ -257,6 +257,9 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' + hint;
 
       tip += '\n Grace (min): ' +rowVal?.grace_str;
+
+      if(rowVal.grace_sec > 3600) tip += ' ( > 60 min)';
+
       tip += '\n Extra (min): ' + rowVal?.extra_str;
 
       if (rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min';

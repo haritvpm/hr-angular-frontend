@@ -65,7 +65,10 @@ export class CellComponent implements OnInit {
 
       //icon to show
       if (this.item.punching_count >= 2) {
-        this.icon_color = this.item.grace_sec > 3600 ? '#FF1744' : 'gray';
+
+        this.icon_color = this.item.grace_sec > 3600 ? '#880E4F'
+        : this.grace_exceeded300_and_today_has_grace_alarm_show ? '#FF1744'  : 'gray';
+
         this.icon_name = this.item.punching_count == 2 ? 'looks_two' :
           this.item.punching_count == 3 ? 'looks_3' :
             this.item.punching_count == 4 ? 'looks_4' :

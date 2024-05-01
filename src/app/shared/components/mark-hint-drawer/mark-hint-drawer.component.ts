@@ -9,6 +9,7 @@ import { MatInput } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { BrowserModule } from '@angular/platform-browser';
 import { MTX_DRAWER_DATA, MtxDrawerRef } from '@ng-matero/extensions/drawer';
+import moment from 'moment';
 
 @Component({
   selector: 'app-mark-hint-drawer',
@@ -47,13 +48,14 @@ export class MarkHintDrawerComponent implements OnInit {
 
     this.selectedLabel = this.list.find((x:any) => x.value == this.selected)?.label || '';
 
-    if(this.data.monthlyPunching.logged_in_user_is_controller || 
-       this.data.monthlyPunching.logged_in_user_is_section_officer && !this.data.punchingInfo.finalized_by_controller)
+    if(this.data.monthlyPunching.logged_in_user_is_controller ||
+        (this.data.monthlyPunching.logged_in_user_is_section_officer &&
+        !this.data.punchingInfo.finalized_by_controller))
     {
       this.canMarkLeave = true;
-      
+
     }
-    
+
 
 
   }
@@ -68,4 +70,11 @@ export class MarkHintDrawerComponent implements OnInit {
 
     this.drawerRef.dismiss(this.selected);
   }
+
+
+  getDateExceeded300() {
+    return moment(this.data.monthlyPunching.total_grace_exceeded300_date).format('MMM DD');
+  }
+
+
 }

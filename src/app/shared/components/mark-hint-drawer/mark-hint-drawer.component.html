@@ -10,10 +10,39 @@
   <div style="font-weight: bold;"> {{data.punchingInfo.name}}</div>
   <small>{{data.punchingInfo.designation}}</small> <br>
   <mat-divider class="m-t-8"></mat-divider>
-  <h4>{{data.punchingInfo.date}}</h4>
+  <b>{{data.punchingInfo.date}}</b> <br>
   {{ data.punchingInfo.in_time }} - {{ data.punchingInfo.out_time }}
+
+  <mat-divider class="m-b-4"></mat-divider>
+  <small>
+  @if( data.punchingInfo.punching_count  >= 2 ) {
+    Gr:<span [style.color]="data.punchingInfo.grace_sec > 3600 || data.punchingInfo.grace_exceeded300_and_today_has_grace ? 'red' : 'primary' "> {{data.punchingInfo.grace_str || 0}}; &nbsp;</span>
+  }
+
+
+  Gr Total:  <span [style.color]="data.monthlyPunching.total_grace_sec > 300*60 ? 'red' : 'primary' ">  {{data.monthlyPunching.total_grace_str}} </span> min<br>
+
+
+  @if( data.monthlyPunching.total_grace_exceeded300_date ) {
+    Exceeded 300 on: {{getDateExceeded300()}} <br>
+  }
+  <mat-divider class="m-b-4"></mat-divider>
+  Ex: {{data.monthlyPunching.total_extra_str}} hours <br>
+</small>
+
 </div>
+
+@if( data.punchingInfo.finalized_by_controller){
+  <div class="text-center">
+    <i [style.color]="'green'" class="material-icons">check_circle</i>
+    <small> Regularised</small>
+  </div>
+}
+
 <mat-divider class="m-b-8" ></mat-divider>
+
+
+
 @if (!data.punchingInfo.in_section ) {
   Not posted in section
   } @else {
@@ -40,7 +69,7 @@
 
   @if(canMarkLeave){
   <mat-divider></mat-divider>
-  <div class="m-t-8">
+  <div class="m-t-8 d-flex justify-content-around">
     <button mat-button (click)="onNoClick()">Cancel</button>
     <button mat-button [color]="'accent'" (click)="onOkClick()" cdkFocusInitial>Ok</button>
   </div>
