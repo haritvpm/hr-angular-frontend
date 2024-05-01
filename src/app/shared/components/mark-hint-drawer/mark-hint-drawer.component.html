@@ -52,15 +52,20 @@
     <div class="row">
 
       <ng-container *ngFor="let option of list">
+        @if(data.punchingInfo.punching_count >= option.min_pun ){
         <div class="col-sm-6">
           <mat-radio-button [value]="option.value"> <small> {{option.label}} </small>
           </mat-radio-button>
         </div>
+      }
       </ng-container>
     </div>
 
   </mat-radio-group>
-
+<!-- an input for remarks optional -->
+  <mat-form-field class="d-flex row">
+    <input matInput placeholder="Remarks" [(ngModel)]="remarks">
+  </mat-form-field>
   } @else {
 
   {{selectedLabel}}

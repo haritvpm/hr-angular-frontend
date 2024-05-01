@@ -77,6 +77,9 @@ export class CellComponent implements OnInit {
       else if (this.item.punching_count === 1) {
         this.icon_name = 'looks_one';
         this.icon_color = !this.calendarInfo.is_today ? 'orange' : 'black';
+        if (this.item.finalized_by_controller) {
+          this.icon_color = 'black';
+        } 
       } else if (!this.calendarInfo.holiday && !this.calendarInfo.is_today) {
         //zero punching
         if (this.item.hint && this.item.hint !== 'clear') {

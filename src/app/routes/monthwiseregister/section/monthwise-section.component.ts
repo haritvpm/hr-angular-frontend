@@ -279,13 +279,16 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       data: { punchingInfo: dayNData, monthlyPunching: row },
     });
 
-    drawerRef.afterDismissed().subscribe(hint => {
-      console.log('The drawer was dismissed - ' + hint);
-      if (!hint) return;
+    drawerRef.afterDismissed().subscribe(res => {
+      console.log('The drawer was dismissed - ' + res);
+      if (!res?.hint && !res?.remarks) return;
       if(!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
-      if(row.logged_in_user_is_section_officer && dayNData.finalized_by_controller) return;
+      if(!row.logged_in_user_is_controller &&  //js is both so and co
+        row.logged_in_user_is_section_officer &&  //disallow only if so
+        dayNData.finalized_by_controller
+        ) return;
 
-      this.employeeService.saveHint(dayNData.aadhaarid, dayNData.date, hint).subscribe((data) => {
+      this.employeeService.saveHint(dayNData.aadhaarid, dayNData.date, res).subscribe((data) => {
         console.log(data);
         this.loadData();
       });

@@ -19,7 +19,7 @@ export class EmployeeService {
     return this.http.get<MonthwiseEmployeeApiData>(`${this.apiUrl}/${aadhaarid}/?date=${date}`);
   }
 
-  saveHint(aadhaarid:string,date:string,hint:string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl2}/${aadhaarid}/${date}`,{hint});
+  saveHint(aadhaarid:string,date:string,res:any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl2}/${aadhaarid}/${date}`,res);
   }
 }
