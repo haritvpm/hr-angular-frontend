@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -7,14 +8,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule, MatDatepickerInputEvent, MatDatepicker } from '@angular/material/datepicker';
 import { RegisterService } from './register.service';
 import { DailyPunching } from './interface';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { RouterLink } from '@angular/router';
+import { MatSelectModule } from '@angular/material/select';
 
 const moment = _rollupMoment || _moment;
 
@@ -25,10 +27,10 @@ const moment = _rollupMoment || _moment;
   standalone: true,
   imports: [MatTableModule, RouterLink,
     MatPaginatorModule,
-    MatSortModule, MatInputModule,
-    MatDatepickerModule, MatIcon, MatBadgeModule,
+    MatSortModule, CommonModule, MatInputModule,
+    MatDatepickerModule, MatIconModule, MatBadgeModule,
     FormsModule, ReactiveFormsModule, NgIf,
-    MatTooltipModule]
+    MatTooltipModule, MatSelectModule]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
@@ -46,8 +48,9 @@ export class AttendanceRegisterComponent implements OnInit {
   todayDate: Date = new Date();
   beginDate: Date = new Date('2024-01-01');
   sections: string[] = [];
+  public selectedSection = 'All';
   public searchTxt = '';
-  // public searchForm: FormGroup;
+  public searchForm: FormGroup;
 
 
   // Define an array to hold the combined data
@@ -64,6 +67,12 @@ export class AttendanceRegisterComponent implements OnInit {
   ngOnInit() {
 
     this.fetchData(null);
+    this.searchForm = new FormGroup({
+      searchTxt: new FormControl(''),
+      selectedSection: new FormControl('')
+    });
+
+
   }
 
   announceSortChange(sortState: Sort) {
@@ -74,9 +83,24 @@ export class AttendanceRegisterComponent implements OnInit {
     }
   }
 
-  applyFilter(filterValue: string) {
+  // applyFilter(filterValue: string) {
 
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
+  applyFilter(){
+
+    const searchTxt = this.searchForm.get('searchTxt')?.value;
+    let section = this.searchForm.get('selectedSection')?.value;
+
+    this.searchTxt = searchTxt === null ? '' : searchTxt;
+    this.selectedSection = section === null ? '' : section;
+
+    if (section === 'All') section = '';
+
+    // console.log('t'+searchTxt);
+    // console.log('s'+section);
+
+    this.dataSource.filter = searchTxt.toLowerCase() + '$' + section.toLowerCase();
   }
 
   fetchData(date: string | null) {
@@ -88,13 +112,56 @@ export class AttendanceRegisterComponent implements OnInit {
       // this.selectedDate = moment(this.selectedDate).format('DD MMMM YYYY');
       console.log(data);
       // console.log(this.data);
+      this.sections = data.sections ? ['All', ...data.sections] : ['All'];
       this.dataSource.data = this.data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = this.getFilterPredicate();
+      this.applyFilter();
+      // this.searchFormInit();
+
 
     });
 
   }
+  // searchFormInit() {
+  //   this.searchForm = new FormGroup({
+  //     searchTxt: new FormControl(''),
+  //     selectedSection: new FormControl('')
+  //   });
+  // }
+  getFilterPredicate() {
+    return (row: DailyPunching, filters: string) => {
+
+      // split string per '$' to array
+      const filterArray = filters.split('$');
+      const searchTxt = filterArray[0];
+      const section = filterArray[1].replace('/', '');
+      // console.log('searchTxt'+searchTxt);
+      const matchFilter = [];
+
+      // Fetch data from row
+      const columnName = row.aadhaarid + row.name + row.designation;
+      const columnSection = row?.section|| '';
+      const attendance_book = row.attendance_book?.title || '';
+      // console.log('section'+section+';');
+      // console.log('columnSection'+columnSection+';');
+
+      // verify fetching data by our searching values
+
+      const customFilterN = columnName.toLowerCase().includes(searchTxt);
+      const customFilterS = columnSection.toLowerCase() == section || section == '' || section == 'All' || attendance_book.toLowerCase().includes(section);
+
+      // push boolean values into array
+      matchFilter.push(customFilterN);
+      matchFilter.push(customFilterS);
+
+      // return true if all values in array is true
+      // else return false
+      return matchFilter.every(Boolean);
+    };
+  }
+
 
   dateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
     if (event.value !== null && event.value !== undefined) {
@@ -149,19 +216,33 @@ export class AttendanceRegisterComponent implements OnInit {
         'font-weight': 'bold'
       };
   }
+  getDurationColour(employee: any) {
+    if (employee.punching_count < 2 && this.is_today === false) return {
+      'color': 'red',
+      'text-align': 'center',
 
-  getTooltipText(employee: any): any {
+    };
+    if(employee.punching_count < 2 && this.is_today === true)
+    return {
+      'color': 'black',
+      'font-weight': 'bold',
+      'text-align': 'center',
+      'font-size': 'large'
 
-    const name = employee.name + '\n';
+    };else{
+      return {};
+    }
 
+  }
+
+  getTooltipContent(employee: any): string {
+    let tooltipContent = employee.name + '\n';
     if (employee.punching_count === 0) {
-      return name + 'No Punching';
+      tooltipContent += '\n"No Punching"';
+    } else if (employee.punching_count < 2) {
+      tooltipContent += '\n"Missing Punch Out"';
     }
-    else if (employee.punching_count < 2) {
-      return name + 'Missing Punch Out';
-
-    }
-    return '';
+    return tooltipContent;
   }
 }
 

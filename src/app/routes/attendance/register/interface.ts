@@ -15,7 +15,9 @@ export interface monthly {
 
 // }
 
-
+export interface AttendanceBook{
+  title : string
+}
 export interface DailyPunching {
   // id: number;
   aadhaarid: string
@@ -31,6 +33,7 @@ export interface DailyPunching {
   total_grace_sec: string
   punchin_trace: inTrace
   punchout_trace: outTrace
+  attendance_book: AttendanceBook
 }
 
 export interface DailyPunchingApi {
