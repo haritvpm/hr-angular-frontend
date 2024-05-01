@@ -13,7 +13,7 @@ export default {
       route: 'monthwiseregister',
       name: 'monthwiseregister',
       type: 'link',
-      icon: 'perm_contact_calendar',
+      icon: 'calendar_view_month',
       permissions: {
         only: ['section_access'],
       },

@@ -100,7 +100,7 @@ export interface PunchingInfo extends PunchingDay {
   punchout_trace_id: number | null;
   leave_id: number | null;
   grace_exceeded300_and_today_has_grace : boolean;
-  cl_taken: number;
+  cl_marked: number;
 }
 
 export interface MonthlyApiData {

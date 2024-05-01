@@ -27,6 +27,7 @@ const moment = _rollupMoment || _moment;
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { EmployeeService } from '../employee/employee.service';
+import { MatButtonModule } from '@angular/material/button';
 
 export const MY_FORMATS = {
   parse: {
@@ -51,7 +52,7 @@ export const MY_FORMATS = {
     provideMomentDateAdapter(MY_FORMATS),
   ],
   imports: [
-    RouterLink,
+    RouterLink, MatButtonModule,
     HttpClientModule, MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule, MatTooltipModule,
@@ -65,6 +66,7 @@ export const MY_FORMATS = {
 
 
 export class MonthwiseSectionAttendanceComponent implements OnInit {
+
 
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<MonthlyPunching>([]);
@@ -164,12 +166,12 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       });
   }
 
-  chosenMonthHandler(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+  chosenMonthHandler(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment> | null) {
     const ctrlValue = this.date.value ?? moment();
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
     this.date.setValue(ctrlValue);
-    datepicker.close();
+    if(datepicker) datepicker.close();
     console.log(normalizedMonthAndYear.format('YYYY-MM-DD'));
     this.selectedMonth = normalizedMonthAndYear.format('YYYY-MM-DD');
     this.loadData();
@@ -285,6 +287,20 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
         this.loadData();
       });
     });
+  }
+
+  onNextMonth() {
+    const nextmonth = moment(this.selectedMonth).add(1, 'month');
+    //if this is future month, ignore
+    if (nextmonth.isAfter(moment(), 'month')) return;
+    this.chosenMonthHandler(nextmonth, null);
+
+  }
+  onPrevMonth() {
+    const prevmonth = moment(this.selectedMonth).subtract(1, 'month');
+    //if this is before 2024 january month, ignore
+    if (prevmonth.isBefore (this.beginDate, 'month')) return;
+    this.chosenMonthHandler(prevmonth, null);
   }
 
 }

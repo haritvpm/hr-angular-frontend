@@ -10,8 +10,8 @@ export interface MonthlyData {
   id: number;
   aadhaarid: string;
   month: string;
-  cl_taken: number;
-  compen_taken: number | null;
+  cl_marked: number;
+  compen_marked: number | null;
   compoff_granted: number | null;
   total_grace_sec: number;
   total_extra_sec: number;
