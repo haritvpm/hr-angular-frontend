@@ -1,24 +1,22 @@
 <!-- search form -->
-<div >
+<div>
   <form [formGroup]="searchForm" class="row justify-content-between">
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Month and Year</mat-label>
       <input
-        readonly
-        [max]="todayDate"
-        [min]="beginDate"
-        matInput
-        [matDatepicker]="dp"
-        [formControl]="date"
-      />
+             readonly
+             [max]="todayDate"
+             [min]="beginDate"
+             matInput
+             [matDatepicker]="dp"
+             [formControl]="date" />
       <!-- <mat-hint>{{selectedMonthHint}}</mat-hint> -->
       <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
       <mat-datepicker
-        #dp
-        startView="year"
-        (monthSelected)="chosenMonthHandler($event, dp)"
-        panelClass="example-month-picker"
-      >
+                      #dp
+                      startView="year"
+                      (monthSelected)="chosenMonthHandler($event, dp)"
+                      panelClass="example-month-picker">
       </mat-datepicker>
     </mat-form-field>
 
@@ -26,7 +24,7 @@
       <mat-label>Section</mat-label>
       <mat-select formControlName="selectedSection" (selectionChange)="applyFilter()">
         @for (section of sections; track section) {
-          <mat-option [value]="section">{{ section }}</mat-option>
+        <mat-option [value]="section">{{ section }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -52,20 +50,19 @@
         <th mat-header-cell [style.text-align]="'right'" *matHeaderCellDef>
 
           <div class=" d-flex  align-items-center">
-          <button mat-icon-button (click)="onPrevMonth()" >
-            <mat-icon>chevron_left</mat-icon>
-          </button>
+            <button mat-icon-button (click)="onPrevMonth()">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
 
-          {{ selectedMonthHint }}
-          <button mat-icon-button (click)="onNextMonth()" >
-            <mat-icon>chevron_right</mat-icon>
-          </button>
-        </div>
+            {{ selectedMonthHint }}
+            <button mat-icon-button (click)="onNextMonth()">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
         </th>
         <td mat-cell [style.white-space]="'nowrap'" *matCellDef="let row">
-          <a [routerLink]="['employee', row.aadhaarid]" [queryParams]="{ date: row.start_date }">
-            <small>{{ row.aadhaarid }}</small
-            >&nbsp; <b> {{ row.name }} </b><br />
+          <a [routerLink]="['employee', row.aadhaarid, row.start_date ]">
+            <small>{{ row.aadhaarid }}</small>&nbsp; <b> {{ row.name }} </b><br />
             <small>{{ row?.designation }}</small>
           </a>
         </td>
@@ -76,17 +73,16 @@
       </ng-container>
 
       @for (dayN of dayColumns; track dayN) {
-        <ng-container [matColumnDef]="dayN">
-          <th
+      <ng-container [matColumnDef]="dayN">
+        <th
             mat-header-cell
             [style.color]="calendarInfo[dayN].holiday ? 'red' : ''"
             [style.text-align]="'center'"
             [style.padding]="'0 0'"
-            *matHeaderCellDef
-          >
-            <b> {{ $index + 1 }}</b>
-          </th>
-          <td
+            *matHeaderCellDef>
+          <b> {{ $index + 1 }}</b>
+        </th>
+        <td
             (click)="mark(dayN, row[dayN], row)"
             mat-cell
             [matTooltip]="getTooltip(dayN, row)"
@@ -94,11 +90,10 @@
             [matTooltipShowDelay]="500"
             [style.background-color]="getCellBackgroundColor(dayN, $odd)"
             [style.text-align]="'center'"
-            *matCellDef="let row"
-          >
-            <app-cell [item]="row[dayN]" [calendarInfo]="calendarInfo[dayN]"> </app-cell>
-          </td>
-        </ng-container>
+            *matCellDef="let row">
+          <app-cell [item]="row[dayN]" [calendarInfo]="calendarInfo[dayN]"> </app-cell>
+        </td>
+      </ng-container>
       }
 
       <ng-container matColumnDef="CL" sticky>
@@ -117,10 +112,9 @@
     </table>
   </div>
   <mat-paginator
-    #paginator
-    [pageSizeOptions]="[50, 100, 200]"
-    showFirstLastButtons
-    aria-label="Select page"
-  >
+                 #paginator
+                 [pageSizeOptions]="[50, 100, 200]"
+                 showFirstLastButtons
+                 aria-label="Select page">
   </mat-paginator>
 </div>

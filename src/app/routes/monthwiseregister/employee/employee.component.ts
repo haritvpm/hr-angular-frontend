@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from './employee.service';
 import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, Employee } from './interface';
 import { DatePipe, NgIf } from '@angular/common';
@@ -7,13 +7,17 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { switchMap } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import moment from 'moment';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-monthwiseregister-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css'],
   standalone: true,
-  imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel, MatInputModule]
+  imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
+     MatInputModule,MatButtonModule,MatIconModule]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
@@ -25,9 +29,11 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   clickedRows = new Set<EmployeePunchingInfo>();
   employeeInfo: Employee | null;
   monthlyData: MonthlyData | null;
+  beginDate: Date = new Date('2024-01-01');
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private apiService: EmployeeService
   ) { }
 
@@ -35,6 +41,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     this.route.params
       .pipe(
         switchMap(params => {
+          console.log(params);
           this.aadhaarid = params.aadhaarid;
           this.date = params.date || new Date().toISOString().slice(0, 10);
           return this.apiService.getEmployeeData(this.aadhaarid, this.date);
@@ -105,6 +112,21 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       };
     else
       return '';
+  }
+
+  onNextMonth() {
+
+    const nextmonth = moment(this.date).add(1, 'month');
+    //if this is future month, ignore
+    if (nextmonth.isAfter(moment(), 'month')) return;
+    this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, nextmonth.format('YYYY-MM-DD')]);
+
+  }
+  onPrevMonth() {
+    const prevmonth = moment(this.date).subtract(1, 'month');
+    //if this is before 2024 january month, ignore
+    if (prevmonth.isBefore (this.beginDate, 'month')) return;
+    this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, prevmonth.format('YYYY-MM-DD')]);
   }
 
 }

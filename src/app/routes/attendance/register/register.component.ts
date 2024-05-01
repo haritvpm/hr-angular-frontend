@@ -17,6 +17,7 @@ import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { RouterLink } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 
 const moment = _rollupMoment || _moment;
 
@@ -30,7 +31,7 @@ const moment = _rollupMoment || _moment;
     MatSortModule, CommonModule, MatInputModule,
     MatDatepickerModule, MatIconModule, MatBadgeModule,
     FormsModule, ReactiveFormsModule, NgIf,
-    MatTooltipModule, MatSelectModule]
+    MatTooltipModule, MatSelectModule,MatButtonModule]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
@@ -41,6 +42,7 @@ export class AttendanceRegisterComponent implements OnInit {
   is_future: boolean;
   is_today: boolean;
   date_dmY: string;
+  // selectedDate: string = moment().format('YYYY-MM-DD');
   selectedDateHint: string = moment().format('DD MMMM YYYY');
   date = new FormControl(moment());
 
@@ -109,7 +111,6 @@ export class AttendanceRegisterComponent implements OnInit {
       this.is_future = data.is_future;
       this.is_today = data.is_today;
       this.date_dmY = data.date_dmY;
-      // this.selectedDate = moment(this.selectedDate).format('DD MMMM YYYY');
       console.log(data);
       // console.log(this.data);
       this.sections = data.sections ? ['All', ...data.sections] : ['All'];
@@ -165,17 +166,17 @@ export class AttendanceRegisterComponent implements OnInit {
 
   dateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
     if (event.value !== null && event.value !== undefined) {
-      // const formattedDate = event.value.toISOString().substring(0,10); // Or use any other format method
-      const formattedDate = new Date(event.value).toLocaleDateString('pt-br').split('/').reverse().join('-');
-      const newdate = new Date(event.value);
-      this.selectedDateHint = moment(newdate).format('DD MMMM YYYY');
-      // console.log(formattedDate);
-      this.fetchData(formattedDate);
+      const newdate = moment(event.value)
+      // this.selectedDate = newdate.format('YYYY-MM-DD');
+      this.date.setValue(newdate);
+      this.selectedDateHint = newdate.format('DD MMM YYYY');
+      this.fetchData(newdate.format('YYYY-MM-DD'));
     } else {
       // Handle the case where event.value is undefined
       console.log('Datepicker value is undefined');
     }
   }
+  
   roundValue(value: number): number {
     return Math.round(value);
   }
@@ -243,6 +244,27 @@ export class AttendanceRegisterComponent implements OnInit {
       tooltipContent += '\n"Missing Punch Out"';
     }
     return tooltipContent;
+  }
+  onNextDay() {
+
+    const nextday = moment(this.date.value).add(1, 'day');
+    //if this is future month, ignore
+    if (nextday.isAfter(moment(), 'day')) return;
+    // this.selectedDate = nextday.format('YYYY-MM-DD');
+    this.selectedDateHint = moment(nextday).format('DD MMM YYYY');
+    this.date.setValue(nextday);
+
+    this.fetchData(nextday.format('YYYY-MM-DD'));
+  }
+  onPrevDay() {
+    const prevday = moment(this.date.value).subtract(1, 'day');
+    //if this is before 2024 january month, ignore
+    if (prevday.isBefore (this.beginDate, 'day')) return;
+    // this.selectedDate = prevday.format('YYYY-MM-DD');
+    this.selectedDateHint = moment(prevday).format('DD MMM YYYY');
+    this.date.setValue(prevday);
+
+    this.fetchData(prevday.format('YYYY-MM-DD'));
   }
 }
 

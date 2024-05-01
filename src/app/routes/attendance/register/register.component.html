@@ -42,18 +42,25 @@
       <ng-container matColumnDef="name">
         <th
           mat-header-cell
-          mat-sort-header
-          [style.text-align]="'right'"
-          sortActionDescription="Sort by aadhaar number"
+          [style.text-align]="'center'"
           *matHeaderCellDef
           sticky
         >
-          <i>{{ selectedDateHint }}</i>
+        <div class=" d-flex  align-items-center">
+          <button mat-icon-button (click)="onPrevDay()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+
+          <b>{{ selectedDateHint }}</b>
+      
+          <button mat-icon-button (click)="onNextDay()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
         </th>
         <td mat-cell [style.white-space]="'nowrap'" *matCellDef="let employee">
           <a
-            [routerLink]="['/monthwiseregister/employee', employee.aadhaarid]"
-            [queryParams]="{ date: employee.start_date }"
+            [routerLink]="['/monthwiseregister/employee', employee.aadhaarid, date_dmY]"
           >
             <small>{{ employee.aadhaarid }}</small
             >&nbsp; <b>{{ employee.name }}</b
