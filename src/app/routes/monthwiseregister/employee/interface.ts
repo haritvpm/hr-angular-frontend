@@ -21,6 +21,7 @@ export interface MonthlyData {
   created_at: string;
   updated_at: string;
   employee_id: number;
+  total_grace_exceeded300_date: string | null;
 }
 
 export interface EmployeePunchingInfo {
@@ -83,7 +84,7 @@ export interface Employee {
   id: number;
   aadhaarid: string;
   is_shift: boolean;
-  name: string;
+  name: string | null;
 }
 
 export interface MonthwiseEmployeeApiData {

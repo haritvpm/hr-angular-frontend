@@ -23,7 +23,8 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
   displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
   clickedRows = new Set<EmployeePunchingInfo>();
-  employeeInfo: Employee;
+  employeeInfo: Employee | null;
+  monthlyData: MonthlyData | null;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +45,8 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         this.data = response;
         this.dataSource.data = this.data.employee_punching;
         this.employeeInfo = this.data.employee;
+        this.monthlyData = this.data.data_monthly[this.aadhaarid];
+        console.log(this.monthlyData);
       });
   }
 
@@ -51,11 +54,14 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     let dayColor = '';
     if (dateItem.is_holiday != '1' && !dateItem.is_future) {
       dayColor = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
-      if(dateItem.punching_count =='1') {
+      if (dateItem.punching_count == '1' && !dateItem.is_today) {
         dayColor = '#FFE082';
       }
     }
-    return dayColor;
+    return {
+      'background-color': dayColor,
+      'text-align': 'center'
+    };
   }
 
   getDateStyle(dateItem: any) {
@@ -64,7 +70,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     if (dateItem.attendance_trace_fetch_complete) {
       if (!dateItem.is_holiday && !dateItem.is_future) {
         dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
-        if(dateItem.punching_count =='1') {
+        if (dateItem.punching_count == '1') {
           dateColorSet = '#FFE082';
         }
       }
@@ -75,6 +81,12 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       'font-weight': dateColorSet ? 'bold' : '',
     };
   }
+
+  //   getMinutes(monthData:any, type:string) {
+  //     if (type == 'extra') {
+  // const etraMinute = monthData.    }
+
+  //   }
   // getDateStyle(dateItem: any) {
   //   console.log("ljfl");
   //   const leave = (dateItem.punching_count = 0 && dateItem.attendance_trace_fetch_complete) ? 'yellow' : '';
@@ -84,12 +96,16 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   //   }
   // }
 
-  // getHolidayStyle(dateItem: any) {
-  //   const holiday = (dateItem.is_holiday == 1) ? 'red' : '';
-  //   return {
-  //     'color': holiday,
-  //   }
-  // }
+  getHolidayStyle(dateItem: any) {
+    // const holiday = (dateItem.is_holiday == 1) ? 'red' : '';
+    if (dateItem.is_holiday)
+      return {
+        'color': 'red',
+        'font-weight': 'bold'
+      };
+    else
+      return '';
+  }
 
 }
 

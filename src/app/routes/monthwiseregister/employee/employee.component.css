@@ -12,9 +12,9 @@
   border-color: currentColor;
 }
 
-.date-row-is-clicked, th {
+/* .date-row-is-clicked, th {
   font-weight: bold;
-}
+} */
 
 .table-container {
   max-height: calc(105vh - 255px);
