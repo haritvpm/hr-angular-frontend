@@ -113,18 +113,18 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
   }
 
-  filterNonFutureDays(obj: any): any {
-    const current_days: string[] = [];
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const value = obj[key];
-        if (!value.future_date) {
-          current_days.push(key);
-        }
-      }
-    }
-    return current_days;
-  }
+  // filterNonFutureDays(obj: any): any {
+  //   const current_days: string[] = [];
+  //   for (const key in obj) {
+  //     if (Object.prototype.hasOwnProperty.call(obj, key)) {
+  //       const value = obj[key];
+  //       if (!value.future_date) {
+  //         current_days.push(key);
+  //       }
+  //     }
+  //   }
+  //   return current_days;
+  // }
 
   loadData() {
     this.isLoading = true;
@@ -141,7 +141,8 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
           this.calendarInfo = data.calender_info;
           //find keys where the object's value is not future_date
 
-          this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
+          this.dayColumns = Object.keys(data.calender_info);
+          //this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
           this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'CL'];
 
           //  this.sections =['All'];
