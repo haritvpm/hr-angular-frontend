@@ -27,6 +27,8 @@ const moment = _rollupMoment || _moment;
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { EmployeeService } from '../employee/employee.service';
+import { MatButtonModule } from '@angular/material/button';
+import { leaveList } from '@shared/components/mark-hint-drawer/leave-types';
 
 export const MY_FORMATS = {
   parse: {
@@ -51,7 +53,7 @@ export const MY_FORMATS = {
     provideMomentDateAdapter(MY_FORMATS),
   ],
   imports: [
-    RouterLink,
+    RouterLink, MatButtonModule,
     HttpClientModule, MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule, MatTooltipModule,
@@ -65,6 +67,7 @@ export const MY_FORMATS = {
 
 
 export class MonthwiseSectionAttendanceComponent implements OnInit {
+
 
   displayedColumns: string[] = [];
   dataSource = new MatTableDataSource<MonthlyPunching>([]);
@@ -113,18 +116,18 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
   }
 
-  filterNonFutureDays(obj: any): any {
-    const current_days: string[] = [];
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const value = obj[key];
-        if (!value.future_date) {
-          current_days.push(key);
-        }
-      }
-    }
-    return current_days;
-  }
+  // filterNonFutureDays(obj: any): any {
+  //   const current_days: string[] = [];
+  //   for (const key in obj) {
+  //     if (Object.prototype.hasOwnProperty.call(obj, key)) {
+  //       const value = obj[key];
+  //       if (!value.future_date) {
+  //         current_days.push(key);
+  //       }
+  //     }
+  //   }
+  //   return current_days;
+  // }
 
   loadData() {
     this.isLoading = true;
@@ -141,7 +144,8 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
           this.calendarInfo = data.calender_info;
           //find keys where the object's value is not future_date
 
-          this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
+          this.dayColumns = Object.keys(data.calender_info);
+          //this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
           this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'CL'];
 
           //  this.sections =['All'];
@@ -163,12 +167,12 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       });
   }
 
-  chosenMonthHandler(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>) {
+  chosenMonthHandler(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment> | null) {
     const ctrlValue = this.date.value ?? moment();
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
     this.date.setValue(ctrlValue);
-    datepicker.close();
+    if(datepicker) datepicker.close();
     console.log(normalizedMonthAndYear.format('YYYY-MM-DD'));
     this.selectedMonth = normalizedMonthAndYear.format('YYYY-MM-DD');
     this.loadData();
@@ -245,16 +249,24 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
   getTooltip(dayN: string, row: any) {
     const rowVal = row[dayN];
     let tip = rowVal.name + '\n';
-    const hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint : '';
+    let hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint : '';
 
-    if (rowVal?.punching_count == 0) tip += 'No Punching. ' + hint;
+    if(hint){
+      hint = leaveList.find((x:any) => x.value ==hint)?.label || '';
+    }
+
+    if (rowVal?.punching_count == 0) tip += hint || 'No Punching. \n' ;
+
     else if (rowVal?.punching_count == 1) tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
     else {
       tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' + hint;
 
-      tip += '\n Grace (min): ' +rowVal?.grace_str;
-      tip += '\n Extra (min): ' + rowVal?.extra_str;
+      tip += '\n Grace (min): ' +rowVal?.grace_str || 0;
+
+      if(rowVal.grace_sec > 3600) tip += ' ( > 60 min)';
+
+      tip += '\n Extra (min): ' + rowVal?.extra_str || 0;
 
       if (rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min';
       //tip += '\n Grace exceeded by (min) : ' + Math.round(rowVal?.grace_total_exceeded_one_hour/60) ;
@@ -273,17 +285,34 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       data: { punchingInfo: dayNData, monthlyPunching: row },
     });
 
-    drawerRef.afterDismissed().subscribe(hint => {
-      console.log('The drawer was dismissed - ' + hint);
-      if (!hint) return;
+    drawerRef.afterDismissed().subscribe(res => {
+      console.log('The drawer was dismissed - ' + res);
+      if (!res?.hint && !res?.remarks) return;
       if(!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
-      if(row.logged_in_user_is_section_officer && dayNData.finalized_by_controller) return;
+      if(!row.logged_in_user_is_controller &&  //js is both so and co
+        row.logged_in_user_is_section_officer &&  //disallow only if so
+        dayNData.finalized_by_controller
+        ) return;
 
-      this.employeeService.saveHint(dayNData.aadhaarid, dayNData.date, hint).subscribe((data) => {
+      this.employeeService.saveHint(dayNData.aadhaarid, dayNData.date, res).subscribe((data) => {
         console.log(data);
         this.loadData();
       });
     });
+  }
+
+  onNextMonth() {
+    const nextmonth = moment(this.selectedMonth).add(1, 'month');
+    //if this is future month, ignore
+    if (nextmonth.isAfter(moment(), 'month')) return;
+    this.chosenMonthHandler(nextmonth, null);
+
+  }
+  onPrevMonth() {
+    const prevmonth = moment(this.selectedMonth).subtract(1, 'month');
+    //if this is before 2024 january month, ignore
+    if (prevmonth.isBefore (this.beginDate, 'month')) return;
+    this.chosenMonthHandler(prevmonth, null);
   }
 
 }

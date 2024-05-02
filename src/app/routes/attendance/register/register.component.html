@@ -1,5 +1,5 @@
 <div>
-  <form class="row justify-content-between">
+  <form [formGroup]="searchForm" class="row justify-content-between">
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Date</mat-label>
       <!-- <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="dateChanged('change', $event)"> -->
@@ -16,18 +16,21 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <!-- <mat-form-field class="m-x-8 flex-grow-1"  appearance="outline">
-    <mat-label>Section</mat-label>
-    <mat-select  formControlName="selectedSection" (selectionChange)="applyFilter()">
-      @for (section of sections; track section) {
-        <mat-option [value]="section">{{section}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field> -->
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Section</mat-label>
+      <mat-select formControlName="selectedSection" (selectionChange)="applyFilter()">
+        @for (section of sections; track section) {
+          <mat-option [value]="section">{{ section }}</mat-option>
+        }
+      </mat-select>
+
+    </mat-form-field>
 
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Search</mat-label>
-      <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" />
+      <!-- <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" /> -->
+      <input matInput formControlName="searchTxt" (keyup)="applyFilter()" placeholder="Search" />
+
     </mat-form-field>
   </form>
 </div>
@@ -39,18 +42,25 @@
       <ng-container matColumnDef="name">
         <th
           mat-header-cell
-          mat-sort-header
-          [style.text-align]="'right'"
-          sortActionDescription="Sort by aadhaar number"
+          [style.text-align]="'center'"
           *matHeaderCellDef
           sticky
         >
-          <i>{{ selectedDateHint }}</i>
+        <div class=" d-flex  align-items-center">
+          <button mat-icon-button (click)="onPrevDay()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+
+          <b>{{ selectedDateHint }}</b>
+
+          <button mat-icon-button (click)="onNextDay()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
         </th>
         <td mat-cell [style.white-space]="'nowrap'" *matCellDef="let employee">
           <a
-            [routerLink]="['/monthwiseregister/employee', employee.aadhaarid]"
-            [queryParams]="{ date: employee.start_date }"
+            [routerLink]="['/monthwiseregister/employee', employee.aadhaarid, date_dmY]"
           >
             <small>{{ employee.aadhaarid }}</small
             >&nbsp; <b>{{ employee.name }}</b
@@ -77,14 +87,14 @@
           mat-sort-header
           sortActionDescription="Sort by in date"
         >
-          Punch In
+          In
         </th>
 
-        <td mat-cell *matCellDef="let employee">
+        <td mat-cell *matCellDef="let employee"  (click)="mark(employee)">
           {{ employee.punchin_trace?.att_time }}
           <span
             *ngIf="employee.punching_count === 0"
-            [style.color]="'rgb(96, 23, 255)'"
+            [style.color]="'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
             [matTooltipShowDelay]="500"
@@ -104,13 +114,13 @@
           mat-sort-header
           sortActionDescription="Sort by out time"
         >
-          Punch Out
+          Out
         </th>
-        <td mat-cell *matCellDef="let employee">
+        <td mat-cell *matCellDef="let employee"  (click)="mark(employee)">
           {{ employee.punchout_trace?.att_time }}
           <span
-            *ngIf="employee.punching_count < 2"
-            [style.color]="'rgb(96, 23, 255)'"
+            *ngIf="employee.punching_count < 2 && !is_today"
+            [style.color]="'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
             [matTooltipShowDelay]="500"
@@ -130,16 +140,21 @@
         >
           Duration
         </th>
-        <td mat-cell *matCellDef="let employee">
+        <td mat-cell *matCellDef="let employee"   (click)="mark(employee)" >
           {{ employee.duration_str }}
-          <!-- <span
-            *ngIf="employee.punching_count < 2"
-            [style]="getDurationColour(employee)"
-            >-</span
-          > -->
-          <span *ngIf="is_today === true && employee.punching_count < 2" [style]="getDurationColour(employee)" > - </span>
-          <span *ngIf="is_today === false && employee.punching_count < 2" [style]="getDurationColour(employee)"> 0 </span>
 
+          <span
+            *ngIf="is_today === true && employee.punching_count < 2"
+            [style]="getDurationColour(employee)"
+          >
+            -
+          </span>
+          <span
+            *ngIf="is_today === false && employee.punching_count < 2"
+            [style]="getDurationColour(employee)"
+          >
+            <mat-icon><span class="material-icons-outlined"> help_outline </span></mat-icon>
+          </span>
         </td>
       </ng-container>
       <ng-container matColumnDef="extra_str">

@@ -7,13 +7,42 @@
 </p>
 
 <div class="text-center">
-  <div style="font-weight: bold;"> {{data.punchingInfo.name}}</div>
-  <small>{{data.punchingInfo.designation}}</small> <br>
+  <div style="font-weight: bold;"> {{data.monthlyPunching?.name}}</div>
+  <small>{{data.monthlyPunching?.designation}}</small> <br>
   <mat-divider class="m-t-8"></mat-divider>
-  <h4>{{data.punchingInfo.date}}</h4>
-  {{ data.punchingInfo.in_time }} - {{ data.punchingInfo.out_time }}
+  <b>{{data.punchingInfo.date}}</b> <br>
+  {{ punchingTimes }}
+
+  <mat-divider class="m-b-4"></mat-divider>
+  <small>
+  @if( data.punchingInfo.punching_count  >= 2 ) {
+    Gr:<span [style.color]="data.punchingInfo.grace_sec > 3600 || data.punchingInfo.grace_exceeded300_and_today_has_grace ? 'red' : 'primary' "> {{data.punchingInfo.grace_str || 0}}; &nbsp;</span>
+  }
+
+
+  Gr Total:  <span [style.color]="data.monthlyPunching.total_grace_sec > 300*60 ? 'red' : 'primary' ">  {{data.monthlyPunching.total_grace_str || 0 }} </span> min<br>
+
+
+  @if( data.monthlyPunching.total_grace_exceeded300_date ) {
+    Exceeded 300 on: {{getDateExceeded300()}} <br>
+  }
+  <mat-divider class="m-b-4"></mat-divider>
+  Ex: {{data.monthlyPunching.total_extra_str || 0 }} hours <br>
+</small>
+
 </div>
+
+@if( data.punchingInfo.finalized_by_controller){
+  <div class="d-flex row justify-content-center align-items-center">
+    <i [style.color]="'green'" class="material-icons">approval</i>
+    <small> Regularised</small>
+  </div>
+}
+
 <mat-divider class="m-b-8" ></mat-divider>
+
+
+
 @if (!data.punchingInfo.in_section ) {
   Not posted in section
   } @else {
@@ -22,26 +51,33 @@
   <mat-radio-group aria-label="Select an option" [(ngModel)]="selected">
     <div class="row">
 
-      <ng-container *ngFor="let option of list">
+      <ng-container *ngFor="let option of leaveList">
+        @if(data.punchingInfo.punching_count >= option.min_pun ){
         <div class="col-sm-6">
           <mat-radio-button [value]="option.value"> <small> {{option.label}} </small>
           </mat-radio-button>
         </div>
+      }
       </ng-container>
     </div>
 
   </mat-radio-group>
-
+<!-- an input for remarks optional -->
+  <mat-form-field class="d-flex row" appearance="outline">
+    <input matInput placeholder="Remarks" [(ngModel)]="remarks">
+  </mat-form-field>
   } @else {
 
-  {{selectedLabel}}
+    <div class="d-flex row justify-content-center ">
+      {{selectedLabel}}
+    </div>
 
   }
 
   @if(canMarkLeave){
   <mat-divider></mat-divider>
-  <div class="m-t-8">
-    <button mat-button (click)="onNoClick()">Cancel</button>
+  <div class="m-t-8 d-flex justify-content-around">
+    <button mat-button [color]="'primary'" (click)="onNoClick()">Cancel</button>
     <button mat-button [color]="'accent'" (click)="onOkClick()" cdkFocusInitial>Ok</button>
   </div>
   }

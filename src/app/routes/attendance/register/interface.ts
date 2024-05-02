@@ -15,7 +15,9 @@ export interface monthly {
 
 // }
 
-
+export interface AttendanceBook{
+  title : string
+}
 export interface DailyPunching {
   // id: number;
   aadhaarid: string
@@ -29,14 +31,20 @@ export interface DailyPunching {
   total_extra_sec: string
   grace_str:string
   total_grace_sec: string
+  punching_count: number
   punchin_trace: inTrace
   punchout_trace: outTrace
+  attendance_book: AttendanceBook
+  logged_in_user_is_section_officer: boolean
+  logged_in_user_is_controller: boolean
+  finalized_by_controller: boolean
 }
 
 export interface DailyPunchingApi {
   punchings: DailyPunching[];
   is_future: boolean
   is_today: boolean
+  is_holiday: boolean
   date_dmY: string
   sections : string[]
 }

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -7,14 +8,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule, MatDatepickerInputEvent, MatDatepicker } from '@angular/material/datepicker';
 import { RegisterService } from './register.service';
 import { DailyPunching } from './interface';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { RouterLink } from '@angular/router';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
+import { EmployeeService } from 'app/routes/monthwiseregister/employee/employee.service';
+import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 
 const moment = _rollupMoment || _moment;
 
@@ -25,10 +31,10 @@ const moment = _rollupMoment || _moment;
   standalone: true,
   imports: [MatTableModule, RouterLink,
     MatPaginatorModule,
-    MatSortModule, MatInputModule,
-    MatDatepickerModule, MatIcon, MatBadgeModule,
+    MatSortModule, CommonModule, MatInputModule,
+    MatDatepickerModule, MatIconModule, MatBadgeModule,
     FormsModule, ReactiveFormsModule, NgIf,
-    MatTooltipModule]
+    MatTooltipModule, MatSelectModule, MatButtonModule]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
@@ -38,7 +44,9 @@ export class AttendanceRegisterComponent implements OnInit {
   data: DailyPunching[] = [];
   is_future: boolean;
   is_today: boolean;
+  is_holiday: boolean;
   date_dmY: string;
+  // selectedDate: string = moment().format('YYYY-MM-DD');
   selectedDateHint: string = moment().format('DD MMMM YYYY');
   date = new FormControl(moment());
 
@@ -46,15 +54,18 @@ export class AttendanceRegisterComponent implements OnInit {
   todayDate: Date = new Date();
   beginDate: Date = new Date('2024-01-01');
   sections: string[] = [];
+  public selectedSection = 'All';
   public searchTxt = '';
-  // public searchForm: FormGroup;
+  public searchForm: FormGroup;
 
 
   // Define an array to hold the combined data
   combinedData: { name: string, designation: string }[] = [];
 
 
-  constructor(private registerService: RegisterService, private _liveAnnouncer: LiveAnnouncer) { }
+  constructor(private registerService: RegisterService,
+    private _liveAnnouncer: LiveAnnouncer, private drawer: MtxDrawer,
+    private employeeService: EmployeeService) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -64,6 +75,12 @@ export class AttendanceRegisterComponent implements OnInit {
   ngOnInit() {
 
     this.fetchData(null);
+    this.searchForm = new FormGroup({
+      searchTxt: new FormControl(''),
+      selectedSection: new FormControl('')
+    });
+
+
   }
 
   announceSortChange(sortState: Sort) {
@@ -74,9 +91,24 @@ export class AttendanceRegisterComponent implements OnInit {
     }
   }
 
-  applyFilter(filterValue: string) {
+  // applyFilter(filterValue: string) {
 
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
+  applyFilter() {
+
+    const searchTxt = this.searchForm.get('searchTxt')?.value;
+    let section = this.searchForm.get('selectedSection')?.value;
+
+    this.searchTxt = searchTxt === null ? '' : searchTxt;
+    this.selectedSection = section === null ? '' : section;
+
+    if (section === 'All') section = '';
+
+    // console.log('t'+searchTxt);
+    // console.log('s'+section);
+
+    this.dataSource.filter = searchTxt.toLowerCase() + '$' + section.toLowerCase();
   }
 
   fetchData(date: string | null) {
@@ -84,31 +116,74 @@ export class AttendanceRegisterComponent implements OnInit {
       this.data = data.punchings;
       this.is_future = data.is_future;
       this.is_today = data.is_today;
+      this.is_holiday = data.is_holiday;
       this.date_dmY = data.date_dmY;
-      // this.selectedDate = moment(this.selectedDate).format('DD MMMM YYYY');
       console.log(data);
       // console.log(this.data);
+      this.sections = data.sections ? ['All', ...data.sections] : ['All'];
       this.dataSource.data = this.data;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = this.getFilterPredicate();
+      this.applyFilter();
+      // this.searchFormInit();
+
 
     });
 
   }
+  // searchFormInit() {
+  //   this.searchForm = new FormGroup({
+  //     searchTxt: new FormControl(''),
+  //     selectedSection: new FormControl('')
+  //   });
+  // }
+  getFilterPredicate() {
+    return (row: DailyPunching, filters: string) => {
+
+      // split string per '$' to array
+      const filterArray = filters.split('$');
+      const searchTxt = filterArray[0];
+      const section = filterArray[1].replace('/', '');
+      // console.log('searchTxt'+searchTxt);
+      const matchFilter = [];
+
+      // Fetch data from row
+      const columnName = row.aadhaarid + row.name + row.designation;
+      const columnSection = row?.section || '';
+      const attendance_book = row.attendance_book?.title || '';
+      // console.log('section'+section+';');
+      // console.log('columnSection'+columnSection+';');
+
+      // verify fetching data by our searching values
+
+      const customFilterN = columnName.toLowerCase().includes(searchTxt);
+      const customFilterS = columnSection.toLowerCase() == section || section == '' || section == 'All' || attendance_book.toLowerCase().includes(section);
+
+      // push boolean values into array
+      matchFilter.push(customFilterN);
+      matchFilter.push(customFilterS);
+
+      // return true if all values in array is true
+      // else return false
+      return matchFilter.every(Boolean);
+    };
+  }
+
 
   dateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
     if (event.value !== null && event.value !== undefined) {
-      // const formattedDate = event.value.toISOString().substring(0,10); // Or use any other format method
-      const formattedDate = new Date(event.value).toLocaleDateString('pt-br').split('/').reverse().join('-');
-      const newdate = new Date(event.value);
-      this.selectedDateHint = moment(newdate).format('DD MMMM YYYY');
-      // console.log(formattedDate);
-      this.fetchData(formattedDate);
+      const newdate = moment(event.value);
+      // this.selectedDate = newdate.format('YYYY-MM-DD');
+      this.date.setValue(newdate);
+      this.selectedDateHint = newdate.format('DD MMM YYYY');
+      this.fetchData(newdate.format('YYYY-MM-DD'));
     } else {
       // Handle the case where event.value is undefined
       console.log('Datepicker value is undefined');
     }
   }
+
   roundValue(value: number): number {
     return Math.round(value);
   }
@@ -152,18 +227,17 @@ export class AttendanceRegisterComponent implements OnInit {
   getDurationColour(employee: any) {
     if (employee.punching_count < 2 && this.is_today === false) return {
       'color': 'red',
-      'font-weight': 'bold',
       'text-align': 'center',
-      'font-size': 'small'
-    };
-    if(employee.punching_count < 2 && this.is_today === true)
-    return {
-      'color': 'black',
-      'font-weight': 'bold',
-      'text-align': 'center',
-      'font-size': 'small'
 
-    };else{
+    };
+    if (employee.punching_count < 2 && this.is_today === true)
+      return {
+        'color': 'black',
+        'font-weight': 'bold',
+        'text-align': 'center',
+        'font-size': 'large'
+
+      }; else {
       return {};
     }
 
@@ -178,6 +252,53 @@ export class AttendanceRegisterComponent implements OnInit {
     }
     return tooltipContent;
   }
+  onNextDay() {
+
+    const nextday = moment(this.date.value).add(1, 'day');
+    //if this is future month, ignore
+    if (nextday.isAfter(moment(), 'day')) return;
+    // this.selectedDate = nextday.format('YYYY-MM-DD');
+    this.selectedDateHint = moment(nextday).format('DD MMM YYYY');
+    this.date.setValue(nextday);
+
+    this.fetchData(nextday.format('YYYY-MM-DD'));
+  }
+  onPrevDay() {
+    const prevday = moment(this.date.value).subtract(1, 'day');
+    //if this is before 2024 january month, ignore
+    if (prevday.isBefore(this.beginDate, 'day')) return;
+    // this.selectedDate = prevday.format('YYYY-MM-DD');
+    this.selectedDateHint = moment(prevday).format('DD MMM YYYY');
+    this.date.setValue(prevday);
+
+    this.fetchData(prevday.format('YYYY-MM-DD'));
+  }
+
+  mark(row: DailyPunching ) {
+    console.log(row);
+    if (this.is_holiday && row.punching_count == 0) return;
+
+    const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
+      width: '300px',
+      data: { punchingInfo: row, monthlyPunching: row },
+    });
+
+    drawerRef.afterDismissed().subscribe(res => {
+      console.log('The drawer was dismissed - ' + res);
+      if (!res?.hint && !res?.remarks) return;
+      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
+      if (!row.logged_in_user_is_controller &&  //js is both so and co
+        row.logged_in_user_is_section_officer &&  //disallow only if so
+        row.finalized_by_controller
+      ) return;
+
+      this.employeeService.saveHint(row.aadhaarid, this.date_dmY, res).subscribe((_data) => {
+        this.fetchData(moment(this.date.value).format('YYYY-MM-DD'));
+      });
+    });
+  }
+
+
 }
 
 
