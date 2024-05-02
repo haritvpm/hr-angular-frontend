@@ -10,6 +10,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { BrowserModule } from '@angular/platform-browser';
 import { MTX_DRAWER_DATA, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import moment from 'moment';
+import { leaveList } from './leave-types';
 
 @Component({
   selector: 'app-mark-hint-drawer',
@@ -26,20 +27,7 @@ export class MarkHintDrawerComponent implements OnInit {
     @Inject(MTX_DRAWER_DATA) public data: any
   ) { }
 
-  public list: any = [
-    { label: 'Casual FN', value: 'casual_fn', min_pun:1 }, //punchingcounts = 2,1
-    { label: 'Casual AN', value: 'casual_an', min_pun:1}, //punchingcounts = 2,1
-    { label: 'Casual', value: 'casual' , min_pun:0 }, //punchingcounts = 0,1,2
-    { label: 'Comp Leave', value: 'comp_leave', min_pun:0 }, //punchingcounts = 0
-    { label: 'Earned', value: 'earned', min_pun:0 }, //punchingcounts = 0
-    { label: 'Commutted', value: 'commuted', min_pun:0 }, //punchingcounts = 0
-    { label: 'Half-Pay', value: 'halfpay', min_pun:0 }, //punchingcounts = 0. can be more if user is late and has no leave
-    { label: 'Duty Off', value: 'duty_off', min_pun:0 }, //punchingcounts = 0
-    { label: 'Duty Leave', value: 'duty', min_pun:0 }, //punchingcounts = 0
-    { label: 'Other', value: 'other', min_pun:0 },//punchingcounts = 0,1,2
-    { label: 'Clear', value: 'clear', min_pun:0 }, //punchingcounts = 0,1,2
-  ];
-
+  leaveList: any[] = leaveList;
   selected: string = '';
   canMarkLeave: boolean = false;
   selectedLabel: string = '';
@@ -47,7 +35,7 @@ export class MarkHintDrawerComponent implements OnInit {
   ngOnInit() {
     this.selected = this.data.punchingInfo.hint || this.data.punchingInfo.computer_hint;
     this.remarks = this.data.punchingInfo.remarks || '';
-    this.selectedLabel = this.list.find((x:any) => x.value == this.selected)?.label || '';
+    this.selectedLabel = this.leaveList.find((x:any) => x.value == this.selected)?.label || '';
 
     if(this.data.monthlyPunching.logged_in_user_is_controller ||
         (this.data.monthlyPunching.logged_in_user_is_section_officer &&
@@ -69,7 +57,7 @@ export class MarkHintDrawerComponent implements OnInit {
 
     //save the selected value
 
-    this.drawerRef.dismiss({ 'hint': this.selected, 'remarks': this.remarks });
+    this.drawerRef.dismiss({ hint: this.selected, remarks: this.remarks });
   }
 
 

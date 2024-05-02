@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { PunchingInfo, MonthlyPunching, MonthlyApiData } from './../interfaces';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { leaveList } from '@shared/components/mark-hint-drawer/leave-types';
+
+
 
 @Component({
   selector: 'app-cell',
@@ -18,7 +21,6 @@ export class CellComponent implements OnInit {
   // @Input() isController: boolean;
 
 
-
   casual_fn: boolean = false;
   casual_an: boolean = false;
   casual: boolean = false;
@@ -31,6 +33,9 @@ export class CellComponent implements OnInit {
   time_exceeded_an: boolean = false;
   time_exceeded_fn: boolean = false;
   grace_exceeded300_and_today_has_grace_alarm_show: boolean = true;
+
+  text_name: string = '';
+  text_color: string = 'DeepPink';
 
   ngOnInit() {
 
@@ -46,13 +51,14 @@ export class CellComponent implements OnInit {
         //under has marked hint
         if (this.item.finalized_by_controller) {
           this.grace_exceeded300_and_today_has_grace_alarm_show = false;
+          this.text_color = 'DeepSkyBlue';
+          this.casual_color = 'DeepSkyBlue';
         }
 
-        this.casual = this.item.hint === 'casual';
         this.casual_fn = this.item.hint === 'casual_fn';
         this.casual_an = this.item.hint === 'casual_an';
-        this.casual_color = 'blue';
       } else {
+        //computer hints
         this.casual = this.item.computer_hint === 'casual';
         if (this.item.grace_total_exceeded_one_hour > 1800) {
           this.casual_fn = this.item.computer_hint === 'casual_fn';
@@ -66,8 +72,8 @@ export class CellComponent implements OnInit {
       //icon to show
       if (this.item.punching_count >= 2) {
 
-        this.icon_color = this.item.grace_sec > 3600 ? '#880E4F'
-        : this.grace_exceeded300_and_today_has_grace_alarm_show ? '#FF1744'  : 'gray';
+        this.icon_color = this.item.grace_sec > 3600 ? 'OrangeRed' // '#880E4F'
+        : this.grace_exceeded300_and_today_has_grace_alarm_show ? 'DeepPink'  : 'gray';
 
         this.icon_name = this.item.punching_count == 2 ? 'looks_two' :
           this.item.punching_count == 3 ? 'looks_3' :
@@ -79,15 +85,16 @@ export class CellComponent implements OnInit {
         this.icon_color = !this.calendarInfo.is_today ? 'orange' : 'black';
         if (this.item.finalized_by_controller) {
           this.icon_color = 'black';
-        } 
+        }
       } else if (!this.calendarInfo.holiday && !this.calendarInfo.is_today) {
         //zero punching
         if (this.item.hint && this.item.hint !== 'clear') {
           this.icon_show = false; //dont show icon if hint is set like casual
+          this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
         } else
           if (!this.calendarInfo.future_date) {
             this.icon_name = 'close';
-            this.icon_color = '#6017ff';
+            this.icon_color = 'DeepPink'; //'#6017ff';
           }
       }
 

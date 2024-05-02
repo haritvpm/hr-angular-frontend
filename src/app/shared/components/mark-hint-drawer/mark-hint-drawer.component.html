@@ -7,8 +7,8 @@
 </p>
 
 <div class="text-center">
-  <div style="font-weight: bold;"> {{data.punchingInfo.name}}</div>
-  <small>{{data.punchingInfo.designation}}</small> <br>
+  <div style="font-weight: bold;"> {{data.monthlyPunching?.name}}</div>
+  <small>{{data.monthlyPunching?.designation}}</small> <br>
   <mat-divider class="m-t-8"></mat-divider>
   <b>{{data.punchingInfo.date}}</b> <br>
   {{ data.punchingInfo.in_time }} - {{ data.punchingInfo.out_time }}
@@ -20,14 +20,14 @@
   }
 
 
-  Gr Total:  <span [style.color]="data.monthlyPunching.total_grace_sec > 300*60 ? 'red' : 'primary' ">  {{data.monthlyPunching.total_grace_str}} </span> min<br>
+  Gr Total:  <span [style.color]="data.monthlyPunching.total_grace_sec > 300*60 ? 'red' : 'primary' ">  {{data.monthlyPunching.total_grace_str || 0 }} </span> min<br>
 
 
   @if( data.monthlyPunching.total_grace_exceeded300_date ) {
     Exceeded 300 on: {{getDateExceeded300()}} <br>
   }
   <mat-divider class="m-b-4"></mat-divider>
-  Ex: {{data.monthlyPunching.total_extra_str}} hours <br>
+  Ex: {{data.monthlyPunching.total_extra_str || 0 }} hours <br>
 </small>
 
 </div>
@@ -51,7 +51,7 @@
   <mat-radio-group aria-label="Select an option" [(ngModel)]="selected">
     <div class="row">
 
-      <ng-container *ngFor="let option of list">
+      <ng-container *ngFor="let option of leaveList">
         @if(data.punchingInfo.punching_count >= option.min_pun ){
         <div class="col-sm-6">
           <mat-radio-button [value]="option.value"> <small> {{option.label}} </small>
@@ -63,7 +63,7 @@
 
   </mat-radio-group>
 <!-- an input for remarks optional -->
-  <mat-form-field class="d-flex row">
+  <mat-form-field class="d-flex row" appearance="outline">
     <input matInput placeholder="Remarks" [(ngModel)]="remarks">
   </mat-form-field>
   } @else {
@@ -75,7 +75,7 @@
   @if(canMarkLeave){
   <mat-divider></mat-divider>
   <div class="m-t-8 d-flex justify-content-around">
-    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [color]="'primary'" (click)="onNoClick()">Cancel</button>
     <button mat-button [color]="'accent'" (click)="onOkClick()" cdkFocusInitial>Ok</button>
   </div>
   }
