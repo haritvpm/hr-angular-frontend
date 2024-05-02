@@ -11,7 +11,7 @@
   <small>{{data.monthlyPunching?.designation}}</small> <br>
   <mat-divider class="m-t-8"></mat-divider>
   <b>{{data.punchingInfo.date}}</b> <br>
-  {{ data.punchingInfo.in_time }} - {{ data.punchingInfo.out_time }}
+  {{ punchingTimes }}
 
   <mat-divider class="m-b-4"></mat-divider>
   <small>
@@ -33,8 +33,8 @@
 </div>
 
 @if( data.punchingInfo.finalized_by_controller){
-  <div class="text-center">
-    <i [style.color]="'green'" class="material-icons">check_circle</i>
+  <div class="d-flex row justify-content-center align-items-center">
+    <i [style.color]="'green'" class="material-icons">approval</i>
     <small> Regularised</small>
   </div>
 }
@@ -68,7 +68,9 @@
   </mat-form-field>
   } @else {
 
-  {{selectedLabel}}
+    <div class="d-flex row justify-content-center ">
+      {{selectedLabel}}
+    </div>
 
   }
 

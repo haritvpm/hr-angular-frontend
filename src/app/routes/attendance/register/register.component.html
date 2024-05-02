@@ -52,7 +52,7 @@
           </button>
 
           <b>{{ selectedDateHint }}</b>
-      
+
           <button mat-icon-button (click)="onNextDay()">
             <mat-icon>chevron_right</mat-icon>
           </button>
@@ -90,11 +90,11 @@
           In
         </th>
 
-        <td mat-cell *matCellDef="let employee">
+        <td mat-cell *matCellDef="let employee"  (click)="mark(employee)">
           {{ employee.punchin_trace?.att_time }}
           <span
             *ngIf="employee.punching_count === 0"
-            [style.color]="'rgb(96, 23, 255)'"
+            [style.color]="'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
             [matTooltipShowDelay]="500"
@@ -116,11 +116,11 @@
         >
           Out
         </th>
-        <td mat-cell *matCellDef="let employee">
+        <td mat-cell *matCellDef="let employee"  (click)="mark(employee)">
           {{ employee.punchout_trace?.att_time }}
           <span
             *ngIf="employee.punching_count < 2 && !is_today"
-            [style.color]="'rgb(96, 23, 255)'"
+            [style.color]="'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
             [matTooltipShowDelay]="500"
@@ -140,13 +140,9 @@
         >
           Duration
         </th>
-        <td mat-cell *matCellDef="let employee">
+        <td mat-cell *matCellDef="let employee"   (click)="mark(employee)" >
           {{ employee.duration_str }}
-          <!-- <span
-            *ngIf="employee.punching_count < 2"
-            [style]="getDurationColour(employee)"
-            >-</span
-          > -->
+
           <span
             *ngIf="is_today === true && employee.punching_count < 2"
             [style]="getDurationColour(employee)"

@@ -18,6 +18,9 @@ import { default as _rollupMoment, Moment } from 'moment';
 import { RouterLink } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
+import { EmployeeService } from 'app/routes/monthwiseregister/employee/employee.service';
+import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 
 const moment = _rollupMoment || _moment;
 
@@ -31,7 +34,7 @@ const moment = _rollupMoment || _moment;
     MatSortModule, CommonModule, MatInputModule,
     MatDatepickerModule, MatIconModule, MatBadgeModule,
     FormsModule, ReactiveFormsModule, NgIf,
-    MatTooltipModule, MatSelectModule,MatButtonModule]
+    MatTooltipModule, MatSelectModule, MatButtonModule]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
@@ -41,6 +44,7 @@ export class AttendanceRegisterComponent implements OnInit {
   data: DailyPunching[] = [];
   is_future: boolean;
   is_today: boolean;
+  is_holiday: boolean;
   date_dmY: string;
   // selectedDate: string = moment().format('YYYY-MM-DD');
   selectedDateHint: string = moment().format('DD MMMM YYYY');
@@ -59,7 +63,9 @@ export class AttendanceRegisterComponent implements OnInit {
   combinedData: { name: string, designation: string }[] = [];
 
 
-  constructor(private registerService: RegisterService, private _liveAnnouncer: LiveAnnouncer) { }
+  constructor(private registerService: RegisterService,
+    private _liveAnnouncer: LiveAnnouncer, private drawer: MtxDrawer,
+    private employeeService: EmployeeService) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -89,7 +95,7 @@ export class AttendanceRegisterComponent implements OnInit {
 
   //   this.dataSource.filter = filterValue.trim().toLowerCase();
   // }
-  applyFilter(){
+  applyFilter() {
 
     const searchTxt = this.searchForm.get('searchTxt')?.value;
     let section = this.searchForm.get('selectedSection')?.value;
@@ -110,6 +116,7 @@ export class AttendanceRegisterComponent implements OnInit {
       this.data = data.punchings;
       this.is_future = data.is_future;
       this.is_today = data.is_today;
+      this.is_holiday = data.is_holiday;
       this.date_dmY = data.date_dmY;
       console.log(data);
       // console.log(this.data);
@@ -143,7 +150,7 @@ export class AttendanceRegisterComponent implements OnInit {
 
       // Fetch data from row
       const columnName = row.aadhaarid + row.name + row.designation;
-      const columnSection = row?.section|| '';
+      const columnSection = row?.section || '';
       const attendance_book = row.attendance_book?.title || '';
       // console.log('section'+section+';');
       // console.log('columnSection'+columnSection+';');
@@ -166,7 +173,7 @@ export class AttendanceRegisterComponent implements OnInit {
 
   dateChanged(type: string, event: MatDatepickerInputEvent<Date>) {
     if (event.value !== null && event.value !== undefined) {
-      const newdate = moment(event.value)
+      const newdate = moment(event.value);
       // this.selectedDate = newdate.format('YYYY-MM-DD');
       this.date.setValue(newdate);
       this.selectedDateHint = newdate.format('DD MMM YYYY');
@@ -176,7 +183,7 @@ export class AttendanceRegisterComponent implements OnInit {
       console.log('Datepicker value is undefined');
     }
   }
-  
+
   roundValue(value: number): number {
     return Math.round(value);
   }
@@ -223,14 +230,14 @@ export class AttendanceRegisterComponent implements OnInit {
       'text-align': 'center',
 
     };
-    if(employee.punching_count < 2 && this.is_today === true)
-    return {
-      'color': 'black',
-      'font-weight': 'bold',
-      'text-align': 'center',
-      'font-size': 'large'
+    if (employee.punching_count < 2 && this.is_today === true)
+      return {
+        'color': 'black',
+        'font-weight': 'bold',
+        'text-align': 'center',
+        'font-size': 'large'
 
-    };else{
+      }; else {
       return {};
     }
 
@@ -259,13 +266,39 @@ export class AttendanceRegisterComponent implements OnInit {
   onPrevDay() {
     const prevday = moment(this.date.value).subtract(1, 'day');
     //if this is before 2024 january month, ignore
-    if (prevday.isBefore (this.beginDate, 'day')) return;
+    if (prevday.isBefore(this.beginDate, 'day')) return;
     // this.selectedDate = prevday.format('YYYY-MM-DD');
     this.selectedDateHint = moment(prevday).format('DD MMM YYYY');
     this.date.setValue(prevday);
 
     this.fetchData(prevday.format('YYYY-MM-DD'));
   }
+
+  mark(row: DailyPunching ) {
+    console.log(row);
+    if (this.is_holiday && row.punching_count == 0) return;
+
+    const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
+      width: '300px',
+      data: { punchingInfo: row, monthlyPunching: row },
+    });
+
+    drawerRef.afterDismissed().subscribe(res => {
+      console.log('The drawer was dismissed - ' + res);
+      if (!res?.hint && !res?.remarks) return;
+      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
+      if (!row.logged_in_user_is_controller &&  //js is both so and co
+        row.logged_in_user_is_section_officer &&  //disallow only if so
+        row.finalized_by_controller
+      ) return;
+
+      this.employeeService.saveHint(row.aadhaarid, this.date_dmY, res).subscribe((_data) => {
+        this.fetchData(moment(this.date.value).format('YYYY-MM-DD'));
+      });
+    });
+  }
+
+
 }
 
 
