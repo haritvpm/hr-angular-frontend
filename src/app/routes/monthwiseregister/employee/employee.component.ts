@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./employee.component.css'],
   standalone: true,
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
-     MatInputModule,MatButtonModule,MatIconModule]
+    MatInputModule, MatButtonModule, MatIconModule]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
@@ -59,12 +59,14 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   getCellBgcolor(dateItem: any) {
     let dayColor = '';
-    if (dateItem.is_holiday != '1' && !dateItem.is_future) {
-      dayColor = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
-      if (dateItem.punching_count == '1' && !dateItem.is_today) {
-        dayColor = '#FFE082';
-      }
-    }
+    // if (dateItem.is_holiday != '1' && !dateItem.is_future) {
+    //   dayColor = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
+    //   if (dateItem.punching_count == '1' && !dateItem.is_today) {
+    //     dayColor = '#FFE082';
+    //   }
+    // } else
+    if (dateItem.is_future)
+      dayColor = '#BDBDBD';
     return {
       'background-color': dayColor,
       'text-align': 'center'
@@ -72,36 +74,33 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   }
 
   getDateStyle(dateItem: any) {
-    let dateColorSet = '';
-    const dateColorDef = '';
-    if (dateItem.attendance_trace_fetch_complete) {
-      if (!dateItem.is_holiday && !dateItem.is_future) {
-        dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
-        if (dateItem.punching_count == '1') {
-          dateColorSet = '#FFE082';
-        }
-      }
-    }
-    return {
-      //     'color': holiday,
-      'background-color': dateColorSet ? dateColorSet : dateColorDef,
-      'font-weight': dateColorSet ? 'bold' : '',
-    };
+    // if (dateItem.attendance_trace_fetch_complete) {
+    if (!dateItem.is_holiday && !dateItem.is_future)
+      // dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
+      // if (dateItem.punching_count <= '1' ) {
+      // dateColorSet = '#FFE082';
+      if (dateItem.punching_count < '1')
+        return {
+          'font-weight': 'bold',
+          'color': 'deeppink'
+        };
+      else if (dateItem.punching_count == '1')
+        return {
+          'font-weight': 'bold',
+          'color': 'orange;'
+        };
+      else
+        return '';
+    // }
+    else if (dateItem.is_future)
+      return {
+        'background-color': '#BDBDBD'
+      };
+    // dateColorSet = '#78909C';
+    // }
+
+    else return '';
   }
-
-  //   getMinutes(monthData:any, type:string) {
-  //     if (type == 'extra') {
-  // const etraMinute = monthData.    }
-
-  //   }
-  // getDateStyle(dateItem: any) {
-  //   console.log("ljfl");
-  //   const leave = (dateItem.punching_count = 0 && dateItem.attendance_trace_fetch_complete) ? 'yellow' : '';
-  //   return {
-  //     'font-weight': leave ? 'bold' : '',
-  //     'color': leave?'yellow':''
-  //   }
-  // }
 
   getHolidayStyle(dateItem: any) {
     // const holiday = (dateItem.is_holiday == 1) ? 'red' : '';
@@ -110,6 +109,10 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         'color': 'red',
         'font-weight': 'bold'
       };
+    // else if (dateItem.is_future)
+    //   return {
+    //     'background-color': '#78909C'
+    //   };
     else
       return '';
   }
@@ -125,7 +128,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   onPrevMonth() {
     const prevmonth = moment(this.date).subtract(1, 'month');
     //if this is before 2024 january month, ignore
-    if (prevmonth.isBefore (this.beginDate, 'month')) return;
+    if (prevmonth.isBefore(this.beginDate, 'month')) return;
     this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, prevmonth.format('YYYY-MM-DD')]);
   }
 
