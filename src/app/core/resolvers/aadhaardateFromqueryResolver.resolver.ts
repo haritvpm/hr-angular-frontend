@@ -9,6 +9,7 @@ export const aadhaardateFromqueryResolver: ResolveFn<EmployeeArgs> = (route, sta
     const aadhaarid = route.paramMap.get('aadhaarid')!;
     const date = route.paramMap.get('date') || new Date().toISOString().slice(0, 10);
     const self = false; //route.paramMap.get('self');
+    console.log('date in aadhaardateFromqueryResolver:'+date);
     return of({ aadhaarid, date, self });
 };
 

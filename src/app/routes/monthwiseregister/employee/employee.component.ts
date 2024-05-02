@@ -42,10 +42,11 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
 
+console.log('ngOnInit');
     this.route.data
       .pipe(
         map(data => data.aadhaar_date),
-        tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date;  this.self = data.self; console.log('self:'+data.self)}),
+        tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date;  this.self = data.self; console.log('date dfdfd:'+data.date)}),
         switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date )),
         take(1)
       )
@@ -119,6 +120,9 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   onNextMonth() {
 
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+
     const nextmonth = moment(this.date).add(1, 'month');
     //if this is future month, ignore
     if (nextmonth.isAfter(moment(), 'month')) return;
@@ -126,9 +130,13 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   }
   onPrevMonth() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    
     const prevmonth = moment(this.date).subtract(1, 'month');
     //if this is before 2024 january month, ignore
     if (prevmonth.isBefore(this.beginDate, 'month')) return;
+    console.log('prev month:', prevmonth.format('YYYY-MM-DD'));
     this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, prevmonth.format('YYYY-MM-DD')]);
   }
 
