@@ -1,5 +1,6 @@
 {
   "menu": {
+    "self" : "Self",
     "settings": "Settings",
     "settings.employee": "Employees",
     "monthwiseregister": "Monthwise Register",

@@ -5,11 +5,12 @@ import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, Monthwi
 import { DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { switchMap } from 'rxjs';
+import { Observable, Subscription, map, switchMap, take, tap } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '@core';
 
 @Component({
   selector: 'app-monthwiseregister-employee',
@@ -17,13 +18,14 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./employee.component.css'],
   standalone: true,
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
-     MatInputModule,MatButtonModule,MatIconModule]
+    MatInputModule, MatButtonModule, MatIconModule]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
-  aadhaarid: string;
+  aadhaarid: string | undefined = undefined;
   date: string;
-  data: MonthwiseEmployeeApiData;
+  self : boolean = false;
+  data: MonthwiseEmployeeApiData | null = null;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
   displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
   clickedRows = new Set<EmployeePunchingInfo>();
@@ -34,27 +36,28 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: EmployeeService
+    private apiService: EmployeeService,
+
   ) { }
 
   ngOnInit(): void {
-    this.route.params
+
+    this.route.data
       .pipe(
-        switchMap(params => {
-          console.log(params);
-          this.aadhaarid = params.aadhaarid;
-          this.date = params.date || new Date().toISOString().slice(0, 10);
-          return this.apiService.getEmployeeData(this.aadhaarid, this.date);
-        })
+        map(data => data.aadhaar_date),
+        tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date;  this.self = data.self; console.log('self:'+data.self)}),
+        switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date )),
+        take(1)
       )
       .subscribe(response => {
         console.log(response);
         this.data = response;
         this.dataSource.data = this.data.employee_punching;
         this.employeeInfo = this.data.employee;
-        this.monthlyData = this.data.data_monthly[this.aadhaarid];
+        this.monthlyData = this.data.data_monthly[this.aadhaarid!];
         console.log(this.monthlyData);
       });
+      
   }
 
   getCellBgcolor(dateItem: any) {
@@ -125,7 +128,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   onPrevMonth() {
     const prevmonth = moment(this.date).subtract(1, 'month');
     //if this is before 2024 january month, ignore
-    if (prevmonth.isBefore (this.beginDate, 'month')) return;
+    if (prevmonth.isBefore(this.beginDate, 'month')) return;
     this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, prevmonth.format('YYYY-MM-DD')]);
   }
 

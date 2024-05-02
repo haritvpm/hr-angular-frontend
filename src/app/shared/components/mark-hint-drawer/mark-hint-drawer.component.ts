@@ -35,6 +35,7 @@ export class MarkHintDrawerComponent implements OnInit {
   punchingTimes: string = '';
 
   ngOnInit() {
+    console.log(this.data);
     this.selected = this.data.punchingInfo.hint || this.data.punchingInfo.computer_hint;
     this.remarks = this.data.punchingInfo.remarks || '';
     this.selectedLabel = this.leaveList.find((x:any) => x.value == this.selected)?.label || '';

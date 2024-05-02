@@ -94,3 +94,8 @@ export interface MonthwiseEmployeeApiData {
   employee_punching: EmployeePunchingInfo[];
   employee: Employee;
 }
+export interface EmployeeArgs {
+  aadhaarid: string;
+  date: string;
+  self : boolean;
+}
