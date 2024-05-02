@@ -50,6 +50,8 @@ export class StartupService {
      // Tips: Alternatively you can add permissions with role at the same time.
     // this.rolesService.addRolesWithPermissions({ ADMIN: permissions });
     */
+   console.log('user roles:', user.roles );
+   console.log('user permissions:', user.permissions );
     this.rolesService.flushRolesAndPermissions();
     this.permissonsService.loadPermissions(user.permissions ?? []);
 

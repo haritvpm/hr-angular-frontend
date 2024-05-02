@@ -51,8 +51,9 @@ export class CellComponent implements OnInit {
         //under has marked hint
         if (this.item.finalized_by_controller) {
           this.grace_exceeded300_and_today_has_grace_alarm_show = false;
-          this.text_color = 'DeepSkyBlue';
-          this.casual_color = 'DeepSkyBlue';
+          //this can be set after leave submitted
+         // this.text_color = 'DeepSkyBlue';
+        //  this.casual_color = 'DeepSkyBlue';
         }
 
         this.casual_fn = this.item.hint === 'casual_fn';
@@ -88,14 +89,17 @@ export class CellComponent implements OnInit {
         }
       } else if (!this.calendarInfo.holiday && !this.calendarInfo.is_today) {
         //zero punching
-        if (this.item.hint && this.item.hint !== 'clear') {
-          this.icon_show = false; //dont show icon if hint is set like casual
-          this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
-        } else
+
           if (!this.calendarInfo.future_date) {
             this.icon_name = 'close';
             this.icon_color = 'DeepPink'; //'#6017ff';
           }
+      }
+
+      if (this.item.hint && this.item.hint !== 'clear') {
+       // this.icon_show = false; //dont show icon if hint is set like casual
+        //^^^^ show icon if hint is set like casual. because it will be missed if not shown and leave added
+        this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
       }
 
       // @if (item.grace_sec > 3600 ) {

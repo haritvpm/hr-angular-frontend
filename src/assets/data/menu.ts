@@ -19,15 +19,15 @@ export default {
       },
 
     },
-    // {
-    //   route: 'monthwiseregister/employee',
-    //   name: 'employee',
-    //   type: 'link',
-    //   icon: 'persons',
-    //   permissions: {
-    //     only: ['section_access'],
-    //   },
-    // },
+    {
+      route: 'monthwiseregister/employee',
+      name: 'self',
+      type: 'link',
+      icon: 'person',
+      permissions: {
+        only: ['section_access'],
+      },
+    },
     {
       route: 'settings',
       name: 'settings',

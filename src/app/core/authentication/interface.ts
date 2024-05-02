@@ -7,6 +7,7 @@ export interface User {
   avatar?: string;
   roles?: any[];
   permissions?: any[];
+  aadhaarid?: string;
 }
 
 export interface Token {
