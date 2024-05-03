@@ -31,7 +31,8 @@ export function TranslateHttpLoaderFactory(http: HttpClient) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimationsAsync('noop'),
+    provideAnimationsAsync(),
+    //provideAnimationsAsync('noop'),
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(
       routes,
@@ -70,6 +71,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_DATE_LOCALE,
       useFactory: () => navigator.language, // <= This will be overrided by runtime setting
+      useValue: 'en-IN',
     },
     {
       provide: MAT_CARD_CONFIG,

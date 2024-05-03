@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { debounceTime, tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs';
 
 import { AuthService, SettingsService, User } from '@core';
 
@@ -14,7 +14,7 @@ import { AuthService, SettingsService, User } from '@core';
     <button class="r-full" mat-button [matMenuTriggerFor]="menu">
       <!-- <img matButtonIcon class="avatar r-full" [src]="user.avatar" width="24" alt="avatar" /> -->
       <mat-icon>person</mat-icon>
-      <span class="m-x-8">{{ user.name }}</span>
+      <span class="m-x-8">{{ user.username?.toUpperCase() }}</span>
     </button>
 
     <mat-menu #menu="matMenu">
@@ -25,6 +25,10 @@ import { AuthService, SettingsService, User } from '@core';
       <button routerLink="/profile/settings" mat-menu-item>
         <mat-icon>edit</mat-icon>
         <span>{{ 'edit_profile' | translate }}</span>
+      </button>
+      <button routerLink="/profile/password-reset" mat-menu-item>
+        <mat-icon>edit</mat-icon>
+        <span>Reset Password</span>
       </button>
       <button mat-menu-item (click)="restore()">
         <mat-icon>restore</mat-icon>
@@ -48,14 +52,12 @@ import { AuthService, SettingsService, User } from '@core';
   imports: [RouterLink, MatButtonModule, MatIconModule, MatMenuModule, TranslateModule],
 })
 export class UserComponent implements OnInit {
-  user!: User;
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly settings = inject(SettingsService);
 
-  constructor(
-    private router: Router,
-    private auth: AuthService,
-    private cdr: ChangeDetectorRef,
-    private settings: SettingsService
-  ) {}
+  user!: User;
 
   ngOnInit(): void {
     this.auth

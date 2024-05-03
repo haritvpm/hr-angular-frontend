@@ -1,36 +1,246 @@
-<!-- <page-header></page-header> -->
+<div>
+  <form [formGroup]="searchForm" class="row justify-content-between">
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Date</mat-label>
+      <!-- <input matInput [matDatepicker]="picker" placeholder="Choose a date" (dateChange)="dateChanged('change', $event)"> -->
+      <input
+        readonly
+        [max]="todayDate"
+        [min]="beginDate"
+        matInput
+        [matDatepicker]="picker"
+        [formControl]="date"
+        (dateChange)="dateChanged('change', $event)"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Section</mat-label>
+      <mat-select formControlName="selectedSection" (selectionChange)="applyFilter()">
+        @for (section of sections; track section) {
+          <mat-option [value]="section">{{ section }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef> Sl No.</th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-  
-    <!-- Weight Column -->
-    <ng-container matColumnDef="weight">
-      <th mat-header-cell *matHeaderCellDef> Weight </th>
-      <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-    </ng-container>
-  
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="symbol">
-      <th mat-header-cell *matHeaderCellDef> Symbol </th>
-      <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  
-  
+    <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
+      <mat-label>Search</mat-label>
+      <!-- <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" /> -->
+      <input matInput formControlName="searchTxt" (keyup)="applyFilter()" placeholder="Search" />
+    </mat-form-field>
+  </form>
+</div>
+
+<!-- <div class="mat-elevation-z1 mat-table-responsive"> -->
+<div class="mat-elevation-z1">
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell [style.text-align]="'center'" *matHeaderCellDef sticky>
+          <div class="d-flex align-items-center">
+            <button mat-icon-button (click)="onPrevDay()">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <!-- <b [style.color]="is_holiday ? 'red' : ''">{{ selectedDateHint }}</b> -->
+            <b>{{ selectedDateHint }}</b>
+
+
+            <span *ngIf="is_holiday" [style.color]="'red'">&nbsp;(H)</span>
+
+            <button mat-icon-button (click)="onNextDay()">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+        </th>
+        <td mat-cell [style.white-space]="'nowrap'" *matCellDef="let employee">
+          <a [routerLink]="['/monthwiseregister/employee', employee.aadhaarid, date_dmY]">
+            <small>{{ employee.aadhaarid }}</small
+            >&nbsp; <b>{{ employee.name }}</b
+            ><br /><small>{{ employee.designation }}</small>
+          </a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="section">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by section"
+        >
+          Section
+        </th>
+        <td mat-cell *matCellDef="let employee">{{ employee.section }}</td>
+      </ng-container>
+      <ng-container matColumnDef="inTrace">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by in date"
+        >
+          In
+        </th>
+
+        <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
+          {{ employee.punchin_trace?.att_time }}
+          <span
+            *ngIf="employee.punching_count === 0 && !is_holiday"
+            [style.color]="'DeepPink'"
+            [matTooltip]="getTooltipContent(employee)"
+            matTooltipPosition="above"
+            [matTooltipShowDelay]="500"
+            matTooltipClass="allow-cr"
+          >
+            <small><mat-icon>close</mat-icon></small></span
+          >
+        </td>
+        <!-- <td mat-cell [style.color]="employee.punchin_trace?.att_time > '10:30:00'? 'red': ''" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
+        <!-- <td mat-cell [style]="getPunchInStyle(employee)" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
+      </ng-container>
+      <ng-container matColumnDef="outTrace">
+        <th
+          mat-header-cell
+          [style.text-align]="'center'"
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by out time"
+        >
+          Out
+        </th>
+        <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
+          {{ employee.punchout_trace?.att_time }}
+          <span
+            *ngIf="employee.punching_count < 2 && !is_today && !is_holiday"
+            [style.color]="'DeepPink'"
+            [matTooltip]="getTooltipContent(employee)"
+            matTooltipPosition="above"
+            [matTooltipShowDelay]="500"
+            matTooltipClass="allow-cr"
+          >
+            <small><mat-icon>close</mat-icon></small></span
+          >
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="duration_str">
+        <th
+          mat-header-cell
+          [style.text-align]="'center'"
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by out time"
+        >
+          Duration
+        </th>
+        <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
+          {{ employee.duration_str }}
+
+          <span
+            *ngIf="is_today === true && employee.punching_count < 2 && !is_holiday"
+            [style]="getDurationColour(employee)"
+          >
+            -
+          </span>
+          <span
+            *ngIf="is_today === false && employee.punching_count < 2 && !is_holiday"
+            [style]="getDurationColour(employee)"
+          >
+            <mat-icon><span class="material-icons-outlined"> help_outline </span></mat-icon>
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="extra_str">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by out time"
+        >
+          Extra Time(Min)
+        </th>
+        <td mat-cell *matCellDef="let employee">{{ employee.extra_str }}</td>
+      </ng-container>
+      <ng-container matColumnDef="total_extra_sec">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by grace time"
+        >
+          Total Extra(Min)
+        </th>
+        <td mat-cell [style]="getExtratimeColor(employee)" *matCellDef="let employee">
+          <span *ngIf="!is_holiday">
+            {{ roundValue(employee.total_extra_sec / 60) }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="grace_str">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by grace time"
+        >
+          Grace Time(Min)
+        </th>
+        <td mat-cell [style]="getGraceStyle(employee)" *matCellDef="let employee">
+          {{ employee.grace_str }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="total_grace_sec">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by grace time"
+        >
+          Total Grace Used(Min)
+        </th>
+        <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
+          <span *ngIf="!is_holiday">
+          {{ roundValue(employee.total_grace_sec / 60) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="remarks">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by remarks"
+        >
+          Remarks
+        </th>
+        <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
+
+          {{ employee.remarks }}
+        </td>
+      </ng-container>
+
+      <!-- <td mat-cell [style.color]="employee.name.startsWith('V')?'red':'blue'" *matCellDef="let employee">{{ employee.name }} <p style="white-space: pre-wrap"></p>{{ employee.designation }}</td> -->
+
+      <!-- Symbol Column -->
+      <!-- <ng-container matColumnDef="symbol">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by views">
+      Views
+    </th>
+    <td mat-cell *matCellDef="let employee"> {{ employee.views }} </td>
+  </ng-container> -->
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <mat-paginator
+    #paginator
+    [pageSizeOptions]="[50, 100, 200]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+</div>

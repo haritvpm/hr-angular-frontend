@@ -1,0 +1,76 @@
+<form class="form-field-full" [formGroup]="postingForm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>New Posting</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <mat-form-field class="w-full">
+          <mat-label>Employee</mat-label>
+          <mtx-select
+            [items]="(freeEmployees$ | async)!"
+            bindLabel="name"
+            bindValue="id"
+            autofocus
+            (change)="employeeChange($event)"
+            formControlName="employee_id"
+          >
+          </mtx-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Starting date</mat-label>
+          <input
+            formControlName="start_date"
+            readonly
+            matInput
+            [min]="min_startdate"
+            [max]="today"
+            [matDatepicker]="picker"
+            placeholder="Select starting date"
+            (dateChange)="dateChange('change', $event)"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>select section</mat-label>
+          <mtx-select
+            [items]="sections"
+            bindLabel="name"
+            bindValue="id"
+            formControlName="section_id"
+            (change)="sectionChange($event)"
+          >
+          </mtx-select>
+        </mat-form-field>
+
+        @if(attendancebooks.length){
+        <mat-form-field class="w-full">
+          <mat-label>select attendance-book</mat-label>
+          <mtx-select
+            [items]="attendancebooks"
+            bindLabel="title"
+            bindValue="id"
+            formControlName="attendance_book_id"
+          >
+          </mtx-select>
+        </mat-form-field>
+      }
+
+        <button
+          mat-flat-button
+          color="accent"
+          [disabled]="!!postingForm.invalid"
+          [loading]="isSubmitting"
+          (click)="addPosting()"
+        >
+          Save
+        </button>
+
+
+    </mat-card-content>
+  </mat-card>
+</form>

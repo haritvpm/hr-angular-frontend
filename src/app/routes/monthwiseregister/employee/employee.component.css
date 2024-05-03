@@ -1,0 +1,24 @@
+.employee-monthwise-table {
+  width: 100%;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+  cursor: pointer;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
+
+/* .date-row-is-clicked, th {
+  font-weight: bold;
+} */
+
+.table-container {
+  max-height: calc(105vh - 255px);
+
+  /* or height: calc(100vh - 155px); depending on your need  change */
+  overflow: auto;
+}

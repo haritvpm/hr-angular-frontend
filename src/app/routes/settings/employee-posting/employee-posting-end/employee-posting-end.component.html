@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Relieve {{ data.emp.name }}?</h1>
+<div mat-dialog-content>
+  <p>Relieve {{data.emp.name}} from this section?</p>
+  <p>Designation: {{ data.emp.designation }}</p>
+  <p>Section: {{ data.emp.section_name }}</p>
+  <p>Start Date: {{ data.emp.start_date }}</p>
+  <p>AttendanceId: {{ data.emp.aadhaarid }}</p>
+  <p>If yes, select date of relieving (last day of duty in section) ?</p>
+  <mat-form-field>
+    <input readonly matInput [max]="today" [min]="data.emp.start_date" [matDatepicker]="picker" placeholder="Select date"
+           (dateChange)="dateChange('change', $event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <!-- {{end_date}} -->
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button color="primary"  (click)="onNoClick()" cdkFocusInitial>No</button>
+  <button [disabled]="!end_date" mat-flat-button color="warn"  [mat-dialog-close]="data" >Yes</button>
+</div>
