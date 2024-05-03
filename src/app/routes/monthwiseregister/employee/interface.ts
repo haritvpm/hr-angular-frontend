@@ -22,6 +22,10 @@ export interface MonthlyData {
   updated_at: string;
   employee_id: number;
   total_grace_exceeded300_date: string | null;
+  cl_submitted: number;
+  compen_submitted: number;
+  other_leaves_marked: number;
+  other_leaves_submitted: number;
 }
 
 export interface EmployeePunchingInfo {
@@ -60,7 +64,7 @@ export interface EmployeePunchingInfo {
   leave_id?: number | null;
   punchin_trace?: PunchTrace | null;
   punchout_trace?: PunchTrace | null;
-  leave?: any ;
+  leave?: any;
 }
 
 export interface PunchTrace {
@@ -97,5 +101,5 @@ export interface MonthwiseEmployeeApiData {
 export interface EmployeeArgs {
   aadhaarid: string;
   date: string;
-  self : boolean;
+  self: boolean;
 }

@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@core';
+import { MatCardModule } from '@angular/material/card';
+// import {MatGridListModule} from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-monthwiseregister-employee',
@@ -18,7 +20,7 @@ import { AuthService } from '@core';
   styleUrls: ['./employee.component.css'],
   standalone: true,
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
-    MatInputModule, MatButtonModule, MatIconModule]
+    MatInputModule, MatButtonModule, MatIconModule, MatCardModule]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
@@ -27,7 +29,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   self: boolean = false;
   data: MonthwiseEmployeeApiData | null = null;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
-  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
+  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'grace', 'info'];
   clickedRows = new Set<EmployeePunchingInfo>();
   employeeInfo: Employee | null;
   monthlyData: MonthlyData | null;
