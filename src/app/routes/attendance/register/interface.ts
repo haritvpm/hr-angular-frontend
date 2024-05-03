@@ -39,6 +39,7 @@ export interface DailyPunching {
   logged_in_user_is_controller: boolean
   finalized_by_controller: boolean
   remarks:string
+  hint: string
 }
 
 export interface DailyPunchingApi {

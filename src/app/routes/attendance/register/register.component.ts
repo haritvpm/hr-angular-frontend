@@ -21,20 +21,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { EmployeeService } from 'app/routes/monthwiseregister/employee/employee.service';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
+import { leaveList } from '@shared/components/mark-hint-drawer/leave-types';
+import { DurationCellComponent } from './duration-cell/duration-cell.component';
 
 const moment = _rollupMoment || _moment;
 
 @Component({
-  selector: 'app-mattable-mattableapi',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
-  standalone: true,
-  imports: [MatTableModule, RouterLink,
-    MatPaginatorModule,
-    MatSortModule, CommonModule, MatInputModule,
-    MatDatepickerModule, MatIconModule, MatBadgeModule,
-    FormsModule, ReactiveFormsModule, NgIf,
-    MatTooltipModule, MatSelectModule, MatButtonModule]
+    selector: 'app-mattable-mattableapi',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.css'],
+    standalone: true,
+    imports: [MatTableModule, RouterLink,
+        MatPaginatorModule,
+        MatSortModule, CommonModule, MatInputModule,
+        MatDatepickerModule, MatIconModule, MatBadgeModule,
+        FormsModule, ReactiveFormsModule, NgIf,
+        MatTooltipModule, MatSelectModule, MatButtonModule, DurationCellComponent]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
@@ -296,6 +298,14 @@ export class AttendanceRegisterComponent implements OnInit {
         this.fetchData(moment(this.date.value).format('YYYY-MM-DD'));
       });
     });
+  }
+  getLeaveText(row : DailyPunching){
+
+    if(row.hint){
+    return  leaveList.find((x:any) => x.value ==row.hint)?.label || '';
+    }
+
+
   }
 
 

@@ -47,7 +47,6 @@
             <!-- <b [style.color]="is_holiday ? 'red' : ''">{{ selectedDateHint }}</b> -->
             <b>{{ selectedDateHint }}</b>
 
-
             <span *ngIf="is_holiday" [style.color]="'red'">&nbsp;(H)</span>
 
             <button mat-icon-button (click)="onNextDay()">
@@ -135,21 +134,13 @@
         >
           Duration
         </th>
-        <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
-          {{ employee.duration_str }}
 
-          <span
-            *ngIf="is_today === true && employee.punching_count < 2 && !is_holiday"
-            [style]="getDurationColour(employee)"
-          >
-            -
-          </span>
-          <span
-            *ngIf="is_today === false && employee.punching_count < 2 && !is_holiday"
-            [style]="getDurationColour(employee)"
-          >
-            <mat-icon><span class="material-icons-outlined"> help_outline </span></mat-icon>
-          </span>
+        <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
+          <app-duration-cell
+            [punching]="employee"
+            [is_today]="is_today"
+            [is_holiday]="is_holiday"
+          ></app-duration-cell>
         </td>
       </ng-container>
       <ng-container matColumnDef="extra_str">
@@ -159,7 +150,7 @@
           mat-sort-header
           sortActionDescription="Sort by out time"
         >
-          Extra Time(Min)
+          Extra(Min)
         </th>
         <td mat-cell *matCellDef="let employee">{{ employee.extra_str }}</td>
       </ng-container>
@@ -185,7 +176,7 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          Grace Time(Min)
+          Grace(Min)
         </th>
         <td mat-cell [style]="getGraceStyle(employee)" *matCellDef="let employee">
           {{ employee.grace_str }}
@@ -202,7 +193,7 @@
         </th>
         <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
           <span *ngIf="!is_holiday">
-          {{ roundValue(employee.total_grace_sec / 60) }}
+            {{ roundValue(employee.total_grace_sec / 60) }}
           </span>
         </td>
       </ng-container>
@@ -217,7 +208,6 @@
           Remarks
         </th>
         <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
-
           {{ employee.remarks }}
         </td>
       </ng-container>
