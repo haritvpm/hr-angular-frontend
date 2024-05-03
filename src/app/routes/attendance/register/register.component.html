@@ -23,14 +23,12 @@
           <mat-option [value]="section">{{ section }}</mat-option>
         }
       </mat-select>
-
     </mat-form-field>
 
     <mat-form-field class="m-x-8 flex-grow-1" appearance="outline">
       <mat-label>Search</mat-label>
       <!-- <input matInput #searchInput (keyup)="applyFilter(searchInput.value)" /> -->
       <input matInput formControlName="searchTxt" (keyup)="applyFilter()" placeholder="Search" />
-
     </mat-form-field>
   </form>
 </div>
@@ -40,28 +38,25 @@
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
       <ng-container matColumnDef="name">
-        <th
-          mat-header-cell
-          [style.text-align]="'center'"
-          *matHeaderCellDef
-          sticky
-        >
-        <div class=" d-flex  align-items-center">
-          <button mat-icon-button (click)="onPrevDay()">
-            <mat-icon>chevron_left</mat-icon>
-          </button>
+        <th mat-header-cell [style.text-align]="'center'" *matHeaderCellDef sticky>
+          <div class="d-flex align-items-center">
+            <button mat-icon-button (click)="onPrevDay()">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
 
-          <b>{{ selectedDateHint }}</b>
+            <!-- <b [style.color]="is_holiday ? 'red' : ''">{{ selectedDateHint }}</b> -->
+            <b>{{ selectedDateHint }}</b>
 
-          <button mat-icon-button (click)="onNextDay()">
-            <mat-icon>chevron_right</mat-icon>
-          </button>
-        </div>
+
+            <span *ngIf="is_holiday" [style.color]="'red'">&nbsp;(H)</span>
+
+            <button mat-icon-button (click)="onNextDay()">
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
         </th>
         <td mat-cell [style.white-space]="'nowrap'" *matCellDef="let employee">
-          <a
-            [routerLink]="['/monthwiseregister/employee', employee.aadhaarid, date_dmY]"
-          >
+          <a [routerLink]="['/monthwiseregister/employee', employee.aadhaarid, date_dmY]">
             <small>{{ employee.aadhaarid }}</small
             >&nbsp; <b>{{ employee.name }}</b
             ><br /><small>{{ employee.designation }}</small>
@@ -90,10 +85,10 @@
           In
         </th>
 
-        <td mat-cell *matCellDef="let employee"  (click)="mark(employee)">
+        <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
           {{ employee.punchin_trace?.att_time }}
           <span
-            *ngIf="employee.punching_count === 0"
+            *ngIf="employee.punching_count === 0 && !is_holiday"
             [style.color]="'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
@@ -116,10 +111,10 @@
         >
           Out
         </th>
-        <td mat-cell *matCellDef="let employee"  (click)="mark(employee)">
+        <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
           {{ employee.punchout_trace?.att_time }}
           <span
-            *ngIf="employee.punching_count < 2 && !is_today"
+            *ngIf="employee.punching_count < 2 && !is_today && !is_holiday"
             [style.color]="'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
@@ -140,17 +135,17 @@
         >
           Duration
         </th>
-        <td mat-cell *matCellDef="let employee"   (click)="mark(employee)" >
+        <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
           {{ employee.duration_str }}
 
           <span
-            *ngIf="is_today === true && employee.punching_count < 2"
+            *ngIf="is_today === true && employee.punching_count < 2 && !is_holiday"
             [style]="getDurationColour(employee)"
           >
             -
           </span>
           <span
-            *ngIf="is_today === false && employee.punching_count < 2"
+            *ngIf="is_today === false && employee.punching_count < 2 && !is_holiday"
             [style]="getDurationColour(employee)"
           >
             <mat-icon><span class="material-icons-outlined"> help_outline </span></mat-icon>
@@ -164,7 +159,7 @@
           mat-sort-header
           sortActionDescription="Sort by out time"
         >
-          Extra Time
+          Extra Time(Min)
         </th>
         <td mat-cell *matCellDef="let employee">{{ employee.extra_str }}</td>
       </ng-container>
@@ -178,7 +173,9 @@
           Total Extra(Min)
         </th>
         <td mat-cell [style]="getExtratimeColor(employee)" *matCellDef="let employee">
-          {{ roundValue(employee.total_extra_sec / 60) }}
+          <span *ngIf="!is_holiday">
+            {{ roundValue(employee.total_extra_sec / 60) }}
+          </span>
         </td>
       </ng-container>
       <ng-container matColumnDef="grace_str">
@@ -188,7 +185,7 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          Grace Time
+          Grace Time(Min)
         </th>
         <td mat-cell [style]="getGraceStyle(employee)" *matCellDef="let employee">
           {{ employee.grace_str }}
@@ -204,7 +201,24 @@
           Total Grace Used(Min)
         </th>
         <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
+          <span *ngIf="!is_holiday">
           {{ roundValue(employee.total_grace_sec / 60) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="remarks">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by remarks"
+        >
+          Remarks
+        </th>
+        <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
+
+          {{ employee.remarks }}
         </td>
       </ng-container>
 

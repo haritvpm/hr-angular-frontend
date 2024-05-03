@@ -39,7 +39,7 @@ const moment = _rollupMoment || _moment;
 
 export class AttendanceRegisterComponent implements OnInit {
   displayedColumns: string[] = ['name', 'section', 'inTrace', 'outTrace', 'duration_str', 'extra_str',
-    'total_extra_sec', 'grace_str', 'total_grace_sec'];
+    'total_extra_sec', 'grace_str', 'total_grace_sec','remarks'];
   dataSource = new MatTableDataSource<DailyPunching>();
   data: DailyPunching[] = [];
   is_future: boolean;

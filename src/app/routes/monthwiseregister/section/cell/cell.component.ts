@@ -97,9 +97,11 @@ export class CellComponent implements OnInit {
       }
 
       if (this.item.hint && this.item.hint !== 'clear') {
-       // this.icon_show = false; //dont show icon if hint is set like casual
+        this.icon_show = this.item.punching_count !=0 ; //if zero punching then no need to show icon since there is hint
         //^^^^ show icon if hint is set like casual. because it will be missed if not shown and leave added
-        this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
+        if(!this.casual_fn && !this.casual_an){ //we show 1/2 cl text if casual_fn or casual_an is set
+         this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
+        }
       }
 
       // @if (item.grace_sec > 3600 ) {
