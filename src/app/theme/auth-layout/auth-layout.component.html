@@ -1,3 +1,10 @@
-<div class="matero-auth-container">
-  <router-outlet></router-outlet>
+<div class="login-container">
+  <div class="left-side" *ngIf="!(isMobile | async)?.matches">
+    <img src="/assets/images/Fingerprint-rafiki.svg" alt="Image">
+  </div>
+
+  <div class="right-side">
+    <router-outlet></router-outlet>
+  </div>
 </div>
+
