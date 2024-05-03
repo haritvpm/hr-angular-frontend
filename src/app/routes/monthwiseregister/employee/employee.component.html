@@ -70,7 +70,8 @@
             -
           }
 
-           @else {
+           @else if(item.attendance_trace_fetch_complete != 0)
+           {
             <span
             *ngIf="item.punching_count === 1"
             [style.color]="'DeepPink'"
