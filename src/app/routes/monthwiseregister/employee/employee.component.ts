@@ -81,8 +81,8 @@ console.log('ngOnInit');
 
   onNextMonth() {
 
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
+   // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+   // this.router.onSameUrlNavigation = 'reload';
 
     const nextmonth = moment(this.date).add(1, 'month');
     //if this is future month, ignore
@@ -91,8 +91,8 @@ console.log('ngOnInit');
 
   }
   onPrevMonth() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
+   // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+   // this.router.onSameUrlNavigation = 'reload';
 
     const prevmonth = moment(this.date).subtract(1, 'month');
     //if this is before 2024 january month, ignore
