@@ -76,7 +76,8 @@
       <ng-container [matColumnDef]="dayN">
         <th
             mat-header-cell
-            [style.color]="calendarInfo[dayN].holiday ? 'red' : ''"
+            [style.color]="calendarInfo[dayN].future_date? 'lightgray' : calendarInfo[dayN].holiday ? 'red' : ''"
+            [style.text-decoration]="calendarInfo[dayN].is_today ? 'underline' : ''"
             [style.text-align]="'center'"
             [style.padding]="'0 0'"
             *matHeaderCellDef>

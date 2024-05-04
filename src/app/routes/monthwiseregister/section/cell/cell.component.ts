@@ -45,7 +45,18 @@ export class CellComponent implements OnInit {
     this.fetch_pending = !this.calendarInfo.future_date &&
       !this.calendarInfo.attendance_trace_fetch_complete;
 
+
+
     if (this.item) {
+
+      if(this.item.leave?.active_status === 'N'){
+        this.text_color = 'DeepSkyBlue';
+        this.casual_color = 'DeepSkyBlue';
+      } else if(this.item.leave?.active_status === 'Y'){
+        this.text_color = 'LimeGreen';
+        this.casual_color = 'LimeGreen';
+      }
+
       //hints
       if (this.item.hint) { //dont use computer_hint if real hint set by SO exists
         //under has marked hint
@@ -55,7 +66,7 @@ export class CellComponent implements OnInit {
          // this.text_color = 'DeepSkyBlue';
         //  this.casual_color = 'DeepSkyBlue';
         }
-
+        this.casual = this.item.hint === 'casual';
         this.casual_fn = this.item.hint === 'casual_fn';
         this.casual_an = this.item.hint === 'casual_an';
       } else {
@@ -97,9 +108,9 @@ export class CellComponent implements OnInit {
       }
 
       if (this.item.hint && this.item.hint !== 'clear') {
-        this.icon_show = this.item.punching_count !=0 ; //if zero punching then no need to show icon since there is hint
+        this.icon_show = this.item.punching_count > 0  ; //if zero punching then no need to show icon since there is hint
         //^^^^ show icon if hint is set like casual. because it will be missed if not shown and leave added
-        if(!this.casual_fn && !this.casual_an){ //we show 1/2 cl text if casual_fn or casual_an is set
+        if(!this.casual && !this.casual_fn && !this.casual_an){ //we show 1/2 cl text if casual_fn or casual_an is set
          this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
         }
       }
