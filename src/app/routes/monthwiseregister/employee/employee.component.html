@@ -115,7 +115,10 @@
       <ng-container matColumnDef="punchin">
         <th mat-header-cell *matHeaderCellDef>In Time</th>
         <td mat-cell *matCellDef="let item">
-          @if (item.is_holiday && item.punching_count == 0) {
+          @if(!item.in_section){
+            n/a
+          }
+          @else if (item.is_holiday && item.punching_count === 0) {
             -
           } @else {
             @if (item.punchin_trace) {
@@ -132,9 +135,12 @@
       <ng-container matColumnDef="punchout">
         <th mat-header-cell *matHeaderCellDef>Out Time</th>
         <td mat-cell *matCellDef="let item">
-          @if (item.is_holiday && item.punching_count == 0) {
+          @if(!item.in_section){
+            n/a
+          }
+          @else if (item.is_holiday && item.punching_count === 0) {
             -
-          } @else if (item.attendance_trace_fetch_complete != 0) {
+          } @else if (item.attendance_trace_fetch_complete !== 0) {
             <span *ngIf="item.punching_count < 2" [style.color]="'DeepPink'">
               <small><mat-icon>close</mat-icon></small>
             </span>
@@ -148,7 +154,7 @@
       <ng-container matColumnDef="duration">
         <th mat-header-cell *matHeaderCellDef>Duration</th>
         <td mat-cell *matCellDef="let item">
-          @if (item.is_holiday || item.punching_count == 0) {
+          @if (item.is_holiday || item.punching_count === 0) {
             -
           } @else {
             {{ item.duration_str }}
@@ -157,18 +163,18 @@
       </ng-container>
 
       <ng-container matColumnDef="xtratime">
-        <th mat-header-cell *matHeaderCellDef>Extra Time (in minutes)</th>
+        <th mat-header-cell *matHeaderCellDef>Extra(min)</th>
         <td mat-cell *matCellDef="let item">
           @if (item.extra_str) {
             {{ item.extra_str }}
-          } @else if(item.is_holiday || item.punching_count == 0){
+          } @else if(item.is_holiday || item.punching_count === 0){
             -
           }
         </td>
       </ng-container>
 
       <ng-container matColumnDef="grace">
-        <th mat-header-cell *matHeaderCellDef>Grace (in minutes)</th>
+        <th mat-header-cell *matHeaderCellDef>Grace (min)</th>
         <td mat-cell *matCellDef="let item">
           {{ item.grace_str }}
         </td>

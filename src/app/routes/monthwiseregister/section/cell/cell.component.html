@@ -1,5 +1,5 @@
   <!-- can be in the future. -->
-
+@if(item.in_section){
   <span *ngIf="casual" [style.color]="casual_color" class="computer-hint"> CL </span>
   <span *ngIf="casual_fn" [style.color]="casual_color"   class="computer-hint"> <small>&#xbd;CL</small>  </span>
   <!-- <span *ngIf="time_exceeded_fn" [style.color]="'red'" ><small><mat-icon>alarm</mat-icon></small></span> -->
@@ -8,7 +8,8 @@
   <!-- <span *ngIf="fetch_pending && !calendarInfo.is_today"  style="color: lightgrey;" ><mat-icon  class="icon-small">arrow_downward</mat-icon></span> -->
   <span *ngIf="icon_show"  [style.color]="icon_color" ><mat-icon>{{icon_name}}</mat-icon></span>
   <span *ngIf="text_name"  [style.color]="text_color" > <b>{{text_name}}</b>  </span>
-
-
   <span *ngIf="casual_an" [style.color]="casual_color"   class="computer-hint"> <small>&#xbd;CL</small> </span>
+} @else {
+  ---
+}
   <!-- <span *ngIf="grace_exceeded300_and_today_has_grace_alarm_show" [style.color]="'red'" ><small><mat-icon class="icon-small" >warning_amber</mat-icon></small></span> -->
