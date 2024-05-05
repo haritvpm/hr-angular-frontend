@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from './employee.service';
-import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, Employee } from './interface';
+import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, Employee, YearlyData } from './interface';
 import { DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -33,6 +33,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   clickedRows = new Set<EmployeePunchingInfo>();
   employeeInfo: Employee | null;
   monthlyData: MonthlyData | null;
+  yearlyData: YearlyData | null;
   beginDate: Date = new Date('2024-01-01');
 
   constructor(
@@ -57,7 +58,8 @@ console.log('ngOnInit');
         this.data = response;
         this.dataSource.data = this.data.employee_punching;
         this.employeeInfo = this.data.employee;
-        this.monthlyData = this.data.data_monthly[this.aadhaarid!];
+        this.monthlyData = this.data.data_monthly;
+        this.yearlyData = this.data.data_yearly;
         console.log(this.monthlyData);
       });
 
