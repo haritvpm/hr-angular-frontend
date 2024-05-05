@@ -20,3 +20,11 @@
 /* .mdc-radio {
   padding: 0px !important;
 } */
+
+th {
+  text-align: right;
+  font-size: 0.875em;
+}
+td,th {
+  vertical-align: top;
+}

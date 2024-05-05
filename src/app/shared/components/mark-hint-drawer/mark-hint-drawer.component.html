@@ -77,44 +77,53 @@
       <input matInput placeholder="Remarks" [(ngModel)]="remarks" />
     </mat-form-field>
   } @else if (leave) {
-    <div class="d-flex row justify-content-center align-items-start">
-      <div><span [style.color]="'gray'">type:</span> {{ selectedLabel }} <br/></div>
-      <div>
-        <span [style.color]="'gray'">date:</span>
-        @if (leave.start_date !== leave.end_date) {
-          {{ leave.start_date | date: 'dd-MM-yyyy' }} to {{ leave.end_date | date: 'dd-MM-yyyy' }}
-          <br />
-        } @else {
-          {{ leave.start_date | date: 'dd-MM-yyyy' }} <br/>
-        }
-      </div>
+    <table>
+      <tr>
+        <th  ><span [style.color]="'gray'">leave:</span></th>
+        <td>{{ selectedLabel }}</td>
+      </tr>
+      <tr>
+        <th><span [style.color]="'gray'">date:</span></th>
+        <td>
+          @if (leave.start_date !== leave.end_date) {
+            {{ leave.start_date | date: 'dd-MM-yyyy' }} to <br> {{ leave.end_date | date: 'dd-MM-yyyy' }}
+          } @else {
+            {{ leave.start_date | date: 'dd-MM-yyyy' }}
+          }
+        </td>
+      </tr>
+      <!-- <tr>
+        <th><span [style.color]="'gray'">submitted:</span></th>
+        <td>{{ leave.creation_date | date: 'dd-MM-yyyy' }}</td>
+      </tr> -->
+      <tr>
+        <th><span [style.color]="'gray'">reason:</span></th>
+        <td> <small> {{ leave.reason }} </small> </td>
+      </tr>
+      <tr>
+        <th><span [style.color]="'gray'">status:</span></th>
+        <td>
+          @switch (leave.active_status) {
+            @case ('N') {
+              Pending
+            }
+            @case ('Y') {
+              Approved
+            }
+            @case ('R') {
+              Rejected
+            }
+            @case ('C') {
+              Cancelled
+            }
+            @default {
+              Unknown
+            }
+          }
+        </td>
+      </tr>
+    </table>
 
-      <div>
-        <span [style.color]="'gray'">submitted:</span>
-        {{ leave.creation_date | date: 'dd-MM-yyyy' }} <br/>
-      </div>
-      <div><span [style.color]="'gray'">reason:</span> {{ leave.reason }} <br/></div>
-      <div>
-        <span [style.color]="'gray'">status:&nbsp;</span>
-        @switch (leave.active_status) {
-          @case ('N') {
-            Pending
-          }
-          @case ('Y') {
-            Approved
-          }
-          @case ('R') {
-            Rejected
-          }
-          @case ('C') {
-            Cancelled
-          }
-          @default {
-            Unknown
-          }
-        }
-      </div>
-    </div>
   } @else {
     <div class="d-flex row justify-content-center">
       {{ selectedLabel }}
