@@ -146,7 +146,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
           this.dayColumns = Object.keys(data.calender_info);
           //this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
-          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'CL'];
+          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'CL','comp'];
 
           //  this.sections =['All'];
           this.sections = data.sections ? ['All', ...data.sections] : ['All'];
@@ -278,7 +278,8 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
   mark(day_number: string, dayNData: PunchingInfo, row: MonthlyPunching) {
     console.log(dayNData);
     console.log(this.calendarInfo[day_number]);
-    if (this.calendarInfo[day_number].holiday && dayNData.punching_count == 0) return;
+    //can be set EL even on holiday
+  //  if (this.calendarInfo[day_number].holiday && dayNData.punching_count == 0) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',

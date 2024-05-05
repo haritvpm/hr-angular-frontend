@@ -7,31 +7,41 @@
 </p>
 
 <div class="text-center">
-  <div style="font-weight: bold;"> {{data.monthlyPunching?.name}}</div>
-  <small>{{data.monthlyPunching?.designation}}</small> <br>
+  <div style="font-weight: bold">{{ data.monthlyPunching?.name }}</div>
+  <small>{{ data.monthlyPunching?.designation }}</small> <br />
   <mat-divider class="m-t-8"></mat-divider>
-  <b>{{data.punchingInfo.date}}</b> <br>
+  <b>{{ data.punchingInfo.date }}</b> <br />
   {{ punchingTimes }}
 
   <mat-divider class="m-b-4"></mat-divider>
   <small>
-  @if( data.punchingInfo.punching_count  >= 2 ) {
-    Gr:<span [style.color]="data.punchingInfo.grace_sec > 3600 || data.punchingInfo.grace_exceeded300_and_today_has_grace ? 'red' : 'primary' "> {{data.punchingInfo.grace_str || 0}}; &nbsp;</span>
-  }
+    @if (data.punchingInfo.punching_count >= 2) {
+      Gr:<span
+        [style.color]="
+          data.punchingInfo.grace_sec > 3600 ||
+          data.punchingInfo.grace_exceeded300_and_today_has_grace
+            ? 'red'
+            : 'primary'
+        "
+      >
+        {{ data.punchingInfo.grace_str || 0 }}; &nbsp;</span
+      >
+    }
 
+    Gr Total:
+    <span [style.color]="data.monthlyPunching.total_grace_sec > 300 * 60 ? 'red' : 'primary'">
+      {{ data.monthlyPunching.total_grace_str || 0 }}
+    </span>
+    min<br />
 
-  Gr Total:  <span [style.color]="data.monthlyPunching.total_grace_sec > 300*60 ? 'red' : 'primary' ">  {{data.monthlyPunching.total_grace_str || 0 }} </span> min<br>
-
-
-  @if( data.monthlyPunching.total_grace_exceeded300_date ) {
-    Exceeded 300 on: {{getDateExceeded300()}} <br>
-  }
-  <mat-divider class="m-b-4"></mat-divider>
-  Ex: {{data.monthlyPunching.total_extra_str || 0 }} hours <br>
-</small>
-
+    @if (data.monthlyPunching.total_grace_exceeded300_date) {
+      Exceeded 300 on: {{ getDateExceeded300() }} <br />
+    }
+    <mat-divider class="m-b-4"></mat-divider>
+    Ex: {{ data.monthlyPunching.total_extra_str || 0 }} hours <br />
+  </small>
 </div>
-<!-- 
+<!--
 @if( data.punchingInfo.finalized_by_controller){
   <div class="d-flex row justify-content-center align-items-center">
     <i [style.color]="'green'" class="material-icons">approval</i>
@@ -39,47 +49,83 @@
   </div>
 } -->
 
-<mat-divider class="m-b-8" ></mat-divider>
+<mat-divider class="m-b-8"></mat-divider>
 
-
-
-@if (!data.punchingInfo.in_section ) {
+@if (!data.punchingInfo.in_section) {
   Not posted in section
-  } @else {
+} @else {
+  @if (canMarkLeave) {
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="selected">
+      <div class="row">
+        <ng-container *ngFor="let option of leaveList">
+          @if (
+            data.punchingInfo.punching_count >= option.min_pun &&
+            (!data.punchingInfo.is_holiday ||
+              (data.punchingInfo.is_holiday && option.showOnHoliday))
+          ) {
+            <div class="col-sm-6">
+              <mat-radio-button [value]="option.value">
+                <small> {{ option.label }} </small>
+              </mat-radio-button>
+            </div>
+          }
+        </ng-container>
+      </div>
+    </mat-radio-group>
+    <!-- an input for remarks optional -->
+    <mat-form-field class="d-flex row" appearance="outline">
+      <input matInput placeholder="Remarks" [(ngModel)]="remarks" />
+    </mat-form-field>
+  } @else if (leave) {
+    <div class="d-flex row justify-content-center align-items-start">
+      <div><span [style.color]="'gray'">type:</span> {{ selectedLabel }} <br/></div>
+      <div>
+        <span [style.color]="'gray'">date:</span>
+        @if (leave.start_date !== leave.end_date) {
+          {{ leave.start_date | date: 'dd-MM-yyyy' }} to {{ leave.end_date | date: 'dd-MM-yyyy' }}
+          <br />
+        } @else {
+          {{ leave.start_date | date: 'dd-MM-yyyy' }} <br/>
+        }
+      </div>
 
-  @if(canMarkLeave){
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="selected">
-    <div class="row">
-
-      <ng-container *ngFor="let option of leaveList">
-        @if(data.punchingInfo.punching_count >= option.min_pun ){
-        <div class="col-sm-6">
-          <mat-radio-button [value]="option.value"> <small> {{option.label}} </small>
-          </mat-radio-button>
-        </div>
-      }
-      </ng-container>
+      <div>
+        <span [style.color]="'gray'">submitted:</span>
+        {{ leave.creation_date | date: 'dd-MM-yyyy' }} <br/>
+      </div>
+      <div><span [style.color]="'gray'">reason:</span> {{ leave.reason }} <br/></div>
+      <div>
+        <span [style.color]="'gray'">status:&nbsp;</span>
+        @switch (leave.active_status) {
+          @case ('N') {
+            Pending
+          }
+          @case ('Y') {
+            Approved
+          }
+          @case ('R') {
+            Rejected
+          }
+          @case ('C') {
+            Cancelled
+          }
+          @default {
+            Unknown
+          }
+        }
+      </div>
     </div>
-
-  </mat-radio-group>
-<!-- an input for remarks optional -->
-  <mat-form-field class="d-flex row" appearance="outline">
-    <input matInput placeholder="Remarks" [(ngModel)]="remarks">
-  </mat-form-field>
   } @else {
-
-    <div class="d-flex row justify-content-center ">
-      {{selectedLabel}}
+    <div class="d-flex row justify-content-center">
+      {{ selectedLabel }}
     </div>
-
   }
 
-  @if(canMarkLeave){
-  <mat-divider></mat-divider>
-  <div class="m-t-8 d-flex justify-content-around">
-    <button mat-button [color]="'primary'" (click)="onNoClick()">Cancel</button>
-    <button mat-button [color]="'accent'" (click)="onOkClick()" cdkFocusInitial>Ok</button>
-  </div>
+  @if (canMarkLeave) {
+    <mat-divider></mat-divider>
+    <div class="m-t-8 d-flex justify-content-around">
+      <button mat-button [color]="'primary'" (click)="onNoClick()">Cancel</button>
+      <button mat-button [color]="'accent'" (click)="onOkClick()" cdkFocusInitial>Ok</button>
+    </div>
   }
-
 }

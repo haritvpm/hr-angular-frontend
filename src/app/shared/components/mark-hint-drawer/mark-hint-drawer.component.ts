@@ -11,6 +11,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MTX_DRAWER_DATA, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import moment from 'moment';
 import { leaveList } from './leave-types';
+import { Leave } from 'app/routes/monthwiseregister/employee/interface';
 
 @Component({
   selector: 'app-mark-hint-drawer',
@@ -33,6 +34,7 @@ export class MarkHintDrawerComponent implements OnInit {
   selectedLabel: string = '';
   remarks: string = '';
   punchingTimes: string = '';
+  leave : Leave | null = null;
 
   ngOnInit() {
     console.log(this.data);
@@ -53,6 +55,23 @@ export class MarkHintDrawerComponent implements OnInit {
 
     }
 
+    if(this.data.punchingInfo.leave ){
+      if(this.data.punchingInfo.leave.active_status == 'N' || this.data.punchingInfo.leave.active_status == 'Y'){
+      this.leave = this.data.punchingInfo.leave;
+      let leave_type = this.leave?.leave_type;
+      if(leave_type == 'CL' ){
+        if( this.leave?.leave_cat == 'F' ){
+          leave_type = 'CL';
+        } else {
+          leave_type =   this.leave?.time_period == 'FN' ? 'C_FN' : 'C_AN';
+        }
+      }
+      this.selectedLabel = this.leaveList.find(
+        (x:any) => x.short == leave_type)?.label || leave_type;
+
+      this.canMarkLeave = false;
+      }
+    }
 
 
   }
