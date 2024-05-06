@@ -78,6 +78,10 @@ font-weight: bold;
   /* border-right: 1px solid currentColor; */
 }
 
+.mat-column-grace_left{
+  text-align: center;
+}
+
 .mat-column-inTrace{
   text-align: center;
 
