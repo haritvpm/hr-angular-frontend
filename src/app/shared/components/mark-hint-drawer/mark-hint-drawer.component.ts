@@ -40,7 +40,7 @@ export class MarkHintDrawerComponent implements OnInit {
     console.log(this.data);
     this.selected = this.data.punchingInfo.hint || this.data.punchingInfo.computer_hint;
     this.remarks = this.data.punchingInfo.remarks || '';
-    this.selectedLabel = this.leaveList.find((x:any) => x.value == this.selected)?.label || '';
+    this.selectedLabel = this.leaveList.find((x:any) => x.value == this.selected)?.desc || '';
     if(this.data.punchingInfo.punching_count){
       this.punchingTimes =  `${this.data.punchingInfo.in_time || '?'} - ${this.data.punchingInfo.out_time || '?'}`;
     } else if(!this.data.punchingInfo.is_today){
@@ -90,6 +90,17 @@ export class MarkHintDrawerComponent implements OnInit {
 
   getDateExceeded300() {
     return moment(this.data.monthlyPunching.total_grace_exceeded300_date).format('MMM DD');
+  }
+
+  getLeaveColor(){
+    if(this.leave?.active_status == 'N'){
+      return 'DeepSkyBlue';
+    } else if(this.leave?.active_status == 'Y'){
+      return 'LimeGreen';
+    }
+
+    return 'red';
+
   }
 
 

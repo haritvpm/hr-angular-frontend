@@ -103,6 +103,7 @@
       <tr>
         <th><span [style.color]="'gray'">status:</span></th>
         <td>
+          <span [style.color]=" getLeaveColor()">
           @switch (leave.active_status) {
             @case ('N') {
               Pending
@@ -120,12 +121,13 @@
               Unknown
             }
           }
+          </span>
         </td>
       </tr>
     </table>
 
   } @else {
-    <div class="d-flex row justify-content-center">
+    <div class="d-flex row justify-content-center" [style.color]="'red'">
       {{ selectedLabel }}
     </div>
   }
