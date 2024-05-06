@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@core';
+import { MatCardModule } from '@angular/material/card';
+// import {MatGridListModule} from '@angular/material/grid-list';
 
 @Component({
   selector: 'app-monthwiseregister-employee',
@@ -18,16 +20,16 @@ import { AuthService } from '@core';
   styleUrls: ['./employee.component.css'],
   standalone: true,
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
-    MatInputModule, MatButtonModule, MatIconModule]
+    MatInputModule, MatButtonModule, MatIconModule, MatCardModule]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
   aadhaarid: string | undefined = undefined;
   date: string;
-  self : boolean = false;
+  self: boolean = false;
   data: MonthwiseEmployeeApiData | null = null;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
-  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'info'];
+  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'grace', 'info'];
   clickedRows = new Set<EmployeePunchingInfo>();
   employeeInfo: Employee | null;
   monthlyData: MonthlyData | null;
@@ -58,60 +60,21 @@ console.log('ngOnInit');
         this.monthlyData = this.data.data_monthly[this.aadhaarid!];
         console.log(this.monthlyData);
       });
-      
+
   }
-
-  getCellBgcolor(dateItem: any) {
-    let dayColor = '';
-    if (dateItem.is_holiday != '1' && !dateItem.is_future) {
-      dayColor = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
-      if (dateItem.punching_count == '1' && !dateItem.is_today) {
-        dayColor = '#FFE082';
-      }
-    }
-    return {
-      'background-color': dayColor,
-      'text-align': 'center'
-    };
-  }
-
-  getDateStyle(dateItem: any) {
-    let dateColorSet = '';
-    const dateColorDef = '';
-    if (dateItem.attendance_trace_fetch_complete) {
-      if (!dateItem.is_holiday && !dateItem.is_future) {
-        dateColorSet = (dateItem.punching_count <= '0') ? '#EF9A9A' : '';
-        if (dateItem.punching_count == '1') {
-          dateColorSet = '#FFE082';
-        }
-      }
-    }
-    return {
-      //     'color': holiday,
-      'background-color': dateColorSet ? dateColorSet : dateColorDef,
-      'font-weight': dateColorSet ? 'bold' : '',
-    };
-  }
-
-  //   getMinutes(monthData:any, type:string) {
-  //     if (type == 'extra') {
-  // const etraMinute = monthData.    }
-
-  //   }
-  // getDateStyle(dateItem: any) {
-  //   console.log("ljfl");
-  //   const leave = (dateItem.punching_count = 0 && dateItem.attendance_trace_fetch_complete) ? 'yellow' : '';
-  //   return {
-  //     'font-weight': leave ? 'bold' : '',
-  //     'color': leave?'yellow':''
-  //   }
-  // }
 
   getHolidayStyle(dateItem: any) {
-    // const holiday = (dateItem.is_holiday == 1) ? 'red' : '';
     if (dateItem.is_holiday)
       return {
         'color': 'red',
+        'font-weight': 'bold'
+      };
+    else if (dateItem.is_future)
+      return {
+        'color': 'grey'
+      };
+    else if (dateItem.is_today)
+      return {
         'font-weight': 'bold'
       };
     else
@@ -132,7 +95,7 @@ console.log('ngOnInit');
   onPrevMonth() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
-    
+
     const prevmonth = moment(this.date).subtract(1, 'month');
     //if this is before 2024 january month, ignore
     if (prevmonth.isBefore(this.beginDate, 'month')) return;

@@ -22,3 +22,11 @@
   /* or height: calc(100vh - 155px); depending on your need  change */
   overflow: auto;
 }
+
+.misspunch {
+  color: 'red',
+}
+
+.card-margin-right {
+  margin-right: 1%;
+}
