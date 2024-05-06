@@ -80,6 +80,14 @@
   </mat-card>
   <mat-card class="flex-grow-1 card-margin-right">
     <mat-card-header>
+      <mat-card-subtitle>Tot Punching Misses</mat-card-subtitle>
+      <mat-card-title>
+      {{yearlyData?.single_punchings || 0}}
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card>
+  <mat-card class="flex-grow-1 card-margin-right">
+    <mat-card-header>
       <mat-card-subtitle>Other Leaves Submitted</mat-card-subtitle>
       <mat-card-title>
         @if (monthlyData?.other_leaves_submitted) {

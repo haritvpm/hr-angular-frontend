@@ -27,7 +27,19 @@ export interface MonthlyData {
   other_leaves_marked: number;
   other_leaves_submitted: number;
 }
+export interface YearlyData {
 
+  year: string;
+  cl_marked: number;
+  cl_submitted: number;
+  compen_marked: number;
+  compen_submitted: number;
+  other_leaves_marked: number;
+  other_leaves_submitted: number;
+  single_punchings: number;
+
+
+}
 export interface EmployeePunchingInfo {
   sl: number;
   day: string;
@@ -113,7 +125,8 @@ export interface Leave {
 export interface MonthwiseEmployeeApiData {
   month: string;
   calender_info: { [day: string]: CalendarDayInfo };
-  data_monthly: { [aadhaarid: string]: MonthlyData };
+  data_monthly:  MonthlyData ;
+  data_yearly:  YearlyData ;
   employee_punching: EmployeePunchingInfo[];
   employee: Employee;
 }
