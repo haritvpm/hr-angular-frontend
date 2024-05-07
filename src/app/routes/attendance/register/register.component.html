@@ -189,11 +189,28 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          Total Grace Used(Min)
+          GraceUsed(Min)
         </th>
         <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
           <span *ngIf="!is_holiday">
             {{ roundValue(employee.total_grace_sec / 60) }}
+          </span>
+        </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="grace_left">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by grace time left"
+        >
+          GrRem(Min)
+        </th>
+        <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
+          <span *ngIf="!is_holiday">
+            {{ 300 - roundValue(employee.total_grace_sec / 60) }}
           </span>
         </td>
       </ng-container>
@@ -207,7 +224,7 @@
         >
           Remarks
         </th>
-        <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
+        <td mat-cell *matCellDef="let employee">
           {{ employee.remarks }}
         </td>
       </ng-container>

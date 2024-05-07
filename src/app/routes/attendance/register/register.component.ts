@@ -27,21 +27,21 @@ import { DurationCellComponent } from './duration-cell/duration-cell.component';
 const moment = _rollupMoment || _moment;
 
 @Component({
-    selector: 'app-mattable-mattableapi',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.css'],
-    standalone: true,
-    imports: [MatTableModule, RouterLink,
-        MatPaginatorModule,
-        MatSortModule, CommonModule, MatInputModule,
-        MatDatepickerModule, MatIconModule, MatBadgeModule,
-        FormsModule, ReactiveFormsModule, NgIf,
-        MatTooltipModule, MatSelectModule, MatButtonModule, DurationCellComponent]
+  selector: 'app-mattable-mattableapi',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
+  standalone: true,
+  imports: [MatTableModule, RouterLink,
+    MatPaginatorModule,
+    MatSortModule, CommonModule, MatInputModule,
+    MatDatepickerModule, MatIconModule, MatBadgeModule,
+    FormsModule, ReactiveFormsModule, NgIf,
+    MatTooltipModule, MatSelectModule, MatButtonModule, DurationCellComponent]
 })
 
 export class AttendanceRegisterComponent implements OnInit {
   displayedColumns: string[] = ['name', 'section', 'inTrace', 'outTrace', 'duration_str', 'extra_str',
-    'total_extra_sec', 'grace_str', 'total_grace_sec','remarks'];
+    'total_extra_sec', 'grace_str', 'total_grace_sec', 'grace_left', 'remarks'];
   dataSource = new MatTableDataSource<DailyPunching>();
   data: DailyPunching[] = [];
   is_future: boolean;
@@ -191,12 +191,22 @@ export class AttendanceRegisterComponent implements OnInit {
   }
 
   getGraceStyleTotal(employee: any) {
-    const exeeded = this.roundValue(employee.total_grace_sec / 60) > 300;
-    return {
-      // 'background-color':exeeded ? 'yellow':'',
-      'font-weight': exeeded ? 'bold' : '',
-      'color': exeeded ? 'red' : ''
-    };
+    const graceTot = this.roundValue(employee.total_grace_sec / 60);
+    if (graceTot > 300)
+      return {
+        // 'background-color':exeeded ? 'yellow':'',
+        'font-weight': 'bold',
+        'color': 'red'
+      };
+    else if (graceTot > 250)
+      return {
+        'font-weight': 'bold',
+        'color': 'orange'
+      };
+      else
+      return {
+        '':''
+      };
   }
 
   getExtratimeColor(employee: any) {
@@ -207,43 +217,23 @@ export class AttendanceRegisterComponent implements OnInit {
     };
   }
   getGraceStyle(employee: any) {
-    if ((employee.total_grace_sec / 60) < 0) return {
+    if (employee.grace_str > 60) return {
       'color': 'red',
       'font-weight': 'bold'
     };
-    if ((employee.total_grace_sec / 60) < 30) return {
+    if (employee.grace_str > 30) return {
       'color': 'orange',
       'font-weight': 'bold'
 
     };
-    if (employee.total_grace_sec / 60 < 60) return {
-      'color': ' darkblue',
-      'font-weight': 'bold'
-    };
+
     else
       return {
-        'color': 'red',
+        'color': ' darkblue',
         'font-weight': 'bold'
       };
   }
-  getDurationColour(employee: any) {
-    if (employee.punching_count < 2 && this.is_today === false) return {
-      'color': 'red',
-      'text-align': 'center',
 
-    };
-    if (employee.punching_count < 2 && this.is_today === true)
-      return {
-        'color': 'black',
-        'font-weight': 'bold',
-        'text-align': 'center',
-        'font-size': 'large'
-
-      }; else {
-      return {};
-    }
-
-  }
 
   getTooltipContent(employee: any): string {
     let tooltipContent = employee.name + '\n';
@@ -276,7 +266,7 @@ export class AttendanceRegisterComponent implements OnInit {
     this.fetchData(prevday.format('YYYY-MM-DD'));
   }
 
-  mark(row: DailyPunching ) {
+  mark(row: DailyPunching) {
     console.log(row);
     if (this.is_holiday && row.punching_count == 0) return;
 
@@ -299,14 +289,7 @@ export class AttendanceRegisterComponent implements OnInit {
       });
     });
   }
-  getLeaveText(row : DailyPunching){
 
-    if(row.hint){
-    return  leaveList.find((x:any) => x.value ==row.hint)?.label || '';
-    }
-
-
-  }
 
 
 }
