@@ -13,4 +13,6 @@ export const leaveList: any[] = [
   { label: 'RH', value: 'restricted', desc:'Restricted', min_pun: 0, short: 'RH', showOnHoliday:false  },//punchingcounts = 0,1,2
   { label: 'Other', value: 'other', desc:'Other', min_pun: 0, short: 'O', showOnHoliday:true  },//punchingcounts = 0,1,2
   { label: 'Clear', value: 'clear', desc:'', min_pun: 0, short: '', showOnHoliday:true  }, //punchingcounts = 1,2
+  { label: 'PunchingMiss', value: 'single_punch', desc:'PunchingMiss', min_pun: 1, short: 'S', showOnHoliday: true  }, //punchingcounts = 1,2
 ];
+//also update in leave calc service
