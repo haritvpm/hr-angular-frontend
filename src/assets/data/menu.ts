@@ -10,7 +10,7 @@ export default {
       },
     },
     {
-      route: 'monthwiseregister',
+      route: 'monthwiseregister/section',
       name: 'monthwiseregister',
       type: 'link',
       icon: 'calendar_view_month',
@@ -25,8 +25,9 @@ export default {
       type: 'link',
       icon: 'person',
       permissions: {
-        only: ['section_access'],
+        only: ['self_attendance_view'],
       },
+
     },
     {
       route: 'settings',

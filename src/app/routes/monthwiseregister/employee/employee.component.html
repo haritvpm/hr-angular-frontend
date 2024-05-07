@@ -1,3 +1,4 @@
+
 <div class="row m-x-8 flex-grow-1 justify-content-between">
   <mat-card class="flex-grow-1 card-margin-right">
     <mat-card-header>
@@ -19,152 +20,162 @@
     </mat-card-header>
   </mat-card>
 </div>
-<div class="row m-x-8 flex-grow-1 justify-content-between">
-  <mat-card class="flex-grow-1 card-margin-right">
-    <mat-card-header>
-      <mat-card-subtitle>Total Extra Hours</mat-card-subtitle>
-      <mat-card-title>{{ monthlyData?.total_extra_str }}</mat-card-title>
-    </mat-card-header>
-  </mat-card>
-  <mat-card class="flex-grow-1 card-margin-right">
-    <mat-card-header>
-      <mat-card-subtitle>Grace Minutes Used</mat-card-subtitle>
-      <mat-card-title>{{ monthlyData?.total_grace_str }}</mat-card-title>
-    </mat-card-header>
-  </mat-card>
-  @if (monthlyData?.total_grace_exceeded300_date) {
-    <mat-card class="flex-grow-1 card-margin-right">
-      <mat-card-header>
-        <mat-card-subtitle>Grace 300 Exceeded Date</mat-card-subtitle>
-        <mat-card-title>{{
-          monthlyData?.total_grace_exceeded300_date | date: 'dd-MM-yyyy'
-        }}</mat-card-title>
-      </mat-card-header>
-    </mat-card>
-  }
-  <mat-card class="flex-grow-1 card-margin-right">
-    <mat-card-header>
-      <mat-card-subtitle>CL Marked/Submitted</mat-card-subtitle>
-      <mat-card-title>
-        {{ yearlyData?.cl_marked ? yearlyData?.cl_marked : 0 }} /
-        {{ yearlyData?.cl_submitted ? yearlyData?.cl_submitted : 0 }}
-      </mat-card-title>
-    </mat-card-header>
-  </mat-card>
 
-  <mat-card class="flex-grow-1 card-margin-right">
-    <mat-card-header>
-      <mat-card-subtitle>Compensation Marked/Submitted</mat-card-subtitle>
-      <mat-card-title>
-        {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} /
-        {{ yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0 }}
-      </mat-card-title>
-    </mat-card-header>
-  </mat-card>
+<mat-tab-group>
+  <mat-tab label="Attendance">
 
-  <mat-card class="flex-grow-1 card-margin-right">
-    <mat-card-header>
-      <mat-card-subtitle>Tot Punching Misses</mat-card-subtitle>
-      <mat-card-title>
-        {{ yearlyData?.single_punchings || 0 }}
-      </mat-card-title>
-    </mat-card-header>
-  </mat-card>
-</div>
+    <div class="row m-t-4  m-x-8 flex-grow-1 justify-content-between">
+      <mat-card class="flex-grow-1 card-margin-right">
+        <mat-card-header>
+          <mat-card-subtitle>Total Extra Hours</mat-card-subtitle>
+          <mat-card-title>{{ monthlyData?.total_extra_str }}</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+      <mat-card class="flex-grow-1 card-margin-right">
+        <mat-card-header>
+          <mat-card-subtitle>Grace Minutes Used</mat-card-subtitle>
+          <mat-card-title>{{ monthlyData?.total_grace_str }}</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+      @if (monthlyData?.total_grace_exceeded300_date) {
+        <mat-card class="flex-grow-1 card-margin-right">
+          <mat-card-header>
+            <mat-card-subtitle>Grace 300 Exceeded Date</mat-card-subtitle>
+            <mat-card-title>{{
+              monthlyData?.total_grace_exceeded300_date | date: 'dd-MM-yyyy'
+            }}</mat-card-title>
+          </mat-card-header>
+        </mat-card>
+      }
+      <mat-card class="flex-grow-1 card-margin-right">
+        <mat-card-header>
+          <mat-card-subtitle>CL Marked/Submitted</mat-card-subtitle>
+          <mat-card-title>
+            {{ yearlyData?.cl_marked ? yearlyData?.cl_marked : 0 }} /
+            {{ yearlyData?.cl_submitted ? yearlyData?.cl_submitted : 0 }}
+          </mat-card-title>
+        </mat-card-header>
+      </mat-card>
 
-<div class="mat-elevation-z1">
-  <div class="table-container">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 employee-monthwise-table">
-      <ng-container matColumnDef="day" sticky>
-        <th mat-header-cell *matHeaderCellDef>
-          <div class="d-flex align-items-center">
-            <button mat-icon-button (click)="onPrevMonth()">
-              <mat-icon>chevron_left</mat-icon>
-            </button>
-            <b> {{ data?.month }} </b>
-            <button mat-icon-button (click)="onNextMonth()">
-              <mat-icon>chevron_right</mat-icon>
-            </button>
-          </div>
-        </th>
-        <td mat-cell *matCellDef="let item">
-          <span [style]="getHolidayStyle(item)">{{ item.day_str | date: 'dd-MM-yyyy' }}</span>
-        </td>
-      </ng-container>
+      <mat-card class="flex-grow-1 card-margin-right">
+        <mat-card-header>
+          <mat-card-subtitle>Compensation Marked/Submitted</mat-card-subtitle>
+          <mat-card-title>
+            {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} /
+            {{ yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0 }}
+          </mat-card-title>
+        </mat-card-header>
+      </mat-card>
 
-      <ng-container matColumnDef="punchin">
-        <th mat-header-cell *matHeaderCellDef>In Time</th>
-        <td mat-cell *matCellDef="let item">
-          @if (!item?.in_section) {
-            n/a
-          } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
-            -
-          } @else {
-            @if (item.punchin_trace) {
-              {{ item.punchin_trace.att_time }}
-            } @else {
-              <span *ngIf="!item.is_future" [style.color]="'DeepPink'">
-                <small><mat-icon>close</mat-icon></small>
-              </span>
-            }
-          }
-        </td>
-      </ng-container>
+      <mat-card class="flex-grow-1 card-margin-right">
+        <mat-card-header>
+          <mat-card-subtitle>Tot Punching Misses</mat-card-subtitle>
+          <mat-card-title>
+            {{ yearlyData?.single_punchings || 0 }}
+          </mat-card-title>
+        </mat-card-header>
+      </mat-card>
+    </div>
 
-      <ng-container matColumnDef="punchout">
-        <th mat-header-cell *matHeaderCellDef>Out Time</th>
-        <td mat-cell *matCellDef="let item">
-          @if (!item.in_section) {
-            n/a
-          } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
-            -
-          } @else if (item.attendance_trace_fetch_complete !== 0) {
-            <span *ngIf="item.punching_count < 2" [style.color]="'DeepPink'">
-              <small><mat-icon>close</mat-icon></small>
-            </span>
-            <ng-container *ngIf="item.punching_count >= 2">
-              {{ item.punchout_trace.att_time }}
-            </ng-container>
-          }
-        </td>
-      </ng-container>
+    <div class="mat-elevation-z1">
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 employee-monthwise-table">
+          <ng-container matColumnDef="day" sticky>
+            <th mat-header-cell *matHeaderCellDef>
+              <div class="d-flex align-items-center">
+                <button mat-icon-button (click)="onPrevMonth()">
+                  <mat-icon>chevron_left</mat-icon>
+                </button>
+                <b> {{ data?.month }} </b>
+                <button mat-icon-button (click)="onNextMonth()">
+                  <mat-icon>chevron_right</mat-icon>
+                </button>
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let item">
+              <span [style]="getHolidayStyle(item)">{{ item.day_str | date: 'dd-MM-yyyy' }}</span>
+            </td>
+          </ng-container>
 
-      <ng-container matColumnDef="duration">
-        <th mat-header-cell *matHeaderCellDef>Duration</th>
-        <td mat-cell *matCellDef="let item">
-          @if (!item.is_future) {
-            {{ item.duration_str ? item.duration_str : '-' }}
-          }
-        </td>
-      </ng-container>
+          <ng-container matColumnDef="punchin">
+            <th mat-header-cell *matHeaderCellDef>In Time</th>
+            <td mat-cell *matCellDef="let item">
+              @if (!item?.in_section) {
+                n/a
+              } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
+                -
+              } @else {
+                @if (item.punchin_trace) {
+                  {{ item.punchin_trace.att_time }}
+                } @else {
+                  <span *ngIf="!item.is_future" [style.color]="'DeepPink'">
+                    <small><mat-icon>close</mat-icon></small>
+                  </span>
+                }
+              }
+            </td>
+          </ng-container>
 
-      <ng-container matColumnDef="xtratime">
-        <th mat-header-cell *matHeaderCellDef>Extra(min)</th>
-        <td mat-cell *matCellDef="let item">
-          @if (!item.is_future) {
-            {{ item.extra_str ? item.extra_str : '-' }}
-          }
-        </td>
-      </ng-container>
+          <ng-container matColumnDef="punchout">
+            <th mat-header-cell *matHeaderCellDef>Out Time</th>
+            <td mat-cell *matCellDef="let item">
+              @if (!item.in_section) {
+                n/a
+              } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
+                -
+              } @else if (item.attendance_trace_fetch_complete !== 0) {
+                <span *ngIf="item.punching_count < 2" [style.color]="'DeepPink'">
+                  <small><mat-icon>close</mat-icon></small>
+                </span>
+                <ng-container *ngIf="item.punching_count >= 2">
+                  {{ item.punchout_trace.att_time }}
+                </ng-container>
+              }
+            </td>
+          </ng-container>
 
-      <ng-container matColumnDef="grace">
-        <th mat-header-cell *matHeaderCellDef>Grace (min)</th>
-        <td mat-cell *matCellDef="let item">
-          @if (!item.is_future) {
-            {{ item.grace_str ? item.grace_str : '-' }}
-          }
-        </td>
-      </ng-container>
+          <ng-container matColumnDef="duration">
+            <th mat-header-cell *matHeaderCellDef>Duration</th>
+            <td mat-cell *matCellDef="let item">
+              @if (!item.is_future) {
+                {{ item.duration_str ? item.duration_str : '-' }}
+              }
+            </td>
+          </ng-container>
 
-      <ng-container matColumnDef="info">
-        <th mat-header-cell *matHeaderCellDef>Remarks</th>
-        <td mat-cell *matCellDef="let item">
-          {{ item.remarks }}
-        </td>
-      </ng-container>
+          <ng-container matColumnDef="xtratime">
+            <th mat-header-cell *matHeaderCellDef>Extra(min)</th>
+            <td mat-cell *matCellDef="let item">
+              @if (!item.is_future) {
+                {{ item.extra_str ? item.extra_str : '-' }}
+              }
+            </td>
+          </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  </div>
-</div>
+          <ng-container matColumnDef="grace">
+            <th mat-header-cell *matHeaderCellDef>Grace (min)</th>
+            <td mat-cell *matCellDef="let item">
+              @if (!item.is_future) {
+                {{ item.grace_str ? item.grace_str : '-' }}
+              }
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="info">
+            <th mat-header-cell *matHeaderCellDef>Remarks</th>
+            <td mat-cell *matCellDef="let item">
+              {{ item.remarks }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </div>
+
+  </mat-tab>
+
+  <mat-tab label="Leaves"> <app-employee-leaves-list [employeeLeaves]="employeeLeaves" ></app-employee-leaves-list>  </mat-tab>
+</mat-tab-group>
+
