@@ -45,12 +45,12 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
 
-console.log('ngOnInit');
+    console.log('ngOnInit');
     this.route.data
       .pipe(
         map(data => data.aadhaar_date),
-        tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date;  this.self = data.self; console.log('date dfdfd:'+data.date)}),
-        switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date )),
+        tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date; this.self = data.self; console.log('date dfdfd:' + data.date) }),
+        switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date)),
         take(1)
       )
       .subscribe(response => {
@@ -69,24 +69,27 @@ console.log('ngOnInit');
     if (dateItem.is_holiday)
       return {
         'color': 'red',
-        'font-weight': 'bold'
+        'font-weight': 'bold',
+        'margin-left': '4vh'
       };
     else if (dateItem.is_future)
       return {
-        'color': 'grey'
+        'color': 'grey',
+        'margin-left': '4vh'
       };
     else if (dateItem.is_today)
       return {
-        'font-weight': 'bold'
+        'font-weight': 'bold',
+        'margin-left': '4vh'
       };
     else
-      return '';
+      return { 'margin-left': '4vh' };
   }
 
   onNextMonth() {
 
-   // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-   // this.router.onSameUrlNavigation = 'reload';
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    // this.router.onSameUrlNavigation = 'reload';
 
     const nextmonth = moment(this.date).add(1, 'month');
     //if this is future month, ignore
@@ -95,8 +98,8 @@ console.log('ngOnInit');
 
   }
   onPrevMonth() {
-   // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-   // this.router.onSameUrlNavigation = 'reload';
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    // this.router.onSameUrlNavigation = 'reload';
 
     const prevmonth = moment(this.date).subtract(1, 'month');
     //if this is before 2024 january month, ignore

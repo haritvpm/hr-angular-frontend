@@ -30,5 +30,13 @@
 .card-margin-right {
   margin-right: 1%;
 
+}
 
+.mat-column-day {
+  margin-left: 3%;
+  text-align: left;
+}
+
+th, td {
+  text-align: center;
 }

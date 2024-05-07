@@ -102,6 +102,7 @@ export interface Employee {
   aadhaarid: string;
   is_shift: boolean;
   name: string | null;
+  designation_now : string;
 }
 
 export interface Leave {

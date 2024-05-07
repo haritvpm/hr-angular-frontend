@@ -9,7 +9,7 @@
   <mat-card class="flex-grow-1 card-margin-right">
     <mat-card-header>
       <mat-card-subtitle>Designation</mat-card-subtitle>
-      <mat-card-title>Test Designation</mat-card-title>
+      <mat-card-title>{{ employeeInfo?.designation_now }}</mat-card-title>
     </mat-card-header>
   </mat-card>
   <mat-card class="flex-grow-1 card-margin-right">
@@ -44,60 +44,34 @@
   }
   <mat-card class="flex-grow-1 card-margin-right">
     <mat-card-header>
-      <mat-card-subtitle>CL/Comp Marked</mat-card-subtitle>
-      <mat-card-title>{{ monthlyData?.cl_marked }}/{{ monthlyData?.compen_marked }}</mat-card-title>
-    </mat-card-header>
-  </mat-card>
-  @if (monthlyData?.cl_submitted && monthlyData?.compen_submitted) {
-    <mat-card class="flex-grow-1 card-margin-right">
-      <mat-card-header>
-        <mat-card-subtitle>CL/Comp Submitted</mat-card-subtitle>
-        <mat-card-title>
-          {{ monthlyData?.cl_submitted }}/{{ monthlyData?.compen_submitted }}
-        </mat-card-title>
-      </mat-card-header>
-    </mat-card>
-  } @else {
-    <mat-card class="flex-grow-1 card-margin-right">
-      <mat-card-header>
-        <mat-card-subtitle>CL/Comp Submitted</mat-card-subtitle>
-        <mat-card-title> 0/0 </mat-card-title>
-      </mat-card-header>
-    </mat-card>
-  }
-
-  <mat-card class="flex-grow-1 card-margin-right">
-    <mat-card-header>
-      <mat-card-subtitle>Other Leaves Marked</mat-card-subtitle>
+      <mat-card-subtitle>CL Marked/Submitted</mat-card-subtitle>
       <mat-card-title>
-        @if (monthlyData?.other_leaves_marked) {
-          {{ monthlyData?.other_leaves_marked }}
-        } @else {
-          0
-        }
+        {{ yearlyData?.cl_marked ? yearlyData?.cl_marked : 0 }} /
+        {{ yearlyData?.cl_submitted ? yearlyData?.cl_submitted : 0 }}
       </mat-card-title>
     </mat-card-header>
   </mat-card>
+
+  <mat-card class="flex-grow-1 card-margin-right">
+    <mat-card-header>
+      <mat-card-subtitle>Compensation Marked/Submitted</mat-card-subtitle>
+      <mat-card-title>
+        {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} / {{
+          yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0
+        }}
+      </mat-card-title>
+    </mat-card-header>
+  </mat-card>
+
   <mat-card class="flex-grow-1 card-margin-right">
     <mat-card-header>
       <mat-card-subtitle>Tot Punching Misses</mat-card-subtitle>
       <mat-card-title>
-      {{yearlyData?.single_punchings || 0}}
+        {{ yearlyData?.single_punchings || 0 }}
       </mat-card-title>
     </mat-card-header>
   </mat-card>
-  <mat-card class="flex-grow-1 card-margin-right">
-    <mat-card-header>
-      <mat-card-subtitle>Other Leaves Submitted</mat-card-subtitle>
-      <mat-card-title>
-        @if (monthlyData?.other_leaves_submitted) {
-          {{ monthlyData?.other_leaves_submitted }}
-        } @else {
-          0
-        }
-      </mat-card-title>
-    </mat-card-header>
-  </mat-card>
+
 </div>
 
 <div class="mat-elevation-z1">
@@ -122,11 +96,10 @@
 
       <ng-container matColumnDef="punchin">
         <th mat-header-cell *matHeaderCellDef>In Time</th>
-        <td mat-cell *matCellDef="let item">
-          @if(!item.in_section){
+        <td mat-cell *matCellDef="let item" [style.text-align]="'center'">
+          @if (!item.in_section) {
             n/a
-          }
-          @else if (item.is_holiday && item.punching_count === 0) {
+          } @else if (item.is_holiday && item.punching_count === 0) {
             -
           } @else {
             @if (item.punchin_trace) {
@@ -143,10 +116,9 @@
       <ng-container matColumnDef="punchout">
         <th mat-header-cell *matHeaderCellDef>Out Time</th>
         <td mat-cell *matCellDef="let item">
-          @if(!item.in_section){
+          @if (!item.in_section) {
             n/a
-          }
-          @else if (item.is_holiday && item.punching_count === 0) {
+          } @else if (item.is_holiday && item.punching_count === 0) {
             -
           } @else if (item.attendance_trace_fetch_complete !== 0) {
             <span *ngIf="item.punching_count < 2" [style.color]="'DeepPink'">
@@ -175,7 +147,7 @@
         <td mat-cell *matCellDef="let item">
           @if (item.extra_str) {
             {{ item.extra_str }}
-          } @else if(item.is_holiday || item.punching_count === 0){
+          } @else if (item.is_holiday || item.punching_count === 0) {
             -
           }
         </td>
