@@ -27,7 +27,19 @@ export interface MonthlyData {
   other_leaves_marked: number;
   other_leaves_submitted: number;
 }
+export interface YearlyData {
 
+  year: string;
+  cl_marked: number;
+  cl_submitted: number;
+  compen_marked: number;
+  compen_submitted: number;
+  other_leaves_marked: number;
+  other_leaves_submitted: number;
+  single_punchings: number;
+
+
+}
 export interface EmployeePunchingInfo {
   sl: number;
   day: string;
@@ -64,7 +76,8 @@ export interface EmployeePunchingInfo {
   leave_id?: number | null;
   punchin_trace?: PunchTrace | null;
   punchout_trace?: PunchTrace | null;
-  leave?: any;
+  leave?: Leave;
+  in_section: boolean;
 }
 
 export interface PunchTrace {
@@ -91,10 +104,29 @@ export interface Employee {
   name: string | null;
 }
 
+export interface Leave {
+  id: number;
+  aadhaarid: string;
+  employee_id: number;
+  leave_type: string;
+  start_date: string;
+  end_date: string;
+  reason: string;
+  active_status: string;
+  leave_cat: string;
+  time_period: string;
+  in_lieu_of: string;
+  last_updated: string;
+  creation_date: string;
+  created_by_aadhaarid: string;
+
+}
+
 export interface MonthwiseEmployeeApiData {
   month: string;
   calender_info: { [day: string]: CalendarDayInfo };
-  data_monthly: { [aadhaarid: string]: MonthlyData };
+  data_monthly:  MonthlyData ;
+  data_yearly:  YearlyData ;
   employee_punching: EmployeePunchingInfo[];
   employee: Employee;
 }

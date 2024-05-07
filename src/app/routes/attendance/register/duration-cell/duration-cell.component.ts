@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DailyPunching } from '../interface';
 import { leaveList } from '@shared/components/mark-hint-drawer/leave-types';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,7 +7,8 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-duration-cell',
   standalone: true,
-  imports: [MatIconModule, NgIf],
+  imports: [MatIconModule,NgIf],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './duration-cell.component.html',
   styleUrl: './duration-cell.component.css'
 })

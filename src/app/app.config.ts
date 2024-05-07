@@ -1,7 +1,7 @@
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import { RouteReuseStrategy, provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_CARD_CONFIG } from '@angular/material/card';
@@ -22,6 +22,7 @@ import { routes } from './app.routes';
 import { FormlyConfigModule } from './formly-config.module';
 
 import { LoginService } from '@core/authentication/login.service';
+import { AppRouteReuseStrategy } from '@core/app-route-reuse-stategy';
 //import { FakeLoginService } from './fake-login.service';
 
 // Required for AOT compilation
@@ -54,6 +55,7 @@ export const appConfig: ApplicationConfig = {
       FormlyConfigModule.forRoot()
     ),
     { provide: BASE_URL, useValue: environment.baseUrl },
+    {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
     // ==================================================
     // 👇 ❌ Remove it in the realworld application
     //
