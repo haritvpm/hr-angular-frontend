@@ -249,7 +249,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
   getTooltip(dayN: string, row: any) {
     const rowVal = row[dayN];
     let tip = rowVal.name + '\n';
-    let hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint : '';
+    let hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint+'?' : '';
 
     if(hint){
       hint = leaveList.find((x:any) => x.value ==hint)?.label || '';
