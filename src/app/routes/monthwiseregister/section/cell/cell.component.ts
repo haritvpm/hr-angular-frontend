@@ -24,6 +24,8 @@ export class CellComponent implements OnInit {
   casual_fn: boolean = false;
   casual_an: boolean = false;
   casual: boolean = false;
+  casual_text: string = 'CL';
+  casual_half_text: string = '&#xbd;CL';
   casual_color: string = 'red';
 
   fetch_pending: boolean = false;
@@ -50,7 +52,7 @@ export class CellComponent implements OnInit {
     if (this.item) {
 
       //hints
-      if (this.item.hint) { //dont use computer_hint if real hint set by SO exists
+      if (this.item.hint && !this.item.leave) { //dont use computer_hint if real hint set by SO exists
         //under has marked hint
         if (this.item.finalized_by_controller) {
           this.grace_exceeded300_and_today_has_grace_alarm_show = false;
@@ -61,23 +63,27 @@ export class CellComponent implements OnInit {
         this.casual = this.item.hint === 'casual';
         this.casual_fn = this.item.hint === 'casual_fn';
         this.casual_an = this.item.hint === 'casual_an';
-      } else {
+      } else  if (this.item.computer_hint && !this.item.leave) {
         //computer hints
+        this.casual_color = 'orange';
+        this.casual_half_text += '?';
         this.casual = this.item.computer_hint === 'casual';
         if (this.item.grace_total_exceeded_one_hour > 1800) {
           this.casual_fn = this.item.computer_hint === 'casual_fn';
           this.casual_an = this.item.computer_hint === 'casual_an';
-        } else {
-          // this.time_exceeded_fn = this.item.computer_hint === 'casual_fn';
-          //  this.time_exceeded_an = this.item.computer_hint === 'casual_an';
+        } else if(this.item.grace_total_exceeded_one_hour){
+          this.time_exceeded_fn = this.item.computer_hint === 'casual_fn';
+          this.time_exceeded_an = this.item.computer_hint === 'casual_an';
         }
       }
 
       //icon to show
       if (this.item.punching_count >= 2) {
 
-        this.icon_color = this.item.grace_sec > 3600 ? 'OrangeRed' // '#880E4F'
-        : this.grace_exceeded300_and_today_has_grace_alarm_show ? 'DeepPink'  : 'gray';
+        // this.icon_color = this.item.grace_sec > 3600 ? 'OrangeRed'
+        // : this.grace_exceeded300_and_today_has_grace_alarm_show ? 'DeepPink'  : 'gray';
+
+        this.icon_color = this.grace_exceeded300_and_today_has_grace_alarm_show ? 'OrangeRed'  : 'gray';
 
         this.icon_name = this.item.punching_count == 2 ? 'looks_two' :
           this.item.punching_count == 3 ? 'looks_3' :
@@ -97,14 +103,6 @@ export class CellComponent implements OnInit {
             this.icon_name = 'close';
             this.icon_color = 'DeepPink'; //'#6017ff';
           }
-      }
-
-      if (this.item.hint && this.item.hint !== 'clear') {
-        this.icon_show = this.item.punching_count > 0  ; //if zero punching then no need to show icon since there is hint
-        //^^^^ show icon if hint is set like casual. because it will be missed if not shown and leave added
-        if(!this.casual && !this.casual_fn && !this.casual_an){ //we show 1/2 cl text if casual_fn or casual_an is set
-         this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
-        }
       }
 
       if (this.item.leave ) {
@@ -136,9 +134,15 @@ export class CellComponent implements OnInit {
         }
       }
 
-      // @if (item.grace_sec > 3600 ) {
-      //   <span style="color: #FF1744;" > <mat-icon>alarm</mat-icon></span>
-      // }
+      if (this.item.hint && this.item.hint !== 'clear' ) {
+        this.icon_show = this.item.punching_count > 0  ; //if zero punching then no need to show icon since there is hint
+        //^^^^ show icon if hint is set like casual. because it will be missed if not shown and leave added
+        if(!this.casual && !this.casual_fn && !this.casual_an ){ //we show 1/2 cl text if casual_fn or casual_an is set
+         this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
+        }
+      }
+
+
     }
 
   }

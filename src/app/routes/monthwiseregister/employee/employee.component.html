@@ -56,9 +56,8 @@
     <mat-card-header>
       <mat-card-subtitle>Compensation Marked/Submitted</mat-card-subtitle>
       <mat-card-title>
-        {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} / {{
-          yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0
-        }}
+        {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} /
+        {{ yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0 }}
       </mat-card-title>
     </mat-card-header>
   </mat-card>
@@ -71,7 +70,6 @@
       </mat-card-title>
     </mat-card-header>
   </mat-card>
-
 </div>
 
 <div class="mat-elevation-z1">
@@ -96,10 +94,10 @@
 
       <ng-container matColumnDef="punchin">
         <th mat-header-cell *matHeaderCellDef>In Time</th>
-        <td mat-cell *matCellDef="let item" [style.text-align]="'center'">
-          @if (!item.in_section) {
+        <td mat-cell *matCellDef="let item">
+          @if (!item?.in_section) {
             n/a
-          } @else if (item.is_holiday && item.punching_count === 0) {
+          } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
             -
           } @else {
             @if (item.punchin_trace) {
@@ -118,7 +116,7 @@
         <td mat-cell *matCellDef="let item">
           @if (!item.in_section) {
             n/a
-          } @else if (item.is_holiday && item.punching_count === 0) {
+          } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
             -
           } @else if (item.attendance_trace_fetch_complete !== 0) {
             <span *ngIf="item.punching_count < 2" [style.color]="'DeepPink'">
@@ -134,10 +132,8 @@
       <ng-container matColumnDef="duration">
         <th mat-header-cell *matHeaderCellDef>Duration</th>
         <td mat-cell *matCellDef="let item">
-          @if (item.is_holiday || item.punching_count === 0) {
-            -
-          } @else {
-            {{ item.duration_str }}
+          @if (!item.is_future) {
+            {{ item.duration_str ? item.duration_str : '-' }}
           }
         </td>
       </ng-container>
@@ -145,10 +141,8 @@
       <ng-container matColumnDef="xtratime">
         <th mat-header-cell *matHeaderCellDef>Extra(min)</th>
         <td mat-cell *matCellDef="let item">
-          @if (item.extra_str) {
-            {{ item.extra_str }}
-          } @else if (item.is_holiday || item.punching_count === 0) {
-            -
+          @if (!item.is_future) {
+            {{ item.extra_str ? item.extra_str : '-' }}
           }
         </td>
       </ng-container>
@@ -156,7 +150,9 @@
       <ng-container matColumnDef="grace">
         <th mat-header-cell *matHeaderCellDef>Grace (min)</th>
         <td mat-cell *matCellDef="let item">
-          {{ item.grace_str }}
+          @if (!item.is_future) {
+            {{ item.grace_str ? item.grace_str : '-' }}
+          }
         </td>
       </ng-container>
 
