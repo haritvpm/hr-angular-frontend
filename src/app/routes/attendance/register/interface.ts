@@ -15,8 +15,8 @@ export interface monthly {
 
 // }
 
-export interface AttendanceBook{
-  title : string
+export interface AttendanceBook {
+  title: string
 }
 export interface DailyPunching {
   // id: number;
@@ -29,7 +29,7 @@ export interface DailyPunching {
   duration_str: string
   extra_str: string
   total_extra_sec: string
-  grace_str:string
+  grace_str: string
   total_grace_sec: string
   punching_count: number
   punchin_trace: inTrace
@@ -38,8 +38,14 @@ export interface DailyPunching {
   logged_in_user_is_section_officer: boolean
   logged_in_user_is_controller: boolean
   finalized_by_controller: boolean
-  remarks:string
+  remarks: string
   hint: string
+  cl_marked: number
+  compen_marked: number
+  other_leaves_marked: number
+
+
+
 }
 
 export interface DailyPunchingApi {
@@ -48,5 +54,5 @@ export interface DailyPunchingApi {
   is_today: boolean
   is_holiday: boolean
   date_dmY: string
-  sections : string[]
+  sections: string[]
 }

@@ -37,7 +37,7 @@
 <div class="mat-elevation-z1">
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
-      <ng-container matColumnDef="name">
+      <ng-container matColumnDef="name" sticky>
         <th mat-header-cell [style.text-align]="'center'" *matHeaderCellDef sticky>
           <div class="d-flex align-items-center">
             <button mat-icon-button (click)="onPrevDay()">
@@ -189,7 +189,7 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          GraceUsed(Min)
+          GrUsed(Min)
         </th>
         <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
           <span *ngIf="!is_holiday">
@@ -197,7 +197,6 @@
           </span>
         </td>
       </ng-container>
-
 
       <ng-container matColumnDef="grace_left">
         <th
@@ -214,6 +213,42 @@
           </span>
         </td>
       </ng-container>
+
+      <ng-container matColumnDef="cl_mark_sub">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by CL Mark Sub"
+        >
+        CL <br> Mark|Sub
+        </th>
+        <td mat-cell *matCellDef="let employee">
+          <!-- <span *ngIf="!is_holiday">
+            {{ 300 - roundValue(employee.total_grace_sec / 60) }}
+          </span> -->
+          {{ employee.cl_marked }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="comb_mark_sub">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by Comp Mark Sub"
+        >
+          Comp <br> Mark|Sub
+        </th>
+        <td mat-cell *matCellDef="let employee">
+          <!-- <span *ngIf="!is_holiday">
+            {{ 300 - roundValue(employee.total_grace_sec / 60) }}
+          </span> -->
+          {{ employee.compen_marked }}
+        </td>
+      </ng-container>
+
+
 
       <ng-container matColumnDef="remarks">
         <th
