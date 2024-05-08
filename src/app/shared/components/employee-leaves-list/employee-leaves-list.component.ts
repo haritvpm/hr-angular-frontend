@@ -20,7 +20,7 @@ export class EmployeeLeavesListComponent implements OnInit {
 
   }
   // displayedColumns: string[] = ['start_date', 'end_date', 'leave_type', 'reason', 'active_status', 'leave_cat', 'time_period', 'in_lieu_of', 'last_updated', 'creation_date', 'created_by_aadhaarid' ];
-  displayedColumns: string[] = ['start_date', 'end_date', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date'];
+  displayedColumns: string[] = ['period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {

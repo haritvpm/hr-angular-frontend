@@ -61,7 +61,9 @@
           @if (
             data.punchingInfo.punching_count >= option.min_pun &&
             (!data.punchingInfo.is_holiday ||
-              (data.punchingInfo.is_holiday && option.showOnHoliday))
+              (data.punchingInfo.is_holiday && option.showOnHoliday)) &&
+            (!option.showForCntrlOnly ||
+              (option.showForCntrlOnly && data.monthlyPunching.logged_in_user_is_controller))
           ) {
             <div class="col-sm-6">
               <mat-radio-button [value]="option.value">
@@ -79,53 +81,55 @@
   } @else if (leave) {
     <table>
       <tr>
-        <th  ><span [style.color]="'gray'">leave:</span></th>
+        <th><span [style.color]="'gray'">leave:</span></th>
         <td>{{ selectedLabel }}</td>
       </tr>
       <tr>
         <th><span [style.color]="'gray'">date:</span></th>
         <td>
           @if (leave.start_date !== leave.end_date) {
-            {{ leave.start_date | date: 'dd-MM-yyyy' }} to <br> {{ leave.end_date | date: 'dd-MM-yyyy' }}
+            {{ leave.start_date | date: 'dd-MM-yyyy' }} to <br />
+            {{ leave.end_date | date: 'dd-MM-yyyy' }}
           } @else {
             {{ leave.start_date | date: 'dd-MM-yyyy' }}
           }
         </td>
       </tr>
-      <!-- <tr>
-        <th><span [style.color]="'gray'">submitted:</span></th>
-        <td>{{ leave.creation_date | date: 'dd-MM-yyyy' }}</td>
-      </tr> -->
+      <tr>
+        <th><span [style.color]="'gray'">type:</span></th>
+        <td>{{ leave.leave_cat }} {{ leave.time_period }}</td>
+      </tr>
       <tr>
         <th><span [style.color]="'gray'">reason:</span></th>
-        <td> <small> {{ leave.reason }} </small> </td>
+        <td>
+          <small> {{ leave.reason }} </small>
+        </td>
       </tr>
       <tr>
         <th><span [style.color]="'gray'">status:</span></th>
         <td>
-          <span [style.color]=" getLeaveColor()">
-          @switch (leave.active_status) {
-            @case ('N') {
-              Pending
+          <span [style.color]="getLeaveColor()">
+            @switch (leave.active_status) {
+              @case ('N') {
+                Pending
+              }
+              @case ('Y') {
+                Approved
+              }
+              @case ('R') {
+                Rejected
+              }
+              @case ('C') {
+                Cancelled
+              }
+              @default {
+                Unknown
+              }
             }
-            @case ('Y') {
-              Approved
-            }
-            @case ('R') {
-              Rejected
-            }
-            @case ('C') {
-              Cancelled
-            }
-            @default {
-              Unknown
-            }
-          }
           </span>
         </td>
       </tr>
     </table>
-
   } @else {
     <div class="d-flex row justify-content-center" [style.color]="'red'">
       {{ selectedLabel }}

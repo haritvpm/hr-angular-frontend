@@ -120,7 +120,7 @@ export interface Leave {
   last_updated: string;
   creation_date: string;
   created_by_aadhaarid: string;
-
+  day_count : number | null;
 }
 
 export interface MonthwiseEmployeeApiData {
