@@ -32,7 +32,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   self: boolean = false;
   data: MonthwiseEmployeeApiData | null = null;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
-  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'grace', 'info'];
+  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration',  'grace', 'xtratime', 'info'];
   clickedRows = new Set<EmployeePunchingInfo>();
   employeeInfo: Employee | null;
   monthlyData: MonthlyData | null;
@@ -73,7 +73,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     if (dateItem.is_holiday)
       return {
         'color': 'red',
-        'font-weight': 'bold',
+        //'font-weight': 'bold',
         'margin-left': '4vh'
       };
     else if (dateItem.is_future)

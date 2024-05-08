@@ -37,7 +37,7 @@ export interface YearlyData {
   other_leaves_marked: number;
   other_leaves_submitted: number;
   single_punchings: number;
-
+  year_number : number;
 
 }
 export interface EmployeePunchingInfo {
@@ -78,6 +78,7 @@ export interface EmployeePunchingInfo {
   punchout_trace?: PunchTrace | null;
   leave?: Leave;
   in_section: boolean;
+  grace_exceeded300_and_today_has_grace: boolean;
 }
 
 export interface PunchTrace {
