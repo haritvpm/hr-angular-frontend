@@ -28,5 +28,30 @@ export class EmployeeLeavesListComponent implements OnInit {
 
     this.dataSource.paginator = this.paginator;
   }
+  getStatusColor(status: string): string {
+    if (status == 'Y') {
+      return 'LimeGreen';
+    }
+    if (status == 'N') {
+      return 'DeepSkyBlue';
+    }
+    return 'black';
+  }
+  getStatusText(status: string): string {
+    if (status == 'Y') {
+      return 'Approved';
+    }
+    if (status == 'N') {
+      return 'Pending';
+    }
+    if (status == 'C') {
+      return 'Cancelled';
+    }
+    if (status == 'R') {
+      return 'Rejected';
+    }
+    return 'Unknown';
+
+  }
 }
 
