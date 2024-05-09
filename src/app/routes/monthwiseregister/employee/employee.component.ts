@@ -17,6 +17,8 @@ import { MatDatepicker,MatDatepickerModule } from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { FormControl,  FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
+import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -50,7 +52,8 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   data: MonthwiseEmployeeApiData | null = null;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
   displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration',  'grace', 'xtratime', 'info'];
-  clickedRows = new Set<EmployeePunchingInfo>();
+  // clickedRows = new Set<EmployeePunchingInfo>();
+  calender_info: { [day: string]: CalendarDayInfo } = {};
   employeeInfo: Employee | null;
   monthlyData: MonthlyData | null;
   yearlyData: YearlyData | null;
@@ -62,6 +65,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private apiService: EmployeeService,
+    private drawer: MtxDrawer,
 
   ) { }
 
@@ -83,6 +87,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         this.monthlyData = this.data.data_monthly;
         this.yearlyData = this.data.data_yearly;
         this.employeeLeaves = this.data.emp_leaves;
+        this.calender_info = this.data.calender_info;
         console.log(this.monthlyData);
       });
 
@@ -142,6 +147,33 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
    this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, normalizedMonthAndYear.format('YYYY-MM-DD')]);
 
   }
+  mark(row: EmployeePunchingInfo) {
+    console.log(row);
+  //  if (this.is_holiday && row.punching_count == 0) return;
 
+    const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
+      width: '300px',
+      data: {
+        punchingInfo: row,
+        monthlyPunching: this.monthlyData,
+        calender: this.calender_info[row.day]},
+    });
+
+    drawerRef.afterDismissed().subscribe(res => {
+      console.log('The drawer was dismissed - ' + res);
+      if (!res?.hint && !res?.remarks) return;
+      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
+      if (!row.logged_in_user_is_controller &&  //js is both so and co
+        row.logged_in_user_is_section_officer &&  //disallow only if so
+        row.finalized_by_controller
+      ) return;
+
+      this.apiService.saveHint(row.aadhaarid, row.date, res).subscribe((_data) => {
+        console.log('hint saved');
+        this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid,row.date]);
+      //  this.fetchData(moment(this.date.value).format('YYYY-MM-DD'));
+      });
+    });
+  }
 }
 

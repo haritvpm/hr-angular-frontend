@@ -48,8 +48,8 @@ export interface EmployeePunchingInfo {
   logged_in_user_is_controller: boolean;
   logged_in_user_is_section_officer: boolean;
   id?: number;
-  date?: string;
-  aadhaarid?: string;
+  date: string;
+  aadhaarid: string;
   name?: string;
   designation?: string;
   section?: string | null;
