@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from './employee.service';
-import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, Employee, YearlyData } from './interface';
+import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, Employee, YearlyData, Leave } from './interface';
 import { DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -12,6 +12,8 @@ import moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '@core';
 import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { EmployeeLeavesListComponent } from '@shared/components/employee-leaves-list/employee-leaves-list.component';
 // import {MatGridListModule} from '@angular/material/grid-list';
 
 @Component({
@@ -20,7 +22,8 @@ import { MatCardModule } from '@angular/material/card';
   styleUrls: ['./employee.component.css'],
   standalone: true,
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
-    MatInputModule, MatButtonModule, MatIconModule, MatCardModule]
+    MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
+    EmployeeLeavesListComponent]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
@@ -29,13 +32,13 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   self: boolean = false;
   data: MonthwiseEmployeeApiData | null = null;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
-  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'xtratime', 'grace', 'info'];
+  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration',  'grace', 'xtratime', 'info'];
   clickedRows = new Set<EmployeePunchingInfo>();
   employeeInfo: Employee | null;
   monthlyData: MonthlyData | null;
   yearlyData: YearlyData | null;
   beginDate: Date = new Date('2024-01-01');
-
+  employeeLeaves : Leave[] = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -45,12 +48,12 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
 
-console.log('ngOnInit');
+    console.log('ngOnInit');
     this.route.data
       .pipe(
         map(data => data.aadhaar_date),
-        tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date;  this.self = data.self; console.log('date dfdfd:'+data.date)}),
-        switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date )),
+        tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date; this.self = data.self; console.log('date dfdfd:' + data.date); }),
+        switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date)),
         take(1)
       )
       .subscribe(response => {
@@ -60,6 +63,7 @@ console.log('ngOnInit');
         this.employeeInfo = this.data.employee;
         this.monthlyData = this.data.data_monthly;
         this.yearlyData = this.data.data_yearly;
+        this.employeeLeaves = this.data.emp_leaves;
         console.log(this.monthlyData);
       });
 
@@ -69,24 +73,27 @@ console.log('ngOnInit');
     if (dateItem.is_holiday)
       return {
         'color': 'red',
-        'font-weight': 'bold'
+        //'font-weight': 'bold',
+        'margin-left': '4vh'
       };
     else if (dateItem.is_future)
       return {
-        'color': 'grey'
+        'color': 'grey',
+        'margin-left': '4vh'
       };
     else if (dateItem.is_today)
       return {
-        'font-weight': 'bold'
+        'font-weight': 'bold',
+        'margin-left': '4vh'
       };
     else
-      return '';
+      return { 'margin-left': '4vh' };
   }
 
   onNextMonth() {
 
-   // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-   // this.router.onSameUrlNavigation = 'reload';
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    // this.router.onSameUrlNavigation = 'reload';
 
     const nextmonth = moment(this.date).add(1, 'month');
     //if this is future month, ignore
@@ -95,8 +102,8 @@ console.log('ngOnInit');
 
   }
   onPrevMonth() {
-   // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-   // this.router.onSameUrlNavigation = 'reload';
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    // this.router.onSameUrlNavigation = 'reload';
 
     const prevmonth = moment(this.date).subtract(1, 'month');
     //if this is before 2024 january month, ignore

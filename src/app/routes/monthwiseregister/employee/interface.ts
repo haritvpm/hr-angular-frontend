@@ -37,7 +37,7 @@ export interface YearlyData {
   other_leaves_marked: number;
   other_leaves_submitted: number;
   single_punchings: number;
-
+  year_number : number;
 
 }
 export interface EmployeePunchingInfo {
@@ -78,6 +78,7 @@ export interface EmployeePunchingInfo {
   punchout_trace?: PunchTrace | null;
   leave?: Leave;
   in_section: boolean;
+  grace_exceeded300_and_today_has_grace: boolean;
 }
 
 export interface PunchTrace {
@@ -102,6 +103,7 @@ export interface Employee {
   aadhaarid: string;
   is_shift: boolean;
   name: string | null;
+  designation_now : string;
 }
 
 export interface Leave {
@@ -114,12 +116,12 @@ export interface Leave {
   reason: string;
   active_status: string;
   leave_cat: string;
-  time_period: string;
+  time_period: string | null;
   in_lieu_of: string;
   last_updated: string;
   creation_date: string;
   created_by_aadhaarid: string;
-
+  day_count : number | null;
 }
 
 export interface MonthwiseEmployeeApiData {
@@ -129,6 +131,7 @@ export interface MonthwiseEmployeeApiData {
   data_yearly:  YearlyData ;
   employee_punching: EmployeePunchingInfo[];
   employee: Employee;
+  emp_leaves: Leave[];
 }
 export interface EmployeeArgs {
   aadhaarid: string;
