@@ -1,29 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from './employee.service';
 import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, Employee, YearlyData, Leave } from './interface';
-import { DatePipe, NgIf } from '@angular/common';
+import { CommonModule, DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { Observable, Subscription, map, switchMap, take, tap } from 'rxjs';
+import {  map, switchMap, take, tap } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '@core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { EmployeeLeavesListComponent } from '@shared/components/employee-leaves-list/employee-leaves-list.component';
-// import {MatGridListModule} from '@angular/material/grid-list';
+import { MatDatepicker,MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { FormControl,  FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 @Component({
   selector: 'app-monthwiseregister-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.css'],
+  encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
     MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
-    EmployeeLeavesListComponent]
+    EmployeeLeavesListComponent, MatDatepickerModule,MatNativeDateModule,
+    FormsModule, CommonModule, ReactiveFormsModule,],
+  providers: [    provideMomentDateAdapter(MY_FORMATS),],
+
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
@@ -37,7 +54,9 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   employeeInfo: Employee | null;
   monthlyData: MonthlyData | null;
   yearlyData: YearlyData | null;
+  todayDate: Date = new Date();
   beginDate: Date = new Date('2024-01-01');
+  date_formctrl = new FormControl(moment());
   employeeLeaves : Leave[] = [];
   constructor(
     private route: ActivatedRoute,
@@ -110,6 +129,18 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     if (prevmonth.isBefore(this.beginDate, 'month')) return;
     console.log('prev month:', prevmonth.format('YYYY-MM-DD'));
     this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, prevmonth.format('YYYY-MM-DD')]);
+  }
+  chosenMonthHandler(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment> | null) {
+    const ctrlValue = this.date_formctrl.value ?? moment();
+    ctrlValue.month(normalizedMonthAndYear.month());
+    ctrlValue.year(normalizedMonthAndYear.year());
+    this.date_formctrl.setValue(ctrlValue);
+    if(datepicker) datepicker.close();
+    console.log(normalizedMonthAndYear.format('YYYY-MM-DD'));
+    //this.selectedMonth = normalizedMonthAndYear.format('YYYY-MM-DD');
+   // this.loadData();
+   this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, normalizedMonthAndYear.format('YYYY-MM-DD')]);
+
   }
 
 }
