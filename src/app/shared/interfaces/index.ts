@@ -8,12 +8,12 @@ export interface IProfile {
   name: string;
   name_mal: string;
   email: string;
-  gender: string;
+  srismt: string;
  // city: string;
   address: string;
   // company: string;
   mobile: string;
-  // tele: string;
-  // website: string;
+  pan: string;
+  klaid: string;
   dateOfJoinInKLA: string;
 }

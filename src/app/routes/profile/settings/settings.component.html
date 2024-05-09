@@ -9,7 +9,7 @@
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <mat-label>Name (malayalam)</mat-label>
-            <input  matInput placeholder="Simple placeholder" formControlName="name_mal">
+            <input  matInput placeholder="Name in malayalam" formControlName="name_mal" required>
             @if (reactiveForm.get('name_mal')?.invalid) {
               <mat-error>Please enter name in mal</mat-error>
             }
@@ -19,7 +19,7 @@
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <mat-label>Email</mat-label>
-            <input matInput placeholder="Simple placeholder" formControlName="email">
+            <input matInput placeholder="email address" formControlName="email"  required>
             @if (reactiveForm.get('email')?.invalid) {
               <mat-error>{{getErrorMessage(reactiveForm)}}</mat-error>
             }
@@ -28,11 +28,12 @@
 
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
-            <mat-label>Gender</mat-label>
-            <mat-select formControlName="gender">
+            <mat-label>Salutation</mat-label>
+            <mat-select formControlName="srismt">
               <mat-option>-- None --</mat-option>
-              <mat-option value="1">male</mat-option>
-              <mat-option value="2">female</mat-option>
+              <mat-option value="sri">Sri</mat-option>
+              <mat-option value="smt">Smt</mat-option>
+              <mat-option value="kum">Kum</mat-option>
             </mat-select>
             @if (reactiveForm.get('gender')?.invalid) {
               <mat-error>Please select gender</mat-error>
@@ -53,7 +54,7 @@
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <mat-label>Address</mat-label>
-            <input matInput placeholder="Simple placeholder" formControlName="address">
+            <input matInput placeholder="address" formControlName="address">
             @if (reactiveForm.get('address')?.invalid) {
               <mat-error>Please enter address</mat-error>
             }
@@ -73,8 +74,8 @@
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <mat-label>Mobile</mat-label>
-            <input matInput placeholder="Simple placeholder" type="number" formControlName="mobile"
-            >
+            <input matInput placeholder="Mobile" type="number" formControlName="mobile"
+            required>
             <mat-icon matSuffix>smartphone</mat-icon>
             @if (reactiveForm.get('mobile')?.invalid) {
               <mat-error>Please enter mobile</mat-error>
@@ -82,32 +83,32 @@
           </mat-form-field>
         </div>
 
-        <!-- <div class="col-sm-6 col-xl-4">
+        <div class="col-sm-6 col-xl-4">
           <mat-form-field>
-            <mat-label>Tele</mat-label>
-            <input matInput placeholder="Simple placeholder" type="number" formControlName="tele"
-            >
-            <mat-icon matSuffix>phone</mat-icon>
-            @if (reactiveForm.get('tele')?.invalid) {
-              <mat-error>Please enter tele</mat-error>
+            <mat-label>KLA-ID</mat-label>
+            <input matInput placeholder="KLA-ID"  formControlName="klaid"
+             required>
+            <mat-icon matSuffix>klaid</mat-icon>
+            @if (reactiveForm.get('klaid')?.invalid) {
+              <mat-error>Please enter klaid</mat-error>
             }
           </mat-form-field>
-        </div> -->
+        </div>
 
-        <!-- <div class="col-sm-6 col-xl-4">
+        <div class="col-sm-6 col-xl-4">
           <mat-form-field>
-            <mat-label>Website</mat-label>
-            <input matInput placeholder="Simple placeholder" formControlName="website">
-            @if (reactiveForm.get('website')?.invalid) {
-              <mat-error>Please enter website</mat-error>
+            <mat-label>PAN</mat-label>
+            <input matInput placeholder="PAN" formControlName="pan">
+            @if (reactiveForm.get('pan')?.invalid) {
+              <mat-error>Please enter pan</mat-error>
             }
           </mat-form-field>
-        </div> -->
+        </div>
 
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <input matInput [matDatepicker]="picker2" placeholder="Date of joining in KLA"
-              formControlName="dateOfJoinInKLA">
+              formControlName="dateOfJoinInKLA" required>
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
             @if (reactiveForm.get('dateOfJoinInKLA')?.invalid) {
@@ -118,7 +119,7 @@
       </div>
 
       <div class="d-flex justify-content-end">
-        <button mat-raised-button color="primary"  >Save</button>
+        <button mat-raised-button color="primary" [loading]="isLoading" [disabled]="!!reactiveForm.invalid && !reactiveForm.touched" >Save</button>
       </div>
     </form>
   </mat-card-content>
