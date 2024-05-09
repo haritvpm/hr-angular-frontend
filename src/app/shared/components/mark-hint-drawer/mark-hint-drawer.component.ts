@@ -41,6 +41,7 @@ export class MarkHintDrawerComponent implements OnInit {
   selected: string = '';
   canMarkLeave: boolean = false;
   selectedLabel: string = '';
+  submittedLeaveLabel: string = '';
   remarks: string = '';
   punchingTimes: string = '';
   leave: Leave | null = null;
@@ -80,10 +81,13 @@ export class MarkHintDrawerComponent implements OnInit {
             leave_type = this.leave?.time_period == 'FN' ? 'C_FN' : 'C_AN';
           }
         }
-        this.selectedLabel =
+        this.submittedLeaveLabel =
           this.leaveList.find((x: any) => x.short == leave_type)?.label || leave_type;
 
-        this.canMarkLeave = false;
+         //should be able to mark. or half cl grace wont be calculated correctly as hint changes only when it becomes Y
+        if (this.leave?.active_status == 'Y') {
+         // this.canMarkLeave = false;
+        }
       }
     }
   }

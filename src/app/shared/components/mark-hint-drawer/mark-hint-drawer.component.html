@@ -72,11 +72,14 @@
     <mat-form-field class="d-flex row" appearance="outline">
       <input matInput placeholder="Remarks" [(ngModel)]="remarks" />
     </mat-form-field>
-  } @else if (leave) {
+  }
+  <mat-divider class="m-b-8"></mat-divider>
+
+  @if (leave) {
     <table>
       <tr>
         <th><span [style.color]="'gray'">leave:</span></th>
-        <td>{{ selectedLabel }}</td>
+        <td>{{ submittedLeaveLabel }}</td>
       </tr>
       <tr>
         <th><span [style.color]="'gray'">date:</span></th>
