@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { LoginService } from '@core/authentication/login.service';
 
 import { ControlsOf, IProfile } from '@shared';
 
@@ -35,21 +36,34 @@ import { ControlsOf, IProfile } from '@shared';
     MatSelectModule,
   ],
 })
-export class ProfileSettingsComponent {
+export class ProfileSettingsComponent implements OnInit{
   private readonly fb = inject(FormBuilder);
+  private readonly loginService = inject(LoginService);
+  profile : IProfile | null = null;
 
   reactiveForm = this.fb.nonNullable.group({
-    name_mal: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
-    gender: ['', [Validators.required]],
-    //city: ['', [Validators.required]],
-    address: ['', [Validators.required]],
-    // company: ['', [Validators.required]],
-    mobile: ['', [Validators.required]],
-    // tele: ['', [Validators.required]],
-    // website: ['', [Validators.required]],
-    dateOfJoinInKLA: ['', [Validators.required]],
+    name: ['', []],
+    name_mal: ['', []],
+    email: ['', [ Validators.email]],
+    gender: ['', []],
+    //city: ['', []],
+    address: ['', []],
+    // company: ['', []],
+    mobile: ['', []],
+    // tele: ['', []],
+    // website: ['', []],
+    dateOfJoinInKLA: ['', []],
   });
+
+  constructor() {
+
+  }
+  ngOnInit() {
+    this.loginService.getProfile().subscribe((profile) => {
+      this.profile = profile;
+      this.reactiveForm.patchValue(profile);
+    });
+  }
 
   getErrorMessage(form: FormGroup<ControlsOf<IProfile>>) {
     return form.get('email')?.hasError('required')
@@ -57,5 +71,11 @@ export class ProfileSettingsComponent {
       : form.get('email')?.hasError('email')
         ? 'Not a valid email'
         : '';
+  }
+
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      this.loginService.updateProfile(this.reactiveForm.value).subscribe();
+    }
   }
 }

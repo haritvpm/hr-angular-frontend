@@ -5,6 +5,7 @@ export type ControlsOf<T extends Record<string, any>> = {
 };
 
 export interface IProfile {
+  name: string;
   name_mal: string;
   email: string;
   gender: string;
