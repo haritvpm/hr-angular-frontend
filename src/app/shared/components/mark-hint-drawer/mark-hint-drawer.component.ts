@@ -56,7 +56,7 @@ export class MarkHintDrawerComponent implements OnInit {
     if (this.data.punchingInfo.punching_count) {
       this.punchingTimes = `${this.data.punchingInfo.in_time || '?'} - ${this.data.punchingInfo.out_time || '?'}`;
     } else if (!this.data.punchingInfo.is_today) {
-      this.punchingTimes = 'Leave';
+      this.punchingTimes = '';
     }
 //for monthwise view, logged_in_user_is_controller is present in monthlyPunching
 // for employee view, logged_in_user_is_controller is present in punchingInfo
@@ -143,7 +143,7 @@ export class MarkHintDrawerComponent implements OnInit {
     );
     if (option.value == 'comp_leave' && compens >= 15) return false;
 
-    if (option.value == 'compen' && !this.data.calender.rh) return false;
+    if (option.value == 'restricted' && !this.data.calender.rh) return false;
 
     return true;
   }

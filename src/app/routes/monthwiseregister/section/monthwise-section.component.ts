@@ -280,7 +280,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     console.log(dayNData);
     console.log(this.calendarInfo[day_number]);
     //can be set EL even on holiday
-  //  if (this.calendarInfo[day_number].holiday && dayNData.punching_count == 0) return;
+    //if (this.calendarInfo[day_number].is_future) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
