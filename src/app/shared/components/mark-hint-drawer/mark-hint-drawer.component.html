@@ -58,13 +58,7 @@
     <mat-radio-group aria-label="Select an option" [(ngModel)]="selected">
       <div class="row">
         <ng-container *ngFor="let option of leaveList">
-          @if (
-            data.punchingInfo.punching_count >= option.min_pun &&
-            (!data.punchingInfo.is_holiday ||
-              (data.punchingInfo.is_holiday && option.showOnHoliday)) &&
-            (!option.showForCntrlOnly ||
-              (option.showForCntrlOnly && data.monthlyPunching.logged_in_user_is_controller))
-          ) {
+          @if ( canShowOption(option)) {
             <div class="col-sm-6">
               <mat-radio-button [value]="option.value">
                 <small> {{ option.label }} </small>

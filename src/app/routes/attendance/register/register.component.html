@@ -223,11 +223,11 @@
         >
         CL <br> Mark|Sub
         </th>
-        <td mat-cell *matCellDef="let employee">
+        <td mat-cell *matCellDef="let punchinfo">
           <!-- <span *ngIf="!is_holiday">
             {{ 300 - roundValue(employee.total_grace_sec / 60) }}
           </span> -->
-          {{ employee.cl_marked }}
+          {{ punchinfo.cl_marked }} / {{ punchinfo.cl_submitted }}
         </td>
       </ng-container>
 

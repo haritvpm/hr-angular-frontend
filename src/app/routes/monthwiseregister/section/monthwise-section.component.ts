@@ -284,7 +284,11 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
-      data: { punchingInfo: dayNData, monthlyPunching: row },
+      data: {
+        punchingInfo: dayNData,
+        monthlyPunching: row,
+        calender: this.calendarInfo[day_number]
+      },
     });
 
     drawerRef.afterDismissed().subscribe(res => {
