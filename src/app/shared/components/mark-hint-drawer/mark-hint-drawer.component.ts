@@ -58,11 +58,16 @@ export class MarkHintDrawerComponent implements OnInit {
     } else if (!this.data.punchingInfo.is_today) {
       this.punchingTimes = 'Leave';
     }
+//for monthwise view, logged_in_user_is_controller is present in monthlyPunching
+// for employee view, logged_in_user_is_controller is present in punchingInfo
+    const logged_in_user_is_controller = this.data.monthlyPunching.logged_in_user_is_controller ||
+    this.data.punchingInfo.logged_in_user_is_controller;
+    const logged_in_user_is_so = this.data.monthlyPunching.logged_in_user_is_section_officer ||
+    this.data.punchingInfo.logged_in_user_is_section_officer;
 
     if (
-      this.data.monthlyPunching.logged_in_user_is_controller ||
-      (this.data.monthlyPunching.logged_in_user_is_section_officer &&
-        !this.data.punchingInfo.finalized_by_controller)
+      logged_in_user_is_controller||
+      (logged_in_user_is_so && !this.data.punchingInfo.finalized_by_controller)
     ) {
       this.canMarkLeave = true;
     }

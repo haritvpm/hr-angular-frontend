@@ -7,8 +7,8 @@
 </p>
 
 <div class="text-center">
-  <div style="font-weight: bold">{{ data.monthlyPunching?.name }}</div>
-  <small>{{ data.monthlyPunching?.designation }}</small> <br />
+  <div style="font-weight: bold">{{ data.monthlyPunching?.name || data.punchingInfo.name }}</div>
+  <small>{{ data.monthlyPunching?.designation  || data.punchingInfo.designation }}</small> <br />
   <mat-divider class="m-t-8"></mat-divider>
   <b>{{ data.punchingInfo.date }}</b> <br />
   {{ punchingTimes }}
