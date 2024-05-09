@@ -115,7 +115,7 @@ export class MarkHintDrawerComponent implements OnInit {
   canShowOption(option: any) {
     if (
       this.data.punchingInfo.punching_count < option.min_pun ||
-      (this.data.calender.is_holiday && !option.showOnHoliday) ||
+      (this.data.calender.holiday && !option.showOnHoliday) ||
       (option.showForCntrlOnly && !this.data.monthlyPunching.logged_in_user_is_controller)
     ) {
       return false;
@@ -127,7 +127,14 @@ export class MarkHintDrawerComponent implements OnInit {
     );
     if (option.value == 'casual' && cls > 19) return false; //if 19.5, not allowed
     if ((option.value == 'casual_an' || option.value == 'casual_fn') && cls >= 20) return false;
-    if (option.value == 'restricted' && !this.data.calender.rh) return false;
+
+    const compens = Math.max(
+      this.data.monthlyPunching.compen_marked,
+      this.data.monthlyPunching.compen_submitted
+    );
+    if (option.value == 'comp_leave' && compens >= 15) return false;
+
+    if (option.value == 'compen' && !this.data.calender.rh) return false;
 
     return true;
   }

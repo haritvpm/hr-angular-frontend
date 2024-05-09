@@ -102,7 +102,9 @@ export interface PunchingInfo extends PunchingDay {
   leave?: Leave;
   grace_exceeded300_and_today_has_grace : boolean;
   cl_marked: number;
-
+  cl_submitted: number;
+  compen_marked: number;
+  compen_submitted: number;
 }
 
 

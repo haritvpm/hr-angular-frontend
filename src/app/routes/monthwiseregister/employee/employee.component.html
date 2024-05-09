@@ -27,20 +27,20 @@
     <div class="row m-t-4  m-x-8 flex-grow-1 justify-content-between">
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>Total Extra Hours ({{data?.month}})</mat-card-subtitle>
-          <mat-card-title>{{ monthlyData?.total_extra_str }}</mat-card-title>
+          <mat-card-subtitle>Total Extra ({{data?.month}})</mat-card-subtitle>
+          <mat-card-title>{{ monthlyData?.total_extra_str }} <small>Hours</small></mat-card-title>
         </mat-card-header>
       </mat-card>
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>Grace Minutes Used ({{data?.month}})</mat-card-subtitle>
-          <mat-card-title>{{ monthlyData?.total_grace_str }}</mat-card-title>
+          <mat-card-subtitle>Grace Used ({{data?.month}})</mat-card-subtitle>
+          <mat-card-title>{{ monthlyData?.total_grace_str }} <small>Minutes</small></mat-card-title>
         </mat-card-header>
       </mat-card>
       @if (monthlyData?.total_grace_exceeded300_date) {
         <mat-card class="flex-grow-1 card-margin-right">
           <mat-card-header>
-            <mat-card-subtitle>Grace 300 Exceeded Date</mat-card-subtitle>
+            <mat-card-subtitle>Grace 300 Exceeded On</mat-card-subtitle>
             <mat-card-title>{{
               monthlyData?.total_grace_exceeded300_date | date: 'dd-MM-yyyy'
             }}</mat-card-title>
@@ -49,27 +49,27 @@
       }
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>CL Marked/Submitted ({{yearlyData?.year_number}})</mat-card-subtitle>
+          <mat-card-subtitle>CL({{yearlyData?.year_number}})</mat-card-subtitle>
           <mat-card-title>
-            {{ yearlyData?.cl_marked ? yearlyData?.cl_marked : 0 }} /
-            {{ yearlyData?.cl_submitted ? yearlyData?.cl_submitted : 0 }}
+            <small>Marked</small>: {{ yearlyData?.cl_marked ? yearlyData?.cl_marked : 0 }} /
+            <small>Submitted</small>: {{ yearlyData?.cl_submitted ? yearlyData?.cl_submitted : 0 }}
           </mat-card-title>
         </mat-card-header>
       </mat-card>
 
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>Compen Marked/Submitted ({{yearlyData?.year_number}})</mat-card-subtitle>
+          <mat-card-subtitle>Compen  ({{yearlyData?.year_number}})</mat-card-subtitle>
           <mat-card-title>
-            {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} /
-            {{ yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0 }}
+            <small>Marked</small>: {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} /
+            <small>Submitted</small>: {{ yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0 }}
           </mat-card-title>
         </mat-card-header>
       </mat-card>
 
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>Tot Punching Misses ({{yearlyData?.year_number}})</mat-card-subtitle>
+          <mat-card-subtitle>Punching Misses ({{yearlyData?.year_number}})</mat-card-subtitle>
           <mat-card-title>
             {{ yearlyData?.single_punchings || 0 }}
           </mat-card-title>
