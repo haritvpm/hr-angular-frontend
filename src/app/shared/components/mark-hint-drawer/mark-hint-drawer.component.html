@@ -10,7 +10,7 @@
   <div style="font-weight: bold">{{ data.monthlyPunching?.name || data.punchingInfo.name }}</div>
   <small>{{ data.monthlyPunching?.designation  || data.punchingInfo.designation }}</small> <br />
   <mat-divider class="m-t-8"></mat-divider>
-  <b>{{ data.punchingInfo.date || data.punchingInfo.day_str}}</b> <br />
+  <b>{{ data.punchingInfo.date || data.punchingInfo.day_str || (data.calender.date| date: 'dd-MM-yyyy'  )}}</b> <br />
   {{ punchingTimes }}
 
   <mat-divider class="m-b-4"></mat-divider>

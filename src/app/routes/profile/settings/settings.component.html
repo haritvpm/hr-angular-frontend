@@ -8,10 +8,10 @@
       <div class="row">
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
-            <mat-label>Username</mat-label>
-            <input matInput placeholder="Simple placeholder" formControlName="username" required>
-            @if (reactiveForm.get('username')?.invalid) {
-              <mat-error>Please enter username</mat-error>
+            <mat-label>Name (malayalam)</mat-label>
+            <input [readonly]="true" matInput placeholder="Simple placeholder" formControlName="name_mal" required>
+            @if (reactiveForm.get('name_mal')?.invalid) {
+              <mat-error>Please enter name in mal</mat-error>
             }
           </mat-form-field>
         </div>
@@ -40,7 +40,7 @@
           </mat-form-field>
         </div>
 
-        <div class="col-sm-6 col-xl-4">
+        <!-- <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <mat-label>City</mat-label>
             <input matInput placeholder="Simple placeholder" formControlName="city" required>
@@ -48,7 +48,7 @@
               <mat-error>Please enter city</mat-error>
             }
           </mat-form-field>
-        </div>
+        </div> -->
 
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
@@ -60,7 +60,7 @@
           </mat-form-field>
         </div>
 
-        <div class="col-sm-6 col-xl-4">
+        <!-- <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <mat-label>Company</mat-label>
             <input matInput placeholder="Simple placeholder" formControlName="company" required>
@@ -68,7 +68,7 @@
               <mat-error>Please enter company</mat-error>
             }
           </mat-form-field>
-        </div>
+        </div> -->
 
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
@@ -82,7 +82,7 @@
           </mat-form-field>
         </div>
 
-        <div class="col-sm-6 col-xl-4">
+        <!-- <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <mat-label>Tele</mat-label>
             <input matInput placeholder="Simple placeholder" type="number" formControlName="tele"
@@ -92,9 +92,9 @@
               <mat-error>Please enter tele</mat-error>
             }
           </mat-form-field>
-        </div>
+        </div> -->
 
-        <div class="col-sm-6 col-xl-4">
+        <!-- <div class="col-sm-6 col-xl-4">
           <mat-form-field>
             <mat-label>Website</mat-label>
             <input matInput placeholder="Simple placeholder" formControlName="website" required>
@@ -102,16 +102,16 @@
               <mat-error>Please enter website</mat-error>
             }
           </mat-form-field>
-        </div>
+        </div> -->
 
         <div class="col-sm-6 col-xl-4">
           <mat-form-field>
-            <input matInput [matDatepicker]="picker2" placeholder="Choose a date"
-              formControlName="date">
+            <input matInput [matDatepicker]="picker2" placeholder="Date of joining in KLA"
+              formControlName="dateOfJoinInKLA">
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
-            @if (reactiveForm.get('date')?.invalid) {
-              <mat-error>Please enter website</mat-error>
+            @if (reactiveForm.get('dateOfJoinInKLA')?.invalid) {
+              <mat-error>Please enter date of joining in KLA</mat-error>
             }
           </mat-form-field>
         </div>

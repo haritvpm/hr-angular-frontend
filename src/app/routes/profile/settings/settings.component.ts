@@ -39,16 +39,16 @@ export class ProfileSettingsComponent {
   private readonly fb = inject(FormBuilder);
 
   reactiveForm = this.fb.nonNullable.group({
-    username: ['', [Validators.required]],
+    name_mal: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     gender: ['', [Validators.required]],
-    city: ['', [Validators.required]],
+    //city: ['', [Validators.required]],
     address: ['', [Validators.required]],
-    company: ['', [Validators.required]],
+    // company: ['', [Validators.required]],
     mobile: ['', [Validators.required]],
-    tele: ['', [Validators.required]],
-    website: ['', [Validators.required]],
-    date: ['', [Validators.required]],
+    // tele: ['', [Validators.required]],
+    // website: ['', [Validators.required]],
+    dateOfJoinInKLA: ['', [Validators.required]],
   });
 
   getErrorMessage(form: FormGroup<ControlsOf<IProfile>>) {
