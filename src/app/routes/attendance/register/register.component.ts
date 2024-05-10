@@ -210,7 +210,7 @@ calender: Calender;
   }
 
   getExtratimeColor(employee: any) {
-    const extraTimeexeed = this.roundValue(employee.total_extra_sec / 60) > 600;
+    const extraTimeexeed = this.roundValue(employee.total_extra_sec / 60) >= 600;
     return {
       'font-weight': extraTimeexeed ? 'bold' : '',
       'color': extraTimeexeed ? 'green' : ''
@@ -221,16 +221,16 @@ calender: Calender;
       'color': 'red',
       'font-weight': 'bold'
     };
-    if (employee.grace_str > 30) return {
-      'color': 'orange',
-      'font-weight': 'bold'
+    // if (employee.grace_str > 30) return {
+    //   'color': 'orange',
+    //   'font-weight': 'bold'
 
-    };
+    // };
 
     else
       return {
-        'color': ' darkblue',
-        'font-weight': 'bold'
+        'color': '',
+        'font-weight': ''
       };
   }
 

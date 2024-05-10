@@ -50,8 +50,7 @@
 
   }
 
-
-  @else if (punching.hint && punching.hint !=='clear') {
+  @if (punching.hint && punching.hint !=='clear') {
     <span [style.color]="'red'">
 
       {{ getLeaveText(punching) }}

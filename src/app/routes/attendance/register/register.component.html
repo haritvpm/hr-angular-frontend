@@ -48,6 +48,8 @@
             <b>{{ selectedDateHint }}</b>
 
             <span *ngIf="is_holiday" [style.color]="'red'">&nbsp;(H)</span>
+            <span *ngIf="calender?.office_ends_at==='3pm'" [style.color]="'red'">&nbsp;(3p.m.)</span>
+            <span *ngIf="calender?.office_ends_at==='noon'" [style.color]="'red'">&nbsp;(Noon)</span>
 
             <button mat-icon-button (click)="onNextDay()">
               <mat-icon>chevron_right</mat-icon>
@@ -85,10 +87,10 @@
         </th>
 
         <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
-          {{ employee.punchin_trace?.att_time }}
+          {{ employee?.in_time }}
           <span
             *ngIf="employee.punching_count === 0 && !is_holiday"
-            [style.color]="'DeepPink'"
+            [style.color]="employee.finalized_by_controller? '' : 'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
             [matTooltipShowDelay]="500"
@@ -111,10 +113,10 @@
           Out
         </th>
         <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
-          {{ employee.punchout_trace?.att_time }}
+          {{ employee?.out_time }}
           <span
             *ngIf="employee.punching_count < 2 && !is_today && !is_holiday"
-            [style.color]="'DeepPink'"
+            [style.color]="employee.finalized_by_controller? '' : 'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
             [matTooltipShowDelay]="500"
@@ -150,7 +152,7 @@
           mat-sort-header
           sortActionDescription="Sort by out time"
         >
-          Extra(Min)
+          Extra(Day)
         </th>
         <td mat-cell *matCellDef="let employee">{{ employee.extra_str }}</td>
       </ng-container>
@@ -161,7 +163,7 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          Total Extra(Min)
+          Extra(Month)
         </th>
         <td mat-cell [style]="getExtratimeColor(employee)" *matCellDef="let employee">
           <span *ngIf="!is_holiday">
@@ -176,9 +178,9 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          Grace(Min)
+          Grace(Day)
         </th>
-        <td mat-cell [style]="getGraceStyle(employee)" *matCellDef="let employee">
+        <td mat-cell [style]="getGraceStyle(employee)" *matCellDef="let employee" (click)="mark(employee)">
           {{ employee.grace_str }}
         </td>
       </ng-container>
@@ -189,9 +191,9 @@
           mat-sort-header
           sortActionDescription="Sort by grace time"
         >
-          GrUsed(Min)
+          GrUsed(Month)
         </th>
-        <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
+        <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee" (click)="mark(employee)">
           <span *ngIf="!is_holiday">
             {{ roundValue(employee.total_grace_sec / 60) }}
           </span>
@@ -205,7 +207,7 @@
           mat-sort-header
           sortActionDescription="Sort by grace time left"
         >
-          GrRem(Min)
+          GrRem(Month)
         </th>
         <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
           <span *ngIf="!is_holiday">
