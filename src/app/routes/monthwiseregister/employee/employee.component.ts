@@ -19,6 +19,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { FormControl,  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
+import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -40,7 +41,7 @@ export const MY_FORMATS = {
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
     MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
     EmployeeLeavesListComponent, MatDatepickerModule,MatNativeDateModule,
-    FormsModule, CommonModule, ReactiveFormsModule,],
+    FormsModule, CommonModule, ReactiveFormsModule,EmployeeYearlyAttendanceListComponent],
   providers: [    provideMomentDateAdapter(MY_FORMATS),],
 
 })
