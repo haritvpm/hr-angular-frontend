@@ -96,10 +96,13 @@ export class CellComponent implements OnInit {
         if (this.item.finalized_by_controller) {
           this.icon_color = 'black';
         }
-      } else if (!this.calendarInfo.holiday && !this.calendarInfo.is_today) {
+      } else if (!this.calendarInfo.holiday && !this.calendarInfo.future_date) {
         //zero punching
-
-          if (!this.calendarInfo.future_date) {
+          if( this.item.computer_hint == 'unauthorised' ){
+            this.icon_name = 'warning';
+            this.icon_color = 'DeepPink'; //'#6017ff';
+          }
+          else {
             this.icon_name = 'close';
             this.icon_color = 'DeepPink'; //'#6017ff';
           }
