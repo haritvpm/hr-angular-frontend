@@ -99,7 +99,7 @@ export class CellComponent implements OnInit {
       } else if (!this.calendarInfo.holiday && !this.calendarInfo.future_date) {
         //zero punching
           if( this.item.computer_hint == 'unauthorised' ){
-            this.icon_name = 'warning';
+            this.icon_name = 'close';
             this.icon_color = 'DeepPink'; //'#6017ff';
           }
           else {

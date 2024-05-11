@@ -145,6 +145,8 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
           //find keys where the object's value is not future_date
 
           this.dayColumns = Object.keys(data.calender_info);
+
+
           //this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
           this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'CL','comp'];
 

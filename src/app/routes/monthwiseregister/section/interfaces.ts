@@ -28,6 +28,7 @@ export interface MonthlyPunching {
   total_grace_str : string | null;
   total_extra_str : string | null;
   total_grace_exceeded300_date : string | null;
+  grace_limit : number;
   day1: PunchingInfo | PunchingDay;
   day2: PunchingInfo | PunchingDay;
   day3: PunchingInfo | PunchingDay;

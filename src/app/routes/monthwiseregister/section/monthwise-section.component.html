@@ -80,7 +80,7 @@
             [style.text-align]="'center'"
             [style.padding]="'0 0'"
             *matHeaderCellDef>
-          <b> {{ $index + 1 }}</b>
+          <b> {{ calendarInfo[dayN].d_ }}</b>
         </th>
         <td
             (click)="mark(dayN, row[dayN], row)"
