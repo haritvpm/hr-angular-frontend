@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -12,6 +12,8 @@ import { MTX_DRAWER_DATA, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import moment from 'moment';
 import { leaveList } from './leave-types';
 import { Leave } from 'app/routes/monthwiseregister/employee/interface';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-mark-hint-drawer',
@@ -27,6 +29,7 @@ import { Leave } from 'app/routes/monthwiseregister/employee/interface';
     MatButton,
     CommonModule,
     MatDividerModule,
+    MatCheckboxModule,
   ],
   templateUrl: './mark-hint-drawer.component.html',
   styleUrl: './mark-hint-drawer.component.css',
@@ -37,6 +40,8 @@ export class MarkHintDrawerComponent implements OnInit {
     @Inject(MTX_DRAWER_DATA) public data: any
   ) {}
 
+  private readonly toast = inject(ToastrService);
+
   leaveList: any[] = leaveList;
   selected: string = '';
   canMarkLeave: boolean = false;
@@ -46,9 +51,21 @@ export class MarkHintDrawerComponent implements OnInit {
   punchingTimes: string = '';
   leave: Leave | null = null;
 
+  canMarkSinglePunch: boolean = false;
+  single_punch_type: string = '';
+  isSinglePunch: boolean = false;
+  regulariseSinglePunch: boolean = false;
+  canRegulariseSinglePunch: boolean = false;
+
+
   ngOnInit() {
     console.log(this.data);
     this.selected = this.data.punchingInfo.hint || this.data.punchingInfo.computer_hint;
+    this.single_punch_type = this.data.punchingInfo.single_punch_type || '';
+    if(this.single_punch_type || this.data.punchingInfo.punching_count===1){
+      this.isSinglePunch = true;
+    }
+    this.regulariseSinglePunch = this.data.punchingInfo.single_punch_regularised_by ? true : false;
 
     this.remarks = this.data.punchingInfo.remarks || '';
     this.selectedLabel =
@@ -70,6 +87,16 @@ export class MarkHintDrawerComponent implements OnInit {
       (logged_in_user_is_so && !this.data.punchingInfo.finalized_by_controller)
     ) {
       this.canMarkLeave = true;
+      this.canMarkSinglePunch = (/*this.data.punchingInfo.punching_count == 1 || can be singlepunch if they punch twice within minutes at evening*/
+                !this.data.punchingInfo.single_punch_type ||
+                (this.data.punchingInfo.single_punch_type !== null &&
+                this.data.punchingInfo.single_punch_regularised_by == null));
+    }
+
+    if(logged_in_user_is_controller &&
+      !this.data.punchingInfo.single_punch_regularised_by
+    /*&& this.single_punch_type*/){
+      this.canRegulariseSinglePunch = true;
     }
 
     if (this.data.punchingInfo.leave) {
@@ -103,10 +130,34 @@ export class MarkHintDrawerComponent implements OnInit {
 
   onOkClick() {
     //save the selected value
+    // this.toast.info(this.selected);
 
-    this.drawerRef.dismiss({ hint: this.selected, remarks: this.remarks });
+    //check if everything is selected.
+    // if (this.canMarkLeave && !this.selected  ) {
+    //   this.toast.error('Please select a leave type');
+    //   return;
+    // }
+
+    if ((this.isSinglePunch|| this.regulariseSinglePunch) && this.single_punch_type == '') {
+      this.toast.error('Please select a single punch type');
+      return;
+    }
+
+    this.drawerRef.dismiss(
+      { hint: this.selected,
+        remarks: this.remarks,
+        isSinglePunch: this.isSinglePunch,
+        single_punch_type: this.single_punch_type,
+        regulariseSinglePunch: this.regulariseSinglePunch,
+        });
   }
 
+  onSinglePunchChange() {
+    if(!this.isSinglePunch || this.single_punch_type == null){
+      this.regulariseSinglePunch = false;
+    }
+
+  }
   getDateExceeded300() {
     return moment(this.data.monthlyPunching.total_grace_exceeded300_date).format('MMM DD');
   }

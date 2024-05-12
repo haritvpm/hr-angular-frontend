@@ -278,7 +278,16 @@ calender: Calender;
 
     drawerRef.afterDismissed().subscribe(res => {
       console.log('The drawer was dismissed - ' + res);
-      if (!res?.hint && !res?.remarks) return;
+
+      if (!res?.hint && !res?.single_punch_type) return;
+
+      if (
+        (!res?.hint && !res?.remarks)
+        &&
+        (res?.isSinglePunch  && !res?.single_punch_type)
+
+      ) return;
+
       if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
       if (!row.logged_in_user_is_controller &&  //js is both so and co
         row.logged_in_user_is_section_officer &&  //disallow only if so

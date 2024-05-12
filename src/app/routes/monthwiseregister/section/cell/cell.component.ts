@@ -93,7 +93,7 @@ export class CellComponent implements OnInit {
       else if (this.item.punching_count === 1) {
         this.icon_name = 'looks_one';
         this.icon_color = !this.calendarInfo.is_today ? 'orange' : 'black';
-        if (this.item.finalized_by_controller) {
+        if (this.item.single_punch_regularised_by) {
           this.icon_color = 'black';
         }
       } else if (!this.calendarInfo.holiday && !this.calendarInfo.future_date) {
@@ -106,6 +106,14 @@ export class CellComponent implements OnInit {
             this.icon_name = 'close';
             this.icon_color = 'DeepPink'; //'#6017ff';
           }
+      }
+
+      if (this.item.single_punch_type) {
+        this.icon_name = 'looks_one';
+        this.icon_color = 'orange' ;
+        if (this.item.single_punch_regularised_by) {
+          this.icon_color = 'black';
+        }
       }
 
       if (this.item.leave ) {

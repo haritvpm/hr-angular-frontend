@@ -148,7 +148,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
 
           //this.dayColumns = this.filterNonFutureDays(data.calender_info);// Object.keys(data.calender_info.filter( x => !x.future_date));
-          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'CL','comp'];
+          this.displayedColumns = ['name', 'grace_left', ...this.dayColumns, 'extra', 'CL', 'comp'];
 
           //  this.sections =['All'];
           this.sections = data.sections ? ['All', ...data.sections] : ['All'];
@@ -174,7 +174,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
     this.date.setValue(ctrlValue);
-    if(datepicker) datepicker.close();
+    if (datepicker) datepicker.close();
     console.log(normalizedMonthAndYear.format('YYYY-MM-DD'));
     this.selectedMonth = normalizedMonthAndYear.format('YYYY-MM-DD');
     this.loadData();
@@ -251,23 +251,23 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
   getTooltip(dayN: string, row: any) {
     const rowVal = row[dayN];
     let tip = rowVal.name + '\n';
-    let hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint+'?' : '';
+    let hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint + '?' : '';
 
-    if(hint){
-      hint = leaveList.find((x:any) => x.value ==hint)?.label || '';
+    if (hint) {
+      hint = leaveList.find((x: any) => x.value == hint)?.label || '';
     }
     // if (rowVal?.punching_count == null) return 'No Data. \n';
 
-    if (rowVal?.punching_count == 0) tip += hint || 'No Punching. \n' ;
+    if (rowVal?.punching_count == 0) tip += hint || 'No Punching. \n';
 
     else if (rowVal?.punching_count == 1) tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
-    else if (rowVal?.punching_count >= 2){
+    else if (rowVal?.punching_count >= 2) {
       tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' + hint;
 
-      tip += '\n Grace (min): ' +rowVal?.grace_str || 0;
+      tip += '\n Grace (min): ' + rowVal?.grace_str || 0;
 
-      if(rowVal.grace_sec > 3600) tip += ' ( > 60 min)';
+      if (rowVal.grace_sec > 3600) tip += ' ( > 60 min)';
 
       tip += '\n Extra (min): ' + rowVal?.extra_str || 0;
 
@@ -295,12 +295,27 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
     drawerRef.afterDismissed().subscribe(res => {
       console.log('The drawer was dismissed - ' + res);
-      if (!res?.hint && !res?.remarks) return;
-      if(!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
-      if(!row.logged_in_user_is_controller &&  //js is both so and co
+      //if there is no hint or no singlepunch, return
+      // console.log('res?.hint:', res.hint);
+      // console.log('res?.remarks:', res.remarks);
+      // console.log('res?.isSinglePunch:', res.isSinglePunch);
+      // console.log('res?.single_punch_type:', res.single_punch_type);
+      if (!res?.hint && !res?.single_punch_type) return;
+
+      if (
+        (!res?.hint && !res?.remarks)
+        &&
+        (res?.isSinglePunch && !res?.single_punch_type)
+
+      ) return;
+
+
+
+      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
+      if (!row.logged_in_user_is_controller &&  //js is both so and co
         row.logged_in_user_is_section_officer &&  //disallow only if so
         dayNData.finalized_by_controller
-        ) return;
+      ) return;
 
       this.employeeService.saveHint(dayNData.aadhaarid, dayNData.date, res).subscribe((data) => {
         console.log(data);
@@ -319,7 +334,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
   onPrevMonth() {
     const prevmonth = moment(this.selectedMonth).subtract(1, 'month');
     //if this is before 2024 january month, ignore
-    if (prevmonth.isBefore (this.beginDate, 'month')) return;
+    if (prevmonth.isBefore(this.beginDate, 'month')) return;
     this.chosenMonthHandler(prevmonth, null);
   }
 
