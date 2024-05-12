@@ -260,19 +260,23 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
     if (rowVal?.punching_count == 0) tip += hint || 'No Punching. \n';
 
-    else if (rowVal?.punching_count == 1) tip += (rowVal?.in_time || rowVal?.out_time) + hint;
+    // else if (rowVal?.punching_count == 1) {
+    //   tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
-    else if (rowVal?.punching_count >= 2) {
+    // }
+
+    if (rowVal?.punching_count >= 1) {
       tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' + hint;
+      if (rowVal.grace_sec) {
+        tip += '\n Grace (min): ' + rowVal?.grace_str || 0;
+        if (rowVal.grace_sec > 3600) tip += ' ( > 60 min)';
+        if (rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min';
+        //tip += '\n Grace exceeded by (min) : ' + Math.round(rowVal?.grace_total_exceeded_one_hour/60) ;
+      }
+      if (rowVal.extra_sec) {
+       tip += '\n Extra (min): ' + rowVal?.extra_str || 0;
+      }
 
-      tip += '\n Grace (min): ' + rowVal?.grace_str || 0;
-
-      if (rowVal.grace_sec > 3600) tip += ' ( > 60 min)';
-
-      tip += '\n Extra (min): ' + rowVal?.extra_str || 0;
-
-      if (rowVal.grace_exceeded300_and_today_has_grace) tip += '\n Grace > 300 min';
-      //tip += '\n Grace exceeded by (min) : ' + Math.round(rowVal?.grace_total_exceeded_one_hour/60) ;
 
     }
     return tip;

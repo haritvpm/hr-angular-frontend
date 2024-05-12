@@ -108,6 +108,7 @@ export class CellComponent implements OnInit {
           }
       }
 
+      //special case of single punchin set by controller
       if (this.item.single_punch_type) {
         this.icon_name = 'looks_one';
         this.icon_color = 'orange' ;
