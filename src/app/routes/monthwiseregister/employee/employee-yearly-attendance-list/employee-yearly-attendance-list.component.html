@@ -47,3 +47,40 @@
     </mat-card-header>
   </mat-card>
 </div>
+
+<!-- ------------------------------------ -->
+@if(monthlyData ) {
+  <div class="tiles-container">
+  @for ( monthdata of monthlyData; track monthdata.id) {
+      <mat-card  class="tile" >
+        <mat-card-header>
+          <mat-card-subtitle>{{
+              monthdata.month_name
+            }}</mat-card-subtitle
+          >
+          <!-- <mat-card-title>{{
+               monthdata.month
+            }}</mat-card-title> -->
+        </mat-card-header>
+          <mat-card-content>
+            CL Marked: {{ monthdata?.cl_marked || 0 }} <br>
+            CL Submitted: {{monthdata?.cl_submitted || 0 }}<br>
+            Compensatory Marked: {{ monthdata?.compen_marked || 0 }}<br>
+            Compensatory Submitted: {{ monthdata?.compen_submitted || 0 }}<br>
+            One-Time Punchings: {{ monthdata?.single_punchings || 0 }}<br>
+            One-Time Punchings Regularised: {{ monthdata?.single_punchings_regularised || 0 }}<br>
+            Grace Used: {{ monthdata?.total_grace_str || 0 }} Minutes<br>
+            @if(monthdata?.total_grace_exceeded300_date) {
+              Grace 300 Exceeded On: {{ monthdata?.total_grace_exceeded300_date | date: 'dd-MM-yyyy' }}<br>
+            } @else {
+              Grace 300 Exceeded On: N/A<br>}
+            Extra: {{ monthdata?.total_extra_str || 0 }} Hours<br>
+            Unauthorised : {{ monthdata?.unauthorised_count || 0 }}<br>
+          </mat-card-content>
+
+      </mat-card>
+  }
+</div>
+} @else {
+  <div>Loading ...</div>
+}

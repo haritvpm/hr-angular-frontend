@@ -29,7 +29,7 @@ export interface MonthlyData {
   single_punchings_regularised : number;
   unauthorised_count : number;
   single_punchings: number;
-
+  month_name: string;
 }
 export interface YearlyData {
 
@@ -145,4 +145,9 @@ export interface EmployeeArgs {
   aadhaarid: string;
   date: string;
   self: boolean;
+}
+export interface EmployeeYearApiData {
+  year: string;
+  allmonthdata:  MonthlyData[] ;
+  //employee: Employee;
 }
