@@ -145,6 +145,11 @@ export class MarkHintDrawerComponent implements OnInit {
 
     if (option.value == 'restricted' && !this.data.calender.rh) return false;
 
+    if(this.data.calender.office_ends_at == '3pm' && (option.value == 'casual_an' )) return false;
+    if(this.data.calender.office_ends_at == 'noon' && (option.value == 'casual_an' || option.value == 'casual_fn')) return false;
+
+    if(this.data.punchingInfo.time_group == 'parttime' && (option.value == 'casual_an' || option.value == 'casual_fn')) return false;
+
     return true;
   }
 }

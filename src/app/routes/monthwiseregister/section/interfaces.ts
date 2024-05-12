@@ -106,6 +106,7 @@ export interface PunchingInfo extends PunchingDay {
   cl_submitted: number;
   compen_marked: number;
   compen_submitted: number;
+  time_group: string;
 }
 
 

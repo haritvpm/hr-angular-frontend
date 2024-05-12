@@ -26,6 +26,10 @@ export interface MonthlyData {
   compen_submitted: number;
   other_leaves_marked: number;
   other_leaves_submitted: number;
+  single_punchings_regularised : number;
+  unauthorised_count : number;
+  single_punchings: number;
+
 }
 export interface YearlyData {
 
@@ -38,6 +42,10 @@ export interface YearlyData {
   other_leaves_submitted: number;
   single_punchings: number;
   year_number : number;
+  start_with_cl : number;
+  start_with_compen : number;
+  single_punchings_regularised : number;
+  unauthorised_count : number;
 
 }
 export interface EmployeePunchingInfo {
