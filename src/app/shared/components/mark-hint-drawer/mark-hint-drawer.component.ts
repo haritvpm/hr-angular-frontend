@@ -89,9 +89,9 @@ export class MarkHintDrawerComponent implements OnInit {
         this.submittedLeaveLabel =
           this.leaveList.find((x: any) => x.short == leave_type)?.label || leave_type;
 
-         //should be able to mark. or half cl grace wont be calculated correctly as hint changes only when it becomes Y
+         // hint changes only when it becomes Y. so no need to change it again bu SO
         if (this.leave?.active_status == 'Y') {
-         // this.canMarkLeave = false;
+          this.canMarkLeave = false;
         }
       }
     }

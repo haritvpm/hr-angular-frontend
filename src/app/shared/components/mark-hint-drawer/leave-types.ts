@@ -11,6 +11,7 @@ export const leaveList: any[] = [
   { label: 'On Duty', value: 'duty', desc:'On Duty', min_pun: 0, short: 'OD', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 0
   { label: 'Medical', value: 'medical', desc:'Medical Leave', min_pun: 0, short: 'MD', showOnHoliday:true , showForCntrlOnly : false }, //punchingcounts = 0
   { label: 'RH', value: 'restricted', desc:'Restricted', min_pun: 0, short: 'RH', showOnHoliday:false, showForCntrlOnly : false  },//punchingcounts = 0,1,2
+  { label: 'Tour', value: 'tour', desc:'Tour', min_pun: 0, short: 'T', showOnHoliday:true, showForCntrlOnly : false  },//punchingcounts = 0,1,2
   { label: 'Other', value: 'other', desc:'Other', min_pun: 0, short: 'O', showOnHoliday:true , showForCntrlOnly : false },//punchingcounts = 0,1,2
   { label: 'Clear', value: 'clear', desc:'', min_pun: 0, short: '', showOnHoliday:true , showForCntrlOnly : true }, //punchingcounts = 1,2
   // { label: 'PunchingMiss', value: 'single_punch', desc:'PunchingMiss', min_pun: 1, short: 'S', showOnHoliday: true, showForCntrlOnly : false  }, //punchingcounts = 1,2
