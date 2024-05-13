@@ -40,11 +40,15 @@ export interface DailyPunching {
   finalized_by_controller: boolean
   remarks: string
   hint: string
+  computer_hint: string
   cl_marked: number
   compen_marked: number
   cl_submitted: number
   compen_submitted: number
   other_leaves_marked: number
+  single_punch_type: string
+  single_punch_regularised_by: string
+  is_unauthorised: boolean
 }
 
 export interface Calender {

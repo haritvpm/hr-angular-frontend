@@ -23,8 +23,15 @@ export class DurationCellComponent {
   getLeaveText(row: DailyPunching) {
 
     if (row.hint) {
-      return leaveList.find((x: any) => x.value == row.hint)?.label || '';
-    }
+      const txt = leaveList.find((x: any) => x.value == row.hint)?.label || null;
+      if(txt) return txt;
+    }/* else if (row.computer_hint) {
+      const txt = leaveList.find((x: any) => x.value == row.computer_hint)?.label || null;
+      if(txt) return txt;
+    }*/
+
+      return '';
+
 
 
   }
@@ -37,16 +44,14 @@ export class DurationCellComponent {
 
   }
   getSinglePunchingStyle() {
-    if (this.punching.hint && this.punching.finalized_by_controller)
+    if (this.punching.single_punch_regularised_by)
       return {
         color: 'black'
       };
     return {
       'color': 'orange',
-      'font-weight': 'bold',
+      // 'font-weight': 'bold',
       'text-align': 'center',
-      'font-size': 'large'
-
     };
 
   }

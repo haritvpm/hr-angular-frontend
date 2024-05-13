@@ -22,7 +22,7 @@
 </div>
 
 <mat-tab-group>
-  <mat-tab label="Attendance">
+  <mat-tab label="Attendance (Month)">
 
     <div class="row m-t-4  m-x-8 flex-grow-1 justify-content-between">
       <mat-card class="flex-grow-1 card-margin-right">
@@ -47,34 +47,6 @@
           </mat-card-header>
         </mat-card>
       }
-      <mat-card class="flex-grow-1 card-margin-right">
-        <mat-card-header>
-          <mat-card-subtitle>CL <small>Marked</small>/ <small>Submitted</small>  ({{yearlyData?.year_number}})</mat-card-subtitle>
-          <mat-card-title>
-            {{ yearlyData?.cl_marked ? yearlyData?.cl_marked : 0 }} /
-            {{ yearlyData?.cl_submitted ? yearlyData?.cl_submitted : 0 }}
-          </mat-card-title>
-        </mat-card-header>
-      </mat-card>
-
-      <mat-card class="flex-grow-1 card-margin-right">
-        <mat-card-header>
-          <mat-card-subtitle>Compen <small>Marked</small>/ <small>Submitted</small> ({{yearlyData?.year_number}})</mat-card-subtitle>
-          <mat-card-title>
-            {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} /
-            {{ yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0 }}
-          </mat-card-title>
-        </mat-card-header>
-      </mat-card>
-
-      <mat-card class="flex-grow-1 card-margin-right">
-        <mat-card-header>
-          <mat-card-subtitle>Punching Misses ({{yearlyData?.year_number}})</mat-card-subtitle>
-          <mat-card-title>
-            {{ yearlyData?.single_punchings || 0 }}
-          </mat-card-title>
-        </mat-card-header>
-      </mat-card>
     </div>
 
     <div class="mat-elevation-z1">
@@ -192,6 +164,7 @@
 
   </mat-tab>
 
+  <mat-tab label="Attendance (Yearly)"> <app-employee-yearly-attendance-list [attendanceData]="data" ></app-employee-yearly-attendance-list>  </mat-tab>
   <mat-tab label="Leaves"> <app-employee-leaves-list [employeeLeaves]="employeeLeaves" ></app-employee-leaves-list>  </mat-tab>
 </mat-tab-group>
 

@@ -10,7 +10,7 @@
   <div style="font-weight: bold">{{ data.monthlyPunching?.name || data.punchingInfo.name }}</div>
   <small>{{ data.monthlyPunching?.designation  || data.punchingInfo.designation }}</small> <br />
   <mat-divider class="m-t-8"></mat-divider>
-  <b>{{ data.punchingInfo.date }}</b> <br />
+  <b>{{ data.punchingInfo.date || data.punchingInfo.day_str || (data.calender.date| date: 'dd-MM-yyyy'  )}}</b> <br />
   {{ punchingTimes }}
 
   <mat-divider class="m-b-4"></mat-divider>
@@ -74,8 +74,36 @@
     </mat-form-field>
   }
   <mat-divider class="m-b-8"></mat-divider>
+  @if (canMarkSinglePunch) {
+    <mat-checkbox
+    [disabled]="data.punchingInfo.punching_count===1"
+    [(ngModel)]="isSinglePunch"
+    (change)="onSinglePunchChange()">
+    Is one-time punch
+  </mat-checkbox>
+
+    <mat-radio-group [disabled]="!isSinglePunch"  aria-label="Select when punched" [(ngModel)]="single_punch_type">
+      <div class="row">
+            <div class="col-sm-6">
+              <mat-radio-button [value]="'in'"><small> In only </small> </mat-radio-button>
+            </div>
+            <div class="col-sm-6">
+              <mat-radio-button [value]="'out'"><small> Out only</small> </mat-radio-button>
+            </div>
+      </div>
+    </mat-radio-group>
+    @if(canRegulariseSinglePunch && isSinglePunch){
+      <mat-checkbox [(ngModel)]="regulariseSinglePunch">Regularise</mat-checkbox>
+    }
+  } @else if(regulariseSinglePunch) {
+    One-Time Punching Regularised
+  }
+
+
 
   @if (leave) {
+  <mat-divider class="m-b-8"></mat-divider>
+
     <table>
       <tr>
         <th><span [style.color]="'gray'">leave:</span></th>
@@ -133,7 +161,7 @@
     </div>
   }
 
-  @if (canMarkLeave) {
+  @if (canMarkLeave || canMarkSinglePunch) {
     <mat-divider></mat-divider>
     <div class="m-t-8 d-flex justify-content-around">
       <button mat-button [color]="'primary'" (click)="onNoClick()">Cancel</button>

@@ -66,9 +66,9 @@
           <mat-icon color="primary">edit</mat-icon>
         </span> -->
         @if ( !employee.end_date ) {
-          <span (click)="relieveEmployee(employee)" class="action-icon">
-            <mat-icon color="warn">delete</mat-icon>
-          </span>
+          <button mat-button color="warn" (click)="relieveEmployee(employee)">Relieve</button>
+
+
         }
 
 
