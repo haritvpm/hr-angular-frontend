@@ -1,11 +1,18 @@
 .employee-monthwise-table {
   width: 100%;
 }
+.mat-mdc-cell {
+  padding: 0px 0px 0px 0;
+  margin: 0px 0px 0px 0;
+}
+
 
 .mat-mdc-row .mat-mdc-cell {
   /* cursor: pointer; */
+/*
   border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid transparent; */
+
 }
 
 /* .mat-mdc-row:hover .mat-mdc-cell {
@@ -40,3 +47,8 @@
 th, td {
   text-align: center;
 }
+
+
+/* .mat-cell {
+  padding: 0px 0px 0px 0;
+} */

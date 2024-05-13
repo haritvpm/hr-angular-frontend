@@ -117,7 +117,7 @@ export class CellComponent implements OnInit {
           this.casual_color = 'LimeGreen';
         }
 
-        this.icon_show = false;
+        this.icon_show = this.item.punching_count >= 1; //even if half cl, show icon
         if( leave.leave_type == 'CL'){
           if(  leave.leave_cat == 'F'){
             //this.text_name = 'CL';

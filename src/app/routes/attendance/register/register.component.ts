@@ -7,7 +7,7 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule, MatDatepickerInputEvent, MatDatepicker } from '@angular/material/datepicker';
 import { RegisterService } from './register.service';
-import { DailyPunching } from './interface';
+import { Calender, DailyPunching } from './interface';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,8 +40,7 @@ const moment = _rollupMoment || _moment;
 })
 
 export class AttendanceRegisterComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'section', 'inTrace', 'outTrace', 'duration_str', 'extra_str',
-    'total_extra_sec', 'grace_str', 'total_grace_sec', 'grace_left', 'cl_mark_sub', 'comb_mark_sub', 'remarks'];
+  displayedColumns: string[] = ['name', 'section', 'inTrace', 'outTrace', 'duration_str',  'grace_str', 'total_grace_sec', 'grace_left', 'extra_str',  'total_extra_sec','cl_mark_sub', 'comb_mark_sub', 'remarks'];
   dataSource = new MatTableDataSource<DailyPunching>();
   data: DailyPunching[] = [];
   is_future: boolean;
@@ -51,7 +50,7 @@ export class AttendanceRegisterComponent implements OnInit {
   // selectedDate: string = moment().format('YYYY-MM-DD');
   selectedDateHint: string = moment().format('DD MMMM YYYY');
   date = new FormControl(moment());
-
+calender: Calender;
   //today's date
   todayDate: Date = new Date();
   beginDate: Date = new Date('2024-01-01');
@@ -120,6 +119,7 @@ export class AttendanceRegisterComponent implements OnInit {
       this.is_today = data.is_today;
       this.is_holiday = data.is_holiday;
       this.date_dmY = data.date_dmY;
+      this.calender = data.calender;
       console.log(data);
       // console.log(this.data);
       this.sections = data.sections ? ['All', ...data.sections] : ['All'];
@@ -267,12 +267,12 @@ export class AttendanceRegisterComponent implements OnInit {
   }
 
   mark(row: DailyPunching) {
-    console.log(row);
-    if (this.is_holiday && row.punching_count == 0) return;
+    //console.log(row);
+  //  if (this.is_holiday && row.punching_count == 0) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
-      data: { punchingInfo: row, monthlyPunching: row },
+      data: { punchingInfo: row, monthlyPunching: row, calender: this.calender},
     });
 
     drawerRef.afterDismissed().subscribe(res => {

@@ -7,8 +7,8 @@
 </p>
 
 <div class="text-center">
-  <div style="font-weight: bold">{{ data.monthlyPunching?.name }}</div>
-  <small>{{ data.monthlyPunching?.designation }}</small> <br />
+  <div style="font-weight: bold">{{ data.monthlyPunching?.name || data.punchingInfo.name }}</div>
+  <small>{{ data.monthlyPunching?.designation  || data.punchingInfo.designation }}</small> <br />
   <mat-divider class="m-t-8"></mat-divider>
   <b>{{ data.punchingInfo.date }}</b> <br />
   {{ punchingTimes }}
@@ -58,13 +58,7 @@
     <mat-radio-group aria-label="Select an option" [(ngModel)]="selected">
       <div class="row">
         <ng-container *ngFor="let option of leaveList">
-          @if (
-            data.punchingInfo.punching_count >= option.min_pun &&
-            (!data.punchingInfo.is_holiday ||
-              (data.punchingInfo.is_holiday && option.showOnHoliday)) &&
-            (!option.showForCntrlOnly ||
-              (option.showForCntrlOnly && data.monthlyPunching.logged_in_user_is_controller))
-          ) {
+          @if ( canShowOption(option)) {
             <div class="col-sm-6">
               <mat-radio-button [value]="option.value">
                 <small> {{ option.label }} </small>
@@ -78,11 +72,14 @@
     <mat-form-field class="d-flex row" appearance="outline">
       <input matInput placeholder="Remarks" [(ngModel)]="remarks" />
     </mat-form-field>
-  } @else if (leave) {
+  }
+  <mat-divider class="m-b-8"></mat-divider>
+
+  @if (leave) {
     <table>
       <tr>
         <th><span [style.color]="'gray'">leave:</span></th>
-        <td>{{ selectedLabel }}</td>
+        <td>{{ submittedLeaveLabel }}</td>
       </tr>
       <tr>
         <th><span [style.color]="'gray'">date:</span></th>

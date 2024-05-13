@@ -27,20 +27,20 @@
     <div class="row m-t-4  m-x-8 flex-grow-1 justify-content-between">
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>Total Extra Hours ({{data?.month}})</mat-card-subtitle>
-          <mat-card-title>{{ monthlyData?.total_extra_str }}</mat-card-title>
+          <mat-card-subtitle>Total Extra ({{data?.month}})</mat-card-subtitle>
+          <mat-card-title>{{ monthlyData?.total_extra_str }} <small>Hours</small></mat-card-title>
         </mat-card-header>
       </mat-card>
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>Grace Minutes Used ({{data?.month}})</mat-card-subtitle>
-          <mat-card-title>{{ monthlyData?.total_grace_str }}</mat-card-title>
+          <mat-card-subtitle>Grace Used ({{data?.month}})</mat-card-subtitle>
+          <mat-card-title>{{ monthlyData?.total_grace_str }} <small>Minutes</small></mat-card-title>
         </mat-card-header>
       </mat-card>
       @if (monthlyData?.total_grace_exceeded300_date) {
         <mat-card class="flex-grow-1 card-margin-right">
           <mat-card-header>
-            <mat-card-subtitle>Grace 300 Exceeded Date</mat-card-subtitle>
+            <mat-card-subtitle>Grace 300 Exceeded On</mat-card-subtitle>
             <mat-card-title>{{
               monthlyData?.total_grace_exceeded300_date | date: 'dd-MM-yyyy'
             }}</mat-card-title>
@@ -49,7 +49,7 @@
       }
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>CL Marked/Submitted ({{yearlyData?.year_number}})</mat-card-subtitle>
+          <mat-card-subtitle>CL <small>Marked</small>/ <small>Submitted</small>  ({{yearlyData?.year_number}})</mat-card-subtitle>
           <mat-card-title>
             {{ yearlyData?.cl_marked ? yearlyData?.cl_marked : 0 }} /
             {{ yearlyData?.cl_submitted ? yearlyData?.cl_submitted : 0 }}
@@ -59,7 +59,7 @@
 
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>Compen Marked/Submitted ({{yearlyData?.year_number}})</mat-card-subtitle>
+          <mat-card-subtitle>Compen <small>Marked</small>/ <small>Submitted</small> ({{yearlyData?.year_number}})</mat-card-subtitle>
           <mat-card-title>
             {{ yearlyData?.compen_marked ? yearlyData?.compen_marked : 0 }} /
             {{ yearlyData?.compen_submitted ? yearlyData?.compen_submitted : 0 }}
@@ -69,7 +69,7 @@
 
       <mat-card class="flex-grow-1 card-margin-right">
         <mat-card-header>
-          <mat-card-subtitle>Tot Punching Misses ({{yearlyData?.year_number}})</mat-card-subtitle>
+          <mat-card-subtitle>Punching Misses ({{yearlyData?.year_number}})</mat-card-subtitle>
           <mat-card-title>
             {{ yearlyData?.single_punchings || 0 }}
           </mat-card-title>
@@ -87,19 +87,30 @@
                   <mat-icon>chevron_left</mat-icon>
                 </button>
                 <b> {{ data?.month }} </b>
+                <mat-form-field style="width:1px;visibility:hidden;">
+                  <input
+             readonly
+             [max]="todayDate"
+             [min]="beginDate"
+             matInput
+             [matDatepicker]="picker"
+             [formControl]="date_formctrl" />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle><mat-datepicker   startView="year" #picker (monthSelected)="chosenMonthHandler($event, picker)"></mat-datepicker>
+                </mat-form-field>
+                <button mat-button (click)="picker.open()" >  <mat-icon>calendar_month</mat-icon>  </button>
                 <button mat-icon-button (click)="onNextMonth()">
                   <mat-icon>chevron_right</mat-icon>
                 </button>
               </div>
             </th>
-            <td mat-cell *matCellDef="let item">
+            <td mat-cell *matCellDef="let item" (click)="mark(item)">
               <span [style]="getHolidayStyle(item)">{{ item.day_str | date: 'dd-MM-yyyy' }}</span>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="punchin">
             <th mat-header-cell *matHeaderCellDef>In-Time</th>
-            <td mat-cell *matCellDef="let item">
+            <td mat-cell *matCellDef="let item" (click)="mark(item)">
               @if (!item?.in_section) {
                 n/a
               } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
@@ -118,7 +129,7 @@
 
           <ng-container matColumnDef="punchout">
             <th mat-header-cell *matHeaderCellDef>Out-Time</th>
-            <td mat-cell *matCellDef="let item">
+            <td mat-cell *matCellDef="let item" (click)="mark(item)">
               @if (!item.in_section) {
                 n/a
               } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
@@ -135,8 +146,8 @@
           </ng-container>
 
           <ng-container matColumnDef="duration">
-            <th mat-header-cell *matHeaderCellDef>Duration</th>
-            <td mat-cell *matCellDef="let item">
+            <th mat-header-cell *matHeaderCellDef  >Duration</th>
+            <td mat-cell *matCellDef="let item" (click)="mark(item)">
               @if (!item.is_future) {
                 {{ item.duration_str ? item.duration_str : '-' }}
               }

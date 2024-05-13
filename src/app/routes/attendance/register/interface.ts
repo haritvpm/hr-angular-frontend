@@ -42,10 +42,20 @@ export interface DailyPunching {
   hint: string
   cl_marked: number
   compen_marked: number
+  cl_submitted: number
+  compen_submitted: number
   other_leaves_marked: number
+}
 
-
-
+export interface Calender {
+  attendance_trace_fetch_complete: number
+  date: string
+  day: number
+  future_date: boolean
+  holiday: boolean
+  is_today: boolean
+  office_ends_at: string
+  rh: boolean
 }
 
 export interface DailyPunchingApi {
@@ -55,4 +65,5 @@ export interface DailyPunchingApi {
   is_holiday: boolean
   date_dmY: string
   sections: string[]
+  calender: Calender
 }

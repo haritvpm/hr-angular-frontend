@@ -254,12 +254,13 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     if(hint){
       hint = leaveList.find((x:any) => x.value ==hint)?.label || '';
     }
+    // if (rowVal?.punching_count == null) return 'No Data. \n';
 
     if (rowVal?.punching_count == 0) tip += hint || 'No Punching. \n' ;
 
     else if (rowVal?.punching_count == 1) tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
-    else {
+    else if (rowVal?.punching_count >= 2){
       tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' + hint;
 
       tip += '\n Grace (min): ' +rowVal?.grace_str || 0;
@@ -283,7 +284,11 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
-      data: { punchingInfo: dayNData, monthlyPunching: row },
+      data: {
+        punchingInfo: dayNData,
+        monthlyPunching: row,
+        calender: this.calendarInfo[day_number]
+      },
     });
 
     drawerRef.afterDismissed().subscribe(res => {
