@@ -60,7 +60,7 @@
           </div>
         </th>
         <td mat-cell [style.white-space]="'nowrap'" *matCellDef="let row">
-          <a [routerLink]="['/monthwiseregister/employee', row.aadhaarid, row.start_date ]">
+          <a [routerLink]="['/attendance/monthwiseregister/employee', row.aadhaarid, row.start_date ]">
             <small>{{ row.aadhaarid }}</small>&nbsp; <b> {{ row.name }} </b><br />
             <small>{{ row?.designation }}</small>
           </a>
