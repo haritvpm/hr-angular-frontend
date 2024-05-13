@@ -1,21 +1,4 @@
 
-<!-- <span
-  *ngIf="is_today === true && punching.punching_count < 2 && !is_holiday"
-  [style]="getDurationColour(punching)"
->
--
-</span>
-<span
-  *ngIf="is_today === false && punching.punching_count < 2 && !is_holiday && (!punching.hint || punching.hint ==='clear')"
-  [style]="getDurationColour(punching)"
->
-  <mat-icon><span class="material-icons-outlined"> help_outline </span></mat-icon>
-</span>
-
-<span *ngIf="punching.hint && punching.hint !=='clear'" [style]="getDurationColour(punching)">
-
-  {{ getLeaveText(punching) }}
-</span> -->
 @if(punching.punching_count >= 2){
   {{ punching.duration_str }}
   }
@@ -25,32 +8,23 @@
   -
   </span>
   }
-  @else if (is_today === false && punching.punching_count === 0  && !is_holiday && (!punching.hint || punching.hint ==='clear')) {
+  @else if (punching.is_unauthorised) {
     <span [style.color]="'red'"
   >
-    <mat-icon><span class="material-icons-outlined"> help_outline </span></mat-icon>
+  Unauthorised
   </span>
 
   }
 
 
-  @else if (is_today === false && punching.punching_count < 2 && !is_holiday && (!punching.hint || punching.hint ==='clear')) {
+  @else if (is_today === false && (punching.punching_count === 1 || punching.single_punch_type) && !is_holiday ) {
     <span [style]="getSinglePunchingStyle()"
   >
-    <mat-icon><span class="material-icons-outlined"> help_outline </span></mat-icon>
+  One-Time Punching
   </span>
 
   }
-  @else if (is_today === false && punching.punching_count < 2 && !is_holiday && (!punching.hint || punching.hint ==='clear')&& punching.finalized_by_controller) {
-    <span [style.color]="'black'"
-  >
-    <!-- <mat-icon><span class="material-icons-outlined"> help_outline </span></mat-icon> -->
-    Regularised
-  </span>
-
-  }
-
-  @if (punching.hint && punching.hint !=='clear') {
+  @if ((punching.hint && punching.hint !=='clear') || (!punching.hint)) {
     <span [style.color]="'red'">
 
       {{ getLeaveText(punching) }}

@@ -116,7 +116,7 @@
           {{ employee?.out_time }}
           <span
             *ngIf="employee.punching_count < 2 && !is_today && !is_holiday"
-            [style.color]="employee.finalized_by_controller? '' : 'DeepPink'"
+            [style.color]="employee.single_punch_regularised_by ? '' : 'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
             [matTooltipShowDelay]="500"
