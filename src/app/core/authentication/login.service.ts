@@ -5,6 +5,7 @@ import menudata from './../../../assets/data/menu';
 
 import { Menu } from '@core';
 import { Token, User } from './interface';
+import { IProfile } from '@shared/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,12 @@ export class LoginService {
   me() {
     return this.http.get<User>('/api/auth/me');
   }
-
+  getProfile() {
+    return this.http.get<IProfile>('/api/auth/profile');
+  }
+  updateProfile(profile: Partial<IProfile>) {
+    return this.http.post<Partial<IProfile>>('/api/auth/profile', profile);
+  }
   menu() {
   //  return this.http.get<{ menu: Menu[] }>('/api/auth/menu').pipe(map(res => res.menu));
 //return this.http

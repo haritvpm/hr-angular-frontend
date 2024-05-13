@@ -1,34 +1,58 @@
 export default {
   menu: [
+
+    {
+      route: 'dashboard',
+      name: 'dashboard',
+      type: 'link',
+      icon: 'dashboard',
+      permissions: {
+        only: ['section_access'],
+      },
+    },
+
     {
       route: 'attendance',
       name: 'attendance',
-      type: 'link',
+      type: 'sub',
       icon: 'fingerprint',
-      permissions: {
-        only: ['section_access'],
-      },
-    },
-    {
-      route: 'monthwiseregister/section',
-      name: 'monthwiseregister',
-      type: 'link',
-      icon: 'calendar_view_month',
+      children: [
+        {
+          route: 'daywiseregister',
+          name: 'daywiseregister',
+          type: 'link',
+          icon: 'fingerprint',
+          permissions: {
+            only: ['section_access'],
+          },
+        },
+        {
+          route: 'monthwiseregister/section',
+          name: 'monthwiseregister',
+          type: 'link',
+          icon: 'calendar_view_month',
+          permissions: {
+            only: ['section_access'],
+          },
+        },
+        {
+          route: 'monthwiseregister/employee',
+          name: 'self',
+          type: 'link',
+          icon: 'person',
+          permissions: {
+            only: ['self_attendance_access'],
+          },
+        },
+
+      ],
       permissions: {
         only: ['section_access'],
       },
 
     },
-    {
-      route: 'monthwiseregister/employee',
-      name: 'self',
-      type: 'link',
-      icon: 'person',
-      permissions: {
-        only: ['self_attendance_view'],
-      },
 
-    },
+
     {
       route: 'settings',
       name: 'settings',

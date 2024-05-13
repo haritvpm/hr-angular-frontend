@@ -19,6 +19,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { FormControl,  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
+import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -40,7 +41,7 @@ export const MY_FORMATS = {
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
     MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
     EmployeeLeavesListComponent, MatDatepickerModule,MatNativeDateModule,
-    FormsModule, CommonModule, ReactiveFormsModule,],
+    FormsModule, CommonModule, ReactiveFormsModule,EmployeeYearlyAttendanceListComponent],
   providers: [    provideMomentDateAdapter(MY_FORMATS),],
 
 })
@@ -160,7 +161,17 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
     drawerRef.afterDismissed().subscribe(res => {
       console.log('The drawer was dismissed - ' + res);
-      if (!res?.hint && !res?.remarks) return;
+
+      if (!res?.hint && !res?.single_punch_type) return;
+
+
+      if (
+        (!res?.hint && !res?.remarks)
+        &&
+        (res?.isSinglePunch  && !res?.single_punch_type)
+
+      ) return;
+
       if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
       if (!row.logged_in_user_is_controller &&  //js is both so and co
         row.logged_in_user_is_section_officer &&  //disallow only if so

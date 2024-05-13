@@ -210,7 +210,7 @@ calender: Calender;
   }
 
   getExtratimeColor(employee: any) {
-    const extraTimeexeed = this.roundValue(employee.total_extra_sec / 60) > 600;
+    const extraTimeexeed = this.roundValue(employee.total_extra_sec / 60) >= 600;
     return {
       'font-weight': extraTimeexeed ? 'bold' : '',
       'color': extraTimeexeed ? 'green' : ''
@@ -221,16 +221,16 @@ calender: Calender;
       'color': 'red',
       'font-weight': 'bold'
     };
-    if (employee.grace_str > 30) return {
-      'color': 'orange',
-      'font-weight': 'bold'
+    // if (employee.grace_str > 30) return {
+    //   'color': 'orange',
+    //   'font-weight': 'bold'
 
-    };
+    // };
 
     else
       return {
-        'color': ' darkblue',
-        'font-weight': 'bold'
+        'color': '',
+        'font-weight': ''
       };
   }
 
@@ -269,6 +269,7 @@ calender: Calender;
   mark(row: DailyPunching) {
     //console.log(row);
   //  if (this.is_holiday && row.punching_count == 0) return;
+  // if (this.is_future) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
@@ -277,7 +278,16 @@ calender: Calender;
 
     drawerRef.afterDismissed().subscribe(res => {
       console.log('The drawer was dismissed - ' + res);
-      if (!res?.hint && !res?.remarks) return;
+
+      if (!res?.hint && !res?.single_punch_type) return;
+
+      if (
+        (!res?.hint && !res?.remarks)
+        &&
+        (res?.isSinglePunch  && !res?.single_punch_type)
+
+      ) return;
+
       if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
       if (!row.logged_in_user_is_controller &&  //js is both so and co
         row.logged_in_user_is_section_officer &&  //disallow only if so
