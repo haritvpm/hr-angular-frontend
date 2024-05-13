@@ -89,7 +89,6 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         this.yearlyData = this.data.data_yearly;
         this.employeeLeaves = this.data.emp_leaves;
         this.calender_info = this.data.calender_info;
-        console.log(this.monthlyData);
       });
 
   }
