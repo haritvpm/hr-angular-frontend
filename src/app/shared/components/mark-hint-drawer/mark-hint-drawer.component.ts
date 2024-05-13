@@ -68,8 +68,10 @@ export class MarkHintDrawerComponent implements OnInit {
     this.regulariseSinglePunch = this.data.punchingInfo.single_punch_regularised_by ? true : false;
 
     this.remarks = this.data.punchingInfo.remarks || '';
+    
     this.selectedLabel =
       this.leaveList.find((x: any) => x.value == this.data.punchingInfo.hint)?.desc || '';
+
     if (this.data.punchingInfo.punching_count) {
       this.punchingTimes = `${this.data.punchingInfo.in_time || '?'} - ${this.data.punchingInfo.out_time || '?'}`;
     } else if (!this.data.punchingInfo.is_today) {
@@ -122,6 +124,8 @@ export class MarkHintDrawerComponent implements OnInit {
           this.canMarkLeave = false;
         }
       }
+    } else if(this.data.punchingInfo.is_unauthorised){
+      this.selectedLabel = 'Unauthorised';
     }
   }
 
