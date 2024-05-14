@@ -91,7 +91,7 @@ export const appConfig: ApplicationConfig = {
         dateA11yLabel: 'LL',
         monthYearA11yLabel: 'YYYY MMM',
       },
-    }),
+    }, {useUtc:true}),
     provideMomentDatetimeAdapter({
       parse: {
         dateInput: 'YYYY-MM-DD',

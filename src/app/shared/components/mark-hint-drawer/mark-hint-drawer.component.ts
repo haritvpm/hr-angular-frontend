@@ -61,6 +61,11 @@ export class MarkHintDrawerComponent implements OnInit {
   ngOnInit() {
     console.log(this.data);
     this.selected = this.data.punchingInfo.hint || this.data.punchingInfo.computer_hint;
+
+    if(this.data.punchingInfo.is_unauthorised){
+      this.selected = 'unauthorised';
+    }
+
     this.single_punch_type = this.data.punchingInfo.single_punch_type || '';
     if(this.single_punch_type || this.data.punchingInfo.punching_count===1){
       this.isSinglePunch = true;

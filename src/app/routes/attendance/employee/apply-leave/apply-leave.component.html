@@ -1,1 +1,71 @@
-<p>apply-leave works!</p>
+<!-- here, create a form for applying leave -->
+<h1>Leave Application</h1>
+
+<form class="example-container" [formGroup]="applyLeaveForm" (ngSubmit)="applyLeave()">
+    <mat-form-field appearance="fill">
+        <mat-label>Leave Type</mat-label>
+        <mat-select formControlName="leaveType" >
+          @for (leavetype of leaveapplyTypes; track leavetype) {
+            <mat-option [value]="leavetype.value">{{leavetype.label}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    <div class="d-flex row" >
+   
+    <mat-form-field class="col" appearance="fill"> 
+        <mat-label>From date</mat-label>
+        <input matInput [matDatepicker]="pickerf" formControlName="fromDate">
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="pickerf"></mat-datepicker-toggle>
+        <mat-datepicker #pickerf></mat-datepicker>
+      </mat-form-field>
+      
+     <!-- if casual leave is selected, fromType should be full, an, fn otherwise just hide, but its value should be full -->
+     @if(applyLeaveForm.get('leaveType')?.value === 'casual'){
+        <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="fromType" >
+                <mat-option value="full">Full</mat-option>
+                <mat-option value="fn">Forenoon</mat-option>
+                <mat-option value="an">Afternoon</mat-option>
+            </mat-select>
+          </mat-form-field>
+    }
+    </div>
+    <div class="d-flex row " >
+
+     <mat-form-field class="col" appearance="fill">
+        <mat-label>To date</mat-label>
+        <input [min]="applyLeaveForm.get('fromDate')?.value" matInput [matDatepicker]="picker" formControlName="toDate">
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+     <!-- if casual leave is selected, toType should be full, an, fn otherwise just hide, but its value should be full -->
+     @if(applyLeaveForm.get('leaveType')?.value === 'casual'){
+        <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="toType" >
+                <mat-option value="full">Full</mat-option>
+                <mat-option value="fn">Forenoon</mat-option>
+                <mat-option value="an">Afternoon</mat-option>
+            </mat-select>
+          </mat-form-field>
+    }
+    </div>
+   {{ leaveCount }}
+    <mat-form-field  appearance="fill">
+        <mat-label>Reason</mat-label>
+        <input matInput formControlName="reason" placeholder="Reason">
+        <mat-hint>Reason for leave</mat-hint>
+        @if (applyLeaveForm.hasError('required')) {
+          <mat-error>Reason is <strong>required</strong></mat-error>
+        }
+      </mat-form-field>
+    <button mat-button type="submit" color="'accent'" >Apply Leave</button>
+    <button mat-button class="btn btn-primary">Cancel</button>
+</form>
+
+
+{{ applyLeaveForm.value | json}}
+{{ applyLeaveForm.valid}}
