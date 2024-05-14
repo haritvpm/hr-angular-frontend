@@ -1,7 +1,11 @@
+@if (self) {
+  <button mat-button [color]="'accent'" (click)="onApplyLeave()">
+  <mat-icon>add</mat-icon>Apply Leave
+</button>
+}
 
-
-<div class="mat-elevation-z8">
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div class="m-t-4">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
 
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->

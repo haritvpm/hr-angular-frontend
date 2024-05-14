@@ -6,8 +6,8 @@ import { EmployeeService } from './../employee.service';
 import { Observable, map, switchMap, take, tap } from 'rxjs';
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { EditLeavesComponent } from '../edit-leaves/edit-leaves.component';
 import { MatDialog } from '@angular/material/dialog';
+import { EditPreviousLeavesComponent } from '../edit-prev-leaves/edit-previous-leaves.component';
 
 @Component({
   selector: 'app-employee-yearly-attendance-list',
@@ -46,22 +46,22 @@ export class EmployeeYearlyAttendanceListComponent implements AfterViewInit{
 
     }
     openDialog(): void {
-      const dialogRef = this.dialog.open(EditLeavesComponent, {
+      const dialogRef = this.dialog.open(EditPreviousLeavesComponent, {
         data: {
-          cl_start: this.attendanceData?.data_yearly.start_with_cl, 
+          cl_start: this.attendanceData?.data_yearly.start_with_cl,
           compen_start: this.attendanceData?.data_yearly.start_with_compen},
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
        // console.log('The dialog was closed'+result.start_with_cl);
         //this.animal = result;
         if( result?.start_with_cl || result?.start_with_compen){
           // this.employeeService.updateYearlyAttendance(
-          //   this.aadhaarid!, 
-          //   this.attendanceData!.data_yearly.year, 
+          //   this.aadhaarid!,
+          //   this.attendanceData!.data_yearly.year,
           //   result).subscribe(response => {
           //   //console.log(response);
-   
+
           // });
 
           this.employeeService.updateYearlyAttendance(
@@ -75,10 +75,10 @@ export class EmployeeYearlyAttendanceListComponent implements AfterViewInit{
               //optimistic update
               this.attendanceData!.data_yearly.start_with_cl = result.start_with_cl;
               this.attendanceData!.data_yearly.start_with_compen = result.start_with_compen;
-            
+
           });
         }
       });
     }
-     
+
 }

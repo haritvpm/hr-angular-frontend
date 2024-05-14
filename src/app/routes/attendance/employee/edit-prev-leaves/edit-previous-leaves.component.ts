@@ -17,16 +17,16 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-edit-leaves',
   standalone: true,
-  imports: [ ReactiveFormsModule, MatError,MatFormFieldModule, MatInputModule, 
-    MatGridListModule, MatCardModule,  MatFormFieldModule, 
-    MatFormField, MatInput,MatButtonModule,MatDialogActions,     
+  imports: [ ReactiveFormsModule, MatError,MatFormFieldModule, MatInputModule,
+    MatGridListModule, MatCardModule,  MatFormFieldModule,
+    MatFormField, MatInput,MatButtonModule,MatDialogActions,
     MatButton,
     MatDialogClose,],
-  templateUrl: './edit-leaves.component.html',
-  styleUrl: './edit-leaves.component.css'
+  templateUrl: './edit-previous-leaves.component.html',
+  styleUrl: './edit-previous-leaves.component.css'
 })
-export class EditLeavesComponent implements OnInit {
-  
+export class EditPreviousLeavesComponent implements OnInit {
+
   public form: FormGroup;
   wasFormChanged = false;
   // public breakpoint: number; // Breakpoint observer code
@@ -34,8 +34,8 @@ export class EditLeavesComponent implements OnInit {
  // public compen_start: number = 0;
 
   constructor(
-    private fb: FormBuilder, 
-    public dialogRef: MatDialogRef<EditLeavesComponent>,
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<EditPreviousLeavesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -45,9 +45,9 @@ export class EditLeavesComponent implements OnInit {
 
   public ngOnInit(): void {
     this.form = this.fb.group({
-      
-      start_with_cl: [this.data.cl_start, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.max(20)]],
-      start_with_compen: [this.data.compen_start, [Validators.required, Validators.pattern("^[0-9]*$"), Validators.max(15)]],
+
+      start_with_cl: [this.data.cl_start, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.max(20)]],
+      start_with_compen: [this.data.compen_start, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.max(15)]],
     });
 
     // this.breakpoint = window.innerWidth <= 600 ? 1 : 2; // Breakpoint observer code

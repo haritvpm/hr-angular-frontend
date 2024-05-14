@@ -154,4 +154,5 @@ export interface Month {
     is_today: boolean;
     office_ends_at: string;
     rh: boolean;
+    dayofweek: string;
 }

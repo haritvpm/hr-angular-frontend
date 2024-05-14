@@ -11,9 +11,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MTX_DRAWER_DATA, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import moment from 'moment';
 import { leaveList } from './leave-types';
-import { Leave } from 'app/routes/monthwiseregister/employee/interface';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ToastrService } from 'ngx-toastr';
+import { Leave } from 'app/routes/attendance/employee/interface';
 
 @Component({
   selector: 'app-mark-hint-drawer',

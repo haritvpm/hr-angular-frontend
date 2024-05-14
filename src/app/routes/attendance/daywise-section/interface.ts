@@ -1,4 +1,4 @@
-import { Leave } from 'app/routes/monthwiseregister/employee/interface';
+import { Leave } from "../employee/interface"
 
 export interface inTrace {
   att_time: string

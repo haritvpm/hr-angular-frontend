@@ -12,7 +12,6 @@ import moment, { Moment } from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
-import { EmployeeLeavesListComponent } from '@shared/components/employee-leaves-list/employee-leaves-list.component';
 import { MatDatepicker,MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
@@ -20,6 +19,7 @@ import { FormControl,  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
+import { EmployeeLeavesListComponent } from './employee-leaves-list/employee-leaves-list.component';
 
 export const MY_FORMATS = {
   parse: {
@@ -122,7 +122,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     const nextmonth = moment(this.date).add(1, 'month');
     //if this is future month, ignore
     if (nextmonth.isAfter(moment(), 'month')) return;
-    this.router.navigate(['/attendance/monthwiseregister/employee/', this.aadhaarid, nextmonth.format('YYYY-MM-DD')]);
+    this.router.navigate(['/attendance/employee/', this.aadhaarid, nextmonth.format('YYYY-MM-DD')]);
 
   }
   onPrevMonth() {
@@ -133,7 +133,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     //if this is before 2024 january month, ignore
     if (prevmonth.isBefore(this.beginDate, 'month')) return;
     console.log('prev month:', prevmonth.format('YYYY-MM-DD'));
-    this.router.navigate(['/attendance/monthwiseregister/employee/', this.aadhaarid, prevmonth.format('YYYY-MM-DD')]);
+    this.router.navigate(['/attendance/employee/', this.aadhaarid, prevmonth.format('YYYY-MM-DD')]);
   }
   chosenMonthHandler(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment> | null) {
     const ctrlValue = this.date_formctrl.value ?? moment();
