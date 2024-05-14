@@ -96,7 +96,8 @@ export class CellComponent implements OnInit {
         if (this.item.single_punch_regularised_by) {
           this.icon_color = 'black';
         }
-      } else if (!this.calendarInfo.holiday && !this.calendarInfo.future_date) {
+      } else if (!this.calendarInfo.holiday && !this.calendarInfo.future_date &&
+                 this.calendarInfo.attendance_trace_fetch_complete) {
         //zero punching
           if( this.item.computer_hint == 'unauthorised' ){
             this.icon_name = 'close';

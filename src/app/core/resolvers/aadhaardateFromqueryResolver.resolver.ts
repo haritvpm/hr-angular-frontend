@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
 import { AuthService } from '@core';
-import { EmployeeArgs } from 'app/routes/monthwiseregister/employee/interface';
+import { EmployeeArgs } from 'app/routes/attendance/employee/interface';
 import { switchMap, take, tap } from 'rxjs';
 import { of } from 'rxjs';
 

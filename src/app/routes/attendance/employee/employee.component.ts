@@ -5,22 +5,22 @@ import { CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, Monthwi
 import { CommonModule, DatePipe, NgIf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import {  map, switchMap, take, tap } from 'rxjs';
+import { map, switchMap, take, tap } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import moment, { Moment } from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
-import { EmployeeLeavesListComponent } from '@shared/components/employee-leaves-list/employee-leaves-list.component';
-import { MatDatepicker,MatDatepickerModule } from '@angular/material/datepicker';
+import { EmployeeLeavesListComponent } from './employee-leaves-list/employee-leaves-list.component';
+import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import { FormControl,  FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 export const MY_FORMATS = {
   parse: {
@@ -41,9 +41,9 @@ export const MY_FORMATS = {
   standalone: true,
   imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
     MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
-    EmployeeLeavesListComponent, MatDatepickerModule,MatNativeDateModule,
-    FormsModule, CommonModule, ReactiveFormsModule,EmployeeYearlyAttendanceListComponent, MatProgressBarModule],
-  providers: [    provideMomentDateAdapter(MY_FORMATS),],
+    EmployeeLeavesListComponent, MatDatepickerModule, MatNativeDateModule,
+    FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, MatProgressBarModule],
+  providers: [provideMomentDateAdapter(MY_FORMATS),],
 
 })
 
@@ -53,7 +53,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   self: boolean = false;
   data: MonthwiseEmployeeApiData | null = null;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
-  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration',  'grace', 'xtratime', 'info'];
+  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'grace', 'xtratime', 'info'];
   // clickedRows = new Set<EmployeePunchingInfo>();
   calender_info: { [day: string]: CalendarDayInfo } = {};
   employeeInfo: Employee | null;
@@ -62,7 +62,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   todayDate: Date = new Date();
   beginDate: Date = new Date('2024-01-01');
   date_formctrl = new FormControl(moment());
-  employeeLeaves : Leave[] = [];
+  employeeLeaves: Leave[] = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -141,23 +141,24 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     ctrlValue.month(normalizedMonthAndYear.month());
     ctrlValue.year(normalizedMonthAndYear.year());
     this.date_formctrl.setValue(ctrlValue);
-    if(datepicker) datepicker.close();
+    if (datepicker) datepicker.close();
     console.log(normalizedMonthAndYear.format('YYYY-MM-DD'));
     //this.selectedMonth = normalizedMonthAndYear.format('YYYY-MM-DD');
-   // this.loadData();
-   this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, normalizedMonthAndYear.format('YYYY-MM-DD')]);
+    // this.loadData();
+    this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, normalizedMonthAndYear.format('YYYY-MM-DD')]);
 
   }
   mark(row: EmployeePunchingInfo) {
     console.log(row);
-  //  if (this.is_holiday && row.punching_count == 0) return;
+    //  if (this.is_holiday && row.punching_count == 0) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
       data: {
         punchingInfo: row,
         monthlyPunching: this.monthlyData,
-        calender: this.calender_info[row.day]},
+        calender: this.calender_info[row.day]
+      },
     });
 
     drawerRef.afterDismissed().subscribe(res => {
@@ -169,7 +170,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       if (
         (!res?.hint && !res?.remarks)
         &&
-        (res?.isSinglePunch  && !res?.single_punch_type)
+        (res?.isSinglePunch && !res?.single_punch_type)
 
       ) return;
 
@@ -181,15 +182,16 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
       this.apiService.saveHint(row.aadhaarid, row.date, res).subscribe((_data) => {
         console.log('hint saved');
-        this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid,row.date]);
-      //  this.fetchData(moment(this.date.value).format('YYYY-MM-DD'));
+        this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, row.date]);
+        //  this.fetchData(moment(this.date.value).format('YYYY-MM-DD'));
       });
     });
   }
-  getPercentage(dateItem: any){
-const duration = dateItem.duration_sec;
-const duration_percent = (duration/25200)*100;
-return duration_percent;
+
+  getPercentage(dateItem: any) {
+    const duration = dateItem.duration_sec;
+    const duration_percent = (duration / 25200) * 100;
+    return duration_percent;
   }
 }
 

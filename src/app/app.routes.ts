@@ -25,8 +25,8 @@ export const routes: Routes = [
         path: 'profile',
         loadChildren: () => import('./routes/profile/profile.routes').then(m => m.routes),
       },
-      { path: 'attendance/daywiseregister', loadChildren: () => import('./routes/attendance/attendance.routes').then(m => m.routes)},
-      { path: 'attendance/monthwiseregister', loadChildren: () => import('./routes/monthwiseregister/monthwiseregister.routes').then(m => m.routes) },
+      { path: 'attendance', loadChildren: () => import('./routes/attendance/attendance.routes').then(m => m.routes)},
+
       { path: 'settings', loadChildren: () => import('./routes/settings/settings.routes').then(m => m.routes) },
     ],
   },

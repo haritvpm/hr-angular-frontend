@@ -18,7 +18,7 @@ export default {
       icon: 'fingerprint',
       children: [
         {
-          route: 'daywiseregister',
+          route: 'section-daywise-register',
           name: 'daywiseregister',
           type: 'link',
           icon: 'fingerprint',
@@ -27,7 +27,7 @@ export default {
           },
         },
         {
-          route: 'monthwiseregister/section',
+          route: 'section-monthwise-register',
           name: 'monthwiseregister',
           type: 'link',
           icon: 'calendar_view_month',
@@ -36,7 +36,7 @@ export default {
           },
         },
         {
-          route: 'monthwiseregister/employee',
+          route: 'self',
           name: 'self',
           type: 'link',
           icon: 'person',
