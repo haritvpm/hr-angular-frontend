@@ -13,6 +13,7 @@ export class EmployeeService {
   private apiUrl = '/api/v1/emp-punchings-monthly'; // Replace '...' with your API URL
   private apiUrl2 = '/api/v1/emp-punchings'; // Replace '...' with your API URL
   private apiUrl3 = '/api/v1/emp-punchings-yearly'; // Replace '...' with your API URL
+  private apiUrl4 = '/api/v1/yearly-attendances'; // Replace '...' with your API URL
 
   constructor(private http: HttpClient) { }
 
@@ -26,5 +27,10 @@ export class EmployeeService {
   getEmployeeYearData(aadhaarid:string,date:string ): Observable<EmployeeYearApiData> {
     return this.http.get<EmployeeYearApiData>(`${this.apiUrl3}/${aadhaarid}/?date=${date}`);
   }
-
+  // updateYearlyAttendance( aadhaarid:string,date:string,res:any ): Observable<any> {
+  //   return this.http.patch<any>(`${this.apiUrl4}/${aadhaarid}/${date}`,res);
+  // }
+  updateYearlyAttendance( id:number, data:any ): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl4}/${id}/`,data);
+  }
 }

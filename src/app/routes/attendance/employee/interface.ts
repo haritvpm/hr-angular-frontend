@@ -32,7 +32,7 @@ export interface MonthlyData {
   month_name: string;
 }
 export interface YearlyData {
-
+  id: number;
   year: string;
   cl_marked: number;
   cl_submitted: number;
@@ -140,6 +140,7 @@ export interface MonthwiseEmployeeApiData {
   employee_punching: EmployeePunchingInfo[];
   employee: Employee;
   emp_leaves: Leave[];
+  logged_in_user_is_controller : boolean;
 }
 export interface EmployeeArgs {
   aadhaarid: string;

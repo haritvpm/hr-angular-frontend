@@ -6,6 +6,8 @@ import { EmployeeService } from './../employee.service';
 import { Observable, map, switchMap, take, tap } from 'rxjs';
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { EditPreviousLeavesComponent } from '../edit-prev-leaves/edit-previous-leaves.component';
 
 @Component({
   selector: 'app-employee-yearly-attendance-list',
@@ -17,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 export class EmployeeYearlyAttendanceListComponent implements AfterViewInit{
 
   @Input() attendanceData : MonthwiseEmployeeApiData | null;
+
   private readonly employeeService = inject(EmployeeService);
   private readonly route = inject(ActivatedRoute);
 
@@ -24,9 +27,9 @@ export class EmployeeYearlyAttendanceListComponent implements AfterViewInit{
   aadhaarid: string | undefined = undefined;
   date: string;
   self: boolean = false;
+  constructor(private dialog: MatDialog) {}
 
   ngAfterViewInit (): void {
-      console.log('fghfghfg ');
 
       this.route.data
       .pipe(
@@ -42,4 +45,40 @@ export class EmployeeYearlyAttendanceListComponent implements AfterViewInit{
       });
 
     }
+    openDialog(): void {
+      const dialogRef = this.dialog.open(EditPreviousLeavesComponent, {
+        data: {
+          cl_start: this.attendanceData?.data_yearly.start_with_cl,
+          compen_start: this.attendanceData?.data_yearly.start_with_compen},
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+       // console.log('The dialog was closed'+result.start_with_cl);
+        //this.animal = result;
+        if( result?.start_with_cl || result?.start_with_compen){
+          // this.employeeService.updateYearlyAttendance(
+          //   this.aadhaarid!,
+          //   this.attendanceData!.data_yearly.year,
+          //   result).subscribe(response => {
+          //   //console.log(response);
+
+          // });
+
+          this.employeeService.updateYearlyAttendance(
+            this.attendanceData!.data_yearly.id,
+            {
+              aadhaarid: this.aadhaarid!,
+              year: this.attendanceData!.data_yearly.year,
+              start_with_cl: result.start_with_cl,
+              start_with_compen: result.start_with_compen
+            }).subscribe(response => {
+              //optimistic update
+              this.attendanceData!.data_yearly.start_with_cl = result.start_with_cl;
+              this.attendanceData!.data_yearly.start_with_compen = result.start_with_compen;
+
+          });
+        }
+      });
+    }
+
 }

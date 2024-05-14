@@ -19,17 +19,17 @@ import { RouterLink } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
-import { EmployeeService } from 'app/routes/monthwiseregister/employee/employee.service';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { leaveList } from '@shared/components/mark-hint-drawer/leave-types';
 import { DurationCellComponent } from './duration-cell/duration-cell.component';
+import { EmployeeService } from '../employee/employee.service';
 
 const moment = _rollupMoment || _moment;
 
 @Component({
   selector: 'app-mattable-mattableapi',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  templateUrl: './daywise-register.component.html',
+  styleUrls: ['./daywise-register.component.css'],
   standalone: true,
   imports: [MatTableModule, RouterLink,
     MatPaginatorModule,
@@ -273,7 +273,12 @@ calender: Calender;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
-      data: { punchingInfo: row, monthlyPunching: row, calender: this.calender},
+      data: {
+        punchingInfo: row,
+        monthlyPunching: row,
+        yearlyPunching: row,
+        calender: this.calender
+      },
     });
 
     drawerRef.afterDismissed().subscribe(res => {

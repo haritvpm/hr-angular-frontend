@@ -1,4 +1,23 @@
-<div class="row m-x-8 flex-grow-1 justify-content-between">
+<div class="row m-t-4 m-x-8 flex-grow-1 justify-content-between">
+  
+  <mat-card class="flex-grow-1 card-margin-right">
+    <mat-card-header>
+      <mat-card-subtitle
+        >Prev CL/ Compen</mat-card-subtitle
+      >
+      <mat-card-content>
+        {{ attendanceData?.data_yearly?.start_with_cl || 0 }} /
+        {{
+          attendanceData?.data_yearly?.start_with_compen || 0
+        }}
+        @if (attendanceData?.logged_in_user_is_controller) {
+          <button mat-button color="primary" (click)="openDialog()">&nbsp;Prev Leaves</button>
+        }
+      </mat-card-content>
+    </mat-card-header>
+  </mat-card>
+
+
   <mat-card class="flex-grow-1 card-margin-right">
     <mat-card-header>
       <mat-card-subtitle
@@ -6,12 +25,14 @@
           attendanceData?.data_yearly?.year_number
         }})</mat-card-subtitle
       >
-      <mat-card-title>
+      <mat-card-content>
         {{ attendanceData?.data_yearly?.cl_marked ? attendanceData?.data_yearly?.cl_marked : 0 }} /
         {{
           attendanceData?.data_yearly?.cl_submitted ? attendanceData?.data_yearly?.cl_submitted : 0
         }}
-      </mat-card-title>
+       
+
+      </mat-card-content>
     </mat-card-header>
   </mat-card>
 
@@ -22,7 +43,7 @@
           attendanceData?.data_yearly?.year_number
         }})</mat-card-subtitle
       >
-      <mat-card-title>
+      <mat-card-content>
         {{
           attendanceData?.data_yearly?.compen_marked ? attendanceData?.data_yearly?.compen_marked : 0
         }}
@@ -32,7 +53,9 @@
             ? attendanceData?.data_yearly?.compen_submitted
             : 0
         }}
-      </mat-card-title>
+       
+
+      </mat-card-content>
     </mat-card-header>
   </mat-card>
 
@@ -41,9 +64,9 @@
       <mat-card-subtitle
         >One-Time Punchings ({{ attendanceData?.data_yearly?.year_number }})</mat-card-subtitle
       >
-      <mat-card-title>
+      <mat-card-content>
         {{ attendanceData?.data_yearly?.single_punchings || 0 }}
-      </mat-card-title>
+      </mat-card-content>
     </mat-card-header>
   </mat-card>
 </div>
