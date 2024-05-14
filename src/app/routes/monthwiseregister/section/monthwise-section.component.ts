@@ -293,6 +293,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       data: {
         punchingInfo: dayNData,
         monthlyPunching: row,
+        yearlyPunching: row,
         calender: this.calendarInfo[day_number]
       },
     });

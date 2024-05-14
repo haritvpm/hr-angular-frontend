@@ -1,3 +1,5 @@
+import { Leave } from 'app/routes/monthwiseregister/employee/interface';
+
 export interface inTrace {
   att_time: string
 
@@ -18,23 +20,23 @@ export interface monthly {
 export interface AttendanceBook {
   title: string
 }
-export interface Leave {
-  id: number;
-  aadhaarid: string;
-  employee_id: number;
-  leave_type: string;
-  start_date: string;
-  end_date: string;
-  reason: string;
-  active_status: string;
-  leave_cat: string;
-  time_period: string | null;
-  in_lieu_of: string;
-  last_updated: string;
-  creation_date: string;
-  created_by_aadhaarid: string;
-  day_count : number | null;
-}
+// export interface Leave {
+//   id: number;
+//   aadhaarid: string;
+//   employee_id: number;
+//   leave_type: string;
+//   start_date: string;
+//   end_date: string;
+//   reason: string;
+//   active_status: string;
+//   leave_cat: string;
+//   time_period: string | null;
+//   in_lieu_of: string;
+//   last_updated: string;
+//   creation_date: string;
+//   created_by_aadhaarid: string;
+//   day_count : number | null;
+// }
 export interface DailyPunching {
   // id: number;
   aadhaarid: string

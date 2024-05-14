@@ -1,3 +1,5 @@
+import { Leave } from '../employee/interface';
+
 export interface AttendanceBook{
 
   id: number;
@@ -109,27 +111,29 @@ export interface PunchingInfo extends PunchingDay {
   time_group: string;
   single_punch_type: string;
   single_punch_regularised_by: string;
+  start_with_cl : number
+  start_with_compen : number
 }
 
 
 
-export interface Leave {
-  id: number;
-  aadhaarid: string;
-  employee_id: number;
-  leave_type: string;
-  start_date: string;
-  end_date: string;
-  reason: string;
-  active_status: string;
-  leave_cat: string;
-  time_period: string;
-  in_lieu_of: string;
-  last_updated: string;
-  creation_date: string;
-  created_by_aadhaarid: string;
+// export interface Leave {
+//   id: number;
+//   aadhaarid: string;
+//   employee_id: number;
+//   leave_type: string;
+//   start_date: string;
+//   end_date: string;
+//   reason: string;
+//   active_status: string;
+//   leave_cat: string;
+//   time_period: string;
+//   in_lieu_of: string;
+//   last_updated: string;
+//   creation_date: string;
+//   created_by_aadhaarid: string;
 
-}
+// }
 
 export interface MonthlyApiData {
   month: string;

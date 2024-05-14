@@ -273,7 +273,12 @@ calender: Calender;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
-      data: { punchingInfo: row, monthlyPunching: row, calender: this.calender},
+      data: {
+        punchingInfo: row,
+        monthlyPunching: row,
+        yearlyPunching: row,
+        calender: this.calender
+      },
     });
 
     drawerRef.afterDismissed().subscribe(res => {

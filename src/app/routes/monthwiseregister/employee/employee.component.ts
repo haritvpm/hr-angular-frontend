@@ -156,6 +156,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
       data: {
         punchingInfo: row,
         monthlyPunching: this.monthlyData,
+        yearlyPunching: this.yearlyData,
         calender: this.calender_info[row.day]},
     });
 

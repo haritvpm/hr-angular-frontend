@@ -68,7 +68,7 @@ export class MarkHintDrawerComponent implements OnInit {
     this.regulariseSinglePunch = this.data.punchingInfo.single_punch_regularised_by ? true : false;
 
     this.remarks = this.data.punchingInfo.remarks || '';
-    
+
     this.selectedLabel =
       this.leaveList.find((x: any) => x.value == this.data.punchingInfo.hint)?.desc || '';
 
@@ -186,17 +186,22 @@ export class MarkHintDrawerComponent implements OnInit {
       return false;
     }
 
+    const startWithCl = this.data.yearlyPunching.start_with_cl || 0;
+    const startWithCompen = this.data.yearlyPunching.start_with_compen || 0;
+
     const cls = Math.max(
       this.data.monthlyPunching.cl_marked,
       this.data.monthlyPunching.cl_submitted
-    );
+    ) + startWithCl;
+
     if (option.value == 'casual' && cls > 19) return false; //if 19.5, not allowed
     if ((option.value == 'casual_an' || option.value == 'casual_fn') && cls >= 20) return false;
 
     const compens = Math.max(
       this.data.monthlyPunching.compen_marked,
       this.data.monthlyPunching.compen_submitted
-    );
+    ) + startWithCompen;
+
     if (option.value == 'comp_leave' && compens >= 15) return false;
 
     if (option.value == 'restricted' && !this.data.calender.rh) return false;
