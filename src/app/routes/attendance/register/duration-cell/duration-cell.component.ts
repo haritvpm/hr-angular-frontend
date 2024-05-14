@@ -55,7 +55,9 @@ export class DurationCellComponent {
     };
 
   }
+  getLeaveStyle(){
 
+  }
 
 
 

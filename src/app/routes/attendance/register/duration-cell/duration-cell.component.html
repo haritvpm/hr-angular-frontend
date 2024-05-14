@@ -10,16 +10,17 @@
   punching.punching_count < 2 &&
   (punching.leave?.active_status === 'Y' || punching.leave?.active_status === 'N')
 ) {
-  <span [style.color]="'red'">
+  <span [style]="getLeaveStyle">
     {{ punching.leave?.leave_type }}
   </span>
 } @else if (
   !is_today && (punching.punching_count === 1 || punching.single_punch_type) && !is_holiday
 ) {
   <span [style]="getSinglePunchingStyle()"> One-Time Punching </span>
-}
-@if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
-  <span [style.color]="'red'">
-    {{ getLeaveText(punching) }}
-  </span>
+} @else {
+  @if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
+    <span [style.color]="'red'">
+      {{ getLeaveText(punching) }}
+    </span>
+  }
 }
