@@ -55,8 +55,15 @@ export class DurationCellComponent {
     };
 
   }
-  getLeaveStyle(){
+  getLeaveColor(){
 
+    if (this.punching?.leave?.active_status == 'N') {
+      return 'DeepSkyBlue';
+    } else if (this.punching?.leave?.active_status == 'Y') {
+      return 'LimeGreen';
+    }
+
+    return 'red';
   }
 
 
