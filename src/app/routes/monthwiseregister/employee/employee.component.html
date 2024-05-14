@@ -118,10 +118,17 @@
           </ng-container>
 
           <ng-container matColumnDef="duration">
-            <th mat-header-cell *matHeaderCellDef  >Duration</th>
+            <th mat-header-cell *matHeaderCellDef>Duration</th>
             <td mat-cell *matCellDef="let item" (click)="mark(item)">
               @if (!item.is_future) {
-                {{ item.duration_str ? item.duration_str : '-' }}
+                @if(item.duration_str) {
+                  {{ item.duration_str }}
+                  <mat-progress-bar mode="determinate" [value]="getPercentage(item)" ></mat-progress-bar>
+                  <!-- <mat-progress-bar mode="determinate" value="40"></mat-progress-bar> -->
+                } @else {
+                  -
+                }
+                <!-- {{ item.duration_str ? item.duration_str : '-' }} -->
               }
             </td>
           </ng-container>
