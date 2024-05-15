@@ -48,6 +48,7 @@ export const MY_FORMATS = {
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
+
   aadhaarid: string | undefined = undefined;
   date: string;
   self: boolean = false;
@@ -191,8 +192,15 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   getPercentage(dateItem: any) {
     const duration = dateItem.duration_sec;
-    const duration_percent = (duration / 25200) * 100;
-    return duration_percent;
+    const durationNeeded = dateItem.duration_sec_needed;
+    return durationNeeded ? (duration / durationNeeded) * 100 : 0;
+  }
+
+  getDurationStyle(durationPercent: number) {
+    if (durationPercent == 100)
+      return 'accent';
+    else
+      return durationPercent < 100 ? 'warn' : 'primary';
   }
 }
 
