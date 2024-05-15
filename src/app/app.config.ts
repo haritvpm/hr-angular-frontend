@@ -55,7 +55,7 @@ export const appConfig: ApplicationConfig = {
       FormlyConfigModule.forRoot()
     ),
     { provide: BASE_URL, useValue: environment.baseUrl },
-    {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
+    // {provide: RouteReuseStrategy, useClass: AppRouteReuseStrategy},
     // ==================================================
     // 👇 ❌ Remove it in the realworld application
     //

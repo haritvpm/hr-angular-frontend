@@ -145,7 +145,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     console.log(normalizedMonthAndYear.format('YYYY-MM-DD'));
     //this.selectedMonth = normalizedMonthAndYear.format('YYYY-MM-DD');
     // this.loadData();
-    this.router.navigate(['/monthwiseregister/employee/', this.aadhaarid, normalizedMonthAndYear.format('YYYY-MM-DD')]);
+    this.router.navigate(['/employee/', this.aadhaarid, normalizedMonthAndYear.format('YYYY-MM-DD')]);
 
   }
   mark(row: EmployeePunchingInfo) {
