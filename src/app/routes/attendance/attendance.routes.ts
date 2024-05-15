@@ -14,11 +14,11 @@ export const routes: Routes = [
   },
   { path: 'section-daywise-register', component: AttendanceRegisterComponent },
   { path: 'section-monthwise-register', component: MonthwiseSectionAttendanceComponent },
-  { path: 'self', component: MonthwiseregisterEmployeeComponent, resolve: { aadhaar_date: aadhaardateFromEmptyqueryResolver } },
-  { path: 'self/apply-leave', component: ApplyLeaveComponent },
+  { path: 'self', component: MonthwiseregisterEmployeeComponent, resolve: { aadhaar_date: aadhaardateFromEmptyqueryResolver },    },
+  { path: 'self/apply-leave', component: ApplyLeaveComponent,    },
 
-  { path: 'employee/:aadhaarid', component: MonthwiseregisterEmployeeComponent, resolve: { aadhaar_date: aadhaardateFromqueryResolver } },
-  { path: 'employee/:aadhaarid/:date', component: MonthwiseregisterEmployeeComponent, resolve: { aadhaar_date: aadhaardateFromqueryResolver } },
+  { path: 'employee/:aadhaarid', component: MonthwiseregisterEmployeeComponent, resolve: { aadhaar_date: aadhaardateFromqueryResolver },    },
+  { path: 'employee/:aadhaarid/:date', component: MonthwiseregisterEmployeeComponent, resolve: { aadhaar_date: aadhaardateFromqueryResolver },    },
 
 
 ];

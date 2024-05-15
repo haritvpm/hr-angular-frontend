@@ -80,7 +80,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         map(data => data.aadhaar_date),
         tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date; this.self = data.self; console.log('date dfdfd:' + data.date); }),
         switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date)),
-        take(1)
+       // take(1)
       )
       .subscribe(response => {
         console.log(response);
@@ -118,8 +118,8 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   onNextMonth() {
 
-    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    // this.router.onSameUrlNavigation = 'reload';
+    //this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    //this.router.onSameUrlNavigation = 'reload';
 
     const nextmonth = moment(this.date).add(1, 'month');
     //if this is future month, ignore
@@ -128,8 +128,8 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
   }
   onPrevMonth() {
-    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    // this.router.onSameUrlNavigation = 'reload';
+    //this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    //this.router.onSameUrlNavigation = 'reload';
 
     const prevmonth = moment(this.date).subtract(1, 'month');
     //if this is before 2024 january month, ignore
@@ -146,7 +146,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     console.log(normalizedMonthAndYear.format('YYYY-MM-DD'));
     //this.selectedMonth = normalizedMonthAndYear.format('YYYY-MM-DD');
     // this.loadData();
-    this.router.navigate(['/employee/', this.aadhaarid, normalizedMonthAndYear.format('YYYY-MM-DD')]);
+    this.router.navigate(['/attendance/employee/', this.aadhaarid, normalizedMonthAndYear.format('YYYY-MM-DD')]);
 
   }
   mark(row: EmployeePunchingInfo) {
