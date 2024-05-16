@@ -15,7 +15,7 @@
     <mat-form-field class="col" appearance="fill">
         <mat-label>From date</mat-label>
         <input matInput [matDatepicker]="pickerf" formControlName="fromDate" readonly="true">
-        <mat-hint>>YYYY-MM-DD</mat-hint>
+        <mat-hint>YYYY-MM-DD</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="pickerf"></mat-datepicker-toggle>
         <mat-datepicker #pickerf ></mat-datepicker>
       </mat-form-field>
@@ -37,16 +37,16 @@
      <mat-form-field class="col" appearance="fill">
         <mat-label>To date</mat-label>
         <input [min]="applyLeaveForm.get('fromDate')?.value" matInput
-          [matDatepicker]="picker" formControlName="toDate" readonly="true">
+          [matDatepicker]="picker" formControlName="toDate" readonly="true"/>
         <mat-hint>YYYY-MM-DD</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <mat-datepicker #picker [disabled]="!applyLeaveForm.get('fromDate')?.value" ></mat-datepicker>
       </mat-form-field>
      <!-- if casual leave is selected, toType should be full, an, fn otherwise just hide, but its value should be full -->
      @if(applyLeaveForm.get('leaveType')?.value === 'casual'){
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill"  >
             <mat-label>Type</mat-label>
-            <mat-select formControlName="toType" >
+            <mat-select formControlName="toType"  >
               @for (totype of casualToTypes; track totype) {
                 <mat-option [value]="totype.value">{{totype.label}}</mat-option>
               }
