@@ -210,7 +210,8 @@ calender: Calender;
   }
 
   getExtratimeColor(employee: any) {
-    const extraTimeexeed = this.roundValue(employee.total_extra_sec / 60) >= 600;
+    // const extraTimeexeed = this.roundValue(employee.total_extra_sec / 60) >= 600;
+    const extraTimeexeed = employee.total_extra_str >= '10:00' ;
     return {
       'font-weight': extraTimeexeed ? 'bold' : '',
       'color': extraTimeexeed ? 'green' : ''

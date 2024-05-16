@@ -167,7 +167,8 @@
         </th>
         <td mat-cell [style]="getExtratimeColor(employee)" *matCellDef="let employee">
           <span *ngIf="!is_holiday">
-            {{ roundValue(employee.total_extra_sec / 60) }}
+            <!-- {{ roundValue(employee.total_extra_sec / 60) }} -->
+            {{employee.total_extra_str}}
           </span>
         </td>
       </ng-container>
