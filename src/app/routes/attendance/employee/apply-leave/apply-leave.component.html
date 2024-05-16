@@ -1,6 +1,11 @@
 <!-- here, create a form for applying leave -->
 <h1>Leave Application</h1>
 
+@if(errorMessage){
+<mtx-alert type ="danger" > {{errorMessage}}</mtx-alert>
+}
+
+
 <form class="example-container" [formGroup]="applyLeaveForm" (ngSubmit)="applyLeave()">
     <mat-form-field appearance="fill">
         <mat-label>Leave Type</mat-label>

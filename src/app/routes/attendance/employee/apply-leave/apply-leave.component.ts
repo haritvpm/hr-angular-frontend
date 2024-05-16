@@ -7,15 +7,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMultipleDatesModule } from 'ngx-multiple-dates';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MtxAlertModule } from '@ng-matero/extensions/alert';
 import { Subscription } from 'rxjs';
+import { EmployeeService } from '../employee.service';
+import { GovtCalendar } from '../interface';
+import moment from 'moment';
 
 @Component({
   selector: 'app-apply-leave',
   standalone: true,
   imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
     FormsModule, MatFormFieldModule, MatSelectModule,
-    MatInputModule, MatDatepickerModule, MatDatepickerModule, NgxMultipleDatesModule],
+    MatInputModule, MatDatepickerModule, MatDatepickerModule, NgxMultipleDatesModule,
+    MtxAlertModule],
   templateUrl: './apply-leave.component.html',
   styleUrl: './apply-leave.component.css'
 })
@@ -34,6 +38,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   sameDate : boolean = false;
   casualFromTypes = this.casualTypes;
   casualToTypes = this.casualTypes;
+  errorMessage :string = '';
 
   applyLeaveForm = this.fb.group({
     leaveType: ['', Validators.required],
@@ -58,7 +63,11 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
   ];
 
-  constructor(private fb: FormBuilder) { }
+  holidays : string[] = [];
+
+  constructor(private fb: FormBuilder, 
+    private empService: EmployeeService
+    ) { }
 
   // compenValidator(form: FormGroup): ValidatorFn {
   //   return (control: AbstractControl): ValidationErrors | null => {
@@ -78,6 +87,11 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     //   this.applyLeaveForm.get('inLieofDates')?.updateValueAndValidity();
 
     // });
+    this.empService.getHolidays().subscribe( (value) =>
+      {
+        this.holidays = value.map(g => g.date);
+      }
+    );
 
     this.subscriptions.push(this.applyLeaveForm.get('fromDate')!.valueChanges
       .subscribe((value) => {
@@ -89,9 +103,76 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         this.onToDateChange(value);
       }));
 
-
+      this.subscriptions.push(this.applyLeaveForm.valueChanges
+      .subscribe((value) => {
+        this.onFormChange(value);
+      }));
+  }
+   enumerateDaysBetweenDates (startDate:any, endDate:any){
+    const dates : string[] = [];
+    while(moment(startDate) <= moment(endDate)){
+      dates.push(startDate);
+      startDate = moment(startDate).add(1, 'days').format('YYYY-MM-DD');
+    }
+    // while(startDate <= endDate){
+    //   dates.push(startDate);
+    //   startDate = moment(startDate).add(1, 'days').format('YYYY-MM-DD');
+    // }
+    return dates;
   }
 
+  onFormChange ( form: any ){
+    //console.log(form);
+    this.leaveCount = 0;
+    let leave = 0;
+    //count days from start date to end date if both are not empty
+    const fromDate = form.fromDate;
+    const toDate = form.toDate;
+    console.log( 'onFormChange' + fromDate );
+    
+    if( fromDate && toDate ){
+      const dates = this.enumerateDaysBetweenDates(fromDate, toDate);
+      if( form.leaveType == 'casual' ||  form.leaveType !== 'compen' ) {
+      const datesWithoutHolidays = dates.filter( d => this.holidays.indexOf( d ) == -1);
+      leave = datesWithoutHolidays.length;
+      } else {
+        leave = dates.length;
+      }
+
+    } else if( fromDate && !toDate ){
+      const date = fromDate;
+      if(this.holidays.indexOf( date ) == -1) leave = 1;
+
+      if( form.leaveType !== 'casual' &&  form.leaveType !== 'compen' ) leave =0;
+
+    }
+ 
+    //now for casual. 
+    if( form.leaveType == 'casual' ){
+      if( 1 == leave ){
+        this.leaveCount = ( form.fromType == 'an' || form.fromType == 'fn' ) ? 0.5 : form.fromType == 'full' ? 1 : 0;
+        
+      } else {
+
+        if( form.fromType && form.toType  ){
+
+          if( form.fromType == 'an' ){
+            leave -= 0.5;
+          }
+          if( form.toType == 'fn' ){
+            leave -= 0.5;
+          }
+          
+          this.leaveCount = leave;
+        }
+
+      }
+
+    } else {
+      this.leaveCount = leave;
+    }
+
+  }
   onFromDateChange( fromDate: any ){
 
     const toDate = this.applyLeaveForm.get('toDate')?.value;
@@ -163,38 +244,42 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     if (this.applyLeaveForm.invalid) {
       return;
     }
-
+    const isCasual = this.applyLeaveForm.value.leaveType === 'casual';
     console.log(this.applyLeaveForm.value);
 
-    if (this.applyLeaveForm.value?.toDate &&
-      this.applyLeaveForm.value.fromDate! > this.applyLeaveForm.value.toDate) {
-      return;
-    }
 
     if (this.applyLeaveForm.value.fromDate?.toString() 
-        === this.applyLeaveForm.value.toDate?.toString()) {
-      //same date from and to
+        !== this.applyLeaveForm.value.toDate?.toString()) {
+      //diff date date from and to
 
-      //if casual, make sure fromType and toType are same
-      if (this.applyLeaveForm.value.leaveType === 'casual') {
-        if (this.applyLeaveForm.value.fromType !== this.applyLeaveForm.value.toType) {
+      //if casual, make sure fromType and toType are present
+      if (isCasual) {
+        if (!this.applyLeaveForm.value.fromType || !this.applyLeaveForm.value.toType) {
 
+          this.errorMessage = 'Select Full/AN/FN for both dates';
           return;
         }
-
+        if (this.applyLeaveForm.value.toDate && !this.applyLeaveForm.value.toType) {
+          this.errorMessage = 'Select Full/AN/FN for end date';
+  
+          return;
+        }
       }
+    } else {
+      //same dates
+      if (isCasual) {
+        if (!this.applyLeaveForm.value.fromType ) {
 
+          this.errorMessage = 'Select Full/AN/FN for start date';
+          return;
+        }
+      }
     }
 
-    if (this.applyLeaveForm.value.leaveType === 'casual') {
-      if (!this.applyLeaveForm.value.fromType) {
-        return;
-      }
+    //compensation make sure the count of dates are correct. 
 
-      if (this.applyLeaveForm.value.toDate && !this.applyLeaveForm.value.toType) {
-        return;
-      }
-    }
+
+
   }
 
   casualAnFnSync(leaveType:any, fromDate:any, toDate:any)

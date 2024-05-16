@@ -6,6 +6,13 @@ export interface CalendarDayInfo {
   is_today: boolean;
 }
 
+export interface GovtCalendar {
+  date : string
+  govtholidaystatus: boolean;
+  restrictedholidaystatus: boolean;
+  
+}
+
 export interface MonthlyData {
   id: number;
   aadhaarid: string;
