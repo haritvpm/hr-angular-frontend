@@ -7,7 +7,7 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-duration-cell',
   standalone: true,
-  imports: [MatIconModule,NgIf],
+  imports: [MatIconModule, NgIf],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './duration-cell.component.html',
   styleUrl: './duration-cell.component.css'
@@ -18,22 +18,21 @@ export class DurationCellComponent {
   @Input() is_today: boolean;
   @Input() is_holiday: boolean;
 
+  casual_half_text: string = '&#xbd;CL';
+  casual_color: string = 'red';
+
 
 
   getLeaveText(row: DailyPunching) {
 
     if (row.hint) {
       const txt = leaveList.find((x: any) => x.value == row.hint)?.label || null;
-      if(txt) return txt;
+      if (txt) return txt;
     }/* else if (row.computer_hint) {
       const txt = leaveList.find((x: any) => x.value == row.computer_hint)?.label || null;
       if(txt) return txt;
     }*/
-
-      return '';
-
-
-
+    return '';
   }
   getTodaysStyle() {
     return {
@@ -55,7 +54,7 @@ export class DurationCellComponent {
     };
 
   }
-  getLeaveColor(){
+  getLeaveColor() {
 
     if (this.punching?.leave?.active_status == 'N') {
       return 'DeepSkyBlue';

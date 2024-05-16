@@ -1,9 +1,10 @@
 .computer-hint {
-    border-radius: 3px;
     /* border: 2px solid #ff4081; */
     padding: 2px 3px;
+
     /* color: #ff4081; */
     font-weight: bold;
+    border-radius: 3px;
   }
 
   .icon-small {

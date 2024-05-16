@@ -1,4 +1,25 @@
-@if (punching.punching_count >= 2) {
+@if (punching.punching_count >= 2 && !punching.computer_hint) {
+  {{ punching.duration_str }}
+}
+@if (punching.punching_count >= 2 && punching.computer_hint) {
+  @if (punching.computer_hint === 'casual_fn') {
+    <!-- {{ casual_half_text}} FN -->
+
+    <span [style.color]="casual_color" class="computer-hint">
+      <small [innerHtml]="casual_half_text"></small>
+    </span>
+    {{ punching.duration_str }}
+  } @else if (punching.computer_hint === 'casual_an') {
+    <!-- {{ casual_half_text}} AN -->
+
+    {{ punching.duration_str }}
+    <span [style.color]="casual_color" class="computer-hint">
+      <small [innerHtml]="casual_half_text"></small>
+    </span>
+  }
+} @else if (
+  punching.punching_count >= 2 && !is_holiday && !is_today && punching.computer_hint === 'casual_fn'
+) {
   {{ punching.duration_str }}
 } @else if (is_today && punching.punching_count < 2 && !is_holiday) {
   <span [style]="getTodaysStyle()"> - </span>
@@ -17,13 +38,7 @@
   <span [style.color]="getLeaveColor()" [style.font-weight]="'bold'">
     {{ punching.leave?.leave_type }}
   </span>
-}
-
-
-
-
-
-@else {
+} @else {
   @if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
     <span [style.color]="'red'">
       {{ getLeaveText(punching) }}
