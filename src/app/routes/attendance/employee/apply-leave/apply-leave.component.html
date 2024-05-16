@@ -25,9 +25,9 @@
         <mat-form-field appearance="fill">
             <mat-label>Type</mat-label>
             <mat-select formControlName="fromType" >
-                <mat-option value="full">Full</mat-option>
-                <mat-option value="fn">Forenoon</mat-option>
-                <mat-option value="an">Afternoon</mat-option>
+              @for (fromtype of casualFromTypes; track fromtype) {
+                <mat-option [value]="fromtype.value">{{fromtype.label}}</mat-option>
+              }
             </mat-select>
           </mat-form-field>
     }
@@ -47,9 +47,9 @@
         <mat-form-field appearance="fill">
             <mat-label>Type</mat-label>
             <mat-select formControlName="toType" >
-                <mat-option value="full">Full</mat-option>
-                <mat-option value="fn">Forenoon</mat-option>
-                <mat-option value="an">Afternoon</mat-option>
+              @for (totype of casualToTypes; track totype) {
+                <mat-option [value]="totype.value">{{totype.label}}</mat-option>
+              }
             </mat-select>
           </mat-form-field>
     }
@@ -76,7 +76,7 @@
           <mat-error>Reason is <strong>required</strong></mat-error>
         }
       </mat-form-field>
-    <button mat-button type="submit" color="'accent'" >Apply Leave</button>
+    <button mat-button type="submit" color="'accent'"  >Apply Leave</button>
     <button mat-button class="btn btn-primary">Cancel</button>
 </form>
 
