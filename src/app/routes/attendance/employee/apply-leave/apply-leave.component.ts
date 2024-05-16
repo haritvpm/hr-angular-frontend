@@ -12,9 +12,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-apply-leave',
   standalone: true,
-  imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
-    FormsModule, MatFormFieldModule, MatSelectModule,
-    MatInputModule, MatDatepickerModule, MatDatepickerModule, NgxMultipleDatesModule],
+  imports: [JsonPipe, ReactiveFormsModule,
+    MatButtonModule, FormsModule, MatFormFieldModule, MatSelectModule,
+    MatInputModule, MatDatepickerModule, MatDatepickerModule,
+    NgxMultipleDatesModule],
   templateUrl: './apply-leave.component.html',
   styleUrl: './apply-leave.component.css'
 })

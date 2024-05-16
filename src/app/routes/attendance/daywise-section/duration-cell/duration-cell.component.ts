@@ -19,7 +19,8 @@ export class DurationCellComponent {
   @Input() is_holiday: boolean;
 
   casual_half_text: string = '&#xbd;CL';
-  casual_color: string = 'red';
+  casual_half_authcolor: string = 'red';
+  casual_half_unauthcolor: string = 'orange';
 
 
 
