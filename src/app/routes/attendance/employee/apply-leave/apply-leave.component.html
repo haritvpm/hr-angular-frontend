@@ -1,90 +1,129 @@
 <!-- here, create a form for applying leave -->
 <h1>Leave Application</h1>
 
-@if(errorMessage){
-<mtx-alert type ="danger" > {{errorMessage}}</mtx-alert>
+@if (errorMessage) {
+  @for (e of errorMessage; track e) {
+    <mtx-alert type="info"> {{ e }}</mtx-alert>
+  }
 }
 
-
 <form class="example-container" [formGroup]="applyLeaveForm" (ngSubmit)="applyLeave()">
-    <mat-form-field appearance="fill">
-        <mat-label>Leave Type</mat-label>
-        <mat-select formControlName="leaveType" >
-          @for (leavetype of leaveapplyTypes; track leavetype) {
-            <mat-option [value]="leavetype.value">{{leavetype.label}}</mat-option>
+  <div class="d-flex row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Leave Type</mat-label>
+      <mat-select formControlName="leaveType">
+        @for (leavetype of leaveapplyTypes; track leavetype) {
+          <mat-option [value]="leavetype.value">{{ leavetype.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="col" appearance="outline">
+      <mat-label>Days</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="leaveCount"
+        placeholder="Days"
+        readonly="true"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>From date</mat-label>
+      <input matInput [matDatepicker]="pickerf" formControlName="fromDate" readonly="true" />
+      <mat-hint>YYYY-MM-DD</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="pickerf"></mat-datepicker-toggle>
+
+      <mat-datepicker #pickerf></mat-datepicker>
+    </mat-form-field>
+
+    <!-- if casual leave is selected, fromType should be full, an, fn otherwise just hide, but its value should be full -->
+    @if (applyLeaveForm.get('leaveType')?.value === 'casual') {
+      <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="fromType">
+          @for (fromtype of casualFromTypes; track fromtype) {
+            <mat-option [value]="fromtype.value">{{ fromtype.label }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
-    <div class="d-flex row" >
-
-    <mat-form-field class="col" appearance="fill">
-        <mat-label>From date</mat-label>
-        <input matInput [matDatepicker]="pickerf" formControlName="fromDate" readonly="true">
-        <mat-hint>YYYY-MM-DD</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="pickerf"></mat-datepicker-toggle>
-        <mat-datepicker #pickerf ></mat-datepicker>
-      </mat-form-field>
-
-     <!-- if casual leave is selected, fromType should be full, an, fn otherwise just hide, but its value should be full -->
-     @if(applyLeaveForm.get('leaveType')?.value === 'casual'){
-        <mat-form-field appearance="fill">
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="fromType" >
-              @for (fromtype of casualFromTypes; track fromtype) {
-                <mat-option [value]="fromtype.value">{{fromtype.label}}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
     }
     <!-- </div>
     <div class="d-flex row " > -->
 
-     <mat-form-field class="col" appearance="fill">
-        <mat-label>To date</mat-label>
-        <input [min]="applyLeaveForm.get('fromDate')?.value" matInput
-          [matDatepicker]="picker" formControlName="toDate" readonly="true"/>
-        <mat-hint>YYYY-MM-DD</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker [disabled]="!applyLeaveForm.get('fromDate')?.value" ></mat-datepicker>
-      </mat-form-field>
-     <!-- if casual leave is selected, toType should be full, an, fn otherwise just hide, but its value should be full -->
-     @if(applyLeaveForm.get('leaveType')?.value === 'casual'){
-        <mat-form-field appearance="fill"  >
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="toType"  >
-              @for (totype of casualToTypes; track totype) {
-                <mat-option [value]="totype.value">{{totype.label}}</mat-option>
-              }
-            </mat-select>
-          </mat-form-field>
-    }
-    </div>
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>To date</mat-label>
+      <input
+        [min]="casualMinDate"
+        matInput
+        [matDatepicker]="picker"
+        formControlName="toDate"
+        readonly="true"
+      />
+      <mat-hint>YYYY-MM-DD</mat-hint>
 
-    <!-- for compen, we need in lie of -->
-    @if(applyLeaveForm.get('leaveType')?.value === 'compen'){
-      <mat-form-field>
-        <ngx-multiple-dates [matDatepicker]="compenpicker" placeholder="Compensation for dates" name="compensationDates"
-        formControlName="inLieofDates" [closeOnSelected]="true">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker-toggle matSuffix (click)="clearEndDate()">
+        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+      </mat-datepicker-toggle>
+
+      <mat-datepicker #picker [disabled]="!applyLeaveForm.get('fromDate')?.value"></mat-datepicker>
+    </mat-form-field>
+    <!-- if casual leave is selected, toType should be full, an, fn otherwise just hide, but its value should be full -->
+    @if (applyLeaveForm.get('leaveType')?.value === 'casual') {
+      <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="toType">
+          @for (totype of casualToTypes; track totype) {
+            <mat-option [value]="totype.value">{{ totype.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  </div>
+
+  <!-- for compen, we need in lie of -->
+  <div class="d-flex row">
+    @if (applyLeaveForm.get('leaveType')?.value === 'compen') {
+      <mat-form-field class="col">
+        <ngx-multiple-dates
+          [matDatepicker]="compenpicker"
+          placeholder="Compensation for dates"
+          name="compensationDates"
+          formControlName="inLieofDates"
+          [closeOnSelected]="true"
+          [required]="applyLeaveForm.get('leaveType')?.value === 'compen'"
+          [max]="today"
+          [min]="compenMinDate"
+          [minlength]="applyLeaveForm.get('leaveCount')?.value || 1"
+          [maxlength]="applyLeaveForm.get('leaveCount')?.value || 1"
+        >
         </ngx-multiple-dates>
         <mat-datepicker-toggle matPrefix [for]="compenpicker"></mat-datepicker-toggle>
         <mat-datepicker #compenpicker></mat-datepicker>
       </mat-form-field>
-  }
-
-
-   {{ leaveCount }}
-    <mat-form-field  appearance="fill">
-        <mat-label>Reason</mat-label>
-        <input matInput formControlName="reason" placeholder="Reason">
-        <mat-hint>Reason for leave</mat-hint>
-        @if (applyLeaveForm.hasError('required')) {
-          <mat-error>Reason is <strong>required</strong></mat-error>
-        }
-      </mat-form-field>
-    <button mat-button type="submit" color="'accent'"  >Apply Leave</button>
-    <button mat-button class="btn btn-primary">Cancel</button>
+    }
+  </div>
+  <div class="d-flex row">
+    <mat-form-field class="col" appearance="fill">
+      <mat-label>Reason</mat-label>
+      <input matInput formControlName="reason" placeholder="Reason" />
+      <mat-hint>Reason for leave</mat-hint>
+      @if (applyLeaveForm.hasError('required')) {
+        <mat-error>Reason is <strong>required</strong></mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div class="d-flex row">
+    <div class="col d-flex justify-content-end">
+      <button mat-flat-button type="submit" color="accent">Apply Leave</button>
+      <button mat-flat-button class="m-l-4" color="primary">Cancel</button>
+    </div>
+  </div>
 </form>
 
-
-{{ applyLeaveForm.value | json}}
-{{ applyLeaveForm.valid}}
+{{ applyLeaveForm.value | json }}
+{{ applyLeaveForm.valid }}

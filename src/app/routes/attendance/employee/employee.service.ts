@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, EmployeeYearApiData, GovtCalendar} from './interface';
+import {CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, EmployeeYearApiData, GovtCalendar, HolidayApiData} from './interface';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class EmployeeService {
     return this.http.patch<any>(`${this.apiUrl4}/${id}/`,data);
   }
 
-  getHolidays(date?: string): Observable<GovtCalendar[]> {
-    return this.http.get<GovtCalendar[]>(`/api/v1/holidays`);
+  getHolidays(date?: string): Observable<HolidayApiData> {
+    return this.http.get<HolidayApiData>(`/api/v1/holidays`);
   }
 }

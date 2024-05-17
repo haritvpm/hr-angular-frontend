@@ -10,7 +10,6 @@ export interface GovtCalendar {
   date : string
   govtholidaystatus: boolean;
   restrictedholidaystatus: boolean;
-  
 }
 
 export interface MonthlyData {
@@ -158,4 +157,7 @@ export interface EmployeeYearApiData {
   year: string;
   allmonthdata:  MonthlyData[] ;
   //employee: Employee;
+}
+export interface HolidayApiData {
+  holidays: GovtCalendar[];
 }
