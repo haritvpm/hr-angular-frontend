@@ -46,7 +46,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   casualMinDate = new Date('2024-01-01');
   casualPeriodHidden = true;
   showingPeriod = false;
-  
+  isCasualOrCompen = false;
 
   applyLeaveForm = this.fb.group({
     leaveType: ['', Validators.required],
@@ -141,6 +141,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     this.showingPeriod = ['casual', 'compen',''].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') === -1 || !this.casualPeriodHidden;
 
+    this.isCasualOrCompen = ['compen','casual'].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') != -1;
    
 
   }
@@ -192,7 +193,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       leave = dates.length;
       if( form.leaveType == 'casual' ||  form.leaveType !== 'compen' ) {
         this.holidaysInPeriod = dates.filter( d => this.allholidays.indexOf( d ) !== -1);
-        leave = this.holidaysInPeriod.length;
+        leave -= this.holidaysInPeriod.length;
       } 
 
     } else if( fromDate && !toDate ){
@@ -231,7 +232,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     }
     if(form.leaveType == '') leave = 0;
-    
+
     this.applyLeaveForm.get('leaveCount')?.setValue( leave, { emitEvent: false }); //emitEvent: false to avoid infinite loop
 
 
