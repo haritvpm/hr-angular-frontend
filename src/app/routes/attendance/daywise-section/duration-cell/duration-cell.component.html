@@ -1,19 +1,27 @@
 @if (punching.punching_count >= 2 && !punching.computer_hint) {
   {{ punching.duration_str }}
 }
-@if (punching.punching_count >= 2 && punching.computer_hint) {
+@if (punching.punching_count >= 2 && punching.computer_hint && punching.is_unauthorised) {
   @if (punching.computer_hint === 'casual_fn') {
-    <!-- {{ casual_half_text}} FN -->
-
-    <span [style.color]="casual_color" class="computer-hint">
+    <span [style.color]="casual_half_unauthcolor" class="computer-hint">
+      <small [innerHtml]="casual_half_text + '?'"></small>
+    </span>
+    {{ punching.duration_str }}
+  } @else if (punching.computer_hint === 'casual_an') {
+    {{ punching.duration_str }}
+    <span [style.color]="casual_half_unauthcolor" class="computer-hint">
+      <small [innerHtml]="casual_half_text + '?'"></small>
+    </span>
+  }
+} @else if (punching.punching_count >= 2 && punching.computer_hint && !punching.is_unauthorised) {
+  @if (punching.computer_hint === 'casual_fn') {
+    <span [style.color]="casual_half_authcolor" class="computer-hint">
       <small [innerHtml]="casual_half_text"></small>
     </span>
     {{ punching.duration_str }}
   } @else if (punching.computer_hint === 'casual_an') {
-    <!-- {{ casual_half_text}} AN -->
-
     {{ punching.duration_str }}
-    <span [style.color]="casual_color" class="computer-hint">
+    <span [style.color]="casual_half_authcolor" class="computer-hint">
       <small [innerHtml]="casual_half_text"></small>
     </span>
   }
@@ -35,7 +43,7 @@
   punching.punching_count < 2 &&
   (punching.leave?.active_status === 'Y' || punching.leave?.active_status === 'N')
 ) {
-  <span [style.color]="getLeaveColor()" [style.font-weight]="'bold'">
+  <span [style.color]="getLeaveColor()" [style.font-weight]="'bold'" [style.font-size]="'medium'">
     {{ punching.leave?.leave_type }}
   </span>
 } @else {

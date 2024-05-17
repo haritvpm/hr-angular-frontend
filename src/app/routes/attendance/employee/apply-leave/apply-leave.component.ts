@@ -33,7 +33,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
   // ];
   private subscriptions : Subscription[] = [];
-  
+
   readonly casualTypes = [{ value: 'full', label: 'Full Day' }, { value: 'fn', label: 'Forenoon' }, { value: 'an', label: 'Afternoon' }];
   sameDate : boolean = false;
   casualFromTypes = this.casualTypes;
@@ -65,7 +65,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
   holidays : string[] = [];
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     private empService: EmployeeService
     ) { }
 
@@ -97,7 +97,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.onFromDateChange(value);
       }));
-    
+
     this.subscriptions.push(this.applyLeaveForm.get('toDate')!.valueChanges
       .subscribe((value) => {
         this.onToDateChange(value);
@@ -129,7 +129,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     const fromDate = form.fromDate;
     const toDate = form.toDate;
     console.log( 'onFormChange' + fromDate );
-    
+
     if( fromDate && toDate ){
       const dates = this.enumerateDaysBetweenDates(fromDate, toDate);
       if( form.leaveType == 'casual' ||  form.leaveType !== 'compen' ) {
@@ -146,12 +146,12 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       if( form.leaveType !== 'casual' &&  form.leaveType !== 'compen' ) leave =0;
 
     }
- 
-    //now for casual. 
+
+    //now for casual.
     if( form.leaveType == 'casual' ){
       if( 1 == leave ){
         this.leaveCount = ( form.fromType == 'an' || form.fromType == 'fn' ) ? 0.5 : form.fromType == 'full' ? 1 : 0;
-        
+
       } else {
 
         if( form.fromType && form.toType  ){
@@ -162,7 +162,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
           if( form.toType == 'fn' ){
             leave -= 0.5;
           }
-          
+
           this.leaveCount = leave;
         }
 
@@ -185,7 +185,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     this.casualToTypes = this.casualTypes;
 
     this.sameDate = false;
-    
+
     if (fromDate && toDate &&
       (fromDate.toString() === toDate.toString())) {
       console.log('fromDate and toDate are same');
@@ -210,7 +210,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     const fromDate = this.applyLeaveForm.get('fromDate')?.value;
     const fromType = this.applyLeaveForm.get('fromType')?.value || null;
     const leaveType = this.applyLeaveForm.get('leaveType')?.value;
-    
+
     if (fromDate && toDate && (fromDate.toString() === toDate.toString())) {
 
       console.log('fromDate == toDate');
@@ -219,7 +219,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       if (leaveType === 'casual') {
         this.applyLeaveForm.get('toType')?.setValue(fromType, { emitEvent: false }); //emitEvent: false to avoid infinite loop
       }
-      
+
       } else {
         console.log('fromDate <> toDate ');
         this.sameDate = false;
@@ -248,7 +248,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     console.log(this.applyLeaveForm.value);
 
 
-    if (this.applyLeaveForm.value.fromDate?.toString() 
+    if (this.applyLeaveForm.value.fromDate?.toString()
         !== this.applyLeaveForm.value.toDate?.toString()) {
       //diff date date from and to
 
@@ -261,7 +261,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         }
         if (this.applyLeaveForm.value.toDate && !this.applyLeaveForm.value.toType) {
           this.errorMessage = 'Select Full/AN/FN for end date';
-  
+
           return;
         }
       }
@@ -276,7 +276,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       }
     }
 
-    //compensation make sure the count of dates are correct. 
+    //compensation make sure the count of dates are correct.
 
 
 
@@ -284,7 +284,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
   casualAnFnSync(leaveType:any, fromDate:any, toDate:any)
   {
-    //if (leaveType === 'casual') 
+    //if (leaveType === 'casual')
     {
       this.casualToTypes = this.casualTypes;
 
