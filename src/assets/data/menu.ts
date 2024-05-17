@@ -46,9 +46,9 @@ export default {
         },
 
       ],
-      permissions: {
-        only: ['section_access'],
-      },
+      // permissions: {
+      //   only: ['section_access'],
+      // },
 
     },
 

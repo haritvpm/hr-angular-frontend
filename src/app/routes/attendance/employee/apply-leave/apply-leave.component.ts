@@ -71,7 +71,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
   ];
 
-  holidays : string[] = [];
+  allholidays : string[] = [];
+  holidaysInPeriod : string[] = [];
 
   constructor(private fb: FormBuilder,
     private empService: EmployeeService
@@ -83,7 +84,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     this.empService.getHolidays().subscribe( (value) =>
       {
-        this.holidays = value.holidays.map(g => g.date);
+        this.allholidays = value.holidays.map(g => g.date);
       }
     );
 
@@ -163,14 +164,14 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   checkholiday(leaveType:string, fromDate:any, toDate:any){
     if( fromDate ){
       const date = moment(fromDate).format('YYYY-MM-DD');
-      if(this.holidays.indexOf( date ) !== -1) {
+      if(this.allholidays.indexOf( date ) !== -1) {
          this.errorMessage.push( 'Selected \'From\' date is a holiday');
       }
     }
 
     if( toDate ){
       const date = moment(toDate).format('YYYY-MM-DD');
-      if(this.holidays.indexOf( date ) !== -1) {
+      if(this.allholidays.indexOf( date ) !== -1) {
          this.errorMessage.push( 'Selected \'To\' date is a holiday');
       }
     }
@@ -179,6 +180,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   }
   onFormChange ( form: any ){
     this.errorMessage = [];
+    this.holidaysInPeriod = [];
     let leave = 0;
     //count days from start date to end date if both are not empty
     const fromDate = form.fromDate;
@@ -187,19 +189,18 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     if( fromDate && toDate ){
       const dates = this.enumerateDaysBetweenDates(fromDate, toDate);
+      leave = dates.length;
       if( form.leaveType == 'casual' ||  form.leaveType !== 'compen' ) {
-      const datesWithoutHolidays = dates.filter( d => this.holidays.indexOf( d ) == -1);
-      leave = datesWithoutHolidays.length;
-      } else {
-        leave = dates.length;
-      }
+        this.holidaysInPeriod = dates.filter( d => this.allholidays.indexOf( d ) !== -1);
+        leave = this.holidaysInPeriod.length;
+      } 
 
     } else if( fromDate && !toDate ){
       const date = moment(fromDate).format('YYYY-MM-DD');
       console.log( 'onFormChange' + date );
-      console.log( this.holidays );
+      console.log( this.allholidays );
 
-      if(this.holidays.indexOf( date ) == -1) {
+      if(this.allholidays.indexOf( date ) == -1) {
         leave = 1;
       } else {
         leave = 0;
@@ -229,7 +230,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       }
 
     }
-
+    if(form.leaveType == '') leave = 0;
+    
     this.applyLeaveForm.get('leaveCount')?.setValue( leave, { emitEvent: false }); //emitEvent: false to avoid infinite loop
 
 

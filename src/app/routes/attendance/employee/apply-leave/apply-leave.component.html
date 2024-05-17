@@ -1,12 +1,17 @@
 <!-- here, create a form for applying leave -->
 <h1>Leave Application</h1>
 
-@if (errorMessage) {
+@if (errorMessage.length) {
   @for (e of errorMessage; track e) {
-    <mtx-alert type="info"> {{ e }}</mtx-alert>
+    <mtx-alert type="warning"> {{ e }}</mtx-alert>
   }
 }
 
+@if (holidaysInPeriod.length) {
+  
+   <mtx-alert type="info"> Holidays in Period :  {{ holidaysInPeriod.toString() }} </mtx-alert>
+
+}
 <form class="example-container" [formGroup]="applyLeaveForm" (ngSubmit)="applyLeave()">
   <div class="d-flex row">
     <mat-form-field class="col" appearance="fill">
@@ -88,7 +93,7 @@
   } @else {
     <!-- a button which will show the period on click -->
     
-    <button class="m-l-4" mat-button color="primary" (click)="showPeriod()">Show Period</button>
+    <button class="m-l-4" mat-button color="primary" (click)="showPeriod()">Multiple days...</button>
   }
 
   </div>
