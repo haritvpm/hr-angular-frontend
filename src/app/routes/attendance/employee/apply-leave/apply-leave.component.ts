@@ -44,6 +44,9 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   compenMinDate = new Date('2024-01-01');
   today = new Date();
   casualMinDate = new Date('2024-01-01');
+  casualPeriodHidden = true;
+  showingPeriod = false;
+  
 
   applyLeaveForm = this.fb.group({
     leaveType: ['', Validators.required],
@@ -134,6 +137,15 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     this.applyLeaveForm.controls.leaveCount.updateValueAndValidity();
     this.applyLeaveForm.controls.toDate.updateValueAndValidity();
     this.applyLeaveForm.controls.fromType.updateValueAndValidity();
+
+    this.showingPeriod = ['casual', 'compen',''].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') === -1 || !this.casualPeriodHidden;
+
+   
+
+  }
+  showPeriod(){
+    this.casualPeriodHidden = false;
+    this.showingPeriod = true;
   }
 
    enumerateDaysBetweenDates (startDate:any, endDate:any){

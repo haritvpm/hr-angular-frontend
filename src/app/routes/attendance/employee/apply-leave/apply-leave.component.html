@@ -30,11 +30,11 @@
     </mat-form-field>
   </div>
 
-  <div class="d-flex row">
+  <div class="d-flex row align-items-center justify-content-center">
     <mat-form-field class="col" appearance="fill">
-      <mat-label>From date</mat-label>
+      <mat-label> {{showingPeriod ? 'From date' : 'Date'}}</mat-label>
       <input matInput [matDatepicker]="pickerf"  (focus)="pickerf.open()" (click)="pickerf.open()" formControlName="fromDate" readonly="true" />
-      <mat-hint>YYYY-MM-DD</mat-hint>
+      <!-- <mat-hint>YYYY-MM-DD</mat-hint> -->
       <mat-datepicker-toggle matIconSuffix [for]="pickerf"></mat-datepicker-toggle>
 
       <mat-datepicker #pickerf></mat-datepicker>
@@ -51,9 +51,9 @@
         </mat-select>
       </mat-form-field>
     }
-    <!-- </div>
-    <div class="d-flex row " > -->
-
+    
+    @if( showingPeriod ) {
+    
     <mat-form-field class="col" appearance="fill">
       <mat-label>To date</mat-label>
       <input
@@ -65,7 +65,7 @@
         formControlName="toDate"
         readonly="true"
       />
-      <mat-hint>YYYY-MM-DD</mat-hint>
+      <!-- <mat-hint>YYYY-MM-DD</mat-hint> -->
 
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker-toggle matSuffix (click)="clearEndDate()">
@@ -85,6 +85,12 @@
         </mat-select>
       </mat-form-field>
     }
+  } @else {
+    <!-- a button which will show the period on click -->
+    
+    <button class="m-l-4" mat-button color="primary" (click)="showPeriod()">Show Period</button>
+  }
+
   </div>
 
   <!-- for compen, we need in lie of -->
