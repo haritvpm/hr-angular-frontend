@@ -8,11 +8,11 @@
 }
 
 @if (holidaysInPeriod.length) {
-  
+
    <mtx-alert type="info"> Holidays in Period :  {{ holidaysInPeriod.toString() }} </mtx-alert>
 
 }
-<form class="example-container" [formGroup]="applyLeaveForm" (ngSubmit)="applyLeave()">
+<form class="example-container" [formGroup]="applyLeaveForm" >
   <div class="d-flex row">
     <mat-form-field class="col" appearance="fill">
       <mat-label>Leave Type</mat-label>
@@ -22,7 +22,7 @@
         }
       </mat-select>
     </mat-form-field>
-
+    @if(applyLeaveForm.get('fromDate')?.value && applyLeaveForm.get('leaveCount')!.value! > 0){
     <mat-form-field class="col" appearance="outline">
       <mat-label>Days</mat-label>
       <input
@@ -33,9 +33,11 @@
         readonly="true"
       />
     </mat-form-field>
+  }
   </div>
 
-  <div class="d-flex row align-items-center justify-content-center">
+  @if(applyLeaveForm.get('leaveType')?.value){
+  <div class="d-flex row align-items-stretch justify-content-center">
     <mat-form-field class="col" appearance="fill">
       <mat-label> {{showingPeriod ? 'From date' : 'Date'}}</mat-label>
       <input matInput [matDatepicker]="pickerf"  (focus)="pickerf.open()" (click)="pickerf.open()" formControlName="fromDate" readonly="true" />
@@ -47,7 +49,7 @@
 
     <!-- if casual leave is selected, fromType should be full, an, fn otherwise just hide, but its value should be full -->
     @if (applyLeaveForm.get('leaveType')?.value === 'casual') {
-      <mat-form-field appearance="fill">
+      <mat-form-field class="col" appearance="fill">
         <mat-label>Type</mat-label>
         <mat-select formControlName="fromType">
           @for (fromtype of casualFromTypes; track fromtype) {
@@ -56,13 +58,13 @@
         </mat-select>
       </mat-form-field>
     }
-    
+
     @if( showingPeriod ) {
-    
+
     <mat-form-field class="col" appearance="fill">
       <mat-label>To date</mat-label>
       <input
-        [min]="casualMinDate"
+        [min]="isCasualOrCompen ? casualMinDate : applyLeaveForm.get('fromDate')?.value"
         matInput
         (focus)="picker.open()"
         (click)="picker.open()"
@@ -71,17 +73,15 @@
         readonly="true"
       />
       <!-- <mat-hint>YYYY-MM-DD</mat-hint> -->
-
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker-toggle matSuffix (click)="clearEndDate()">
         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
       </mat-datepicker-toggle>
-
       <mat-datepicker #picker [disabled]="!applyLeaveForm.get('fromDate')?.value"></mat-datepicker>
     </mat-form-field>
     <!-- if casual leave is selected, toType should be full, an, fn otherwise just hide, but its value should be full -->
     @if (applyLeaveForm.get('leaveType')?.value === 'casual') {
-      <mat-form-field appearance="fill">
+      <mat-form-field class="col"  appearance="fill">
         <mat-label>Type</mat-label>
         <mat-select formControlName="toType">
           @for (totype of casualToTypes; track totype) {
@@ -92,7 +92,7 @@
     }
   } @else {
     <!-- a button which will show the period on click -->
-    
+
     <button class="m-l-4" mat-button color="primary" (click)="showPeriod()">Multiple days...</button>
   }
 
@@ -109,7 +109,7 @@
           formControlName="inLieofDates"
           [closeOnSelected]="true"
           [required]="applyLeaveForm.get('leaveType')?.value === 'compen'"
-          [max]="today"
+          [max]="compenMaxDate"
           [min]="compenMinDate"
           [minlength]="applyLeaveForm.get('leaveCount')?.value || 1"
           [maxlength]="applyLeaveForm.get('leaveCount')?.value || 1"
@@ -123,8 +123,8 @@
   <div class="d-flex row">
     <mat-form-field class="col" appearance="fill">
       <mat-label>Reason</mat-label>
-      <input matInput formControlName="reason" placeholder="Reason" />
-      <mat-hint>Reason for leave</mat-hint>
+      <input matInput formControlName="reason" placeholder="Reason for leave" />
+      <!-- <mat-hint>Reason for leave</mat-hint> -->
       @if (applyLeaveForm.hasError('required')) {
         <mat-error>Reason is <strong>required</strong></mat-error>
       }
@@ -132,14 +132,19 @@
   </div>
   <div class="d-flex row">
     <div class="col d-flex justify-content-end">
-      <button mat-flat-button type="submit" 
-      [disabled]="!applyLeaveForm.valid || 
-      (holidaysInPeriod.length && isCasualOrCompen )" 
-      color="accent">Apply Leave</button>
+      <button mat-flat-button
+      [disabled]="isSubmitting || !applyLeaveForm.valid ||
+      (holidaysInPeriod.length >0 && isCasualOrCompen )"
+      color="accent"
+      (click)="applyLeave()"
+      >Apply Leave</button>
       <button mat-flat-button class="m-l-4" color="primary">Cancel</button>
     </div>
   </div>
+}
 </form>
 
 {{ applyLeaveForm.value | json }}
 {{ applyLeaveForm.valid }}
+holidaysInPeriod:{{holidaysInPeriod.length}}
+{{isCasualOrCompen }}

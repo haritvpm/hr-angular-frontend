@@ -37,4 +37,7 @@ export class EmployeeService {
   getHolidays(date?: string): Observable<HolidayApiData> {
     return this.http.get<HolidayApiData>(`/api/v1/holidays`);
   }
+  applyLeave(data:any): Observable<any> {
+    return this.http.post<any>(`/api/v1/leaves/`,data);
+  }
 }
