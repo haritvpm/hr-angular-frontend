@@ -53,3 +53,61 @@
     </span>
   }
 }
+
+
+
+
+
+
+
+
+<!-- @if (is_today && punching.punching_count < 2 && !is_holiday) {
+  <span [style]="getTodaysStyle()"> - </span>
+}
+@if (punching.is_unauthorised) {
+  <span [style.color]="'red'"> Unauthorised </span>
+}
+@if (!is_today && (punching.punching_count === 1 || punching.single_punch_type) && !is_holiday
+) {
+  <span [style]="getSinglePunchingStyle()"> One-Time Punching </span>
+}
+
+
+
+@if (punching.punching_count >= 2) {
+  @if (!punching.computer_hint) {
+    {{ punching.duration_str }}
+  } @else if (punching.computer_hint && punching.is_unauthorised) {
+    @if (punching.computer_hint === 'casual_fn') {
+      <span [style.color]="casual_half_unauthcolor" class="computer-hint">
+        <small [innerHtml]="casual_half_text + '?'"></small>
+      </span>
+      {{ punching.duration_str }}
+    } @else if (punching.computer_hint === 'casual_an') {
+      {{ punching.duration_str }}
+      <span [style.color]="casual_half_unauthcolor" class="computer-hint">
+        <small [innerHtml]="casual_half_text + '?'"></small>
+      </span>
+    }
+  } @else if (punching.computer_hint && !punching.is_unauthorised) {
+    @if (punching.computer_hint === 'casual_fn') {
+      <span [style.color]="casual_half_authcolor" class="computer-hint">
+        <small [innerHtml]="casual_half_text"></small>
+      </span>
+      {{ punching.duration_str }}
+    } @else if (punching.computer_hint === 'casual_an') {
+      {{ punching.duration_str }}
+      <span [style.color]="casual_half_authcolor" class="computer-hint">
+        <small [innerHtml]="casual_half_text"></small>
+      </span>
+    }
+  }
+
+}
+@else {
+  @if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
+    <span [style.color]="'red'">
+      {{ getLeaveText(punching) }}
+    </span>
+  }
+} -->
