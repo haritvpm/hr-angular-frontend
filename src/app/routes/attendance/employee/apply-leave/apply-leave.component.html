@@ -40,7 +40,9 @@
   <div class="d-flex row align-items-stretch justify-content-center">
     <mat-form-field class="col" appearance="fill">
       <mat-label> {{showingPeriod ? 'Leave date (from)' : 'Leave date'}}</mat-label>
-      <input matInput [matDatepicker]="pickerf"  (focus)="pickerf.open()" (click)="pickerf.open()" formControlName="fromDate" readonly="true" />
+      <input matInput [matDatepicker]="pickerf"  (focus)="pickerf.open()" (click)="pickerf.open()"
+      [max]="fromDateMax"
+      formControlName="fromDate" readonly="true" />
       <!-- <mat-hint>YYYY-MM-DD</mat-hint> -->
       <mat-datepicker-toggle matIconSuffix [for]="pickerf"></mat-datepicker-toggle>
 
@@ -121,7 +123,7 @@
     } @else if (applyLeaveForm.get('leaveType')?.value === 'compen_for_extra') {
       <mat-form-field class="col">
         <mat-label>Compensation for month</mat-label>
-        <mat-select formControlName="inLieofDates">
+        <mat-select formControlName="inLieofMonth">
           @for (inlieof of inLieofMonths; track inlieof) {
             <mat-option [value]="inlieof.value">{{ inlieof.label }}</mat-option>
           }
@@ -147,7 +149,7 @@
       color="accent"
       (click)="applyLeave()"
       >Apply Leave</button>
-      <button mat-flat-button class="m-l-4" color="primary">Cancel</button>
+      <button mat-flat-button class="m-l-4" color="primary"   (click)="cancel()">Cancel</button>
     </div>
   </div>
 }

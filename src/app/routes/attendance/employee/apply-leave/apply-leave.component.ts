@@ -14,6 +14,7 @@ import { EmployeeService } from '../employee.service';
 import { GovtCalendar } from '../interface';
 import moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-apply-leave',
@@ -49,7 +50,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   showingPeriod = false;
   isCasualOrCompen = false;
   isSubmitting = false;
-
+  fromDateMax = moment().add(1, 'year').toDate();
   applyLeaveForm = this.fb.group({
     leaveType: ['', Validators.required],
     fromDate: ['', Validators.required],
@@ -58,6 +59,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     toType: [{ value: 'full', disabled: true },], //disable this to start with
     reason: ['', Validators.required],
     inLieofDates: [''],
+    inLieofMonth: [''],
     leaveCount: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0.5)]],
   });
 
@@ -79,8 +81,10 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   allholidays: string[] = [];
   holidaysInPeriod: string[] = [];
 
-  constructor(private fb: FormBuilder,
-    private empService: EmployeeService
+  constructor(
+    private fb: FormBuilder,
+    private empService: EmployeeService,
+    private router: Router
   ) { }
 
 
@@ -144,8 +148,16 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     if (leaveType === 'compen_for_extra') {
      this.casualPeriodHidden = true;
      this.showingPeriod = false;
+     this.applyLeaveForm.controls.inLieofMonth.setValidators([Validators.required]);
+    } else{
+      this.applyLeaveForm.controls.inLieofMonth.clearValidators();
     }
 
+    if(leaveType === 'compen' || leaveType === 'compen_for_extra'){
+      this.fromDateMax = moment().add(3, 'months').toDate(); //cant take leave for date not yet worked
+    } else {
+      this.fromDateMax = moment().add(1, 'year').toDate();
+    }
 
     this.showingPeriod = ['casual', 'compen', 'compen_for_extra',''].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') === -1 || !this.casualPeriodHidden;
 
@@ -160,6 +172,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     this.applyLeaveForm.controls.toDate.updateValueAndValidity();
     this.applyLeaveForm.controls.fromType.updateValueAndValidity();
     this.applyLeaveForm.controls.toType.updateValueAndValidity();
+    this.applyLeaveForm.controls.inLieofMonth.updateValueAndValidity();
 
   }
   showPeriod() {
@@ -424,4 +437,9 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
+  cancel() {
+    this.router.navigateByUrl('/attendance/self');
+  }
+
 }
