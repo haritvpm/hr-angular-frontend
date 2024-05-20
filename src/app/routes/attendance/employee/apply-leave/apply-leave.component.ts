@@ -64,6 +64,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   readonly leaveapplyTypes = [
     { value: 'casual', label: 'Casual Leave' },
     { value: 'compen', label: 'Compensation Leave' },
+    { value: 'compen_for_extra', label: 'Compensation Leave (for extra hours worked)' },
     { value: 'commuted', label: 'Commuted Leave' },
     { value: 'earned', label: 'Earned Leave' },
     { value: 'halfpay', label: 'Half Pay Leave' },
@@ -72,6 +73,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     { value: 'other', label: 'Other' },
 
   ];
+
+  inLieofMonths : { value: string, label: string }[] = [];
 
   allholidays: string[] = [];
   holidaysInPeriod: string[] = [];
@@ -131,22 +134,22 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       this.applyLeaveForm.controls.fromType.clearValidators();
     }
 
-    if (leaveType !== 'compen' && leaveType !== 'casual') {
+    if (leaveType !== 'compen' && leaveType !== 'casual' && leaveType !== 'compen_for_extra') {
       this.applyLeaveForm.controls.toDate.setValidators([Validators.required]);
       this.applyLeaveForm.controls.leaveCount.setValidators([Validators.min(1), Validators.required]);
-
-
-
     } else {
       this.applyLeaveForm.controls.toDate.clearValidators();
     }
 
+    if (leaveType === 'compen_for_extra') {
+     this.casualPeriodHidden = true;
+     this.showingPeriod = false;
+    }
 
 
+    this.showingPeriod = ['casual', 'compen', 'compen_for_extra',''].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') === -1 || !this.casualPeriodHidden;
 
-    this.showingPeriod = ['casual', 'compen', ''].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') === -1 || !this.casualPeriodHidden;
-
-    this.isCasualOrCompen = ['compen', 'casual'].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') != -1;
+    this.isCasualOrCompen = ['compen', 'casual','compen_for_extra'].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') != -1;
     //reset dateto and totype to empty
     this.applyLeaveForm.get('toDate')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
     this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
@@ -235,7 +238,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         leave = 0;
       }
 
-      if (form.leaveType !== 'casual' && form.leaveType !== 'compen') leave = 0;
+      if (form.leaveType !== 'casual' && form.leaveType !== 'compen' && form.leaveType !== 'compen_for_extra') leave = 0;
 
     }
     this.checkholiday(form.leaveType, fromDate, toDate);
@@ -301,6 +304,13 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     this.compenMinDate = moment(fromDate).subtract(3, 'months').toDate();
     this.compenMaxDate = moment(fromDate).subtract(1, 'day').toDate();
     this.casualMinDate = moment(fromDate).add(1, 'day').toDate();
+    //find the last 3 months of month of fromDate
+    this.inLieofMonths = [];
+    for (let i = 1; i <= 3; i++) {
+      const date = moment(fromDate).subtract(i, 'months');
+      this.inLieofMonths.push({ value: date.format('YYYY-MM-DD'), label: date.format('MMMM YYYY') });
+    }
+
   }
   clearEndDate() {
     this.applyLeaveForm.get('toDate')?.setValue(''); //emitEvent: false to avoid infinite loop
