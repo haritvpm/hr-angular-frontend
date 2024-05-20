@@ -14,7 +14,7 @@ import { LeaveToApprove, LeavesService } from '../leaves.service';
 })
 export class LeavesApproveComponent implements OnInit {
   dataSource = new MatTableDataSource<LeaveToApprove>();
-  displayedColumns: string[] = ['period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date'];
+  displayedColumns: string[] = ['employee','period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private leaveService: LeavesService) { }
@@ -25,5 +25,20 @@ export class LeavesApproveComponent implements OnInit {
       this.dataSource.paginator = this.paginator; // Assign the paginator property of the MatTableDataSource instance to the paginator property of the component
     });
   }
+  getLeaveStatusText(status: string): string {
+    if (status == 'Y') {
+      return 'Approved';
+    }
+    if (status == 'N') {
+      return 'Pending';
+    }
+    if (status == 'C') {
+      return 'Cancelled';
+    }
+    if (status == 'R') {
+      return 'Rejected';
+    }
+    return 'Unknown';
 
+  }
 }
