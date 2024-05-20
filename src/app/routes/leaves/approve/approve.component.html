@@ -1,3 +1,76 @@
-<page-header></page-header>
+  
+  <div class="m-t-4">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+  
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+    <ng-container matColumnDef="employee">
+      <th mat-header-cell *matHeaderCellDef> Employee </th>
+      <td mat-cell *matCellDef="let element" [style.white-space]="'nowrap'"> 
+      
+        <small>{{ element.employee.aadhaarid }}</small>&nbsp; <b> {{ element.employee.name }} </b><br />
+        <small>{{ element.employee.designation[0]?.designation?.designation }}</small>
 
-<p>approve works!</p>
+      
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="leave_type">
+      <th mat-header-cell *matHeaderCellDef> Leave Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.leave_type}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="period">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let element">
+  
+        @if(element?.day_count > 1){
+        {{element.start_date}} - {{element.end_date}}
+        }
+        @else
+        {
+        {{element.start_date}}&nbsp;
+        }
+  
+        </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="count">
+      <th mat-header-cell *matHeaderCellDef> Days </th>
+      <td [style.white-space]="'nowrap'" mat-cell *matCellDef="let element"> {{element.leave_count}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="active_status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let element" >{{getLeaveStatusText(element.active_status)}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="reason">
+      <th mat-header-cell *matHeaderCellDef> Reason </th>
+      <td mat-cell *matCellDef="let element"> {{element.reason}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="leave_cat">
+      <th mat-header-cell *matHeaderCellDef> F/H </th>
+      <td mat-cell *matCellDef="let element" >
+        <span class="d-flex row  justify-content-center " >
+         {{element.leave_cat}}  {{element?.time_period ? (element.time_period) : ''  }}
+        </span>
+  
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="creation_date">
+      <th mat-header-cell *matHeaderCellDef> Created </th>
+      <td mat-cell *matCellDef="let element"> {{element.creation_date}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  <mat-paginator [pageSizeOptions]="[10, 20]"
+  showFirstLastButtons
+  aria-label="Select page">
+  </mat-paginator>
+  </div>
+  
