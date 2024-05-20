@@ -439,6 +439,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
+    this.applyLeaveForm.reset();
     this.router.navigateByUrl('/attendance/self');
   }
 
