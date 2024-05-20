@@ -139,8 +139,13 @@
                     style="flex: 1"
                     [color]="getDurationStyle(getPercentage(item))"
                   ></mat-progress-bar>
-                } @else if (!item.punchout_trace && !item.is_today && item.punching_count) {
-                  <span style="color:orange">Missed Out Punching</span>
+                } @else if (
+                  !item.punchout_trace &&
+                  !item.is_today &&
+                  item.punching_count &&
+                  item.attendance_trace_fetch_complete
+                ) {
+                  <span style="color: orange">Missed Out Punching</span>
                 } @else {
                   -
                 }

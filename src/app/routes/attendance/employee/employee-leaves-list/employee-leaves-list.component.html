@@ -1,7 +1,9 @@
 @if (self) {
+  <div class="m-t-4 d-flex row justify-content-end">
   <button mat-button [color]="'accent'" cdkFocusInitial (click)="onApplyLeave()">
   <mat-icon>add</mat-icon>Apply Leave
 </button>
+</div>
 }
 
 <div class="m-t-4">
@@ -31,7 +33,7 @@
 
   <ng-container matColumnDef="count">
     <th mat-header-cell *matHeaderCellDef> Days </th>
-    <td [style.white-space]="'nowrap'" mat-cell *matCellDef="let element"> {{element.day_count}} </td>
+    <td [style.white-space]="'nowrap'" mat-cell *matCellDef="let element"> {{element.leave_count}} </td>
   </ng-container>
 
   <ng-container matColumnDef="active_status">

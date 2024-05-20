@@ -14,7 +14,7 @@
 .tile {
   max-width: 500px;
   /* flex: 1 0 300px; */
-  background-color: #fff;
+  /* background-color: #fff; */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   border-radius: 10px;
