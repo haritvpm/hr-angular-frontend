@@ -60,7 +60,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     reason: ['', Validators.required],
     inLieofDates: [''],
     inLieofMonth: [''],
-    leaveCount: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0.5)]],
+    leaveCount: [0, [Validators.required, Validators.min(0.5)]],
   });
 
   readonly leaveapplyTypes = [
@@ -406,7 +406,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         next: (v) =>
           {console.log(v);
           this.isSubmitting = false;
-          this.applyLeaveForm.reset();
+          this. cancel();
 
           },
         error: (e) => {console.error(e); this.isSubmitting = false;},

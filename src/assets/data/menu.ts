@@ -52,6 +52,33 @@ export default {
 
     },
 
+    {
+      route: '',
+      name: 'leaves',
+      type: 'sub',
+      icon: 'settings',
+      children: [
+        {
+          route: 'leaves/approve',
+          name: 'approve',
+          type: 'link',
+          permissions: {
+            only: ['section_access'],
+          },
+        },
+        {
+          route: 'attendance/self/apply-leave',
+          name: 'self',
+          type: 'link',
+          icon: 'person',
+          permissions: {
+            only: ['self_attendance_access'],
+          },
+        },
+
+      ],
+
+    },
 
     {
       route: 'settings',

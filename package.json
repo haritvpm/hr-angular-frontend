@@ -33,6 +33,7 @@
     "@ngx-formly/material": "^6.2.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
+    "ng-matero": "^17.1.0",
     "moment": "^2.30.0",
     "moment-timezone": "^0.5.45",
     "ngx-multiple-dates": "^17.0.1",
