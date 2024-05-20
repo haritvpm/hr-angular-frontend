@@ -28,6 +28,7 @@ export const routes: Routes = [
       { path: 'attendance', loadChildren: () => import('./routes/attendance/attendance.routes').then(m => m.routes)},
 
       { path: 'settings', loadChildren: () => import('./routes/settings/settings.routes').then(m => m.routes) },
+      { path: 'leaves', loadChildren: () => import('./routes/leaves/leaves.routes').then(m => m.routes) },
     ],
   },
   {

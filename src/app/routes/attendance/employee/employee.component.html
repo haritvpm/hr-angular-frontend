@@ -139,9 +139,9 @@
                     style="flex: 1"
                     [color]="getDurationStyle(getPercentage(item))"
                   ></mat-progress-bar>
-                } @else if (!item.punchin_trace && item.punching_count != 0) {
+                } @else if (!item.punchin_trace && item.punching_count !== 0) {
                   Missed Punch In
-                } @else if (!item.punchout_trace && !item.is_today && item.punching_count != 0) {
+                } @else if (!item.punchout_trace && !item.is_today && item.punching_count !== 0) {
                   Missed Punch Out
                 } @else {
                   -
