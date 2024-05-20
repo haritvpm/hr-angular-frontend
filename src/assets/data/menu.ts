@@ -63,7 +63,7 @@ export default {
           name: 'approve',
           type: 'link',
           permissions: {
-            only: ['section_access'],
+            only: ['leaf_access'],
           },
         },
         {
