@@ -24,7 +24,7 @@ export class EmployeeLeavesListComponent implements OnInit {
   }
   @Input() self = false;
 
-  displayedColumns: string[] = ['period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date'];
+  displayedColumns: string[] = ['period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date', 'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
@@ -52,7 +52,7 @@ export class EmployeeLeavesListComponent implements OnInit {
       return 'Cancelled';
     }
     if (status == 'R') {
-      return 'Rejected';
+      return 'Returned';
     }
     return 'Unknown';
 
@@ -60,6 +60,13 @@ export class EmployeeLeavesListComponent implements OnInit {
 
   onApplyLeave() {
     this.router.navigate(['/attendance/self/apply-leave']);
+  }
+
+  deleteLeave(leave: Leave) {
+    console.log('Deleting leave', leave);
+  }
+  editLeave(leave: Leave) {
+    console.log('Editing leave', leave);
   }
 
 
