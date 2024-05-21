@@ -31,7 +31,7 @@
   {{ punching.duration_str }}
 } @else if (is_today && punching.punching_count < 2 && !is_holiday) {
   <span [style]="getTodaysStyle()"> - </span>
-} @else if (punching.is_unauthorised) {
+} @else if (punching.is_unauthorised && !punching.leave) {
   <span [style.color]="'red'"> Unauthorised </span>
 } @else if (
   !is_today && (punching.punching_count === 1 || punching.single_punch_type) && !is_holiday
@@ -46,68 +46,107 @@
   <span [style.color]="getLeaveColor()" [style.font-weight]="'bold'" [style.font-size]="'medium'">
     {{ punching.leave?.leave_type }}
   </span>
-} @else {
-  @if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
-    <span [style.color]="'red'">
-      {{ getLeaveText(punching) }}
-    </span>
-  }
-}
-
-
-
-
-
-
-
-
-<!-- @if (is_today && punching.punching_count < 2 && !is_holiday) {
-  <span [style]="getTodaysStyle()"> - </span>
-}
-@if (punching.is_unauthorised) {
-  <span [style.color]="'red'"> Unauthorised </span>
-}
-@if (!is_today && (punching.punching_count === 1 || punching.single_punch_type) && !is_holiday
-) {
-  <span [style]="getSinglePunchingStyle()"> One-Time Punching </span>
-}
-
-
-
-@if (punching.punching_count >= 2) {
-  @if (!punching.computer_hint) {
-    {{ punching.duration_str }}
-  } @else if (punching.computer_hint && punching.is_unauthorised) {
-    @if (punching.computer_hint === 'casual_fn') {
-      <span [style.color]="casual_half_unauthcolor" class="computer-hint">
-        <small [innerHtml]="casual_half_text + '?'"></small>
-      </span>
-      {{ punching.duration_str }}
-    } @else if (punching.computer_hint === 'casual_an') {
-      {{ punching.duration_str }}
-      <span [style.color]="casual_half_unauthcolor" class="computer-hint">
-        <small [innerHtml]="casual_half_text + '?'"></small>
-      </span>
-    }
-  } @else if (punching.computer_hint && !punching.is_unauthorised) {
-    @if (punching.computer_hint === 'casual_fn') {
-      <span [style.color]="casual_half_authcolor" class="computer-hint">
-        <small [innerHtml]="casual_half_text"></small>
-      </span>
-      {{ punching.duration_str }}
-    } @else if (punching.computer_hint === 'casual_an') {
-      {{ punching.duration_str }}
-      <span [style.color]="casual_half_authcolor" class="computer-hint">
-        <small [innerHtml]="casual_half_text"></small>
-      </span>
-    }
-  }
+} @else if(punching.leave && punching.leave.active_status === 'R'){
+  <span [style]="returnedleaveStyle()">
+    <!-- {{punching.leave.active_status}} -->
+    <small [innerHtml]="returned_leaveText"></small>
+  </span>
 
 }
+
+
 @else {
   @if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
     <span [style.color]="'red'">
       {{ getLeaveText(punching) }}
     </span>
   }
-} -->
+}
+
+
+
+<!-- <span *ngIf="punching.punching_count >= 2">
+  <ng-container *ngIf="!punching.computer_hint">
+    {{ punching.duration_str }}
+  </ng-container>
+  <ng-container *ngIf="punching.computer_hint">
+    <ng-container *ngIf="punching.is_unauthorised">
+      <span
+        *ngIf="punching.computer_hint === 'casual_fn'"
+        [style.color]="casual_half_unauthcolor"
+        class="computer-hint"
+      >
+        <small [innerHTML]="casual_half_text + '?'"></small>
+      </span>
+      {{ punching.duration_str }}
+      <ng-container *ngIf="punching.computer_hint === 'casual_an'">
+        {{ punching.duration_str }}
+        <span [style.color]="casual_half_unauthcolor" class="computer-hint">
+          <small [innerHTML]="casual_half_text + '?'"></small>
+        </span>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!punching.is_unauthorised">
+      <span
+        *ngIf="punching.computer_hint === 'casual_fn'"
+        [style.color]="casual_half_authcolor"
+        class="computer-hint"
+      >
+        <small [innerHTML]="casual_half_text"></small>
+      </span>
+      {{ punching.duration_str }}
+      <ng-container *ngIf="punching.computer_hint === 'casual_an'">
+        {{ punching.duration_str }}
+        <span [style.color]="casual_half_authcolor" class="computer-hint">
+          <small [innerHTML]="casual_half_text"></small>
+        </span>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</span>
+<ng-container
+  *ngIf="
+    punching.punching_count >= 2 &&
+    !is_holiday &&
+    !is_today &&
+    punching.computer_hint === 'casual_fn'
+  "
+>
+  {{ punching.duration_str }}
+</ng-container>
+<ng-container *ngIf="is_today && punching.punching_count < 2 && !is_holiday">
+  <span [style]="getTodaysStyle()"> - </span>
+</ng-container>
+<ng-container *ngIf="punching.is_unauthorised && !punching.leave">
+  <span [style.color]="'red'">Unauthorised</span>
+</ng-container>
+<ng-container
+  *ngIf="!is_today && (punching.punching_count === 1 || punching.single_punch_type) && !is_holiday"
+>
+  <span [style]="getSinglePunchingStyle()">One-Time Punching</span>
+</ng-container>
+<ng-container
+  *ngIf="
+    !is_today &&
+    !is_holiday &&
+    punching.punching_count < 2 &&
+    (punching.leave?.active_status === 'Y' || punching.leave?.active_status === 'N')
+  "
+>
+  <span [style.color]="getLeaveColor()" [style.font-weight]="'bold'" [style.font-size]="'medium'">
+    {{ punching.leave?.leave_type }}
+  </span>
+</ng-container>
+<ng-container *ngIf="punching.leave?.active_status === 'R'">
+  <span [style]="returnedleaveStyle()">
+    <small [innerHTML]="returned_leaveText"></small>
+  </span>
+</ng-container>
+<ng-container *ngIf="(punching.hint && punching.hint !== 'clear') || !punching.hint">
+  <span [style.color]="'red'">
+    {{ getLeaveText(punching) }}
+  </span>
+</ng-container> -->
+
+
+
