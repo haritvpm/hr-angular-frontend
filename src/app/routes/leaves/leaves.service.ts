@@ -28,4 +28,14 @@ export class LeavesService {
   approveLeave(id: number): Observable<LeaveToApprove> {
     return this.http.post<LeaveToApprove>(`${this.apiUrl}/${id}/approve`, {});
   }
+  forwardLeave(id: number): Observable<LeaveToApprove> {
+    return this.http.post<LeaveToApprove>(`${this.apiUrl}/${id}/forward`, {});
+  }
+  returnLeave(id: number): Observable<LeaveToApprove> {
+    return this.http.post<LeaveToApprove>(`${this.apiUrl}/${id}/return`, {});
+  }
+  deleteLeave(id: number): Observable<LeaveToApprove> {
+    return this.http.delete<LeaveToApprove>(`${this.apiUrl}/${id}`);
+  }
+  
 }
