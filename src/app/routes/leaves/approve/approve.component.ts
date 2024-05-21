@@ -14,7 +14,7 @@ import { LeaveToApprove, LeavesService } from '../leaves.service';
 })
 export class LeavesApproveComponent implements OnInit {
   dataSource = new MatTableDataSource<LeaveToApprove>();
-  displayedColumns: string[] = ['employee','period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date'];
+  displayedColumns: string[] = ['employee','period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date', 'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private leaveService: LeavesService) { }
@@ -40,5 +40,11 @@ export class LeavesApproveComponent implements OnInit {
     }
     return 'Unknown';
 
+  }
+  approveLeave(leave: LeaveToApprove) {
+    console.log('Approving leave', leave);
+  }
+  forwardLeave(leave: LeaveToApprove) {
+    console.log('Forwarding leave', leave);
   }
 }
