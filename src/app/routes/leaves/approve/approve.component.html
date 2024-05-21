@@ -71,10 +71,12 @@
           <mat-icon color="primary">edit</mat-icon>
         </span> -->
         @if ( element.owner_can_approve ) {
-          <button mat-button color="warn" (click)="approveLeave(element)">Approve</button>
+          <button mat-button color="accent" (click)="approveLeave(element)">Approve</button>
         } @else {
-          <button mat-button color="warn" (click)="forwardLeave(element)">Forward</button>
+          <button mat-button color="accent" (click)="forwardLeave(element)">Forward</button>
         }
+        <button mat-button color="warn" (click)="returnLeave(element)">Return</button>
+
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

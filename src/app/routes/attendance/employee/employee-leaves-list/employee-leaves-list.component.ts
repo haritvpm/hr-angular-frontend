@@ -5,6 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Leave } from '../interface';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { LeavesService } from 'app/routes/leaves/leaves.service';
 @Component({
   selector: 'app-employee-leaves-list',
   standalone: true,
@@ -15,6 +16,7 @@ import { Router } from '@angular/router';
 export class EmployeeLeavesListComponent implements OnInit {
 
   private readonly router = inject(Router);
+  private readonly leaveServoce = inject(LeavesService);
 
   dataSource = new MatTableDataSource<Leave>();
   @Input() set employeeLeaves(value:Leave[]) {
@@ -38,6 +40,9 @@ export class EmployeeLeavesListComponent implements OnInit {
     }
     if (status == 'N') {
       return 'DeepSkyBlue';
+    }
+    if (status == 'R') {
+      return 'red';
     }
     return 'black';
   }
@@ -63,7 +68,12 @@ export class EmployeeLeavesListComponent implements OnInit {
   }
 
   deleteLeave(leave: Leave) {
+
     console.log('Deleting leave', leave);
+    this.leaveServoce.deleteLeave(leave.id).subscribe(data => {
+      console.log('Leave deleted', data);
+    });
+
   }
   editLeave(leave: Leave) {
     console.log('Editing leave', leave);

@@ -48,7 +48,7 @@ export class LeavesApproveComponent implements OnInit {
       return 'Cancelled';
     }
     if (status == 'R') {
-      return 'Rejected';
+      return 'Returned';
     }
     return 'Unknown';
 
@@ -61,7 +61,18 @@ export class LeavesApproveComponent implements OnInit {
     });
   }
   forwardLeave(leave: LeaveToApprove) {
-    console.log('Forwarding leave', leave);
+   this.leaveService.forwardLeave(leave.id).subscribe(data => {
+      console.log('Leave forwarded', data);
+      this.loadData();
+    });
+
+  }
+  returnLeave(leave: LeaveToApprove) {
+    console.log('Returning leave', leave);
+    this.leaveService.returnLeave(leave.id).subscribe(data => {
+      console.log('Leave returned', data);
+      this.loadData();
+    }); 
 
   }
 }
