@@ -25,4 +25,7 @@ export class LeavesService {
     return this.http.get<LeaveToApproveApi>(`${this.apiUrl}`);
 
   }
+  approveLeave(id: number): Observable<LeaveToApprove> {
+    return this.http.post<LeaveToApprove>(`${this.apiUrl}/${id}/approve`, {});
+  }
 }

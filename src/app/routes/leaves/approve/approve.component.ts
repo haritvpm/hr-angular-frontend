@@ -14,16 +14,28 @@ import { LeaveToApprove, LeavesService } from '../leaves.service';
 })
 export class LeavesApproveComponent implements OnInit {
   dataSource = new MatTableDataSource<LeaveToApprove>();
-  displayedColumns: string[] = ['employee','period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date'];
+  displayedColumns: string[] = ['employee','period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date', 'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private leaveService: LeavesService) { }
 
-  ngOnInit() {
+  loadData() {
     this.leaveService.getLeavesToApprove().subscribe(data => {
       this.dataSource.data = data.leaves; // Assign the data.leaves array to the data property of the MatTableDataSource instance
       this.dataSource.paginator = this.paginator; // Assign the paginator property of the MatTableDataSource instance to the paginator property of the component
     });
+  }
+  ngOnInit() {
+    this.loadData();
+  }
+  getStatusColor(status: string): string {
+    if (status == 'Y') {
+      return 'LimeGreen';
+    }
+    if (status == 'N') {
+      return 'DeepSkyBlue';
+    }
+    return 'black';
   }
   getLeaveStatusText(status: string): string {
     if (status == 'Y') {
@@ -39,6 +51,17 @@ export class LeavesApproveComponent implements OnInit {
       return 'Rejected';
     }
     return 'Unknown';
+
+  }
+  approveLeave(leave: LeaveToApprove) {
+
+    this.leaveService.approveLeave(leave.id).subscribe(data => {
+      console.log('Leave approved', data);
+      this.loadData();
+    });
+  }
+  forwardLeave(leave: LeaveToApprove) {
+    console.log('Forwarding leave', leave);
 
   }
 }

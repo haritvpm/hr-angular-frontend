@@ -22,6 +22,7 @@
         }
       </mat-select>
     </mat-form-field>
+
     @if(applyLeaveForm.get('fromDate')?.value && applyLeaveForm.get('leaveCount')!.value! > 0){
     <mat-form-field class="col" appearance="outline">
       <mat-label>Days</mat-label>
@@ -34,12 +35,19 @@
       />
     </mat-form-field>
   }
+  @if(isCasualOrCompen){
+  <mat-checkbox
+  formControlName="multipleDays">
+  Multiple Days
+</mat-checkbox>
+}
+
   </div>
 
   @if(applyLeaveForm.get('leaveType')?.value){
   <div class="d-flex row align-items-stretch justify-content-center">
     <mat-form-field class="col" appearance="fill">
-      <mat-label> {{showingPeriod ? 'Leave date (from)' : 'Leave date'}}</mat-label>
+      <mat-label> {{this.applyLeaveForm.get('multipleDays')?.value || !isCasualOrCompen ? 'Leave date (from)' : 'Leave date'}}</mat-label>
       <input matInput [matDatepicker]="pickerf"  (focus)="pickerf.open()" (click)="pickerf.open()"
       [max]="fromDateMax"
       formControlName="fromDate" readonly="true" />
@@ -50,7 +58,7 @@
     </mat-form-field>
 
     <!-- if casual leave is selected, fromType should be full, an, fn otherwise just hide, but its value should be full -->
-    @if (applyLeaveForm.get('leaveType')?.value === 'casual') {
+    @if (applyLeaveForm.get('leaveType')?.value === 'casual' && !this.applyLeaveForm.get('multipleDays')?.value) {
       <mat-form-field class="col" appearance="fill">
         <mat-label>Type</mat-label>
         <mat-select formControlName="fromType">
@@ -61,7 +69,7 @@
       </mat-form-field>
     }
 
-    @if( showingPeriod && applyLeaveForm.get('leaveType')?.value !== 'compen_for_extra'){
+    @if( this.applyLeaveForm.get('multipleDays')?.value && applyLeaveForm.get('leaveType')?.value !== 'compen_for_extra'){
 
     <mat-form-field class="col" appearance="fill">
       <mat-label>To date</mat-label>
@@ -82,7 +90,7 @@
       <mat-datepicker #picker [disabled]="!applyLeaveForm.get('fromDate')?.value"></mat-datepicker>
     </mat-form-field>
     <!-- if casual leave is selected, toType should be full, an, fn otherwise just hide, but its value should be full -->
-    @if (applyLeaveForm.get('leaveType')?.value === 'casual') {
+    <!-- @if (applyLeaveForm.get('leaveType')?.value === 'casual') {
       <mat-form-field class="col"  appearance="fill">
         <mat-label>Type</mat-label>
         <mat-select formControlName="toType">
@@ -91,11 +99,7 @@
           }
         </mat-select>
       </mat-form-field>
-    }
-  } @else if (applyLeaveForm.get('leaveType')?.value !== 'compen_for_extra'){
-    <!-- a button which will show the period on click -->
-
-    <button class="m-l-4" mat-button color="primary" (click)="showPeriod()">Multiple days...</button>
+    } -->
   }
 
   </div>

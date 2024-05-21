@@ -15,6 +15,7 @@ import { GovtCalendar } from '../interface';
 import moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-apply-leave',
@@ -22,7 +23,7 @@ import { Router } from '@angular/router';
   imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
     FormsModule, MatFormFieldModule, MatSelectModule, MatIconModule,
     MatInputModule, MatDatepickerModule, MatDatepickerModule, NgxMultipleDatesModule,
-    MtxAlertModule],
+    MtxAlertModule, MatCheckboxModule],
   templateUrl: './apply-leave.component.html',
   styleUrl: './apply-leave.component.css'
 })
@@ -46,9 +47,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   compenMaxDate = new Date();
   today = new Date();
   casualMinDate = new Date('2024-01-01');
-  casualPeriodHidden = true;
-  showingPeriod = false;
   isCasualOrCompen = false;
+  isCasualOrCompenOrCompenExtra = false;
   isSubmitting = false;
   fromDateMax = moment().add(1, 'year').toDate();
   applyLeaveForm = this.fb.group({
@@ -56,11 +56,12 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     fromDate: ['', Validators.required],
     fromType: [''],
     toDate: [''],
-    toType: [{ value: 'full', disabled: true },], //disable this to start with
+    // toType: [{ value: 'full', disabled: true },], //disable this to start with
     reason: ['', Validators.required],
     inLieofDates: [''],
     inLieofMonth: [''],
     leaveCount: [0, [Validators.required, Validators.min(0.5)]],
+    multipleDays : [false],
   });
 
   readonly leaveapplyTypes = [
@@ -114,12 +115,22 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.applyLeaveForm.get('leaveType')!.valueChanges.subscribe(val => {
       this.onLeaveTypeChange(val);
     }));
+    this.subscriptions.push(this.applyLeaveForm.get('multipleDays')!.valueChanges.subscribe(val => {
+      this.onMutlipleDaysChange(val);
+    }));
   }
 
   onLeaveTypeChange(leaveType: any) {
 
-    this.applyLeaveForm.controls.toType.clearValidators();
+    // this.applyLeaveForm.controls.toType.clearValidators();
+    this.isCasualOrCompenOrCompenExtra = ['compen', 'casual','compen_for_extra'].indexOf(leaveType || '') != -1;
+    this.isCasualOrCompen = ['compen', 'casual'].indexOf(leaveType || '') != -1;
 
+    if(!this.isCasualOrCompenOrCompenExtra){
+      this.applyLeaveForm.get('multipleDays')?.setValue( true, { emitEvent: false });
+      } else {
+        this.applyLeaveForm.get('multipleDays')?.setValue( false, { emitEvent: false });
+      }
 
     if (leaveType === 'compen') {
       this.applyLeaveForm.controls.inLieofDates.setValidators([Validators.required]);
@@ -128,7 +139,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       this.applyLeaveForm.controls.inLieofDates.clearValidators();
     }
 
-    if (leaveType === 'casual') {
+    if (leaveType === 'casual' && !this.applyLeaveForm.get('multipleDays')?.value) {
       this.applyLeaveForm.get('fromType')?.enable({ emitEvent: false });
       this.applyLeaveForm.controls.fromType.setValidators([Validators.required]);
       this.applyLeaveForm.controls.leaveCount.setValidators([Validators.max(15), Validators.min(0.5), Validators.required]);
@@ -138,7 +149,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       this.applyLeaveForm.controls.fromType.clearValidators();
     }
 
-    if (leaveType !== 'compen' && leaveType !== 'casual' && leaveType !== 'compen_for_extra') {
+    if (!this.isCasualOrCompenOrCompenExtra ||(this.isCasualOrCompen && this.applyLeaveForm.get('multipleDays')?.value)) {
       this.applyLeaveForm.controls.toDate.setValidators([Validators.required]);
       this.applyLeaveForm.controls.leaveCount.setValidators([Validators.min(1), Validators.required]);
     } else {
@@ -146,8 +157,6 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     }
 
     if (leaveType === 'compen_for_extra') {
-     this.casualPeriodHidden = true;
-     this.showingPeriod = false;
      this.applyLeaveForm.controls.inLieofMonth.setValidators([Validators.required]);
     } else{
       this.applyLeaveForm.controls.inLieofMonth.clearValidators();
@@ -159,25 +168,44 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       this.fromDateMax = moment().add(1, 'year').toDate();
     }
 
-    this.showingPeriod = ['casual', 'compen', 'compen_for_extra',''].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') === -1 || !this.casualPeriodHidden;
+    //if(['casual', 'compen', 'compen_for_extra',''].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') === -1 || !this.casualPeriodHidden;
 
-    this.isCasualOrCompen = ['compen', 'casual','compen_for_extra'].indexOf(this.applyLeaveForm.get('leaveType')?.value || '') != -1;
+
     //reset dateto and totype to empty
     this.applyLeaveForm.get('toDate')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
-    this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
+    // this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
     this.applyLeaveForm.get('fromType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
+
+
 
     this.applyLeaveForm.controls.inLieofDates.updateValueAndValidity();
     this.applyLeaveForm.controls.leaveCount.updateValueAndValidity();
     this.applyLeaveForm.controls.toDate.updateValueAndValidity();
     this.applyLeaveForm.controls.fromType.updateValueAndValidity();
-    this.applyLeaveForm.controls.toType.updateValueAndValidity();
+    // this.applyLeaveForm.controls.toType.updateValueAndValidity();
     this.applyLeaveForm.controls.inLieofMonth.updateValueAndValidity();
 
   }
-  showPeriod() {
-    this.casualPeriodHidden = false;
-    this.showingPeriod = true;
+  onMutlipleDaysChange( multiple: any ) {
+   // this.applyLeaveForm.get('multipleDays')?.setValue('true'); //emitEvent: false to avoid infinite loop
+   if (!multiple ) {
+    this.applyLeaveForm.get('fromType')?.enable({ emitEvent: false });
+    this.applyLeaveForm.controls.fromType.setValidators([Validators.required]);
+    this.applyLeaveForm.controls.toDate.clearValidators();
+
+    this.applyLeaveForm.get('toDate')?.setValue('', { emitEvent: false }); //update leave count
+
+
+  } else {
+    this.applyLeaveForm.get('fromType')?.disable({ emitEvent: false });
+    this.applyLeaveForm.controls.fromType.clearValidators();
+    this.applyLeaveForm.controls.toDate.setValidators([Validators.required]);
+
+  }
+
+  this.applyLeaveForm.controls.fromType.updateValueAndValidity();
+  this.applyLeaveForm.controls.toDate.updateValueAndValidity();
+
   }
 
   enumerateDaysBetweenDates(startDate: any, endDate: any) {
@@ -288,7 +316,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     const leaveType = this.applyLeaveForm.get('leaveType')?.value;
     //const fromType = this.applyLeaveForm.get('fromType')?.value || null;
     this.applyLeaveForm.get('toDate')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
-    this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
+    // this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
     this.applyLeaveForm.get('fromType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
     this.casualFromTypes = this.casualTypes;
     this.casualToTypes = this.casualTypes;
@@ -311,7 +339,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       console.log('fromDate and toDate are different');
       //this.sameDate = false;
     }
-    this.casualAnFnSync(leaveType, fromDate, toDate);
+    // this.casualAnFnSync(leaveType, fromDate, toDate);
 
     //update minimum date for compen
     this.compenMinDate = moment(fromDate).subtract(3, 'months').toDate();
@@ -340,7 +368,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       this.sameDate = true;
 
       if (leaveType === 'casual') {
-        this.applyLeaveForm.get('toType')?.setValue(fromType, { emitEvent: false }); //emitEvent: false to avoid infinite loop
+        // this.applyLeaveForm.get('toType')?.setValue(fromType, { emitEvent: false }); //emitEvent: false to avoid infinite loop
       }
 
     } else {
@@ -348,23 +376,22 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       this.sameDate = false;
 
       if (leaveType === 'casual') {
-        this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
+        // this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
 
       }
     }
 
-    this.casualAnFnSync(leaveType, fromDate, toDate);
+    // this.casualAnFnSync(leaveType, fromDate, toDate);
 
-    if ( leaveType !== 'casual' ||  this.sameDate || !(this.applyLeaveForm.get('toDate')?.value)) {
-      this.applyLeaveForm.get('toType')?.disable({ emitEvent: false });
-      this.applyLeaveForm.controls.toType.clearValidators();
+    // if ( leaveType !== 'casual' ||  this.sameDate || !(this.applyLeaveForm.get('toDate')?.value)) {
+    //   this.applyLeaveForm.get('toType')?.disable({ emitEvent: false });
+    //   this.applyLeaveForm.controls.toType.clearValidators();
 
-    } else {
-      this.applyLeaveForm.get('toType')?.enable({ emitEvent: false });
-      this.applyLeaveForm.controls.toType.setValidators([Validators.required]);
-    }
-
-    this.applyLeaveForm.controls.toType.updateValueAndValidity();
+    // } else {
+    //   this.applyLeaveForm.get('toType')?.enable({ emitEvent: false });
+    //   this.applyLeaveForm.controls.toType.setValidators([Validators.required]);
+    // }
+    // this.applyLeaveForm.controls.toType.updateValueAndValidity();
 
 
   }
@@ -416,23 +443,23 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
   }
 
-  casualAnFnSync(leaveType: any, fromDate: any, toDate: any) {
-    //if (leaveType === 'casual')
-    {
-      this.casualToTypes = this.casualTypes;
+  // casualAnFnSync(leaveType: any, fromDate: any, toDate: any) {
+  //   //if (leaveType === 'casual')
+  //   {
+  //     this.casualToTypes = this.casualTypes;
 
-      if (!this.sameDate && fromDate && toDate) { //only if toDate is set
-        this.casualFromTypes = this.casualTypes.filter(x => x.value != 'fn'); //[{ value: 'full', label: 'Full Day' }, { value: 'an', label: 'Afternoon' }];
-        this.casualToTypes = this.casualTypes.filter(x => x.value != 'an'); //[{ value: 'full', label: 'Full Day' }, { value: 'fn', label: 'Forenoon' }];
-      } else {
-        this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
-        this.applyLeaveForm.get('fromType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
+  //     if (!this.sameDate && fromDate && toDate) { //only if toDate is set
+  //       this.casualFromTypes = this.casualTypes.filter(x => x.value != 'fn'); //[{ value: 'full', label: 'Full Day' }, { value: 'an', label: 'Afternoon' }];
+  //       this.casualToTypes = this.casualTypes.filter(x => x.value != 'an'); //[{ value: 'full', label: 'Full Day' }, { value: 'fn', label: 'Forenoon' }];
+  //     } else {
+  //       // this.applyLeaveForm.get('toType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
+  //       this.applyLeaveForm.get('fromType')?.setValue('', { emitEvent: false }); //emitEvent: false to avoid infinite loop
 
-        this.casualFromTypes = this.casualTypes;
-        this.casualToTypes = this.casualTypes;
-      }  //value.leaveType === 'casual' e
-    }
-  }
+  //       this.casualFromTypes = this.casualTypes;
+  //       this.casualToTypes = this.casualTypes;
+  //     }  //value.leaveType === 'casual' e
+  //   }
+  // }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
