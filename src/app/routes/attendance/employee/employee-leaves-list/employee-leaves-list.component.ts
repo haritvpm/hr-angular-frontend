@@ -76,7 +76,8 @@ export class EmployeeLeavesListComponent implements OnInit {
 
   }
   editLeave(leave: Leave) {
-    console.log('Editing leave', leave);
+    this.router.navigate(['/attendance/self/apply-leave', leave.id]);
+
   }
 
 
