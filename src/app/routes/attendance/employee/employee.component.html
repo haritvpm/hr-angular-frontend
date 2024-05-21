@@ -130,29 +130,7 @@
           <ng-container matColumnDef="duration">
             <th mat-header-cell *matHeaderCellDef>Duration</th>
             <td mat-cell *matCellDef="let item" (click)="mark(item)">
-              @if (!item.is_future) {
-                @if (item.duration_str) {
-                  {{ item.duration_str }}
-                  <mat-progress-bar
-                    mode="determinate"
-                    [value]="getPercentage(item)"
-                    style="flex: 1"
-                    [color]="getDurationStyle(getPercentage(item))"
-                  ></mat-progress-bar>
-                } @else if (item.leave) {
-                  {{ item.leave.leave_type }}
-                } @else if (
-                  !item.punchout_trace &&
-                  !item.is_today &&
-                  item.punching_count &&
-                  item.attendance_trace_fetch_complete
-                ) {
-                  <span style="color: orange">Missed Out Punching</span>
-                } @else {
-                  -
-                }
-                <!-- {{ item.duration_str ? item.duration_str : '-' }} -->
-              }
+              <app-duration-progressbar [punchItem]="item"></app-duration-progressbar>
             </td>
           </ng-container>
 
