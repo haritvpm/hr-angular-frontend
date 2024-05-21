@@ -80,7 +80,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         map(data => data.aadhaar_date),
         tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date; this.self = data.self; console.log('date dfdfd:' + data.date); }),
         switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date)),
-       // take(1)
+        // take(1)
       )
       .subscribe(response => {
         console.log(response);
@@ -193,7 +193,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   getPercentage(dateItem: any) {
     const duration = dateItem.duration_sec;
     const durationNeeded = dateItem.duration_sec_needed;
-    return durationNeeded ? (duration / durationNeeded) * 100 : 0;
+      return durationNeeded ? (duration / durationNeeded) * 100 : 0;
   }
 
   getDurationStyle(durationPercent: number) {

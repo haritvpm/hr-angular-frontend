@@ -139,6 +139,8 @@
                     style="flex: 1"
                     [color]="getDurationStyle(getPercentage(item))"
                   ></mat-progress-bar>
+                } @else if (item.leave) {
+                  {{ item.leave.leave_type }}
                 } @else if (
                   !item.punchout_trace &&
                   !item.is_today &&
