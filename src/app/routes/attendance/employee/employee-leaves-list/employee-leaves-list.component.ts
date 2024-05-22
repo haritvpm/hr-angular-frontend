@@ -72,6 +72,7 @@ export class EmployeeLeavesListComponent implements OnInit {
     console.log('Deleting leave', leave);
     this.leaveServoce.deleteLeave(leave.id).subscribe(data => {
       console.log('Leave deleted', data);
+      this.dataSource.data = this.dataSource.data.filter(l => l.id !== leave.id);
     });
 
   }

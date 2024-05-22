@@ -70,12 +70,21 @@
         <!-- <span (click)="openEditForm(row)" class="action-icon" style="margin-right: 5px;">
           <mat-icon color="primary">edit</mat-icon>
         </span> -->
-        @if ( element.owner_can_approve ) {
-          <button mat-button color="accent" (click)="approveLeave(element)">Approve</button>
-        } @else {
-          <button mat-button color="accent" (click)="forwardLeave(element)">Forward</button>
+        @if ( element.active_status === 'N' ) {
+          @if ( element.owner_can_approve ) {
+            <button mat-button color="accent" (click)="approveLeave(element)">
+              <mat-icon class="icon-small" >done</mat-icon>Approve
+            </button>
+          } @else {
+            <button mat-button color="accent" (click)="forwardLeave(element)">
+              <mat-icon class="icon-small" >shortcut</mat-icon>  Forward
+            </button>
+          }
         }
-        <button mat-button color="warn" (click)="returnLeave(element)">Return</button>
+
+        <button mat-button color="warn" (click)="returnLeave(element)">
+          <mat-icon class="icon-small" >reply</mat-icon>   Return
+        </button>
 
       </td>
     </ng-container>
