@@ -455,18 +455,31 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     this.isSubmitting = true;
 
-    this.empService.applyLeave(this.applyLeaveForm.value).subscribe(
+    if( this.isAddMode ){
+      this.empService.applyLeave(this.applyLeaveForm.value).subscribe(
       {
         next: (v) =>
           {console.log(v);
           this.isSubmitting = false;
-          this. cancel();
+          this.cancel();
 
           },
         error: (e) => {console.error(e); this.isSubmitting = false;},
         complete: () => {console.info('complete'); this.isSubmitting = false;}
       });
-
+    } else {
+      this.empService.updateLeave( this.id, this.applyLeaveForm.value).subscribe(
+        {
+          next: (v) =>
+            {console.log(v);
+            this.isSubmitting = false;
+            this.cancel();
+  
+            },
+          error: (e) => {console.error(e); this.isSubmitting = false;},
+          complete: () => {console.info('complete'); this.isSubmitting = false;}
+        });
+    }
 
   }
 
