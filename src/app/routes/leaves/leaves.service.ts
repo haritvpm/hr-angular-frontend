@@ -37,5 +37,8 @@ export class LeavesService {
   deleteLeave(id: number): Observable<LeaveToApprove> {
     return this.http.delete<LeaveToApprove>(`${this.apiUrl}/${id}`);
   }
-  
+  getById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  }
+
 }

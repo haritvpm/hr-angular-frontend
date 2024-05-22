@@ -16,20 +16,20 @@
   <div class="d-flex row">
     <mat-form-field class="col" appearance="fill">
       <mat-label>Leave Type</mat-label>
-      <mat-select formControlName="leaveType">
+      <mat-select formControlName="leave_type">
         @for (leavetype of leaveapplyTypes; track leavetype) {
           <mat-option [value]="leavetype.value">{{ leavetype.label }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
-    @if(applyLeaveForm.get('fromDate')?.value && applyLeaveForm.get('leaveCount')!.value! > 0){
+    @if(applyLeaveForm.get('start_date')?.value && applyLeaveForm.get('leave_count')!.value! > 0){
     <mat-form-field class="col" appearance="outline">
       <mat-label>Days</mat-label>
       <input
         matInput
         type="number"
-        formControlName="leaveCount"
+        formControlName="leave_count"
         placeholder="Days"
         readonly="true"
       />
@@ -44,13 +44,13 @@
 
   </div>
 
-  @if(applyLeaveForm.get('leaveType')?.value){
+  @if(applyLeaveForm.get('leave_type')?.value){
   <div class="d-flex row align-items-stretch justify-content-center">
     <mat-form-field class="col" appearance="fill">
       <mat-label> {{this.applyLeaveForm.get('multipleDays')?.value || !isCasualOrCompen ? 'Leave date (from)' : 'Leave date'}}</mat-label>
       <input matInput [matDatepicker]="pickerf"  (focus)="pickerf.open()" (click)="pickerf.open()"
       [max]="fromDateMax"
-      formControlName="fromDate" readonly="true" />
+      formControlName="start_date" readonly="true" />
       <!-- <mat-hint>YYYY-MM-DD</mat-hint> -->
       <mat-datepicker-toggle matIconSuffix [for]="pickerf"></mat-datepicker-toggle>
 
@@ -58,7 +58,7 @@
     </mat-form-field>
 
     <!-- if casual leave is selected, fromType should be full, an, fn otherwise just hide, but its value should be full -->
-    @if (applyLeaveForm.get('leaveType')?.value === 'casual' && !this.applyLeaveForm.get('multipleDays')?.value) {
+    @if (applyLeaveForm.get('leave_type')?.value === 'casual' && !this.applyLeaveForm.get('multipleDays')?.value) {
       <mat-form-field class="col" appearance="fill">
         <mat-label>Type</mat-label>
         <mat-select formControlName="fromType">
@@ -69,17 +69,17 @@
       </mat-form-field>
     }
 
-    @if( this.applyLeaveForm.get('multipleDays')?.value && applyLeaveForm.get('leaveType')?.value !== 'compen_for_extra'){
+    @if( this.applyLeaveForm.get('multipleDays')?.value && applyLeaveForm.get('leave_type')?.value !== 'compen_for_extra'){
 
     <mat-form-field class="col" appearance="fill">
       <mat-label>To date</mat-label>
       <input
-        [min]="isCasualOrCompen ? casualMinDate : applyLeaveForm.get('fromDate')?.value"
+        [min]="isCasualOrCompen ? casualMinDate : applyLeaveForm.get('start_date')?.value"
         matInput
         (focus)="picker.open()"
         (click)="picker.open()"
         [matDatepicker]="picker"
-        formControlName="toDate"
+        formControlName="end_date"
         readonly="true"
       />
       <!-- <mat-hint>YYYY-MM-DD</mat-hint> -->
@@ -87,10 +87,10 @@
       <mat-datepicker-toggle matSuffix (click)="clearEndDate()">
         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
       </mat-datepicker-toggle>
-      <mat-datepicker #picker [disabled]="!applyLeaveForm.get('fromDate')?.value"></mat-datepicker>
+      <mat-datepicker #picker [disabled]="!applyLeaveForm.get('start_date')?.value"></mat-datepicker>
     </mat-form-field>
     <!-- if casual leave is selected, toType should be full, an, fn otherwise just hide, but its value should be full -->
-    <!-- @if (applyLeaveForm.get('leaveType')?.value === 'casual') {
+    <!-- @if (applyLeaveForm.get('leave_type')?.value === 'casual') {
       <mat-form-field class="col"  appearance="fill">
         <mat-label>Type</mat-label>
         <mat-select formControlName="toType">
@@ -106,7 +106,7 @@
 
   <!-- for compen, we need in lie of -->
   <div class="d-flex row">
-    @if (applyLeaveForm.get('leaveType')?.value === 'compen') {
+    @if (applyLeaveForm.get('leave_type')?.value === 'compen') {
       <mat-form-field class="col">
         <ngx-multiple-dates
           [matDatepicker]="compenpicker"
@@ -114,17 +114,17 @@
           name="compensationDates"
           formControlName="inLieofDates"
           [closeOnSelected]="true"
-          [required]="applyLeaveForm.get('leaveType')?.value === 'compen'"
+          [required]="applyLeaveForm.get('leave_type')?.value === 'compen'"
           [max]="compenMaxDate"
           [min]="compenMinDate"
-          [minlength]="applyLeaveForm.get('leaveCount')?.value || 1"
-          [maxlength]="applyLeaveForm.get('leaveCount')?.value || 1"
+          [minlength]="applyLeaveForm.get('leave_count')?.value || 1"
+          [maxlength]="applyLeaveForm.get('leave_count')?.value || 1"
         >
         </ngx-multiple-dates>
         <mat-datepicker-toggle matPrefix [for]="compenpicker"></mat-datepicker-toggle>
         <mat-datepicker #compenpicker></mat-datepicker>
       </mat-form-field>
-    } @else if (applyLeaveForm.get('leaveType')?.value === 'compen_for_extra') {
+    } @else if (applyLeaveForm.get('leave_type')?.value === 'compen_for_extra') {
       <mat-form-field class="col">
         <mat-label>Compensation for month</mat-label>
         <mat-select formControlName="inLieofMonth">
