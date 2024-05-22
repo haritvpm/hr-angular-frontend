@@ -54,7 +54,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   self: boolean = false;
   data: MonthwiseEmployeeApiData | null = null;
   dataSource = new MatTableDataSource<EmployeePunchingInfo>();
-  displayedColumns: string[] = ['day', 'punchin', 'punchout', 'duration', 'grace', 'xtratime', 'info'];
+  displayedColumns: string[] = ['day', 'slot', 'punchin', 'punchout', 'duration', 'grace', 'xtratime', 'info'];
   // clickedRows = new Set<EmployeePunchingInfo>();
   calender_info: { [day: string]: CalendarDayInfo } = {};
   employeeInfo: Employee | null;
