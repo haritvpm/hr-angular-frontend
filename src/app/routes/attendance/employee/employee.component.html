@@ -150,15 +150,15 @@
           <ng-container matColumnDef="grace">
             <th mat-header-cell *matHeaderCellDef>Grace(min)</th>
             <td mat-cell *matCellDef="let item">
-              @if (!item.is_future) {
-                <span
+              <!-- @if (!item.is_future) { -->
+                <span *ngIf="!item.is_future"
                   [style.color]="
                     item.grace_sec > 3600 || item.grace_exceeded300_and_today_has_grace ? 'red' : ''
                   "
                 >
                   {{ item.grace_str ? item.grace_str : '-' }}
                 </span>
-              }
+              <!-- } -->
             </td>
           </ng-container>
 
