@@ -131,19 +131,19 @@ export class CellComponent implements OnInit {
         }
 
         this.icon_show = this.item.punching_count >= 1; //even if half cl, show icon
-        if( leave.leave_type == 'CL'){
+        if( leave.leave_type == 'CL' || leave.leave_type == 'casual'){
           if(  leave.leave_cat == 'F'){
             //this.text_name = 'CL';
             this.casual = true;
           } else {
-              if( leave.time_period == 'FN'){
+              if( leave.time_period?.toUpperCase() == 'FN'){
                 this.casual_fn = true;
               } else {
                 this.casual_an = true;
               }
           }
         } else {
-          this.text_name = leave.leave_type;
+          this.text_name = leaveList.find((x:any) => x.value == leave.leave_type)?.short || 'X';
         }
       }
 

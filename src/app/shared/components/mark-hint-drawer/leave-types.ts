@@ -4,6 +4,7 @@ export const leaveList: any[] = [
   { label: 'Casual AN', value: 'casual_an', desc:'Casual AN', min_pun: 1, short: 'C_AN', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 2,1
   { label: 'Casual', value: 'casual', desc:'Casual', min_pun: 0, short: 'CL', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 0,1,2
   { label: 'Comp Leave', value: 'comp_leave', desc:'Compensation Leave', min_pun: 0, short: 'Co', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 0
+  { label: 'Comp Off', value: 'compen_for_extra', desc:'Compensation For ExtraHours', min_pun: 0, short: 'Cx', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 0
   { label: 'Earned', value: 'earned', desc:'Earned Leave', min_pun: 0, short: 'EL', showOnHoliday:true , showForCntrlOnly : false }, //punchingcounts = 0
   { label: 'Commutted', value: 'commuted', desc:'Commutted Leave', min_pun: 0, short: 'Cm', showOnHoliday:true , showForCntrlOnly : false }, //punchingcounts = 0
   { label: 'Half-Pay', value: 'halfpay', desc:'Half-Pay Leave', min_pun: 0, short: 'HP', showOnHoliday:true , showForCntrlOnly : false }, //punchingcounts = 0. can be more if user is late and has no leave
@@ -14,7 +15,7 @@ export const leaveList: any[] = [
   { label: 'Tour', value: 'tour', desc:'Tour', min_pun: 0, short: 'T', showOnHoliday:true, showForCntrlOnly : false  },//punchingcounts = 0,1,2
   { label: 'Other', value: 'other', desc:'Other', min_pun: 0, short: 'O', showOnHoliday:true , showForCntrlOnly : false },//punchingcounts = 0,1,2
   { label: 'Unauthorized', value: 'unauthorised', desc:'Unauthorized Absense', min_pun: 0, short: 'U', showOnHoliday: false, showForCntrlOnly : false  },
-  { label: 'Clear', value: 'clear', desc:'', min_pun: 0, short: '', showOnHoliday:true , showForCntrlOnly : true }, //punchingcounts = 1,2
+  { label: 'Clear', value: 'clear', desc:'', min_pun: 0, short: '', showOnHoliday:true , showForCntrlOnly : false }, //punchingcounts = 1,2
 
 ];
 //also update in leave calc service
