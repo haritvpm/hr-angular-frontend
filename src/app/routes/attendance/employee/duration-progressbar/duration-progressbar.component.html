@@ -8,11 +8,9 @@
       [color]="getDurationStyle(getPercentage(punchItem))"
     ></mat-progress-bar>
   } @else if (punchItem.leave) {
-    <ng-container *ngIf="punchItem.leave.active_status == 'N'">
-      @if (punchItem.leave.leave_type === 'casual') {
-        <span [style.color]="'DeepSkyBlue'"> Casual Leave</span>
-      }
-    </ng-container>
+    <span [style.color]="getLeaveColor(punchItem.leave.active_status)">
+      {{ getLeaveType(punchItem.leave.leave_type) }}
+    </span>
   } @else if (
     !punchItem.punchout_trace &&
     !punchItem.is_today &&
@@ -23,5 +21,4 @@
   } @else {
     -
   }
-  <!-- {{ punchItem.duration_str ? punchItem.duration_str : '-' }} -->
 }
