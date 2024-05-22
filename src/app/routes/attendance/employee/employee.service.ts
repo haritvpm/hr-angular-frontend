@@ -41,7 +41,7 @@ export class EmployeeService {
     return this.http.post<any>(`/api/v1/leaves/`,data);
   }
   updateLeave(id:number,  data:any): Observable<any> {
-    return this.http.patch<any>(`/api/v1/leaves/{$id}`,data);
+    return this.http.patch<any>(`/api/v1/leaves/${id}`,data);
   }
   
 }
