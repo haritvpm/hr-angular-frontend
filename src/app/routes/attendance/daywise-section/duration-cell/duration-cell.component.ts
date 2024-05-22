@@ -21,6 +21,7 @@ export class DurationCellComponent {
   casual_half_text: string = '&#xbd;CL';
   casual_half_authcolor: string = 'red';
   casual_half_unauthcolor: string = 'orange';
+  returned_leaveText: string = 'Returned';
 
 
 
@@ -65,7 +66,17 @@ export class DurationCellComponent {
 
     return 'red';
   }
+  returnedleaveStyle() {
+    if (this.punching.leave?.active_status === 'R')
+      return {
+        'color': 'red',
+        'font-size': 'medium',
+        'font-weight':'bold'
 
+      };
+      return '';
+
+  }
 
 
 
