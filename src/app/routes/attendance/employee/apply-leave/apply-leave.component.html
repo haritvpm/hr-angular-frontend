@@ -1,17 +1,19 @@
 <!-- here, create a form for applying leave -->
 <h1>Leave Application</h1>
 
-@if (errorMessage.length) {
-  @for (e of errorMessage; track e) {
+@if (errorMessages.length) {
+  @for (e of errorMessages; track e) {
+    <mtx-alert type="danger"> {{ e }}</mtx-alert>
+  }
+}
+@if (warningMessages.length) {
+  @for (e of warningMessages; track e) {
     <mtx-alert type="warning"> {{ e }}</mtx-alert>
   }
 }
-
-@if (holidaysInPeriod.length) {
-
+<!-- @if (holidaysInPeriod.length) {
    <mtx-alert type="info"> Holidays in Period :  {{ holidaysInPeriod.toString() }} </mtx-alert>
-
-}
+} -->
 <form class="example-container" [formGroup]="applyLeaveForm" >
   <div class="d-flex row">
     <mat-form-field class="col" appearance="fill">
@@ -150,7 +152,7 @@
     <div class="col d-flex justify-content-end">
       <button mat-flat-button
       [disabled]="isSubmitting || !applyLeaveForm.valid ||
-      (holidaysInPeriod.length >0 && isCasualOrCompen )"
+      (holidaysInPeriod.length >0 && isCasualOrCompen ) || errorMessages.length > 0"
       color="accent"
       (click)="applyLeave()"
       >Apply Leave</button>
