@@ -46,6 +46,20 @@ th {
   text-align: center;
 }
 
+.mat-column-time_slot{
+  padding-right: 24px;
+  text-align: center;
+ text-wrap: nowrap;
+
+}
+
+.mat-column-section{
+  padding-right: 0;
+  text-align: left;
+
+
+}
+
 .mat-column-duration_str {
   padding-right: 24px;
   text-align: center;

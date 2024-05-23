@@ -49,6 +49,8 @@ export interface DailyPunching {
   single_punch_regularised_by: string
   is_unauthorised: boolean
   leave?: Leave
+  flexi_time: string
+
 
 }
 

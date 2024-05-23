@@ -26,7 +26,7 @@
     </span>
   }
 } @else if (
-  punching.punching_count >= 2 && !is_holiday && !is_today && punching.computer_hint === 'casual_fn'
+  punching.punching_count >= 2 && !is_holiday && !is_today && (punching.computer_hint)
 ) {
   {{ punching.duration_str }}
 } @else if (is_today && punching.punching_count < 2 && !is_holiday) {
@@ -48,13 +48,11 @@
   </span>
 } @else if(punching.leave && punching.leave.active_status === 'R'){
   <span [style]="returnedleaveStyle()">
-    <!-- {{punching.leave.active_status}} -->
+    {{punching.leave.active_status}}
     <small [innerHtml]="returned_leaveText"></small>
   </span>
 
 }
-
-
 @else {
   @if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
     <span [style.color]="'red'">
