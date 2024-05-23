@@ -48,6 +48,9 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   casualToTypes = this.casualTypes;
   errorMessages: string[] = [];
   warningMessages: string[] = [];
+  prefix_holidays: string[] = [];
+  suffix_holidays: string[] = [];
+  
   compenMinDate = new Date('2024-01-01');
   compenMaxDate = new Date();
   today = new Date();
@@ -346,7 +349,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     this.precheckLeave();
   }
-  
+
   onFromDateChange(start_date: any) {
 
     const end_date = this.applyLeaveForm.get('end_date')?.value;
@@ -399,6 +402,9 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     ).subscribe( res => {
       this.errorMessages = res.errors;
       this.warningMessages = res.warnings;
+      this.prefix_holidays = res.prefix_holidays;
+      this.suffix_holidays = res.suffix_holidays;
+      
     }
 
     );

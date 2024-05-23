@@ -7,7 +7,8 @@ import {CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, Monthwis
 export interface LeavePreCheck{
   errors : string[] ;
   warnings : string[] ;
-
+  prefix_holidays : string[] ;
+  suffix_holidays : string[] ;
 }
 
 @Injectable({

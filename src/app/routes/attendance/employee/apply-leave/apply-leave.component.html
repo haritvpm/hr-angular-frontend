@@ -162,6 +162,16 @@
 
 </form>
 
+@if (prefix_holidays && prefix_holidays.length) {
+   <mtx-alert type="info"> Prefix: {{ prefix_holidays.toString() }}</mtx-alert>
+}
+
+@if (suffix_holidays && suffix_holidays.length) {
+    <mtx-alert type="info"> Suffix: {{ suffix_holidays.toString() }}</mtx-alert>
+  
+}
+
+
 {{ applyLeaveForm.value | json }}
 {{ applyLeaveForm.valid }}
 holidaysInPeriod:{{holidaysInPeriod.length}}
