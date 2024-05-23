@@ -136,6 +136,8 @@ export interface Leave {
   creation_date: string;
   created_by_aadhaarid: string;
   day_count : number | null;
+  approver_details : string | null;
+  approved_on : string | null;
 }
 
 export interface MonthwiseEmployeeApiData {
