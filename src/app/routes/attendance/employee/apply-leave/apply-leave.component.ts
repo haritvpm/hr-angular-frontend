@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMultipleDatesModule } from 'ngx-multiple-dates';
 import { MtxAlertModule } from '@ng-matero/extensions/alert';
-import { Subscription, first, map, tap } from 'rxjs';
+import { Subscription, debounce, debounceTime, first, map, tap } from 'rxjs';
 import { EmployeeService } from '../employee.service';
 import { GovtCalendar } from '../interface';
 import moment from 'moment';
@@ -46,7 +46,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   sameDate: boolean = false;
   casualFromTypes = this.casualTypes;
   casualToTypes = this.casualTypes;
-  errorMessage: string[] = [];
+  errorMessages: string[] = [];
+  warningMessages: string[] = [];
   compenMinDate = new Date('2024-01-01');
   compenMaxDate = new Date();
   today = new Date();
@@ -128,10 +129,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         this.onToDateChange(value);
       }));
 
-    this.subscriptions.push(this.applyLeaveForm.valueChanges
-      .subscribe((value) => {
-        this.onFormChange(value);
-      }));
+    
 
     this.subscriptions.push(this.applyLeaveForm.get('leave_type')!.valueChanges.subscribe(val => {
       this.onLeaveTypeChange(val);
@@ -139,8 +137,20 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.applyLeaveForm.get('multipleDays')!.valueChanges.subscribe(val => {
       this.onMutlipleDaysChange(val);
     }));
-  }
+    
+    // this.subscriptions.push(this.applyLeaveForm.get('leave_count')!.valueChanges.subscribe(val => {
+    //   this.onLeaveCountChange(val);
+    // }));
 
+    this.subscriptions.push(this.applyLeaveForm.valueChanges
+      .subscribe((value) => {
+        this.onFormChange(value);
+    }));
+    
+  }
+  // onLeaveCountChange(leave_count: any) {
+  //   this.precheckLeave();
+  // }
   onLeaveTypeChange(leave_type: any) {
 
     // this.applyLeaveForm.controls.toType.clearValidators();
@@ -205,6 +215,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     this.applyLeaveForm.controls.fromType.updateValueAndValidity();
     // this.applyLeaveForm.controls.toType.updateValueAndValidity();
     this.applyLeaveForm.controls.inLieofMonth.updateValueAndValidity();
+    //this.precheckLeave();
 
   }
   onMutlipleDaysChange( multiple: any ) {
@@ -242,30 +253,30 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     return dates;
   }
   checkholiday(leave_type: string, start_date: any, end_date: any) {
-
+/*
     if (start_date) {
       const date = moment(start_date).format('YYYY-MM-DD');
       if (this.allholidays.indexOf(date) !== -1) {
-        this.errorMessage.push('Selected \'From\' date is a holiday');
+        this.errorMessages.push('Selected \'From\' date is a holiday');
       }
     }
 
     if (end_date) {
       const date = moment(end_date).format('YYYY-MM-DD');
       if (this.allholidays.indexOf(date) !== -1) {
-        this.errorMessage.push('Selected \'To\' date is a holiday');
+        this.errorMessages.push('Selected \'To\' date is a holiday');
       }
     }
 
     if (this.isCasualOrCompen) {
       if (this.holidaysInPeriod.length > 0) {
-        this.errorMessage.push('Selected period has holidays. ');
+        this.errorMessages.push('Selected period has holidays. ');
       }
     }
-
+*/
   }
   onFormChange(form: any) {
-    this.errorMessage = [];
+    this.errorMessages = [];
     this.holidaysInPeriod = [];
     let leave = 0;
     //count days from start date to end date if both are not empty
@@ -302,7 +313,9 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
       if (form.leave_type !== 'casual' && form.leave_type !== 'compen' && form.leave_type !== 'compen_for_extra') leave = 0;
 
+     // this.precheckLeave();
     }
+
     this.checkholiday(form.leave_type, start_date, end_date);
     //now for casual.
     if (form.leave_type == 'casual') {
@@ -328,9 +341,12 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     this.applyLeaveForm.get('leave_count')?.setValue(leave, { emitEvent: false }); //emitEvent: false to avoid infinite loop
 
+   // console.log('form is ' + JSON.stringify(form) );
+   // console.log('form from value is ' + JSON.stringify(this.applyLeaveForm?.value));
 
-
+    this.precheckLeave();
   }
+  
   onFromDateChange(start_date: any) {
 
     const end_date = this.applyLeaveForm.get('end_date')?.value;
@@ -372,8 +388,22 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       const date = moment(start_date).subtract(i, 'months');
       this.inLieofMonths.push({ value: date.format('YYYY-MM-01'), label: date.format('MMMM YYYY') });
     }
-
+   // this.precheckLeave();
+   
   }
+
+  precheckLeave(){
+    this.empService.precheckLeave( this.applyLeaveForm.value )
+    .pipe(
+      debounceTime(50),
+    ).subscribe( res => {
+      this.errorMessages = res.errors;
+      this.warningMessages = res.warnings;
+    }
+
+    );
+  }
+
   clearEndDate() {
     this.applyLeaveForm.get('end_date')?.setValue(''); //emitEvent: false to avoid infinite loop
 
@@ -414,6 +444,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     // }
     // this.applyLeaveForm.controls.toType.updateValueAndValidity();
 
+    //this.precheckLeave();
+
 
   }
 
@@ -426,7 +458,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     console.log(this.applyLeaveForm.value);
 
     //if casual or compen make sure there are no holidays in the period
-    this.errorMessage = [];
+    this.errorMessages = [];
+    this.warningMessages = [];
 
     // if( this.isCasualOrCompen ){
     //   if( this.holidaysInPeriod.length > 0 ){
