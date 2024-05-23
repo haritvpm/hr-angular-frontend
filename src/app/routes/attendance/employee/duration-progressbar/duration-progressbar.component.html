@@ -1,0 +1,27 @@
+@if (!punchItem.is_future) {
+  @if (punchItem.duration_str) {
+    {{ punchItem.duration_str }}
+    <mat-progress-bar
+      mode="determinate"
+      [value]="getPercentage(punchItem)"
+      style="flex: 1"
+      [color]="getDurationStyle(getPercentage(punchItem))"
+    ></mat-progress-bar>
+  } @else if (punchItem.leave) {
+    <ng-container *ngIf="punchItem.leave.active_status == 'N'">
+      @if (punchItem.leave.leave_type === 'casual') {
+        <span [style.color]="'DeepSkyBlue'"> Casual Leave</span>
+      }
+    </ng-container>
+  } @else if (
+    !punchItem.punchout_trace &&
+    !punchItem.is_today &&
+    punchItem.punching_count &&
+    punchItem.attendance_trace_fetch_complete
+  ) {
+    <span style="color: orange">Missed Out-Punch</span>
+  } @else {
+    -
+  }
+  <!-- {{ punchItem.duration_str ? punchItem.duration_str : '-' }} -->
+}

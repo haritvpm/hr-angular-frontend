@@ -20,7 +20,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DurationProgressbarComponent } from "./duration-progressbar/duration-progressbar.component";
+
 
 export const MY_FORMATS = {
   parse: {
@@ -34,17 +35,16 @@ export const MY_FORMATS = {
   },
 };
 @Component({
-  selector: 'app-monthwiseregister-employee',
-  templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css'],
-  encapsulation: ViewEncapsulation.None,
-  standalone: true,
-  imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
-    MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
-    EmployeeLeavesListComponent, MatDatepickerModule, MatNativeDateModule,
-    FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, MatProgressBarModule],
-  providers: [provideMomentDateAdapter(MY_FORMATS),],
-
+    selector: 'app-monthwiseregister-employee',
+    templateUrl: './employee.component.html',
+    styleUrls: ['./employee.component.css'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    providers: [provideMomentDateAdapter(MY_FORMATS),],
+    imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
+        MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
+        EmployeeLeavesListComponent, MatDatepickerModule, MatNativeDateModule,
+        FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, DurationProgressbarComponent]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
@@ -80,7 +80,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         map(data => data.aadhaar_date),
         tap(data => { this.aadhaarid = data.aadhaarid; this.date = data.date; this.self = data.self; console.log('date dfdfd:' + data.date); }),
         switchMap(data => this.apiService.getEmployeeData(data.aadhaarid, data.date)),
-       // take(1)
+        // take(1)
       )
       .subscribe(response => {
         console.log(response);
@@ -190,17 +190,5 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     });
   }
 
-  getPercentage(dateItem: any) {
-    const duration = dateItem.duration_sec;
-    const durationNeeded = dateItem.duration_sec_needed;
-    return durationNeeded ? (duration / durationNeeded) * 100 : 0;
-  }
-
-  getDurationStyle(durationPercent: number) {
-    if (durationPercent == 100)
-      return 'accent';
-    else
-      return durationPercent < 100 ? 'warn' : 'primary';
-  }
 }
 

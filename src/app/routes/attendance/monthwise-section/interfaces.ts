@@ -31,44 +31,42 @@ export interface MonthlyPunching {
   total_extra_str : string | null;
   total_grace_exceeded300_date : string | null;
   grace_limit : number;
-  day1: PunchingInfo | PunchingDay;
-  day2: PunchingInfo | PunchingDay;
-  day3: PunchingInfo | PunchingDay;
-  day4: PunchingInfo | PunchingDay;
-  day5: PunchingInfo | PunchingDay;
-  day6: PunchingInfo | PunchingDay;
-  day7: PunchingInfo | PunchingDay;
-  day8: PunchingInfo | PunchingDay;
-  day9: PunchingInfo | PunchingDay;
-  day10: PunchingInfo | PunchingDay;
-  day11: PunchingInfo | PunchingDay;
-  day12: PunchingInfo | PunchingDay;
-  day13: PunchingInfo | PunchingDay;
-  day14: PunchingInfo | PunchingDay;
-  day15: PunchingInfo | PunchingDay;
-  day16: PunchingInfo | PunchingDay;
-  day17: PunchingInfo | PunchingDay;
-  day18: PunchingInfo | PunchingDay;
-  day19: PunchingInfo | PunchingDay;
-  day20: PunchingInfo | PunchingDay;
-  day21: PunchingInfo | PunchingDay;
-  day22: PunchingInfo | PunchingDay;
-  day23: PunchingInfo | PunchingDay;
-  day24: PunchingInfo | PunchingDay;
-  day25: PunchingInfo | PunchingDay;
-  day26: PunchingInfo | PunchingDay;
-  day27: PunchingInfo | PunchingDay;
-  day28: PunchingInfo | PunchingDay | null;
-  day29?: PunchingInfo | PunchingDay | null;
-  day30?: PunchingInfo | PunchingDay | null;
-  day31?: PunchingInfo | PunchingDay | null;
+  grace_left : number;
+  extraMin: number;
+  day1: PunchingInfo ;
+  day2: PunchingInfo ;
+  day3: PunchingInfo ;
+  day4: PunchingInfo ;
+  day5: PunchingInfo ;
+  day6: PunchingInfo ;
+  day7: PunchingInfo ;
+  day8: PunchingInfo ;
+  day9: PunchingInfo ;
+  day10: PunchingInfo ;
+  day11: PunchingInfo ;
+  day12: PunchingInfo ;
+  day13: PunchingInfo ;
+  day14: PunchingInfo ;
+  day15: PunchingInfo ;
+  day16: PunchingInfo ;
+  day17: PunchingInfo ;
+  day18: PunchingInfo ;
+  day19: PunchingInfo ;
+  day20: PunchingInfo ;
+  day21: PunchingInfo ;
+  day22: PunchingInfo ;
+  day23: PunchingInfo ;
+  day24: PunchingInfo ;
+  day25: PunchingInfo ;
+  day26: PunchingInfo ;
+  day27: PunchingInfo ;
+  day28: PunchingInfo ;
+  day29?: PunchingInfo  | null;
+  day30?: PunchingInfo  | null;
+  day31?: PunchingInfo  | null;
 }
 
-export interface PunchingDay {
-  in_section: boolean;
-}
-
-export interface PunchingInfo extends PunchingDay {
+export interface PunchingInfo  {
   punching_count: number;
   id: number;
   date: string;
@@ -113,6 +111,7 @@ export interface PunchingInfo extends PunchingDay {
   single_punch_regularised_by: string;
   start_with_cl : number
   start_with_compen : number
+  is_unauthorised : boolean;
 }
 
 

@@ -4,20 +4,27 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { LeaveToApprove, LeavesService } from '../leaves.service';
+import { MtxDialog } from '@ng-matero/extensions/dialog';
+import { RouterLink } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-leaves-approve',
   templateUrl: './approve.component.html',
   styleUrl: './approve.component.css',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule]
+  imports: [MatTableModule, MatPaginatorModule, MatButtonModule,
+    MatIconModule, RouterLink, MatTooltipModule]
 })
 export class LeavesApproveComponent implements OnInit {
   dataSource = new MatTableDataSource<LeaveToApprove>();
-  displayedColumns: string[] = ['employee','period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date', 'action'];
+  // displayedColumns: string[] = ['employee', 'period', 'leave_cat', 'count', 'leave_type', 'reason' , 'creation_date',  'active_status', 'approver', 'approved_on', 'action'];
+  displayedColumns: string[] = ['employee', 'period', 'leave_cat', 'count', 'leave_type', 'reason' , 'creation_date',  'active_status',  'action'];
+
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private leaveService: LeavesService) { }
+  constructor(private leaveService: LeavesService, private mtxDialog: MtxDialog) { }
 
   loadData() {
     this.leaveService.getLeavesToApprove().subscribe(data => {
@@ -37,17 +44,18 @@ export class LeavesApproveComponent implements OnInit {
     }
     return 'black';
   }
-  getLeaveStatusText(status: string): string {
-    if (status == 'Y') {
-      return 'Approved';
+  getLeaveStatusText(leave: LeaveToApprove): string {
+
+    if (leave.active_status == 'Y') {
+      return 'Approved' ;
     }
-    if (status == 'N') {
+    if (leave.active_status == 'N') {
       return 'Pending';
     }
-    if (status == 'C') {
+    if (leave.active_status == 'C') {
       return 'Cancelled';
     }
-    if (status == 'R') {
+    if (leave.active_status == 'R') {
       return 'Returned';
     }
     return 'Unknown';
@@ -55,13 +63,22 @@ export class LeavesApproveComponent implements OnInit {
   }
   approveLeave(leave: LeaveToApprove) {
 
-    this.leaveService.approveLeave(leave.id).subscribe(data => {
-      console.log('Leave approved', data);
-      this.loadData();
-    });
+    this.mtxDialog.confirm(
+      `Approve this leave?`,
+      '',
+      () => {
+
+        this.leaveService.approveLeave(leave.id).subscribe(data => {
+          console.log('Leave approved', data);
+          this.loadData();
+        });
+      },
+      () => { }
+    );
+
   }
   forwardLeave(leave: LeaveToApprove) {
-   this.leaveService.forwardLeave(leave.id).subscribe(data => {
+    this.leaveService.forwardLeave(leave.id).subscribe(data => {
       console.log('Leave forwarded', data);
       this.loadData();
     });
@@ -69,10 +86,21 @@ export class LeavesApproveComponent implements OnInit {
   }
   returnLeave(leave: LeaveToApprove) {
     console.log('Returning leave', leave);
-    this.leaveService.returnLeave(leave.id).subscribe(data => {
-      console.log('Leave returned', data);
-      this.loadData();
-    }); 
+
+    this.mtxDialog.confirm(
+      `Return to applicant?`,
+      '',
+      () => {
+
+        this.leaveService.returnLeave(leave.id).subscribe(data => {
+          console.log('Leave returned', data);
+          this.loadData();
+        });
+      },
+      () => { }
+    );
+
+
 
   }
 }
