@@ -4,6 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {CalendarDayInfo, MonthlyData, EmployeePunchingInfo, PunchTrace, MonthwiseEmployeeApiData, EmployeeYearApiData, GovtCalendar, HolidayApiData} from './interface';
 
+export interface LeavePreCheck{
+  errors : string[] ;
+  warnings : string[] ;
+
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -43,5 +49,9 @@ export class EmployeeService {
   updateLeave(id:number,  data:any): Observable<any> {
     return this.http.patch<any>(`/api/v1/leaves/${id}`,data);
   }
-  
+
+  precheckLeave( data:any ): Observable<any> {
+    return this.http.post<LeavePreCheck>(`/api/v1/precheck-leave`,data);
+  }
+
 }

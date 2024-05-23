@@ -40,5 +40,5 @@ export class LeavesService {
   getById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
-
+  
 }
