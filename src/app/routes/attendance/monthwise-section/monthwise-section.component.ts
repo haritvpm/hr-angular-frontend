@@ -29,6 +29,8 @@ import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mar
 import { EmployeeService } from '../employee/employee.service';
 import { MatButtonModule } from '@angular/material/button';
 import { leaveList } from '@shared/components/mark-hint-drawer/leave-types';
+import { GraceLeftPipe } from '../../../shared/pipes/grace-left.pipe';
+import { MonthlyCellTooltipPipe } from '../../../shared/pipes/monthly-cell-tooltip.pipe';
 
 export const MY_FORMATS = {
   parse: {
@@ -43,26 +45,28 @@ export const MY_FORMATS = {
 };
 
 @Component({
-  selector: 'app-monthwiseregister-attendance',
-  templateUrl: './monthwise-section.component.html',
-  styleUrls: ['./monthwise-section.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  encapsulation: ViewEncapsulation.None,
-  providers: [
-    provideMomentDateAdapter(MY_FORMATS),
-  ],
-  imports: [
-    RouterLink, MatButtonModule,
-    HttpClientModule, MatFormFieldModule,
-    MatTableModule,
-    MatPaginatorModule, MatTooltipModule,
-    MatSortModule, MatInputModule, MatSelectModule,
-    MatDatepickerModule, MatIconModule,
-    MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
-    CellComponent,
-    BreadcrumbComponent, MatProgressBarModule
-  ]
+    selector: 'app-monthwiseregister-attendance',
+    templateUrl: './monthwise-section.component.html',
+    styleUrls: ['./monthwise-section.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    encapsulation: ViewEncapsulation.None,
+    providers: [
+        provideMomentDateAdapter(MY_FORMATS),
+    ],
+    imports: [
+        RouterLink, MatButtonModule,
+        HttpClientModule, MatFormFieldModule,
+        MatTableModule,
+        MatPaginatorModule, MatTooltipModule,
+        MatSortModule, MatInputModule, MatSelectModule,
+        MatDatepickerModule, MatIconModule,
+        MatNativeDateModule, FormsModule, CommonModule, ReactiveFormsModule,
+        CellComponent,
+        BreadcrumbComponent, MatProgressBarModule,
+        GraceLeftPipe,
+        MonthlyCellTooltipPipe
+    ]
 })
 
 
@@ -220,18 +224,20 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     };
   }
 
-  getCellBackgroundColor(dayN: string, odd: boolean) {
-    if (this.calendarInfo[dayN].holiday) return '#7f7f7f0e';
+  // getCellBackgroundColor(dayN: string, odd: boolean) {
+  //   if (this.calendarInfo[dayN].holiday) return '#7f7f7f0e';
 
-    return '';
-    //  return odd ? '#FAFAFA' : '#FFFFFF';
-  }
-  graceLeft(row: MonthlyPunching) {
-    const grace = row?.total_grace_sec || 0;
-    return Math.ceil(300 - grace / 60);
-  }
+  //   return '';
+  //   //  return odd ? '#FAFAFA' : '#FFFFFF';
+  // }
+  // graceLeft(row: MonthlyPunching) {
+  //   const grace = row?.total_grace_sec || 0;
+  //   const grace_limit = row?.grace_limit || 300;
+  //   console.log('grace_limit:', grace_limit);
+  //   return Math.ceil(grace_limit - grace / 60);
+  // }
   getGraceStyle(row: MonthlyPunching) {
-    const grace = this.graceLeft(row);
+    const grace = row.grace_left;
     if (grace < 0) return 'color: red; font-weight: bold';
     if (grace < 30) return 'color: orange;  font-weight: bold';
     if (grace < 60) return 'color: darkblue';
@@ -239,16 +245,17 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     return '';
   }
   getExtraStyle(row: MonthlyPunching) {
-    const extra = row?.total_extra_sec || 0;
-    const extraMin = Math.ceil(Math.max(extra / 60, 0));
-    return extraMin > 600 ? 'color: green; font-weight: bold' : '';
+
+    return row.extraMin > 600 ? 'color: green; font-weight: bold' : '';
 
   }
   // extraTime(row: MonthlyPunching) {
   //   const extra = row?.total_extra_sec || 0;
   //   return Math.ceil(Math.max(extra / 60, 0));
   // }
+  /*
   getTooltip(dayN: string, row: any) {
+    console.log('getTooltip:', row);
     const rowVal = row[dayN];
     let tip = rowVal.name + '\n';
     let hint = rowVal.hint ? rowVal.hint : rowVal.computer_hint ? rowVal.computer_hint + '?' : '';
@@ -281,7 +288,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
     }
     return tip;
   }
-
+*/
   mark(day_number: string, dayNData: PunchingInfo, row: MonthlyPunching) {
     console.log(dayNData);
     console.log(this.calendarInfo[day_number]);

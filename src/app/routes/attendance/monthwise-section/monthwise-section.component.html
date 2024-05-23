@@ -68,7 +68,7 @@
       </ng-container>
       <ng-container matColumnDef="grace_left">
         <th mat-header-cell *matHeaderCellDef>GrRem</th>
-        <td mat-cell [style]="getGraceStyle(row)" *matCellDef="let row">{{ graceLeft(row) }}</td>
+        <td mat-cell [style]="getGraceStyle(row)" *matCellDef="let row">{{row | graceLeft }}</td>
       </ng-container>
 
       @for (dayN of dayColumns; track dayN) {
@@ -87,10 +87,10 @@
         <td
             (click)="mark(dayN, row[dayN], row)"
             mat-cell
-            [matTooltip]="getTooltip(dayN, row)"
+            [matTooltip]=" row[dayN] | monthlyCellTooltip"
             matTooltipClass="allow-cr"
             [matTooltipShowDelay]="500"
-            [style.background-color]="getCellBackgroundColor(dayN, $odd)"
+            [style.background-color]="calendarInfo[dayN].holiday ? '#7f7f7f0e' : ''"
             [style.text-align]="'center'"
             *matCellDef="let row">
           <app-cell [item]="row[dayN]" [calendarInfo]="calendarInfo[dayN]"> </app-cell>

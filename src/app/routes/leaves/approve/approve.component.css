@@ -1,0 +1,36 @@
+.table-container {
+  max-height: calc(100vh - 255px);
+
+  /* or height: calc(100vh - 155px); depending on your need  change */
+  overflow: auto;
+}
+.allow-cr {
+  white-space: pre;
+}
+
+/* no blue color */
+a:link {
+  /* color: black; */
+  text-decoration: none;
+  /* background-color: transparent; */
+}
+
+a:visited {
+  /* color: black; */
+  text-decoration: none;
+
+  /* background-color: transparent; */
+}
+
+a:hover {
+  /* color: darkblue; */
+  text-decoration: none;
+
+  /* background-color: transparent; */
+}
+
+a:active {
+  text-decoration: none;
+
+  /* background-color: transparent; */
+}
