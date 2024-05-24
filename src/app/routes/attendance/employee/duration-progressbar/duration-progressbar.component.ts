@@ -26,4 +26,19 @@ export class DurationProgressbarComponent {
       return durationPercent < 100 ? 'warn' : 'primary';
   }
 
+  getLeaveColor(activeStatus: string) {
+    return activeStatus == 'N' ? 'DeepSkyBlue' : 'Red';
+  }
+
+  getLeaveType(leaveType: string) {
+    if (leaveType === 'casual')
+      return 'Casual Leave';
+    else if (leaveType === 'commuted')
+      return 'Commuted Leave';
+    else if (leaveType === 'earned')
+      return 'Earned Leave';
+    else
+      return '';
+  }
+
 }
