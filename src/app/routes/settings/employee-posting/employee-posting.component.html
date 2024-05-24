@@ -91,9 +91,10 @@
           <mat-icon color="primary">edit</mat-icon>
         </span> -->
 
-        <button mat-button color="accent" (click)="editEmployee(employee)">   <mat-icon >edit</mat-icon> Edit</button>
 
         @if ( !employee.end_date ) {
+          <button mat-button color="primary" (click)="editEmployee(employee)">   <mat-icon >edit</mat-icon> Edit</button>
+
           <button mat-button color="warn" (click)="relieveEmployee(employee)">   <mat-icon color="warn">remove_circle_outline
           </mat-icon>  Relieve</button>
         }
