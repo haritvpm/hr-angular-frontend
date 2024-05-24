@@ -147,7 +147,7 @@ export interface MonthwiseEmployeeApiData {
   data_yearly:  YearlyData ;
   employee_punching: EmployeePunchingInfo[];
   employee: Employee;
-  emp_leaves: Leave[];
+  //emp_leaves: Leave[];
   logged_in_user_is_controller : boolean;
 }
 export interface EmployeeArgs {

@@ -191,9 +191,10 @@
     ></app-employee-yearly-attendance-list>
   </mat-tab>
   <mat-tab label="Leaves">
+    @if( employeeInfo?.aadhaarid ) {
     <app-employee-leaves-list
-      [employeeLeaves]="employeeLeaves"
-      [self]="self"
+    [aadhaarid]="employeeInfo!.aadhaarid"
     ></app-employee-leaves-list>
+    }
   </mat-tab>
 </mat-tab-group>

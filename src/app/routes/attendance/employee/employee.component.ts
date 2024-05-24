@@ -20,7 +20,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
-import { DurationProgressbarComponent } from "./duration-progressbar/duration-progressbar.component";
+import { DurationProgressbarComponent } from './duration-progressbar/duration-progressbar.component';
 
 
 export const MY_FORMATS = {
@@ -63,7 +63,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   todayDate: Date = new Date();
   beginDate: Date = new Date('2024-01-01');
   date_formctrl = new FormControl(moment());
-  employeeLeaves: Leave[] = [];
+  //employeeLeaves: Leave[] = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -89,7 +89,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         this.employeeInfo = this.data.employee;
         this.monthlyData = this.data.data_monthly;
         this.yearlyData = this.data.data_yearly;
-        this.employeeLeaves = this.data.emp_leaves;
+        //this.employeeLeaves = this.data.emp_leaves;
         this.calender_info = this.data.calender_info;
       });
 

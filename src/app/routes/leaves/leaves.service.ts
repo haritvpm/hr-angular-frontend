@@ -40,5 +40,8 @@ export class LeavesService {
   getById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
+  getLeavesOfEmployee(aadhaarid: string): Observable<Leave[]> {
+    return this.http.get<Leave[]>(`${this.apiUrl}/employee/${aadhaarid}`);
+  }
   
 }
