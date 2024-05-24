@@ -29,7 +29,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">
         Employee
       </th>
-      <td mat-cell *matCellDef="let employee">{{ employee.name }}</td>
+      <td mat-cell *matCellDef="let employee">  {{ employee.name }}</td>
     </ng-container>
     <ng-container matColumnDef="section">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by views">
@@ -43,32 +43,59 @@
       }
 
       </td>
+
     </ng-container>
 
     <ng-container matColumnDef="startDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
         Start Date
       </th>
-      <td mat-cell *matCellDef="let employee">{{ employee.start_date }}</td>
+      <td mat-cell *matCellDef="let employee">{{ employee.start_date }} {{ employee.end_date ? ' - ' + employee.end_date : '' }}  </td>
     </ng-container>
 
-    <ng-container matColumnDef="endDate">
+    <!-- <ng-container matColumnDef="endDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">
         End Date
       </th>
       <td mat-cell *matCellDef="let employee">{{ employee.end_date }}</td>
+    </ng-container> -->
+    <ng-container matColumnDef="flexi_current">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header  sortActionDescription="Sort by time">
+        Flexi (Current)
+      </th>
+      <td mat-cell *matCellDef="let employee" [style.text-align]="'center'" >
+        @if(employee.flexi_time_wef_current){
+        {{ employee.flexi_minutes_current}} wef: {{employee.flexi_time_wef_current}}
+        } @else {
+          Normal
+        }
+      </td>
     </ng-container>
+    <ng-container matColumnDef="flexi_upcoming">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">
+        Flexi (Upcoming)
+      </th>
+      <td mat-cell *matCellDef="let employee"  [style.text-align]="'center'" >
+        @if(employee.flexi_time_wef_upcoming){
+          {{ employee.flexi_minutes_upcoming}} wef: {{employee.flexi_time_wef_upcoming}}
+          } @else {
+            -
+          }
 
+      </td>
+    </ng-container>
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
       <td mat-cell *matCellDef="let employee">
         <!-- <span (click)="openEditForm(row)" class="action-icon" style="margin-right: 5px;">
           <mat-icon color="primary">edit</mat-icon>
         </span> -->
+
+        <button mat-button color="accent" (click)="editEmployee(employee)">   <mat-icon >edit</mat-icon> Edit</button>
+
         @if ( !employee.end_date ) {
-          <button mat-button color="warn" (click)="relieveEmployee(employee)">Relieve</button>
-
-
+          <button mat-button color="warn" (click)="relieveEmployee(employee)">   <mat-icon color="warn">remove_circle_outline
+          </mat-icon>  Relieve</button>
         }
 
 

@@ -29,6 +29,7 @@
             [max]="today"
             [matDatepicker]="picker"
             placeholder="Select starting date"
+            (click)="picker.open()"
             (dateChange)="dateChange('change', $event)"
           />
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -60,9 +61,10 @@
         </mat-form-field>
       }
 
+
         <button
           mat-flat-button
-          color="accent"
+          color="warn"
           [disabled]="!!postingForm.invalid"
           [loading]="isSubmitting"
           (click)="addPosting()"

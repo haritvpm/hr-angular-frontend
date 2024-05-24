@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Edit Setting</h1>
+<div [formGroup]="form">
+<mat-dialog-content >
+  <p>Employee {{data.emp.name}} ({{ data.emp.aadhaarid }})</p>
+  <p>Designation: {{ data.emp.designation }}</p>
+  <p>Section: {{ data.emp.section_name }}</p>
+  <p>Flexi time (current): {{ !data.emp.flexi_minutes_current ? 'Normal' : data.emp.flexi_minutes === -15 ? '15 Minutes Before Normal' : '15 Minutes After Normal' }}</p>
+
+  <p>Last Changed: {{ lastChangedtext }}</p>
+
+  @if(canChangeFlexi){
+  <mat-form-field class="w-full">
+    <mat-label>Select a new flexi time</mat-label>
+    <mat-select  formControlName="flexi_minutes">
+      <mat-option value="0">Normal</mat-option>
+      <mat-option value="-15">15 Minutes Before Normal</mat-option>
+      <mat-option value="15">15 Minutes After Normal</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="w-full">
+    <mat-label>With effect from</mat-label>
+    <input readonly matInput [matDatepicker]="picker" [min]="tomorrow"  formControlName="wef">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+} @else {
+ Flexi time can not be changed now
+}
+
+  <!-- {{end_date}} -->
+</mat-dialog-content>
+
+<div mat-dialog-actions>
+  <button mat-flat-button color="primary"  (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+  <button mat-flat-button [disabled]="!canChangeFlexi || !form.valid" color="warn"  (click)="onSave()" >Save</button>
+</div>
+</div>
