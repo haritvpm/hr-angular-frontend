@@ -54,8 +54,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   compenMinDate = new Date('2024-01-01');
   compenMaxDate = new Date();
   today = new Date();
-  casualMinDate = new Date('2024-01-01');
-  casualMaxDate = new Date('2024-01-01');
+  casualMinDateTo = new Date('2024-01-01');
+  casualMaxDateTo = new Date('2024-01-01');
   isCasualOrCompen = false;
   isCasualOrCompenOrCompenExtra = false;
   isSubmitting = false;
@@ -385,8 +385,9 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     //update minimum date for compen
     this.compenMinDate = moment(start_date).subtract(3, 'months').toDate();
     this.compenMaxDate = moment(start_date).subtract(1, 'day').toDate();
-    this.casualMinDate = moment(start_date).add(1, 'day').toDate();
-    this.casualMaxDate = moment(start_date).endOf('year').toDate();
+    
+    this.casualMinDateTo = moment(start_date).add(1, 'day').toDate();
+    this.casualMaxDateTo = moment(start_date).endOf('year').toDate();
     //find the last 3 months of month of start_date
     this.inLieofMonths = [];
     for (let i = 1; i <= 3; i++) {
