@@ -6,7 +6,7 @@ import { Leave } from '../interface';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { LeavesService } from 'app/routes/leaves/leaves.service';
-import { Observable, filter, of, switchMap } from 'rxjs';
+import { Observable, filter, map, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '@core/authentication';
 @Component({
   selector: 'app-employee-leaves-list',
@@ -28,9 +28,9 @@ export class EmployeeLeavesListComponent implements OnInit {
   //   this.dataSource = new MatTableDataSource<Leave>(value);
   //   this.dataSource.paginator = this.paginator;
   // }
-  // @Input() self = false;
+  @Input() self = false;
   @Input() aadhaarid: string | undefined = undefined;
-  self : boolean = false;
+  //self : boolean | undefined = undefined;
 
   displayedColumns: string[] = ['period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date', 'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -62,29 +62,28 @@ export class EmployeeLeavesListComponent implements OnInit {
                     }
                     //check if input is defined
                     if (this.aadhaarid) {
-                        this.self = false;
                         console.log('input aadhaarid', this.aadhaarid);
 
-                        return of({ aadhaarid: this.aadhaarid });
+                        return of({ aadhaarid: this.aadhaarid, self: false });
                     }
                   
                     console.log('user aadhaarid', user.aadhaarid);
 
 
-                    this.self = true;
-                    return of({ aadhaarid: user.aadhaarid });
+                    return of({ aadhaarid: user.aadhaarid, self: true});
                 })
             )
           
        // })
       //)
-      //.pipe(filter(params => !!params))
+      .pipe(filter(params => !!params), map( x => {this.self = x.self; return x;}) )
       .pipe(
         switchMap(params => this.leaveService.getLeavesOfEmployee( params.aadhaarid))
       ).subscribe(leaves => {
         this.dataSource = new MatTableDataSource<Leave>(leaves);
         this.dataSource.paginator = this.paginator;
         console.log('Leavesddddddddddddddddd', leaves);
+        console.log('self', this.self);
       });
 
 

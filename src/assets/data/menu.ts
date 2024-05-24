@@ -67,6 +67,14 @@ export default {
           },
         },
         {
+          route: 'leaves/view',
+          name: 'view',
+          type: 'link',
+          permissions: {
+            only: ['leaf_access'],
+          },
+        },
+        {
           route: 'attendance/self/apply-leave',
           name: 'self',
           type: 'link',
