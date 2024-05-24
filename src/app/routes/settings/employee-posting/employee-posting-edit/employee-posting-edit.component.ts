@@ -43,7 +43,7 @@ export class EmployeePostingEditComponent implements OnInit{
   lastChangedtext = 'never';
 
   form = new FormGroup({
-    flexi_minutes: new FormControl('0', Validators.required),
+    flexi_minutes: new FormControl(0, Validators.required),
     wef: new FormControl('', [
       Validators.required,
 
@@ -62,6 +62,7 @@ export class EmployeePostingEditComponent implements OnInit{
 
 console.log(this.data);
     if(this.data.emp.flexi_time_wef_upcoming){
+
       this.form.patchValue({
         flexi_minutes:  this.data.emp.flexi_minutes_upcoming,
         wef: this.data.emp.flexi_time_wef_upcoming,
