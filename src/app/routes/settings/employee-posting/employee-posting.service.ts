@@ -8,8 +8,11 @@ import { Employee, MySectionEmployees } from './interfaces';
 })
 export class EmployeePostingService {
 
+
   constructor(private httpClient: HttpClient) { }
+
   private apiUrl = '/api/v1/my-sectionemployees';
+
   fetchData(): Observable<MySectionEmployees> {
     return this.httpClient.get<MySectionEmployees>(`${this.apiUrl}`);
   }
@@ -17,6 +20,9 @@ export class EmployeePostingService {
     return this.httpClient.patch<any>( `${this.apiUrl}/${id}`, {
       end_date,
    } );
+  }
+  updateEmployeeSetting(id: number, data: any): any {
+    return this.httpClient.patch<any>( `${this.apiUrl}/setting/${id}`, data );
   }
   getFreeEmployees(): Observable<Employee[]> {
     return this.httpClient.get<any>(`${this.apiUrl}/unposted-employees`);

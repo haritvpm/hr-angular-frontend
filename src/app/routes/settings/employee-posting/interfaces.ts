@@ -17,6 +17,10 @@ export interface Employee {
   default_time_group_id: number | null;
   seniority: number | null;
   last_posting_end_date: string;
+  flexi_minutes_current: number;
+  flexi_time_wef_current: string;
+  flexi_minutes_upcoming: number;
+  flexi_time_wef_upcoming: string;
 }
 
 export interface Section {
