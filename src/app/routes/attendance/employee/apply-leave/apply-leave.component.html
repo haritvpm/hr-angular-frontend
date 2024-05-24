@@ -77,6 +77,7 @@
       <mat-label>To date</mat-label>
       <input
         [min]="isCasualOrCompen ? casualMinDate : applyLeaveForm.get('start_date')?.value"
+        [max]="isCasualOrCompen ? casualMaxDate : null"
         matInput
         (focus)="picker.open()"
         (click)="picker.open()"
