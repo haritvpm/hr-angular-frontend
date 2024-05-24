@@ -14,6 +14,7 @@ import { NgIf } from '@angular/common';
 })
 export class DurationCellComponent {
 
+
   @Input() punching: DailyPunching;
   @Input() is_today: boolean;
   @Input() is_holiday: boolean;
@@ -30,7 +31,8 @@ export class DurationCellComponent {
     if (row.hint) {
       const txt = leaveList.find((x: any) => x.value == row.hint)?.label || null;
       if (txt) return txt;
-    }/* else if (row.computer_hint) {
+    }
+    /* else if (row.computer_hint) {
       const txt = leaveList.find((x: any) => x.value == row.computer_hint)?.label || null;
       if(txt) return txt;
     }*/
@@ -77,6 +79,11 @@ export class DurationCellComponent {
       return '';
 
   }
+  // gethintLeaveStyle() {
+  //   if(){
+  //   }
+
+
 
 
 
