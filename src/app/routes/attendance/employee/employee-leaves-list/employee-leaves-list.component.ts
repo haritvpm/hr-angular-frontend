@@ -22,7 +22,6 @@ export class EmployeeLeavesListComponent implements OnInit {
   private readonly leaveService = inject(LeavesService);
   private readonly auth = inject(AuthService);
 
-  dataSource = new MatTableDataSource<Leave>();
   // @Input() set employeeLeaves(value:Leave[]) {
   //   console.log(value);
   //   this.dataSource = new MatTableDataSource<Leave>(value);
@@ -31,6 +30,7 @@ export class EmployeeLeavesListComponent implements OnInit {
   @Input() self = false;
   @Input() aadhaarid: string | undefined = undefined;
   //self : boolean | undefined = undefined;
+  dataSource = new MatTableDataSource<Leave>();
 
   displayedColumns: string[] = ['period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date', 'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -40,18 +40,18 @@ export class EmployeeLeavesListComponent implements OnInit {
   ngOnInit() {
     console.log('input aadhaarid', this.aadhaarid);
 
-    
+
      // Create an observable representing the params
-    //   this.params$ = 
+    //   this.params$ =
     /*this.route.queryParams.pipe(
         switchMap((params: Params) => {
           console.log('Params', params);
           const aadhaarid = params.aadhaarid;
-          if ( aadhaarid ) { 
+          if ( aadhaarid ) {
             console.log('params aadhaarid', aadhaarid);
-            this.self = false; return of({ aadhaarid}); 
+            this.self = false; return of({ aadhaarid});
           }
-      
+
            return*/
            this.auth.user()
             .pipe(
@@ -66,14 +66,14 @@ export class EmployeeLeavesListComponent implements OnInit {
 
                         return of({ aadhaarid: this.aadhaarid, self: false });
                     }
-                  
+
                     console.log('user aadhaarid', user.aadhaarid);
 
 
                     return of({ aadhaarid: user.aadhaarid, self: true});
                 })
             )
-          
+
        // })
       //)
       .pipe(filter(params => !!params), map( x => {this.self = x.self; return x;}) )

@@ -140,6 +140,14 @@ export interface Leave {
   approved_on : string | null;
 }
 
+export interface PendingLeave {
+  id: number;
+  date: string;
+  hint: string;
+  punching_count : number;
+  unauthorised : boolean;
+}
+
 export interface MonthwiseEmployeeApiData {
   month: string;
   calender_info: { [day: string]: CalendarDayInfo };

@@ -71,7 +71,7 @@ export default {
           name: 'view',
           type: 'link',
           permissions: {
-            only: ['leaf_access'],
+            only: ['self_attendance_access'],
           },
         },
         {

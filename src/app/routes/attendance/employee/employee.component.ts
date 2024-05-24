@@ -21,6 +21,7 @@ import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
 import { DurationProgressbarComponent } from './duration-progressbar/duration-progressbar.component';
+import { PendingLeavesListComponent } from './pending-leaves-list/pending-leaves-list.component';
 
 
 export const MY_FORMATS = {
@@ -44,7 +45,7 @@ export const MY_FORMATS = {
     imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
         MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
         EmployeeLeavesListComponent, MatDatepickerModule, MatNativeDateModule,
-        FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, DurationProgressbarComponent]
+        FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, DurationProgressbarComponent, PendingLeavesListComponent]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {

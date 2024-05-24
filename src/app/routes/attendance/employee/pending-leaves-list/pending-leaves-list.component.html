@@ -1,0 +1,57 @@
+<div class="m-t-4">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let element" [style.white-space]="'nowrap'">
+
+        {{element.date}}
+
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="hint">
+      <th mat-header-cell *matHeaderCellDef> Marked </th>
+      <td mat-cell *matCellDef="let element"> {{element.hint}}
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="punchings">
+      <th mat-header-cell *matHeaderCellDef>Punchings </th>
+      <td mat-cell *matCellDef="let element" >
+          {{element?.punching_count  }}
+
+      </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+      <td mat-cell *matCellDef="let element">
+
+        <!-- @if ( element.owner_seat === null && element.active_status === 'R' ) {
+          <button mat-button (click)="editLeave(element)">
+            <mat-icon class="icon-small" >edit</mat-icon>
+            Edit
+          </button>
+
+          <button mat-button color="warn" (click)="deleteLeave(element)">
+            <mat-icon class="icon-small" >delete</mat-icon>
+            Delete
+          </button>
+        } -->
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 20]"
+  showFirstLastButtons
+  aria-label="Select page">
+  </mat-paginator>
+  </div>

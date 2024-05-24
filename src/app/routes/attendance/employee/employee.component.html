@@ -190,11 +190,19 @@
       [attendanceData]="data"
     ></app-employee-yearly-attendance-list>
   </mat-tab>
-  <mat-tab label="Leaves">
+  <mat-tab label="Leaves (submitted)">
     @if( employeeInfo?.aadhaarid ) {
     <app-employee-leaves-list
     [aadhaarid]="employeeInfo!.aadhaarid"
     ></app-employee-leaves-list>
     }
   </mat-tab>
+  <mat-tab label="Leaves (pending)">
+    @if( employeeInfo?.aadhaarid ) {
+    <app-pending-leaves-list
+    [aadhaarid]="employeeInfo!.aadhaarid">
+    </app-pending-leaves-list>
+    }
+  </mat-tab>
+
 </mat-tab-group>
