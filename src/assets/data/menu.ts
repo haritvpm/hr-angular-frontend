@@ -56,7 +56,7 @@ export default {
       route: '',
       name: 'leaves',
       type: 'sub',
-      icon: 'settings',
+      icon: 'sick',
       children: [
         {
           route: 'leaves/approve',

@@ -37,6 +37,7 @@ export class EmployeePostingAddComponent implements OnInit {
 
 
 
+
   today = new Date();
   min_startdate = new Date();
 

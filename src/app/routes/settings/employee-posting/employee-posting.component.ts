@@ -25,6 +25,7 @@ import { MtxDialog } from '@ng-matero/extensions/dialog';
 import { filter, switchMap, take } from 'rxjs';
 import { EmployeePostingEndComponent } from './employee-posting-end/employee-posting-end.component';
 import { Router } from '@angular/router';
+import { EmployeePostingEditComponent } from './employee-posting-edit/employee-posting-edit.component';
 
 @Component({
     selector: 'app-settings-employee',
@@ -41,7 +42,8 @@ import { Router } from '@angular/router';
 export class EmployeePostingComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['aadhaarid', 'employee', 'section',  'startDate', 'endDate', 'action'];
+
+  displayedColumns: string[] = ['aadhaarid', 'employee', 'section',  'startDate', 'flexi_current', 'flexi_upcoming', 'action'];
   dataSource = new MatTableDataSource<Employee>();
   data: Employee[] = [];
   sections : Section[] = [];
@@ -90,18 +92,33 @@ export class EmployeePostingComponent implements OnInit {
     dialogRef.afterClosed()
     .pipe(
       take(1),
-      filter((data: any) => data !== undefined),
-      switchMap((data: any) => {
+      filter((end_date: any) => end_date !== undefined),
+      switchMap((end_date: any) => {
         return this.employeeService.removeEmployee(
-          emp.id, data.end_date );
+          emp.id, end_date );
       }
     )).subscribe(() => {
       this.fetchData();
     });
 
   }
-  // ...
+  editEmployee(emp: Employee) {
+    const dialogRef = this.mtxDialog.originalOpen(EmployeePostingEditComponent, {
+      //width: '550px',
+      data: { emp }  });
 
+    dialogRef.afterClosed()
+    .pipe(
+      take(1),
+      filter((data: any) => data !== undefined),
+      switchMap((data: any) => {
+        return this.employeeService.updateEmployeeSetting(
+          emp.employee_id, data );
+      }
+    )).subscribe(() => {
+      this.fetchData();
+    });
+    }
 
   addEmployee() {
     this.router.navigate(['/settings/employee-posting-add'], { state: { sections : this.sections } });
