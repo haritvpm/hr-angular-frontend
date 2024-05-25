@@ -21,7 +21,7 @@ export const aadhaardateFromEmptyqueryResolver: ResolveFn<EmployeeArgs> = (route
             switchMap(user => {
                 console.log(user);
                 if (!user.aadhaarid) {
-                    throw new Error('User does not have aadhaarid');
+                    throw new Error('User does not have aadhaarid'); // can be audit
                 }
                 return of({ aadhaarid: user.aadhaarid, date: new Date().toISOString().slice(0, 10), self: true });
             })

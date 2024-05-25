@@ -57,9 +57,9 @@ export class EmployeeLeavesListComponent implements OnInit {
             .pipe(
                 switchMap(user => {
                     console.log(user);
-                    if (!user.aadhaarid) {
-                        throw new Error('User does not have aadhaarid');
-                    }
+                    // if (!user.aadhaarid) { can be audit
+                    //     throw new Error('User does not have aadhaarid');
+                    // }
                     //check if input is defined
                     if (this.aadhaarid) {
                         console.log('input aadhaarid', this.aadhaarid);
@@ -78,7 +78,7 @@ export class EmployeeLeavesListComponent implements OnInit {
       //)
       .pipe(filter(params => !!params), map( x => {this.self = x.self; return x;}) )
       .pipe(
-        switchMap(params => this.leaveService.getLeavesOfEmployee( params.aadhaarid))
+        switchMap(params => this.leaveService.getLeavesOfEmployee( params.aadhaarid!))
       ).subscribe(leaves => {
         this.dataSource = new MatTableDataSource<Leave>(leaves);
         this.dataSource.paginator = this.paginator;
