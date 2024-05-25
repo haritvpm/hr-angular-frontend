@@ -82,7 +82,7 @@ export class EmployeeLeavesListComponent implements OnInit {
       ).subscribe(leaves => {
         this.dataSource = new MatTableDataSource<Leave>(leaves);
         this.dataSource.paginator = this.paginator;
-        console.log('Leavesddddddddddddddddd', leaves);
+     //   console.log('Leavesddddddddddddddddd', leaves);
         console.log('self', this.self);
       });
 

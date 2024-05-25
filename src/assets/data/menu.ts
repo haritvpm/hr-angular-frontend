@@ -32,7 +32,7 @@ export default {
           type: 'link',
           icon: 'calendar_view_month',
           permissions: {
-            only: ['section_access'],
+            only: ['section_access', 'can_view_all_section_attendance'],
           },
         },
         {
