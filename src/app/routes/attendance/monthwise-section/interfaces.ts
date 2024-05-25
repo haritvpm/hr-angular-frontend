@@ -72,6 +72,7 @@ export interface PunchingInfo  {
   date: string;
   aadhaarid: string;
   name: string;
+  flexi_time : string;
   designation: string;
   section: string | null;
   in_section : boolean;

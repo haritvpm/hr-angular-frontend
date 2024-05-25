@@ -23,7 +23,7 @@ export default {
           type: 'link',
           icon: 'fingerprint',
           permissions: {
-            only: ['section_access'],
+            only: ['section_access', 'can_view_all_section_attendance'],
           },
         },
         {
