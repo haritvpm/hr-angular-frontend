@@ -21,6 +21,8 @@ export interface MonthlyPunching {
   seat_of_controlling_officer_id: number;
   logged_in_user_is_controller: boolean;
   logged_in_user_is_section_officer: boolean;
+  logged_in_user_is_superior_officer : boolean;
+  logged_in_user_is_: boolean;
   designation: string;
   designation_sortindex: number | null;
   default_time_group_id: number | null;

@@ -323,7 +323,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
 
 
 
-      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
+      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer && !row.logged_in_user_is_superior_officer) return;
       if (!row.logged_in_user_is_controller &&  //js is both so and co
         row.logged_in_user_is_section_officer &&  //disallow only if so
         dayNData.finalized_by_controller

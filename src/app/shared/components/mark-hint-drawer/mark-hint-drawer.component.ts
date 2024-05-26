@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, UntypedFormControl } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
@@ -15,6 +15,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ToastrService } from 'ngx-toastr';
 import { Leave } from 'app/routes/attendance/employee/interface';
 import { NgxPermissionsModule } from 'ngx-permissions';
+import {
+  MtxDatetimepicker,
+  MtxDatetimepickerInput,
+  MtxDatetimepickerMode,
+  MtxDatetimepickerToggle,
+  MtxDatetimepickerType,
+} from '@ng-matero/extensions/datetimepicker';
 
 @Component({
   selector: 'app-mark-hint-drawer',
@@ -32,6 +39,10 @@ import { NgxPermissionsModule } from 'ngx-permissions';
     MatDividerModule,
     MatCheckboxModule,
     NgxPermissionsModule,
+    MtxDatetimepicker,
+    MtxDatetimepickerInput,
+    MtxDatetimepickerToggle,
+    MatSuffix,
   ],
   templateUrl: './mark-hint-drawer.component.html',
   styleUrl: './mark-hint-drawer.component.css',
@@ -59,9 +70,27 @@ export class MarkHintDrawerComponent implements OnInit {
   regulariseSinglePunch: boolean = false;
   canRegulariseSinglePunch: boolean = false;
 
+  // type: MtxDatetimepickerType = 'datetime';
+  // mode: MtxDatetimepickerMode = 'auto';
+  // startView: MtxCalendarView = 'month';
+  multiYearSelector = false;
+  touchUi = false;
+  twelvehour = false;
+  timeInterval = 1;
+  timeInput = true;
+  datetime = moment(this.data.punchingInfo.date).format('YYYY-MM-DDTHH:mm:ss');
+
 
   ngOnInit() {
     console.log(this.data);
+
+    //if this.data.punchingInfo.controller_set_punch_out is present, then modify time. else use default time
+    if(this.data.punchingInfo.single_punch_type == 'in' && this.data.punchingInfo.controller_set_punch_out){
+      this.datetime = moment(this.data.punchingInfo.controller_set_punch_out).format('YYYY-MM-DDTHH:mm:ss');
+    } else if(this.data.punchingInfo.single_punch_type == 'out' && this.data.punchingInfo.controller_set_punch_in){
+      this.datetime = moment(this.data.punchingInfo.controller_set_punch_in).format('YYYY-MM-DDTHH:mm:ss');
+    }
+
     this.selected = this.data.punchingInfo.hint || this.data.punchingInfo.computer_hint;
 
     if(this.data.punchingInfo.is_unauthorised){
@@ -102,8 +131,9 @@ export class MarkHintDrawerComponent implements OnInit {
     if( this.data.punchingInfo.single_punch_regularised_by == null && logged_in_user_is_superior ) {
       this.canMarkSinglePunch = !this.data.calender.is_today && !this.data.calender.future_date &&
                 (this.data.punchingInfo.punching_count == 1 || //can be singlepunch if they punch twice within minutes at evening
-                (this.data.punchingInfo.single_punch_type !== null /*&&
-    this.data.punchingInfo.single_punch_regularised_by == null*/));
+                (this.data.punchingInfo?.single_punch_type && this.data.punchingInfo?.single_punch_type !== null //&& this.data.punchingInfo.single_punch_regularised_by == null
+
+                ));
     }
 
     if(logged_in_user_is_superior &&
@@ -164,6 +194,7 @@ export class MarkHintDrawerComponent implements OnInit {
         isSinglePunch: this.isSinglePunch,
         single_punch_type: this.single_punch_type,
         regulariseSinglePunch: this.regulariseSinglePunch,
+        missingDateTime: moment(this.datetime).format('YYYY-MM-DD HH:mm:ss'),
         });
   }
 

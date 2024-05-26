@@ -61,6 +61,7 @@ export interface EmployeePunchingInfo {
   punching_count: number;
   logged_in_user_is_controller: boolean;
   logged_in_user_is_section_officer: boolean;
+  logged_in_user_is_superior_officer: boolean;
   id?: number;
   date: string;
   aadhaarid: string;
