@@ -95,7 +95,11 @@
       </div>
     </mat-radio-group>
     @if(canRegulariseSinglePunch && isSinglePunch){
+      <ng-template  ngxPermissionsOnly="can_regularize_single_punch">
+
       <mat-checkbox [(ngModel)]="regulariseSinglePunch">Regularise</mat-checkbox>
+    </ng-template>
+
     }
   } @else if(regulariseSinglePunch) {
     One-Time Punching Regularised

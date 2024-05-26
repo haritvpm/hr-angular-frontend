@@ -14,6 +14,7 @@ import { leaveList } from './leave-types';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ToastrService } from 'ngx-toastr';
 import { Leave } from 'app/routes/attendance/employee/interface';
+import { NgxPermissionsModule } from 'ngx-permissions';
 
 @Component({
   selector: 'app-mark-hint-drawer',
@@ -30,6 +31,7 @@ import { Leave } from 'app/routes/attendance/employee/interface';
     CommonModule,
     MatDividerModule,
     MatCheckboxModule,
+    NgxPermissionsModule,
   ],
   templateUrl: './mark-hint-drawer.component.html',
   styleUrl: './mark-hint-drawer.component.css',
