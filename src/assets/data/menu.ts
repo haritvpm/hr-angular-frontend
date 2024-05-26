@@ -44,7 +44,15 @@ export default {
             only: ['self_attendance_access'],
           },
         },
-
+        {
+          route: 'search',
+          name: 'search',
+          type: 'link',
+          icon: 'search',
+          permissions: {
+            only: ['section_access', 'can_view_all_section_attendance'],
+          },
+        },
       ],
       // permissions: {
       //   only: ['section_access'],

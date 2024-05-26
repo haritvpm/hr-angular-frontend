@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input formGroupName="range" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="From date">
+            <input matEndDate formControlName="end" placeholder="To date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+
+        @if (form.controls.range.controls.start.hasError('matStartDateInvalid')) {
+        <mat-error>Invalid start date</mat-error>
+        }
+        @if (form.controls.range.controls.end.hasError('matEndDateInvalid')) {
+        <mat-error>Invalid end date</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-checkbox formControlName="single_punches">One-Time punch</mat-checkbox>
+    <mat-checkbox formControlName="one_hour_exceeded">Daily grace exceeded</mat-checkbox>
+    <mat-checkbox formControlName="grace_exceeded">Monthly grace exceeded</mat-checkbox>
+    <mat-checkbox formControlName="unauthorized">Unauthorized</mat-checkbox>
+    <mat-form-field class="m-l-4">
+        <mat-label>AttendanceId</mat-label>
+        <input matInput placeholder="AttendanceId" formControlName="aadhaarid">
+    </mat-form-field>
+
+
+    <button class="m-l-4" mat-raised-button color="accent" [disabled]="!form.valid">Search</button>
+</form>
+<p>form : {{form.value | json}}</p>
