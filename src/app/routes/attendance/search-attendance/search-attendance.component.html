@@ -19,7 +19,7 @@
 
     <mat-checkbox formControlName="single_punches">One-Time punch</mat-checkbox>
     <mat-checkbox formControlName="one_hour_exceeded">Daily grace exceeded</mat-checkbox>
-    <mat-checkbox formControlName="grace_exceeded">Monthly grace exceeded</mat-checkbox>
+    <!-- <mat-checkbox formControlName="grace_exceeded">Monthly grace exceeded</mat-checkbox> -->
     <mat-checkbox formControlName="unauthorized">Unauthorized</mat-checkbox>
     <mat-form-field class="m-l-4">
         <mat-label>AttendanceId</mat-label>
@@ -29,4 +29,39 @@
 
     <button class="m-l-4" mat-raised-button color="accent" [disabled]="!form.valid">Search</button>
 </form>
-<p>form : {{form.value | json}}</p>
+<!-- <p>form : {{form.value | json}}</p> -->
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="aadhaarid">
+    <th mat-header-cell *matHeaderCellDef>
+      <span [style.paddingLeft.px]="40"> AttendanceId </span>
+    </th>
+    <td mat-cell *matCellDef="let data">
+      <button mat-icon-button
+              [style.visibility]="!data.expandable ? 'hidden' : ''"
+              [style.marginLeft.px]="data.level * 32"
+              (click)="treeControl.toggle(data)">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(data) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </button>
+
+      {{data.aadhaarid}}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let data"> {{data.name}} </td>
+  </ng-container>
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <td mat-cell *matCellDef="let data"> {{data.date}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+
+
+<!-- https://stackblitz.com/edit/angular-table-tree-example?file=app%2Ftable-basic-example.html -->

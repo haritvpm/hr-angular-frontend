@@ -9,11 +9,61 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { SearchAttendanceService } from './search-attendance.service';
+
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {FlatTreeControl} from '@angular/cdk/tree';
+import { MatTableModule } from '@angular/material/table';
+
+interface FoodNode {
+  aadhaarid: string;
+  date?: string;
+  name : string;
+
+ /* in_datetime ?: string;
+  out_datetime ?: string;
+  designation? : string;
+  section? : string;
+  punching_count? : number;
+  grace_str? : string;
+  extra_str ?: string;
+  is_unauthorised? : boolean;
+  flexi_time ?: string;
+  single_punch_regularised_by? : string;
+  grace_total_exceeded_one_hour? : string;*/
+  children?: FoodNode[];
+}
+interface ExampleFlatNode {
+  expandable: boolean;
+
+  aadhaarid: string;
+  date: string | undefined;
+  name : string;
+
+ /* in_datetime ?: string;
+  out_datetime ?: string;
+  designation : string;
+  section : string;
+  punching_count : number;
+  grace_str : string;
+  extra_str : string;
+  is_unauthorised : boolean;
+  flexi_time : string;
+  single_punch_regularised_by : string;
+  grace_total_exceeded_one_hour : string;*/
+  level: number;
+}
+
+
+
 @Component({
   selector: 'app-search-attendance',
   standalone: true,
   // providers: [provideNativeDateAdapter()],
-  imports: [MatInputModule, MatCheckboxModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, JsonPipe],
+  imports: [MatTableModule, MatInputModule, MatCheckboxModule, MatButtonModule,
+    MatIconModule, MatFormFieldModule, MatDatepickerModule,
+    FormsModule, ReactiveFormsModule, JsonPipe,
+
+  ],
   templateUrl: './search-attendance.component.html',
   styleUrl: './search-attendance.component.css'
 })
@@ -30,6 +80,45 @@ export class SearchAttendanceComponent implements OnInit {
     unauthorized: new FormControl<boolean>(false),
   });
 
+  displayedColumns: string[] = ['aadhaarid', 'name',  'date'];
+
+  private transformer = (node: FoodNode, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+
+      aadhaarid: node.aadhaarid,
+      date: node.date,
+      name: node.name,
+     /* in_datetime : node.in_datetime,
+      out_datetime : node.out_datetime,
+      designation : node.designation,
+      section : node.section,
+      punching_count : node.punching_count,
+      grace_str : node.grace_str,
+      extra_str : node.extra_str,
+      is_unauthorised : node.is_unauthorised,
+      flexi_time : node.flexi_time,
+      single_punch_regularised_by : node.single_punch_regularised_by,
+      grace_total_exceeded_one_hour : node.grace_total_exceeded_one_hour,*/
+      level,
+    };
+  };
+
+
+  // treeControl = new FlatTreeControl<{ expandable: boolean; aadhaarid: string; date: string | undefined; level: number; }>(
+  //   node => node.level, node => node.expandable);
+
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+    node => node.level, node => node.expandable);
+
+    treeFlattener = new MatTreeFlattener(
+      this.transformer, node => node.level,
+      node => node.expandable, node => node.children);
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
   atleastOneValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const single_punches = control.get('single_punches');
     const one_hour_exceeded = control.get('one_hour_exceeded');
@@ -39,10 +128,10 @@ export class SearchAttendanceComponent implements OnInit {
       grace_exceeded && unauthorized && !grace_exceeded.value && !unauthorized.value) {
       return {
         altleastonecriteria: true
-      }
+      };
     }
     return null;
-  }
+  };
 
   constructor(private searchAttendanceService: SearchAttendanceService) { }
 
@@ -54,6 +143,7 @@ export class SearchAttendanceComponent implements OnInit {
     console.log(this.form.value);
     this.searchAttendanceService.search(this.form.value).subscribe((res) => {
       console.log(res);
+      this.dataSource.data = res;
     });
 
   }
