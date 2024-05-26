@@ -85,27 +85,26 @@ export class MarkHintDrawerComponent implements OnInit {
 //for monthwise view, logged_in_user_is_controller is present in monthlyPunching
 // for employee view, logged_in_user_is_controller is present in punchingInfo
     const logged_in_user_is_controller = this.data.monthlyPunching.logged_in_user_is_controller ||
-    this.data.punchingInfo.logged_in_user_is_controller;
+        this.data.punchingInfo.logged_in_user_is_controller;
     const logged_in_user_is_so = this.data.monthlyPunching.logged_in_user_is_section_officer ||
-    this.data.punchingInfo.logged_in_user_is_section_officer;
+       this.data.punchingInfo.logged_in_user_is_section_officer;
+    const logged_in_user_is_superior = this.data.monthlyPunching.logged_in_user_is_superior_officer ||
+        this.data.punchingInfo.logged_in_user_is_superior_officer;
 
     if (
-      logged_in_user_is_controller||
+      logged_in_user_is_controller ||
       (logged_in_user_is_so && !this.data.punchingInfo.finalized_by_controller)
     ) {
       this.canMarkLeave = true;
-     /* this.canMarkSinglePunch = !this.data.calender.is_today && !this.data.calender.future_date &&
-                (//this.data.punchingInfo.punching_count == 1 || //can be singlepunch if they punch twice within minutes at evening
-                !this.data.punchingInfo.single_punch_type ||
-                (this.data.punchingInfo.single_punch_type !== null &&
-                this.data.punchingInfo.single_punch_regularised_by == null));*/
+    }
+    if( this.data.punchingInfo.single_punch_regularised_by == null && logged_in_user_is_superior ) {
       this.canMarkSinglePunch = !this.data.calender.is_today && !this.data.calender.future_date &&
                 (this.data.punchingInfo.punching_count == 1 || //can be singlepunch if they punch twice within minutes at evening
-                (this.data.punchingInfo.single_punch_type !== null &&
-                this.data.punchingInfo.single_punch_regularised_by == null));
+                (this.data.punchingInfo.single_punch_type !== null /*&&
+    this.data.punchingInfo.single_punch_regularised_by == null*/));
     }
 
-    if(logged_in_user_is_controller &&
+    if(logged_in_user_is_superior &&
       !this.data.punchingInfo.single_punch_regularised_by
     /*&& this.single_punch_type*/){
       this.canRegulariseSinglePunch = true;
