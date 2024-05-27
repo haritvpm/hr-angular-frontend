@@ -85,14 +85,14 @@ export class SearchAttendanceComponent implements OnInit {
     unauthorized: new FormControl<boolean>(false),
   });
 
-  displayedColumns: string[] = ['#','aadhaarid',  'date',  'time', 'flexi_time', 'grace', 'extra'];
+  displayedColumns: string[] = ['#','aadhaarid',  'flexi_time', 'time', 'grace', 'extra'];
 
   private transformer = (node: FoodNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       index : node.index,
 
-      aadhaarid: 0 == level ? node.aadhaarid : node.designation + ' ' + (node.section || ''),
+      aadhaarid: 0 == level ? node.aadhaarid : /*node.designation + ' ' +*/ (node.section || '') + node.date,
       date: node.date,
     //  name: node.name,
       section: node.section,
