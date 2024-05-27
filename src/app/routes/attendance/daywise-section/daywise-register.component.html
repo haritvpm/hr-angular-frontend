@@ -76,6 +76,22 @@
         </th>
         <td mat-cell *matCellDef="let employee">{{ employee.section }}</td>
       </ng-container>
+
+      <ng-container matColumnDef="time_slot">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by time_slot"
+        >
+          Time Slot
+        </th>
+        <td mat-cell *matCellDef="let employee">{{ employee.flexi_time }}</td>
+      </ng-container>
+
+
+
+
       <ng-container matColumnDef="inTrace">
         <th
           mat-header-cell
@@ -185,7 +201,7 @@
           {{ employee.grace_str }}
         </td>
       </ng-container>
-      <ng-container matColumnDef="total_grace_sec">
+      <!-- <ng-container matColumnDef="total_grace_sec">
         <th
           mat-header-cell
           *matHeaderCellDef
@@ -199,7 +215,7 @@
             {{ roundValue(employee.total_grace_sec / 60) }}
           </span>
         </td>
-      </ng-container>
+      </ng-container> -->
 
       <ng-container matColumnDef="grace_left">
         <th

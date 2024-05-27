@@ -23,7 +23,7 @@ export default {
           type: 'link',
           icon: 'fingerprint',
           permissions: {
-            only: ['section_access'],
+            only: ['section_access', 'can_view_all_section_attendance'],
           },
         },
         {
@@ -32,7 +32,7 @@ export default {
           type: 'link',
           icon: 'calendar_view_month',
           permissions: {
-            only: ['section_access'],
+            only: ['section_access', 'can_view_all_section_attendance'],
           },
         },
         {
@@ -44,7 +44,15 @@ export default {
             only: ['self_attendance_access'],
           },
         },
-
+        {
+          route: 'search',
+          name: 'search',
+          type: 'link',
+          icon: 'search',
+          permissions: {
+            only: ['section_access', 'can_view_all_section_attendance'],
+          },
+        },
       ],
       // permissions: {
       //   only: ['section_access'],
@@ -64,6 +72,14 @@ export default {
           type: 'link',
           permissions: {
             only: ['leaf_access'],
+          },
+        },
+        {
+          route: 'leaves/view',
+          name: 'view',
+          type: 'link',
+          permissions: {
+            only: ['self_attendance_access'],
           },
         },
         {

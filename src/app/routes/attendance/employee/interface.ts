@@ -61,6 +61,7 @@ export interface EmployeePunchingInfo {
   punching_count: number;
   logged_in_user_is_controller: boolean;
   logged_in_user_is_section_officer: boolean;
+  logged_in_user_is_superior_officer: boolean;
   id?: number;
   date: string;
   aadhaarid: string;
@@ -140,6 +141,14 @@ export interface Leave {
   approved_on : string | null;
 }
 
+export interface PendingLeave {
+  id: number;
+  date: string;
+  hint: string;
+  punching_count : number;
+  unauthorised : boolean;
+}
+
 export interface MonthwiseEmployeeApiData {
   month: string;
   calender_info: { [day: string]: CalendarDayInfo };
@@ -147,7 +156,7 @@ export interface MonthwiseEmployeeApiData {
   data_yearly:  YearlyData ;
   employee_punching: EmployeePunchingInfo[];
   employee: Employee;
-  emp_leaves: Leave[];
+  //emp_leaves: Leave[];
   logged_in_user_is_controller : boolean;
 }
 export interface EmployeeArgs {

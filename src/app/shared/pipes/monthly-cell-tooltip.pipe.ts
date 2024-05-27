@@ -19,10 +19,9 @@ export class MonthlyCellTooltipPipe implements PipeTransform {
     if (!rowVal?.leave_id && rowVal?.is_unauthorised) tip += 'Unauthorised\n';
     else if (hint)  tip += hint || 'No Punching. \n';
 
-    // else if (rowVal?.punching_count == 1) {
-    //   tip += (rowVal?.in_time || rowVal?.out_time) + hint;
 
-    // }
+    tip += (rowVal?.flexi_time || '') + '\n' ;
+
 
     if (rowVal?.punching_count >= 1) {
       tip += rowVal?.in_time + '-' + rowVal?.out_time + '\n' + hint;

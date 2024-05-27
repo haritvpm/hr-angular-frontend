@@ -40,7 +40,7 @@ const moment = _rollupMoment || _moment;
 })
 
 export class AttendanceRegisterComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'section', 'inTrace', 'outTrace', 'duration_str',  'grace_str', 'total_grace_sec', 'grace_left', 'extra_str',  'total_extra_sec','cl_mark_sub', 'comb_mark_sub', 'remarks'];
+  displayedColumns: string[] = ['name', 'section', 'time_slot', 'inTrace', 'outTrace', 'duration_str',  'grace_str', 'grace_left', 'extra_str',  'total_extra_sec','cl_mark_sub', 'comb_mark_sub', 'remarks'];
   dataSource = new MatTableDataSource<DailyPunching>();
   data: DailyPunching[] = [];
   is_future: boolean;
@@ -294,7 +294,7 @@ calender: Calender;
 
       ) return;
 
-      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
+      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer && !row.logged_in_user_is_superior_officer) return;
       if (!row.logged_in_user_is_controller &&  //js is both so and co
         row.logged_in_user_is_section_officer &&  //disallow only if so
         row.finalized_by_controller

@@ -11,6 +11,8 @@
   <small>{{ data.monthlyPunching?.designation  || data.punchingInfo.designation }}</small> <br />
   <mat-divider class="m-t-8"></mat-divider>
   <b>{{ data.punchingInfo.date || data.punchingInfo.day_str || (data.calender.date| date: 'dd-MM-yyyy'  )}}</b> <br />
+  <small> Time slot:&nbsp; {{  data.punchingInfo.flexi_time ?? '?'}}</small> <br />
+
   {{ punchingTimes }}
 
   <mat-divider class="m-b-4"></mat-divider>
@@ -85,15 +87,35 @@
     <mat-radio-group [disabled]="!isSinglePunch"  aria-label="Select when punched" [(ngModel)]="single_punch_type">
       <div class="row">
             <div class="col-sm-6">
-              <mat-radio-button [value]="'in'"><small> In only </small> </mat-radio-button>
+              <mat-radio-button [value]="'in'"><small> Missed PunchOut </small> </mat-radio-button>
             </div>
             <div class="col-sm-6">
-              <mat-radio-button [value]="'out'"><small> Out only</small> </mat-radio-button>
+              <mat-radio-button [value]="'out'"><small> Missed PunchIn</small> </mat-radio-button>
             </div>
       </div>
     </mat-radio-group>
+    <mat-form-field>
+      @if(single_punch_type === 'in'){
+        <mat-label>Select Punch-Out time</mat-label>
+      } @else {
+        <mat-label>Select Punch-In time</mat-label>
+      }
+
+      <mtx-datetimepicker #datetimePicker
+                          [mode]="'portrait'"
+                          [type]="'datetime'"
+                          [startView]="'clock'"
+                          [twelvehour]="true"
+                          [timeInterval]="5"
+                          [timeInput]="true"></mtx-datetimepicker>
+      <input [mtxDatetimepicker]="datetimePicker" [(ngModel)]="datetime" matInput required>
+      <mtx-datetimepicker-toggle [for]="datetimePicker" matSuffix></mtx-datetimepicker-toggle>
+    </mat-form-field>
     @if(canRegulariseSinglePunch && isSinglePunch){
+      <ng-template  ngxPermissionsOnly="can_regularize_single_punch">
       <mat-checkbox [(ngModel)]="regulariseSinglePunch">Regularise</mat-checkbox>
+    </ng-template>
+
     }
   } @else if(regulariseSinglePunch) {
     One-Time Punching Regularised

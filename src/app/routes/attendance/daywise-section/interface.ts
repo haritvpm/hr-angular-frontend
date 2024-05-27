@@ -36,6 +36,7 @@ export interface DailyPunching {
   attendance_book: AttendanceBook
   logged_in_user_is_section_officer: boolean
   logged_in_user_is_controller: boolean
+  logged_in_user_is_superior_officer : boolean
   finalized_by_controller: boolean
   remarks: string
   hint: string
@@ -49,6 +50,8 @@ export interface DailyPunching {
   single_punch_regularised_by: string
   is_unauthorised: boolean
   leave?: Leave
+  flexi_time: string
+
 
 }
 

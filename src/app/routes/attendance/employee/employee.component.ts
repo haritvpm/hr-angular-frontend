@@ -20,7 +20,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MTX_DRAWER_DATA, MtxDrawer, MtxDrawerRef } from '@ng-matero/extensions/drawer';
 import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mark-hint-drawer.component';
 import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
-import { DurationProgressbarComponent } from "./duration-progressbar/duration-progressbar.component";
+import { DurationProgressbarComponent } from './duration-progressbar/duration-progressbar.component';
+import { PendingLeavesListComponent } from './pending-leaves-list/pending-leaves-list.component';
 
 
 export const MY_FORMATS = {
@@ -44,7 +45,7 @@ export const MY_FORMATS = {
     imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
         MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
         EmployeeLeavesListComponent, MatDatepickerModule, MatNativeDateModule,
-        FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, DurationProgressbarComponent]
+        FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, DurationProgressbarComponent, PendingLeavesListComponent]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
@@ -63,7 +64,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   todayDate: Date = new Date();
   beginDate: Date = new Date('2024-01-01');
   date_formctrl = new FormControl(moment());
-  employeeLeaves: Leave[] = [];
+  //employeeLeaves: Leave[] = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -89,7 +90,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
         this.employeeInfo = this.data.employee;
         this.monthlyData = this.data.data_monthly;
         this.yearlyData = this.data.data_yearly;
-        this.employeeLeaves = this.data.emp_leaves;
+        //this.employeeLeaves = this.data.emp_leaves;
         this.calender_info = this.data.calender_info;
       });
 
@@ -176,7 +177,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
       ) return;
 
-      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer) return;
+      if (!row.logged_in_user_is_controller && !row.logged_in_user_is_section_officer && !row.logged_in_user_is_superior_officer) return;
       if (!row.logged_in_user_is_controller &&  //js is both so and co
         row.logged_in_user_is_section_officer &&  //disallow only if so
         row.finalized_by_controller

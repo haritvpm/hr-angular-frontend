@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Employee, Leave } from '../attendance/employee/interface';
+import { Employee, Leave, PendingLeave } from '../attendance/employee/interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -10,14 +10,14 @@ export interface LeaveToApprove extends Leave {
 }
 export interface LeaveToApproveApi{
   leaves: LeaveToApprove[];
-  
+
  }
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeavesService {
-  private apiUrl = '/api/v1/leaves'; 
+  private apiUrl = '/api/v1/leaves';
 
   constructor(private http: HttpClient) { }
 
@@ -40,5 +40,11 @@ export class LeavesService {
   getById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
-  
+  getLeavesOfEmployee(aadhaarid: string): Observable<Leave[]> {
+    return this.http.get<Leave[]>(`${this.apiUrl}/employee/${aadhaarid}`);
+  }
+  getPendingLeavesOfEmployee(aadhaarid: string): Observable<PendingLeave[]> {
+    return this.http.get<PendingLeave[]>(`${this.apiUrl}/employee-leave-pending/${aadhaarid}`);
+  }
+
 }
