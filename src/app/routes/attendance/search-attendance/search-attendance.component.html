@@ -28,6 +28,20 @@
         <input matInput placeholder="AttendanceId" formControlName="aadhaarid">
     </mat-form-field> -->
   </div>
+
+    <div class ="col" >
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="category">
+        <mat-option value="all">All</mat-option>
+        <mat-option value="default">Default</mat-option>
+        <mat-option value="parttime">PartTime</mat-option>
+        <mat-option value="fulltime">FullTime</mat-option>
+
+      </mat-select>
+    </mat-form-field>
+
+  </div>
     <div class ="col" >
     <button class="m-l-4" mat-raised-button color="accent" [disabled]="!form.valid">Search</button>
   </div>
