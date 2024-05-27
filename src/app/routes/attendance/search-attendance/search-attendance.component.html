@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
   <div class="row d-flex justify-content-stretch align-items-center" >
-    <mat-form-field class ="col">
+    <mat-form-field class ="d-flex flex-grow-1">
         <mat-label>Enter a date range</mat-label>
         <mat-date-range-input [min]="'2024-01-01'" [max]="today"  formGroupName="range" [rangePicker]="picker">
             <input matStartDate  formControlName="start" placeholder="From date">
