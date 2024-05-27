@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -18,17 +18,17 @@ interface FoodNode {
   aadhaarid: string;
   date?: string;
   name : string;
-
- /* in_datetime ?: string;
+  section : string;
+  designation : string;
+  in_datetime ?: string;
   out_datetime ?: string;
-  designation? : string;
-  section? : string;
-  punching_count? : number;
-  grace_str? : string;
-  extra_str ?: string;
-  is_unauthorised? : boolean;
-  flexi_time ?: string;
-  single_punch_regularised_by? : string;
+
+  //punching_count? : number;
+  grace_str : string;
+  extra_str : string;
+  is_unauthorised : boolean;
+  flexi_time : string;
+  /*single_punch_regularised_by? : string;
   grace_total_exceeded_one_hour? : string;*/
   children?: FoodNode[];
 }
@@ -37,18 +37,18 @@ interface ExampleFlatNode {
 
   aadhaarid: string;
   date: string | undefined;
-  name : string;
-
- /* in_datetime ?: string;
-  out_datetime ?: string;
-  designation : string;
+ // name : string;
   section : string;
-  punching_count : number;
+  designation : string;
+  in_datetime : string| undefined;
+  out_datetime : string| undefined;
+
+ // punching_count : number;
   grace_str : string;
   extra_str : string;
   is_unauthorised : boolean;
   flexi_time : string;
-  single_punch_regularised_by : string;
+  /*single_punch_regularised_by : string;
   grace_total_exceeded_one_hour : string;*/
   level: number;
 }
@@ -61,13 +61,16 @@ interface ExampleFlatNode {
   // providers: [provideNativeDateAdapter()],
   imports: [MatTableModule, MatInputModule, MatCheckboxModule, MatButtonModule,
     MatIconModule, MatFormFieldModule, MatDatepickerModule,
-    FormsModule, ReactiveFormsModule, JsonPipe,
+    FormsModule, ReactiveFormsModule, JsonPipe, DatePipe,
 
   ],
   templateUrl: './search-attendance.component.html',
   styleUrl: './search-attendance.component.css'
 })
 export class SearchAttendanceComponent implements OnInit {
+
+  today = new Date();
+
   form = new FormGroup({
     range: new FormGroup({
       start: new FormControl<Date | null>(null, Validators.required),
@@ -80,25 +83,26 @@ export class SearchAttendanceComponent implements OnInit {
     unauthorized: new FormControl<boolean>(false),
   });
 
-  displayedColumns: string[] = ['aadhaarid', 'name',  'date'];
+  displayedColumns: string[] = ['aadhaarid',  'date',  'time', 'flexi_time', 'grace', 'extra'];
 
   private transformer = (node: FoodNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
 
-      aadhaarid: node.aadhaarid,
+      aadhaarid: 0 == level ? node.aadhaarid : node.designation + ' ' + (node.section || ''),
       date: node.date,
-      name: node.name,
-     /* in_datetime : node.in_datetime,
+    //  name: node.name,
+      section: node.section,
+      in_datetime : node.in_datetime,
       out_datetime : node.out_datetime,
       designation : node.designation,
-      section : node.section,
-      punching_count : node.punching_count,
+
+      //punching_count : node.punching_count,
       grace_str : node.grace_str,
       extra_str : node.extra_str,
       is_unauthorised : node.is_unauthorised,
       flexi_time : node.flexi_time,
-      single_punch_regularised_by : node.single_punch_regularised_by,
+     /* single_punch_regularised_by : node.single_punch_regularised_by,
       grace_total_exceeded_one_hour : node.grace_total_exceeded_one_hour,*/
       level,
     };
