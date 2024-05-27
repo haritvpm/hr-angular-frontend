@@ -32,6 +32,12 @@
 <!-- <p>form : {{form.value | json}}</p> -->
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="#" >
+    <th mat-header-cell *matHeaderCellDef> # </th>
+    <td mat-cell *matCellDef="let element; let i = index" [style.visibility]="!element.expandable ? 'hidden' : ''"> {{element.index}}</td>
+</ng-container>
+
   <ng-container matColumnDef="aadhaarid">
     <th mat-header-cell *matHeaderCellDef>
       <span [style.paddingLeft.px]="40"> AttendanceId </span>

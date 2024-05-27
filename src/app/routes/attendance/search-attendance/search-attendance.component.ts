@@ -15,6 +15,7 @@ import {FlatTreeControl} from '@angular/cdk/tree';
 import { MatTableModule } from '@angular/material/table';
 
 interface FoodNode {
+  index : number;
   aadhaarid: string;
   date?: string;
   name : string;
@@ -34,6 +35,7 @@ interface FoodNode {
 }
 interface ExampleFlatNode {
   expandable: boolean;
+  index : number;
 
   aadhaarid: string;
   date: string | undefined;
@@ -83,11 +85,12 @@ export class SearchAttendanceComponent implements OnInit {
     unauthorized: new FormControl<boolean>(false),
   });
 
-  displayedColumns: string[] = ['aadhaarid',  'date',  'time', 'flexi_time', 'grace', 'extra'];
+  displayedColumns: string[] = ['#','aadhaarid',  'date',  'time', 'flexi_time', 'grace', 'extra'];
 
   private transformer = (node: FoodNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
+      index : node.index,
 
       aadhaarid: 0 == level ? node.aadhaarid : node.designation + ' ' + (node.section || ''),
       date: node.date,
