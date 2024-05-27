@@ -1,4 +1,9 @@
 @if (!punchItem.is_future) {
+  <!-- @if (punchItem.leave) {
+    <span [style.color]="getLeaveColor(punchItem.leave.active_status)">
+      {{ getLeaveType(punchItem.leave.leave_type) }}
+    </span>
+  } -->
   @if (punchItem.duration_str) {
     {{ punchItem.duration_str }}
     <mat-progress-bar
@@ -7,18 +12,27 @@
       style="flex: 1"
       [color]="getDurationStyle(getPercentage(punchItem))"
     ></mat-progress-bar>
-  } @else if (punchItem.leave) {
-    <span [style.color]="getLeaveColor(punchItem.leave.active_status)">
-      {{ getLeaveType(punchItem.leave.leave_type) }}
-    </span>
-  } @else if (
+  }
+  @if (
     !punchItem.punchout_trace &&
     !punchItem.is_today &&
     punchItem.punching_count &&
     punchItem.attendance_trace_fetch_complete
   ) {
-    <span style="color: orange">Missed Out-Punch</span>
-  } @else {
+    <span style="color: orange"> Missed Out-Punch </span>
+    <!-- } @else {
+    - -->
+  }
+  @if (punchItem.leave) {
+    <span [style.color]="getLeaveColor(punchItem.leave.active_status)">
+      {{ getLeaveType(punchItem.leave.leave_type) }}
+    </span>
+  } @else if (punchItem.hint) {
+    <span [style.color]="'DeepPink'"> {{ getLeaveType(punchItem.hint) }} </span>
+  } @else if (punchItem.is_unauthorised) {
+    <span [style.color]="'Red'"> Unauthorised </span>
+  }
+  @if(punchItem.is_holiday && !punchItem.punching_count) {
     -
   }
 }

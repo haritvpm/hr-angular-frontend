@@ -27,16 +27,22 @@ export class DurationProgressbarComponent {
   }
 
   getLeaveColor(activeStatus: string) {
-    return activeStatus == 'N' ? 'DeepSkyBlue' : 'Red';
+    return activeStatus == 'N' ? 'DeepSkyBlue' : 'LimeGreen';
   }
 
   getLeaveType(leaveType: string) {
-    if (leaveType === 'casual')
+    if (leaveType === 'CL' || leaveType === 'casual')
       return 'Casual Leave';
     else if (leaveType === 'commuted')
       return 'Commuted Leave';
     else if (leaveType === 'earned')
       return 'Earned Leave';
+    else if (leaveType === 'compen_for_extra')
+      return 'Compensation for Extra Hours';
+    else if (leaveType === 'compen')
+      return 'Compensation Leave';
+    else if (leaveType === 'comp_leave')
+      return 'Compensation Leave';
     else
       return '';
   }
