@@ -13,6 +13,7 @@ import { SearchAttendanceService } from './search-attendance.service';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
 
 interface FoodNode {
   index : number;
@@ -64,7 +65,7 @@ interface ExampleFlatNode {
   imports: [MatTableModule, MatInputModule, MatCheckboxModule, MatButtonModule,
     MatIconModule, MatFormFieldModule, MatDatepickerModule,
     FormsModule, ReactiveFormsModule, JsonPipe, DatePipe,
-
+    MatSelectModule,
   ],
   templateUrl: './search-attendance.component.html',
   styleUrl: './search-attendance.component.css'
@@ -83,16 +84,17 @@ export class SearchAttendanceComponent implements OnInit {
     one_hour_exceeded: new FormControl<boolean>(false),
     grace_exceeded: new FormControl<boolean>(false),
     unauthorized: new FormControl<boolean>(false),
+    category :new FormControl<string>(''),
   });
 
-  displayedColumns: string[] = ['#','aadhaarid',  'date',  'time', 'flexi_time', 'grace', 'extra'];
+  displayedColumns: string[] = ['#','aadhaarid',  'flexi_time', 'time', 'grace', 'extra'];
 
   private transformer = (node: FoodNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       index : node.index,
 
-      aadhaarid: 0 == level ? node.aadhaarid : node.designation + ' ' + (node.section || ''),
+      aadhaarid: 0 == level ? node.aadhaarid : /*node.designation + ' ' +*/ (node.section || '') + node.date,
       date: node.date,
     //  name: node.name,
       section: node.section,
