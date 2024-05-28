@@ -41,6 +41,7 @@ export class EmployeePostingEditComponent implements OnInit{
   canChangeFlexi = false;
   tomorrow = new Date();
   lastChangedtext = 'never';
+  timeOptions : { value:number, label : string }[] = [];
 
   form = new FormGroup({
     flexi_minutes: new FormControl(0, Validators.required),
@@ -60,7 +61,39 @@ export class EmployeePostingEditComponent implements OnInit{
 
   ngOnInit() {
 
-console.log(this.data);
+    console.log(this.data);
+
+    this.form.get('wef')!.valueChanges.subscribe(x => {
+      this.timeOptions = [];
+
+      if(x){
+        const selected = moment(x);
+        //find timegroup that is effective for the selected date
+        for(let i = 0; i < this.data.officeTimes.length; i++){
+          if(this.data.officeTimes[i].groupname == this.data.emp.time_group){
+            if( moment(this.data.officeTimes[i].wef) <= selected){
+
+              const flexi = this.data.officeTimes[i].flexi_minutes;
+              const from = moment( '2024-01-01 '+ this.data.officeTimes[i].fn_from); //parttime does not have an_from
+              //remove seconds from 'from' and 'to'
+              let to = this.data.officeTimes[i].an_to || this.data.officeTimes[i].fn_to; //parttime does not have an_to
+              to = moment('2024-01-01 '+ to);
+
+              this.timeOptions.push( { value: 0, label: 'Normal (' + from.format('h:mm a') + ' - ' + to .format('h:mm a') + ')'});
+              this.timeOptions.push( { value: -flexi, label: 'Flexi (' + from.add(-flexi,'minute').format('h:mm a') + ' - ' + to.add(-flexi,'minute').format('h:mm a') + ')'});
+              this.timeOptions.push( { value: flexi, label: 'Flexi (' + from.add(flexi*2,'minute').format('h:mm a') + ' - ' + to.add(flexi*2,'minute').format('h:mm a') + ')'});
+
+              break;
+            }
+          }
+
+        }
+
+      }
+   });
+
+
+
     if(this.data.emp.flexi_time_wef_upcoming){
 
       this.form.patchValue({
