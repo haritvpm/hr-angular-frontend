@@ -13,13 +13,14 @@
       [color]="getDurationStyle(getPercentage(punchItem))"
     ></mat-progress-bar>
   }
-  @if (
-    !punchItem.punchout_trace &&
-    !punchItem.is_today &&
-    punchItem.punching_count &&
-    punchItem.attendance_trace_fetch_complete
-  ) {
-    <span style="color: orange"> Missed Out-Punch </span>
+  @if (punchItem.single_punch_type) {
+    <span style="color: orange">
+      @if (punchItem.single_punch_type == 'out') {
+        Missed Punch-In
+      } @else {
+        Missed Punch-Out
+      }
+    </span>
     <!-- } @else {
     - -->
   }
@@ -31,8 +32,10 @@
     <span [style.color]="'DeepPink'"> {{ getLeaveType(punchItem.hint) }} </span>
   } @else if (punchItem.is_unauthorised) {
     <span [style.color]="'Red'"> Unauthorised </span>
+    <!-- } @else if (punchItem.single_punch_type) {
+    getLeaveType -->
   }
-  @if(punchItem.is_holiday && !punchItem.punching_count) {
+  @if (punchItem.is_holiday && !punchItem.punching_count) {
     -
   }
 }

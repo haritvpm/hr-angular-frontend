@@ -130,12 +130,19 @@
               } @else if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
                 -
               } @else if (item.attendance_trace_fetch_complete !== 0) {
-                <span *ngIf="!item.punchout_trace" [style.color]="'DeepPink'">
-                  <small><mat-icon>close</mat-icon></small>
-                </span>
-                <span *ngIf="item.punching_count">
+                @if(!item.punchout_trace) {
+                  <span [style.color]="'DeepPink'">
+                    <small><mat-icon>close</mat-icon></small>
+                  </span>
+                } @else {
                   {{ item.punchout_trace.att_time }}
-                </span>
+                }
+                <!-- <span *ngIf="!item.punchout_trace" [style.color]="'DeepPink'">
+                  <small><mat-icon>close</mat-icon></small>
+                </span> -->
+                <!-- <span *ngIf="item.punching_cou">
+
+                </span> -->
               }
             </td>
           </ng-container>
