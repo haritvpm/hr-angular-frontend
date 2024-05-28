@@ -1,9 +1,4 @@
 @if (!punchItem.is_future) {
-  <!-- @if (punchItem.leave) {
-    <span [style.color]="getLeaveColor(punchItem.leave.active_status)">
-      {{ getLeaveType(punchItem.leave.leave_type) }}
-    </span>
-  } -->
   @if (punchItem.duration_str) {
     {{ punchItem.duration_str }}
     <mat-progress-bar
@@ -21,19 +16,21 @@
         Missed Punch-Out
       }
     </span>
-    <!-- } @else {
-    - -->
   }
   @if (punchItem.leave) {
     <span [style.color]="getLeaveColor(punchItem.leave.active_status)">
       {{ getLeaveType(punchItem.leave.leave_type) }}
     </span>
   } @else if (punchItem.hint) {
-    <span [style.color]="'DeepPink'"> {{ getLeaveType(punchItem.hint) }} </span>
+    <span [style.color]="'DeepPink'">
+      {{ getLeaveType(punchItem.hint) }}
+    </span>
   } @else if (punchItem.is_unauthorised) {
-    <span [style.color]="'Red'"> Unauthorised </span>
-    <!-- } @else if (punchItem.single_punch_type) {
-    getLeaveType -->
+    @if (punchItem.computer_hint) {
+      <small [style.color]="'orange'">{{ getLeaveType(punchItem.computer_hint) }}?</small>
+    } @else {
+      <span [style.color]="'Red'"> Unauthorised </span>
+    }
   }
   @if (punchItem.is_holiday && !punchItem.punching_count) {
     -
