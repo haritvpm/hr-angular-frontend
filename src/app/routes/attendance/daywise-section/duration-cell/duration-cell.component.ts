@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { DailyPunching } from '../interface';
 import { leaveList } from '@shared/components/mark-hint-drawer/leave-types';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,10 +23,14 @@ export class DurationCellComponent {
   casual_an: boolean = false;
   casual: boolean = false;
 
+  // casual_half_text: string = '&#xbd;CL';
+  // casual_half_authcolor: string = 'red';
+  // casual_half_unauthcolor: string = 'orange';
+  // returned_leaveText: string = 'Returned';
+
+  casual_text: string = 'CL';
   casual_half_text: string = '&#xbd;CL';
-  casual_half_authcolor: string = 'red';
-  casual_half_unauthcolor: string = 'orange';
-  returned_leaveText: string = 'Returned';
+  casual_color: string = 'red';
 
   fetch_pending: boolean = false;
   icon_color: string = 'primary';
@@ -34,45 +38,48 @@ export class DurationCellComponent {
   icon_show: boolean = true;
   time_exceeded_an: boolean = false;
   time_exceeded_fn: boolean = false;
+  grace_exceeded300_and_today_has_grace_alarm_show: boolean = true;
+
 
   text_name: string = '';
   text_color: string = 'DeepPink';
 
 
 
-  getLeaveText(row: DailyPunching) {
+  getLeaveText(leave_type: any) {
 
-    if (row.hint) {
-      const txt = leaveList.find((x: any) => x.value == row.hint)?.label || null;
+    if (leave_type) {
+      const txt = leaveList.find((x: any) => x.value == leave_type)?.label || null;
       if (txt) return txt;
     }
-    else if (row.computer_hint) {
-      const txt = leaveList.find((x: any) => x.value == row.computer_hint)?.label || null;
-      if (txt) return txt;
-    }
+    // else if (row.computer_hint) {
+    //   const txt = leaveList.find((x: any) => x.value == row.computer_hint)?.label || null;
+    //   if (txt) return txt;
+    // }
     return '';
   }
-  getTodaysStyle() {
-    return {
-      'color': 'black',
-      'text-align': 'center',
-
-    };
-
-  }
   getSinglePunchingStyle() {
-    if (this.punching.single_punch_regularised_by)
+    if (this.punching.single_punch_type)
       return {
-        color: 'black'
+        'color': 'orange',
+        'font-weight': 'bold',
+        'text-align': 'center',
+        'font-size': 'small'
+      };else if (this.punching.single_punch_regularised_by)
+      return {
+        color: 'black',
       };
-    return {
-      'color': 'orange',
-      // 'font-weight': 'bold',
-      'text-align': 'center',
-    };
-
+      return '';
   }
-  getLeaveStyle() {
+
+  getComputerHintText(computerHint: string){
+    if(computerHint === 'casual_fn'){
+      return '_FN?' ;
+    }else{
+      return '_AN?' ;
+    }
+  }
+  getLeaveColor() {
 
     if (this.punching?.leave?.active_status == 'N') {
       return {
