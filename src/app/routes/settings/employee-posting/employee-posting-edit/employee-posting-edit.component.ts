@@ -19,7 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-employee-edit',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
+  // providers: [provideNativeDateAdapter()],
 
   imports: [
     MatDatepickerModule,
@@ -71,7 +71,10 @@ export class EmployeePostingEditComponent implements OnInit{
         //find timegroup that is effective for the selected date
         for(let i = 0; i < this.data.officeTimes.length; i++){
           if(this.data.officeTimes[i].groupname == this.data.emp.time_group){
-            if( moment(this.data.officeTimes[i].wef) <= selected){
+
+            const difference =  moment(this.data.officeTimes[i].with_effect_from).diff( selected, 'days' ); // returns difference in seconds
+//alert(difference);
+            if( difference <= 0 ){
 
               const flexi = this.data.officeTimes[i].flexi_minutes;
               const from = moment( '2024-01-01 '+ this.data.officeTimes[i].fn_from); //parttime does not have an_from
