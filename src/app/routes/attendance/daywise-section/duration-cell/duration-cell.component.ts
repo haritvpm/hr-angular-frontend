@@ -19,10 +19,24 @@ export class DurationCellComponent {
   @Input() is_today: boolean;
   @Input() is_holiday: boolean;
 
+  casual_fn: boolean = false;
+  casual_an: boolean = false;
+  casual: boolean = false;
+
   casual_half_text: string = '&#xbd;CL';
   casual_half_authcolor: string = 'red';
   casual_half_unauthcolor: string = 'orange';
   returned_leaveText: string = 'Returned';
+
+  fetch_pending: boolean = false;
+  icon_color: string = 'primary';
+  icon_name: string = '';
+  icon_show: boolean = true;
+  time_exceeded_an: boolean = false;
+  time_exceeded_fn: boolean = false;
+
+  text_name: string = '';
+  text_color: string = 'DeepPink';
 
 
 
@@ -32,10 +46,10 @@ export class DurationCellComponent {
       const txt = leaveList.find((x: any) => x.value == row.hint)?.label || null;
       if (txt) return txt;
     }
-    /* else if (row.computer_hint) {
+    else if (row.computer_hint) {
       const txt = leaveList.find((x: any) => x.value == row.computer_hint)?.label || null;
-      if(txt) return txt;
-    }*/
+      if (txt) return txt;
+    }
     return '';
   }
   getTodaysStyle() {
@@ -58,25 +72,33 @@ export class DurationCellComponent {
     };
 
   }
-  getLeaveColor() {
+  getLeaveStyle() {
 
     if (this.punching?.leave?.active_status == 'N') {
-      return 'DeepSkyBlue';
+      return {
+        'color': 'DeepSkyBlue',
+        'font-size': 'medium',
+        'font-weight': 'bold'
+      };
     } else if (this.punching?.leave?.active_status == 'Y') {
-      return 'LimeGreen';
+      return {
+        'color': 'LimeGreen',
+        'font-size': 'medium',
+        'font-weight': 'bold'
+      };
     }
-
     return 'red';
+
   }
   returnedleaveStyle() {
     if (this.punching.leave?.active_status === 'R')
       return {
         'color': 'red',
-        'font-size': 'medium',
-        'font-weight':'bold'
+        'font-size': 'small',
+        'font-weight': 'bold'
 
       };
-      return '';
+    return '';
 
   }
   // gethintLeaveStyle() {

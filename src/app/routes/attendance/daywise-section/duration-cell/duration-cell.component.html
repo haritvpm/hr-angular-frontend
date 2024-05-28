@@ -25,9 +25,8 @@
       <small [innerHtml]="casual_half_text"></small>
     </span>
   }
-} @else if (
-  punching.punching_count >= 2 && !is_holiday && !is_today && (punching.computer_hint)
-) {
+
+} @else if (punching.punching_count >= 2 && !is_holiday && !is_today && punching.computer_hint) {
   {{ punching.duration_str }}
 } @else if (is_today && punching.punching_count < 2 && !is_holiday) {
   <span [style]="getTodaysStyle()"> - </span>
@@ -43,21 +42,21 @@
   punching.punching_count < 2 &&
   (punching.leave?.active_status === 'Y' || punching.leave?.active_status === 'N')
 ) {
-  <span [style.color]="getLeaveColor()" [style.font-weight]="'bold'" [style.font-size]="'medium'">
+
+  <span [style]="getLeaveStyle()">
     {{ punching.leave?.leave_type }}
   </span>
-} @else if(punching.leave && punching.leave.active_status === 'R'){
+} @else if (punching.leave && punching.leave.active_status === 'R') {
   <span [style]="returnedleaveStyle()">
-    {{punching.leave.active_status}}
-    <small [innerHtml]="returned_leaveText"></small>
+    {{ punching.leave.active_status }}
+
   </span>
-
-}
-
-@else {
+} @else {
   @if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
     <span [style.color]="'red'">
       {{ getLeaveText(punching) }}
     </span>
   }
 }
+<!-- <span *ngIf="punching.punching_count>=2 && !punching.computer_hint">{{punching.duration_str}}</span>
+<span *ngIf="is_today && is_">-</span> -->
