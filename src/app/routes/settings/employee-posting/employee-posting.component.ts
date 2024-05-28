@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { EmployeePostingService } from './employee-posting.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { AttendanceBook, Employee, MySectionEmployees, Section } from './interfaces';
+import { OfficeTime, Employee, MySectionEmployees, Section } from './interfaces';
 import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,7 +47,7 @@ export class EmployeePostingComponent implements OnInit {
   dataSource = new MatTableDataSource<Employee>();
   data: Employee[] = [];
   sections : Section[] = [];
-
+  officeTimes : OfficeTime[] = [];
   constructor(private employeeService: EmployeePostingService,
     private _liveAnnouncer: LiveAnnouncer, private mtxDialog: MtxDialog, private router: Router) { }
 
@@ -78,6 +78,7 @@ export class EmployeePostingComponent implements OnInit {
       this.dataSource.data = data.employees_under_my_section;
       this.dataSource.paginator = this.paginator;
       this.sections = data.sections;
+      this.officeTimes = data.officeTimes;
       this.dataSource.sort = this.sort;
     });
   }
@@ -105,7 +106,7 @@ export class EmployeePostingComponent implements OnInit {
   editEmployee(emp: Employee) {
     const dialogRef = this.mtxDialog.originalOpen(EmployeePostingEditComponent, {
       //width: '550px',
-      data: { emp }  });
+      data: { emp, officeTimes: this.officeTimes }  });
 
     dialogRef.afterClosed()
     .pipe(

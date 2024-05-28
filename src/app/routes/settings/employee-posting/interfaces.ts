@@ -14,7 +14,7 @@ export interface Employee {
   logged_in_user_is_section_officer: boolean;
   designation: string;
   designation_sortindex: number | null;
-  default_time_group_id: number | null;
+  time_group: string;
   seniority: number | null;
   last_posting_end_date: string;
   flexi_minutes_current: number;
@@ -44,8 +44,21 @@ export interface AttendanceBook {
   section_id: number;
 }
 
+export interface OfficeTime {
+  id: number;
+  groupname: string;
+  description: string | null;
+  fn_from: string;
+  fn_to: string;
+  an_from: string;
+  an_to: string;
+  flexi_minutes: number;
+  with_effect_from: string;
+}
+
 export interface MySectionEmployees {
   employees_under_my_section: Employee[];
   sections: Section[];
   attendancebooks: AttendanceBook[];
+  officeTimes : OfficeTime[];
 }

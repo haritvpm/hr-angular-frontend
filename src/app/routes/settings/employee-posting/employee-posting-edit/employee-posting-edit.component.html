@@ -9,20 +9,24 @@
   <p>Last Changed: {{ lastChangedtext }}</p>
 
   @if(canChangeFlexi){
+    <mat-form-field class="w-full">
+      <mat-label>With effect from</mat-label>
+      <input readonly matInput [matDatepicker]="picker" [min]="tomorrow"  formControlName="wef">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
   <mat-form-field class="w-full">
     <mat-label>Select a new flexi time</mat-label>
     <mat-select  formControlName="flexi_minutes">
-      <mat-option [value]=0>Normal</mat-option>
-      <mat-option [value]=-15>15 Minutes Before Normal</mat-option>
-      <mat-option [value]=15>15 Minutes After Normal</mat-option>
+
+      @for (timeOption of timeOptions ; track timeOption) {
+      <mat-option [value]="timeOption.value">{{timeOption.label}}</mat-option>
+      }
+
     </mat-select>
   </mat-form-field>
-  <mat-form-field class="w-full">
-    <mat-label>With effect from</mat-label>
-    <input readonly matInput [matDatepicker]="picker" [min]="tomorrow"  formControlName="wef">
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+
 } @else {
  Flexi time can not be changed now
 }
