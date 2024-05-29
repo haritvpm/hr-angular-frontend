@@ -7,18 +7,32 @@
       style="flex: 1"
       [color]="getDurationStyle(getPercentage(punchItem))"
     ></mat-progress-bar>
-  } @else if (punchItem.leave) {
+  }
+  @if (punchItem.single_punch_type) {
+    <span style="color: orange">
+      @if (punchItem.single_punch_type == 'out') {
+        Missed Punch-In
+      } @else {
+        Missed Punch-Out
+      }
+    </span>
+  }
+  @if (punchItem.leave) {
     <span [style.color]="getLeaveColor(punchItem.leave.active_status)">
       {{ getLeaveType(punchItem.leave.leave_type) }}
     </span>
-  } @else if (
-    !punchItem.punchout_trace &&
-    !punchItem.is_today &&
-    punchItem.punching_count &&
-    punchItem.attendance_trace_fetch_complete
-  ) {
-    <span style="color: orange">Missed Out-Punch</span>
-  } @else {
+  } @else if (punchItem.hint) {
+    <span [style.color]="'DeepPink'">
+      {{ getLeaveType(punchItem.hint) }}
+    </span>
+  } @else if (punchItem.is_unauthorised) {
+    @if (punchItem.computer_hint) {
+      <small [style.color]="'orange'">{{ getLeaveType(punchItem.computer_hint) }}?</small>
+    } @else {
+      <span [style.color]="'Red'"> Unauthorised </span>
+    }
+  }
+  @if (punchItem.is_holiday && !punchItem.punching_count) {
     -
   }
 }
