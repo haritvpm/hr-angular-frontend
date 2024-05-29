@@ -28,7 +28,7 @@
     <th mat-header-cell *matHeaderCellDef> Date </th>
     <td mat-cell *matCellDef="let element" [style.white-space]="'nowrap'">
 
-      @if(element?.day_count > 1){
+      @if(element?.leave_count > 1){
       {{element.start_date}} - {{element.end_date}}
       }
       @else

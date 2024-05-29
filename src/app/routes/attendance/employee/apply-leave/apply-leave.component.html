@@ -49,7 +49,7 @@
   @if(applyLeaveForm.get('leave_type')?.value){
   <div class="d-flex row align-items-stretch justify-content-center">
     <mat-form-field class="col" appearance="fill">
-      <mat-label> {{this.applyLeaveForm.get('multipleDays')?.value || !isCasualOrCompen ? 'Leave date (from)' : 'Leave date'}}</mat-label>
+      <mat-label> {{this.applyLeaveForm.get('multipleDays')?.value || !isCasualOrCompenOrCompenExtra ? 'Leave date (from)' : 'Leave date'}}</mat-label>
       <input matInput [matDatepicker]="pickerf"  (focus)="pickerf.open()" (click)="pickerf.open()"
       [max]="fromDateMax"
       formControlName="start_date" readonly="true" />
@@ -169,7 +169,7 @@
 
 @if (suffix_holidays && suffix_holidays.length) {
     <mtx-alert type="info"> Suffix: {{ suffix_holidays.toString() }}</mtx-alert>
-  
+
 }
 
 

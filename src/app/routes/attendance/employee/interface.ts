@@ -136,7 +136,7 @@ export interface Leave {
   last_updated: string;
   creation_date: string;
   created_by_aadhaarid: string;
-  day_count : number | null;
+  leave_count : number | null;
   approver_details : string | null;
   approved_on : string | null;
 }
