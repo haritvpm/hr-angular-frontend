@@ -50,7 +50,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   warningMessages: string[] = [];
   prefix_holidays: string[] = [];
   suffix_holidays: string[] = [];
-  
+
   compenMinDate = new Date('2024-01-01');
   compenMaxDate = new Date();
   today = new Date();
@@ -102,19 +102,19 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    
+
     this.id = this.route.snapshot.params.id;
     this.isAddMode = !this.id;
-    
+
     if (!this.isAddMode) {
       console.log('id is ' + this.id);
       this.leaveService.getById(this.id)
           .pipe(
-            first(), 
+            first(),
             tap( x => console.log(x)),
-           
+
             )
-          
+
           .subscribe(x => this.applyLeaveForm.patchValue(x.data));
     }
 
@@ -133,7 +133,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         this.onToDateChange(value);
       }));
 
-    
+
 
     this.subscriptions.push(this.applyLeaveForm.get('leave_type')!.valueChanges.subscribe(val => {
       this.onLeaveTypeChange(val);
@@ -141,7 +141,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.applyLeaveForm.get('multipleDays')!.valueChanges.subscribe(val => {
       this.onMutlipleDaysChange(val);
     }));
-    
+
     // this.subscriptions.push(this.applyLeaveForm.get('leave_count')!.valueChanges.subscribe(val => {
     //   this.onLeaveCountChange(val);
     // }));
@@ -150,7 +150,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         this.onFormChange(value);
     }));
-    
+
   }
   // onLeaveCountChange(leave_count: any) {
   //   this.precheckLeave();
@@ -250,14 +250,11 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       dates.push(startDate);
       startDate = moment(startDate).add(1, 'days').format('YYYY-MM-DD');
     }
-    // while(startDate <= endDate){
-    //   dates.push(startDate);
-    //   startDate = moment(startDate).add(1, 'days').format('YYYY-MM-DD');
-    // }
+
     return dates;
   }
   checkholiday(leave_type: string, start_date: any, end_date: any) {
-/*
+
     if (start_date) {
       const date = moment(start_date).format('YYYY-MM-DD');
       if (this.allholidays.indexOf(date) !== -1) {
@@ -271,7 +268,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         this.errorMessages.push('Selected \'To\' date is a holiday');
       }
     }
-
+/*
     if (this.isCasualOrCompen) {
       if (this.holidaysInPeriod.length > 0) {
         this.errorMessages.push('Selected period has holidays. ');
@@ -291,10 +288,10 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     if (start_date && end_date) {
       const dates = this.enumerateDaysBetweenDates(start_date, end_date);
       leave = dates.length;
-      // if( form.leave_type == 'casual' ||  form.leave_type == 'compen' ) {
+       if( form.leave_type == 'casual' ||  form.leave_type == 'compen' ) {
       this.holidaysInPeriod = dates.filter(d => this.allholidays.indexOf(d) !== -1);
-      //   leave -= this.holidaysInPeriod.length;
-      // }
+         leave -= this.holidaysInPeriod.length;
+       }
 
       if (form.leave_type == 'casual') {
         if (form.fromType == '' || form.toType == '') {
@@ -385,7 +382,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     //update minimum date for compen
     this.compenMinDate = moment(start_date).subtract(3, 'months').toDate();
     this.compenMaxDate = moment(start_date).subtract(1, 'day').toDate();
-    
+
     this.casualMinDateTo = moment(start_date).add(1, 'day').toDate();
     this.casualMaxDateTo = moment(start_date).endOf('year').toDate();
     //find the last 3 months of month of start_date
@@ -395,7 +392,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       this.inLieofMonths.push({ value: date.format('YYYY-MM-01'), label: date.format('MMMM YYYY') });
     }
    // this.precheckLeave();
-   
+
   }
 
   precheckLeave(){
@@ -407,7 +404,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       this.warningMessages = res.warnings;
       this.prefix_holidays = res.prefix_holidays;
       this.suffix_holidays = res.suffix_holidays;
-      
+
     }
 
     );
@@ -516,7 +513,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
             {console.log(v);
             this.isSubmitting = false;
             this.cancel();
-  
+
             },
           error: (e) => {console.error(e); this.isSubmitting = false;},
           complete: () => {console.info('complete'); this.isSubmitting = false;}
