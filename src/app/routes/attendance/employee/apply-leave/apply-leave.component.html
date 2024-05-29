@@ -152,8 +152,7 @@
   <div class="d-flex row">
     <div class="col d-flex justify-content-end">
       <button mat-flat-button
-      [disabled]="isSubmitting || !applyLeaveForm.valid ||
-      (holidaysInPeriod.length >0 && isCasualOrCompen ) || errorMessages.length > 0"
+      [disabled]="isSubmitting || !applyLeaveForm.valid  || errorMessages.length > 0"
       color="accent"
       (click)="applyLeave()"
       >Apply Leave</button>
