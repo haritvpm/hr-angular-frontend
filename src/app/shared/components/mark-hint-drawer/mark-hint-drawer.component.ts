@@ -157,7 +157,7 @@ export class MarkHintDrawerComponent implements OnInit {
           }
         }
         this.submittedLeaveLabel =
-          this.leaveList.find((x: any) => x.short == leave_type)?.label || leave_type;
+          this.leaveList.find((x: any) => x.value == leave_type || x.short == leave_type)?.desc || leave_type;
 
          // hint changes only when it becomes Y. so no need to change it again bu SO
         if (this.leave?.active_status == 'Y') {

@@ -12,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
 
 import { AuthService } from '@core/authentication';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -43,7 +44,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private toastr: ToastrService,
   ) {}
 
   get username() {
@@ -69,14 +71,16 @@ export class LoginComponent {
           this.router.navigateByUrl('/');
         },
         error: (errorRes: HttpErrorResponse) => {
-          if (errorRes.status === 422) {
+          if (errorRes.status === 422 || errorRes.status === 401) {
             const form = this.loginForm;
             const errors = errorRes.error.errors;
             Object.keys(errors).forEach(key => {
-              form.get(key === 'email' ? 'username' : key)?.setErrors({
+              form.get(key === 'username' ? 'username' : key)?.setErrors({
                 remote: errors[key][0],
               });
             });
+          } else {
+            this.toastr.error(`Invalid username or password (status: ${errorRes.status})`);
           }
           this.isSubmitting = false;
         },

@@ -43,7 +43,12 @@ export class ErrorInterceptor implements HttpInterceptor {
       });
     } else {
       console.error('ERROR', error);
+
+      //dont show toast if error url is /auth/logout or /auth/login
+      if (!error.url?.includes('/auth/logout') && !error.url?.includes('/auth/login')){
       this.toast.error(this.getMessage(error));
+      }
+
       if (error.status === STATUS.UNAUTHORIZED) {
         this.router.navigateByUrl('/api/auth/login');
       }
