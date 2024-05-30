@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMultipleDatesModule } from 'ngx-multiple-dates';
 import { MtxAlertModule } from '@ng-matero/extensions/alert';
-import { Subscription, debounce, debounceTime, first, map, tap } from 'rxjs';
+import { Subscription, debounce, debounceTime, distinct, distinctUntilChanged, first, map, switchMap, tap } from 'rxjs';
 import { EmployeeService } from '../employee.service';
 import { GovtCalendar } from '../interface';
 import moment from 'moment';
@@ -147,10 +147,40 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     // }));
 
     this.subscriptions.push(this.applyLeaveForm.valueChanges
+      
       .subscribe((value) => {
         this.onFormChange(value);
     }));
+    
+    this.subscriptions.push(this.applyLeaveForm.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(350),
+        switchMap( value => this.empService.precheckLeave(value) )
+      )
+      .subscribe((res) => {
+        this.errorMessages = res.errors;
+        this.warningMessages = res.warnings;
+        this.prefix_holidays = res.prefix_holidays;
+        this.suffix_holidays = res.suffix_holidays;
+    }));
+/**
+ * 
+ * 
+ * this.empService.precheckLeave( this.applyLeaveForm.value )
+    .pipe(
+      distinctUntilChanged(),
+      debounceTime(350),
+    ).subscribe( res => {
+      this.errorMessages = res.errors;
+      this.warningMessages = res.warnings;
+      this.prefix_holidays = res.prefix_holidays;
+      this.suffix_holidays = res.suffix_holidays;
 
+    }
+
+    );
+*/
   }
   // onLeaveCountChange(leave_count: any) {
   //   this.precheckLeave();
@@ -345,7 +375,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
    // console.log('form is ' + JSON.stringify(form) );
    // console.log('form from value is ' + JSON.stringify(this.applyLeaveForm?.value));
 
-    this.precheckLeave();
+   // this.precheckLeave();
   }
 
   onFromDateChange(start_date: any) {
@@ -398,7 +428,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   precheckLeave(){
     this.empService.precheckLeave( this.applyLeaveForm.value )
     .pipe(
-      debounceTime(50),
+      distinctUntilChanged(),
+      debounceTime(350),
     ).subscribe( res => {
       this.errorMessages = res.errors;
       this.warningMessages = res.warnings;

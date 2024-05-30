@@ -4,6 +4,7 @@ export const leaveList: any[] = [
   { label: 'Casual AN', value: 'casual_an', desc:'Casual AN', min_pun: 1, short: 'C_AN', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 2,1
   { label: 'Casual', value: 'casual', desc:'Casual', min_pun: 0, short: 'CL', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 0,1,2
   { label: 'Comp Leave', value: 'comp_leave', desc:'Compensation Leave', min_pun: 0, short: 'Co', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 0
+  { label: 'Comp Leave', value: 'compen', desc:'Compensation Leave', min_pun: 0, short: 'Co', showOnHoliday:false, showForCntrlOnly : false  }, //
   { label: 'Comp Off', value: 'compen_for_extra', desc:'Compensation For ExtraHours', min_pun: 0, short: 'Cx', showOnHoliday:false, showForCntrlOnly : false  }, //punchingcounts = 0
   { label: 'Earned', value: 'earned', desc:'Earned Leave', min_pun: 0, short: 'EL', showOnHoliday:true , showForCntrlOnly : false }, //punchingcounts = 0
   { label: 'Commutted', value: 'commuted', desc:'Commutted Leave', min_pun: 0, short: 'Cm', showOnHoliday:true , showForCntrlOnly : false }, //punchingcounts = 0

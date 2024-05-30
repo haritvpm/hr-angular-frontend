@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -31,7 +31,8 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit{
+
   registerForm = this.fb.nonNullable.group(
     {
       username: ['', [Validators.required]],
@@ -61,4 +62,14 @@ export class RegisterComponent {
       }
     };
   }
+
+  ngOnInit(): void {
+
+  //  this.registerForm
+  }
+
+  register() {
+    throw new Error('Method not implemented.');
+  }
+
 }
