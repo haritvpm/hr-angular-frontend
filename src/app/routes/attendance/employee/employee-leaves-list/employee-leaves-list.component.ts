@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, ViewChild, inject } from '@angular/core';
+import { OnInit, Component, Input, ViewChild, inject, OnDestroy } from '@angular/core';
 import {  MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -15,7 +15,7 @@ import { AuthService } from '@core/authentication';
   templateUrl: './employee-leaves-list.component.html',
   styleUrl: './employee-leaves-list.component.css'
 })
-export class EmployeeLeavesListComponent implements OnInit {
+export class EmployeeLeavesListComponent implements OnInit, OnDestroy {
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -42,7 +42,7 @@ export class EmployeeLeavesListComponent implements OnInit {
 
 
      // Create an observable representing the params
-    //   this.params$ =
+       this.params$ =
     /*this.route.queryParams.pipe(
         switchMap((params: Params) => {
           console.log('Params', params);
@@ -91,6 +91,10 @@ export class EmployeeLeavesListComponent implements OnInit {
      // this.dataSource = new MatTableDataSource<Leave>(this.employeeLeaves);
       //this.dataSource.paginator = this.paginator;
   }
+  ngOnDestroy(): void {
+    this.params$.unsubscribe();
+  }
+
   getStatusColor(status: string): string {
     if (status == 'Y') {
       return 'LimeGreen';
