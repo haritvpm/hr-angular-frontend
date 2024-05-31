@@ -56,8 +56,9 @@ export class ProfileSettingsComponent implements OnInit{
     dob: ['', [Validators.required]],
 
     mobile: ['', [Validators.required]],
-    klaid: ['', []],
+    klaid: ['', [Validators.required]],
     pan: ['', []],
+    electionid: ['', []],
     dateOfJoinInKLA: ['', [Validators.required]],
     dateOfEntryInService: ['', []],
     dateOfCommencementOfContinousService: ['', []],

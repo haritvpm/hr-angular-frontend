@@ -14,6 +14,7 @@ export interface IProfile {
   // company: string;
   mobile: string | null;
   pan: string | null;
+  electionid: string | null;
   klaid: string | null;
   dateOfJoinInKLA: string | null;
   dateOfEntryInService: string  | null;
