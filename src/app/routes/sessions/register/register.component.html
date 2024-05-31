@@ -32,9 +32,15 @@
         <mat-form-field appearance="outline">
           <mat-label>Choose {{'username' | translate}}</mat-label>
           <input matInput formControlName="username" required placeholder="Can be PEN/AttendanceId">
-          @if (registerForm.get('username')?.invalid) {
+          @if (registerForm.get('username')?.hasError('required')) {
             <mat-error>
               <span>{{'validations.required' | translate}}</span>
+            </mat-error>
+          }
+          @if (registerForm.get('username')?.hasError('mismatch')) {
+            <mat-error
+              translate [translateParams]="{value: 'login.username' | translate}">
+              <span>Username can be PEN/AttendanceId</span>
             </mat-error>
           }
         </mat-form-field>

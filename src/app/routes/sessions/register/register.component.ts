@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit{
       confirmPassword: ['', [Validators.required]],
     },
     {
-      validators: [this.matchValidator('password', 'confirmPassword')],
+      validators: [this.matchValidator('password', 'confirmPassword'), this.usernameValidator('aadhaarid', 'pen', 'username')],
     }
   );
 
@@ -79,6 +79,27 @@ export class RegisterComponent implements OnInit{
       }
     };
   }
+
+  usernameValidator(aadhaarid_: string, pen_: string, username_: string) {
+    return (control: AbstractControl) => {
+      const aadhaarid = control.get(aadhaarid_)!;
+      const pen = control.get(pen_)!;
+      const username = control.get(username_)!;
+
+      if (username.errors && !username.errors.mismatch) {
+        return null;
+      }
+
+      if (aadhaarid.value !== username.value && pen.value !== username.value) {
+        username.setErrors({ mismatch: true });
+        return { mismatch: true };
+      } else {
+        username.setErrors(null);
+        return null;
+      }
+    };
+  }
+
 
   ngOnInit(): void {
 
