@@ -44,18 +44,23 @@ export class ProfileSettingsComponent implements OnInit{
   private readonly router = inject(Router);
   profile : IProfile | null = null;
 
-  reactiveForm = this.fb.nonNullable.group({
-    name: ['', []],
-    name_mal: ['', []],
+  today = new Date();
+
+  reactiveForm = this.fb.group({
+    name: ['', [Validators.required]],
+    name_mal: ['', [Validators.required]],
     email: ['', [ Validators.email]],
-    srismt: ['', []],
+    srismt: ['', [Validators.required]],
     //city: ['', []],
     address: ['', []],
-    // : ['', []],
-    mobile: ['', []],
+    dob: ['', [Validators.required]],
+
+    mobile: ['', [Validators.required]],
     klaid: ['', []],
     pan: ['', []],
-    dateOfJoinInKLA: ['', []],
+    dateOfJoinInKLA: ['', [Validators.required]],
+    dateOfEntryInService: ['', []],
+    dateOfCommencementOfContinousService: ['', []],
   });
 
   isLoading = false;
