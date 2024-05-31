@@ -7,6 +7,12 @@ import { Menu } from '@core';
 import { Token, User } from './interface';
 import { IProfile } from '@shared/interfaces';
 
+export interface RegistrationPreCheck{
+  errors : string[] ;
+  warnings : string[] ;
+}
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -44,5 +50,11 @@ export class LoginService {
     //   .get<{ menu: Menu[] }>('/../../../assets/data/menu.json')
     //   .pipe(map(res => res.menu));
     return menudata.menu;
+  }
+  register(value: any) {
+    return this.http.post<any>('/api/auth/register', value);
+  }
+  precheckRegistration( data:any ) {
+    return this.http.post<RegistrationPreCheck>(`/api/auth/precheck-registration`,data);
   }
 }
