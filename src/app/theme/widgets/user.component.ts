@@ -14,18 +14,24 @@ import { AuthService, SettingsService, User } from '@core';
     <button class="r-full" mat-button [matMenuTriggerFor]="menu">
       <!-- <img matButtonIcon class="avatar r-full" [src]="user.avatar" width="24" alt="avatar" /> -->
       <mat-icon>person</mat-icon>
-      <span class="m-x-8">{{ user.username?.toUpperCase() }}</span>
+      <span class="m-x-8">
+        @if(user.name){
+        {{  user.name?.toUpperCase()}}&nbsp;({{  user.username?.toUpperCase()}})
+        }@else{
+          {{  user.username?.toUpperCase()}}
+        }
+      </span>
     </button>
 
     <mat-menu #menu="matMenu">
-      <!-- <button routerLink="/profile/overview" mat-menu-item>
+      <button routerLink="/profile/overview" mat-menu-item>
         <mat-icon>account_circle</mat-icon>
         <span>{{ 'profile' | translate }}</span>
-      </button> -->
-      <button routerLink="/profile/settings" mat-menu-item>
+      </button>
+      <!-- <button routerLink="/profile/settings" mat-menu-item>
         <mat-icon>edit</mat-icon>
         <span>{{ 'edit_profile' | translate }}</span>
-      </button>
+      </button> -->
       <button routerLink="/profile/password-reset" mat-menu-item>
         <mat-icon>edit</mat-icon>
         <span>Reset Password</span>

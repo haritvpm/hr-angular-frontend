@@ -9,12 +9,38 @@
 
     <mat-card-content>
       <form class="form-field-full" [formGroup]="registerForm" (ngSubmit)="register()">
+
         <mat-form-field appearance="outline">
-          <mat-label>{{'username' | translate}}</mat-label>
-          <input matInput formControlName="username" required placeholder="Enter your AttendanceId">
-          @if (registerForm.get('username')?.invalid) {
+          <mat-label>AttendanceId</mat-label>
+          <input matInput formControlName="aadhaarid" required placeholder="AttendanceId">
+          @if (registerForm.get('aadhaarid')?.invalid) {
             <mat-error>
               <span>{{'validations.required' | translate}}</span>
+            </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>PEN</mat-label>
+          <input matInput formControlName="pen" required placeholder="PEN">
+          @if (registerForm.get('pen')?.invalid) {
+            <mat-error>
+              <span>{{'validations.required' | translate}}</span>
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Choose {{'username' | translate}}</mat-label>
+          <input matInput formControlName="username" required placeholder="Can be PEN/AttendanceId">
+          @if (registerForm.get('username')?.hasError('required')) {
+            <mat-error>
+              <span>{{'validations.required' | translate}}</span>
+            </mat-error>
+          }
+          @if (registerForm.get('username')?.hasError('mismatch')) {
+            <mat-error
+              translate [translateParams]="{value: 'login.username' | translate}">
+              <span>Username can be PEN/AttendanceId</span>
             </mat-error>
           }
         </mat-form-field>
@@ -40,14 +66,14 @@
           @if (registerForm.get('confirmPassword')?.hasError('mismatch')) {
             <mat-error
               translate [translateParams]="{value: 'login.password' | translate}">
-              <span>{{'validations.inconsistent'}}</span>
+              <span>Password mismatch</span>
             </mat-error>
           }
         </mat-form-field>
 
         <!-- <mat-checkbox>{{'read_and_agree' | translate}}</mat-checkbox> -->
 
-        <button class="w-full m-y-16" mat-raised-button color="primary">
+        <button [disabled]="registerForm.invalid" class="w-full m-y-16" mat-raised-button color="primary">
           {{'register' | translate}}
         </button>
 
@@ -58,3 +84,12 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+<!-- {{registerForm.value | json}}
+{{registerForm.valid}}
+{{registerForm.invalid}}
+{{registerForm.errors | json}}
+{{registerForm.get('username')?.errors | json}}
+{{registerForm.get('password')?.errors | json}}
+{{registerForm.get('confirmPassword')?.errors | json}}
+{{registerForm.get('confirmPassword')?.hasError('mismatch')}} -->

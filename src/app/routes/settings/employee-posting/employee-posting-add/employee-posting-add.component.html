@@ -6,7 +6,7 @@
 
     <mat-card-content>
 
-        <mat-form-field class="w-full">
+        <!-- <mat-form-field class="w-full">
           <mat-label>Employee</mat-label>
           <mtx-select
             [items]="(freeEmployees$ | async)!"
@@ -17,6 +17,23 @@
             formControlName="employee_id"
           >
           </mtx-select>
+        </mat-form-field> -->
+
+
+
+        <mat-form-field class="w-full">
+          <mat-label>Employee</mat-label>
+          <input   #inputAutoComplet   (change)="employeeChange($event)"   type="text" matInput formControlName="employee" [matAutocomplete]="auto">
+          @if (postingForm.get('employee')?.value) {
+            <button type="button"  matSuffix mat-icon-button aria-label="Clear" (click)="clearEmployee()">
+              <mat-icon>clear</mat-icon>
+            </button>
+          }
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            @for (emp of freeemployees$ | async; track emp) {
+              <mat-option [value]="emp">{{emp.name}}</mat-option>
+            }
+          </mat-autocomplete>
         </mat-form-field>
 
         <mat-form-field>

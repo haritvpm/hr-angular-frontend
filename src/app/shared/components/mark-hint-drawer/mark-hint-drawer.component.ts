@@ -115,11 +115,11 @@ export class MarkHintDrawerComponent implements OnInit {
     }
 //for monthwise view, logged_in_user_is_controller is present in monthlyPunching
 // for employee view, logged_in_user_is_controller is present in punchingInfo
-    const logged_in_user_is_controller = this.data.monthlyPunching.logged_in_user_is_controller ||
+    const logged_in_user_is_controller = this.data.monthlyPunching?.logged_in_user_is_controller ||
         this.data.punchingInfo.logged_in_user_is_controller;
-    const logged_in_user_is_so = this.data.monthlyPunching.logged_in_user_is_section_officer ||
+    const logged_in_user_is_so = this.data.monthlyPunching?.logged_in_user_is_section_officer ||
        this.data.punchingInfo.logged_in_user_is_section_officer;
-    const logged_in_user_is_superior = this.data.monthlyPunching.logged_in_user_is_superior_officer ||
+    const logged_in_user_is_superior = this.data.monthlyPunching?.logged_in_user_is_superior_officer ||
         this.data.punchingInfo.logged_in_user_is_superior_officer;
 
     if (
@@ -222,7 +222,7 @@ export class MarkHintDrawerComponent implements OnInit {
     if (
       this.data.punchingInfo.punching_count < option.min_pun ||
       (this.data.calender.holiday && !option.showOnHoliday) ||
-      (option.showForCntrlOnly && !this.data.monthlyPunching.logged_in_user_is_controller)
+      (option.showForCntrlOnly && !this.data.monthlyPunching?.logged_in_user_is_controller)
     ) {
       return false;
     }

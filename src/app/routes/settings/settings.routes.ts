@@ -16,6 +16,6 @@ export const routes: Routes = [
       import('./employee-posting/employee-posting-add/employee-posting-add.component').then(
         (mod) => mod.EmployeePostingAddComponent
       ),
-    resolve: { unpostedEmployees: unpostedEmployeesResolver }
+   //  resolve: { unpostedEmployees: unpostedEmployeesResolver }
   },
 ];

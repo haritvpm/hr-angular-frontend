@@ -10,7 +10,7 @@ export const routes: Routes = [
     path: '',
     component: ProfileLayoutComponent,
     children: [
-      { path: '', redirectTo: 'settings', pathMatch: 'full' },
+      { path: '', redirectTo: 'overview', pathMatch: 'full' },
       { path: 'overview', component: ProfileOverviewComponent },
       { path: 'settings', component: ProfileSettingsComponent },
       { path: 'password-reset', component: PasswordResetComponent },

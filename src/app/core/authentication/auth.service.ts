@@ -9,6 +9,7 @@ import { TokenService } from './token.service';
   providedIn: 'root',
 })
 export class AuthService {
+
   private readonly loginService = inject(LoginService);
   private readonly tokenService = inject(TokenService);
 
@@ -78,4 +79,5 @@ export class AuthService {
 
     return this.loginService.me().pipe(tap(user => this.user$.next(user)));
   }
+
 }

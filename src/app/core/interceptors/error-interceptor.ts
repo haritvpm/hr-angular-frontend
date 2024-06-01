@@ -45,7 +45,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       console.error('ERROR', error);
 
       //dont show toast if error url is /auth/logout or /auth/login
-      if (!error.url?.includes('/auth/logout') && !error.url?.includes('/auth/login')){
+      if (!error.url?.includes('/auth/logout') && !error.url?.includes('/auth/login') && !error.url?.includes('/auth/refresh')){
       this.toast.error(this.getMessage(error));
       }
 
