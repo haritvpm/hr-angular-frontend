@@ -46,10 +46,10 @@ export class DurationCellComponent {
 
 
 
-  getLeaveText(leave_type: any) {
+  getLeaveText(leaveType: any) {
 
-    if (leave_type) {
-      const txt = leaveList.find((x: any) => x.value == leave_type)?.label || null;
+    if (leaveType) {
+      const txt = leaveList.find((x: any) => x.value == leaveType || x.short == leaveType)?.label || null;
       if (txt) return txt;
     }
     // else if (row.computer_hint) {
@@ -58,6 +58,30 @@ export class DurationCellComponent {
     // }
     return '';
   }
+  getLeaveStyle(activeStatus: string) {
+
+    if (activeStatus == 'N') {
+      return {
+        'color': 'DeepSkyBlue',
+        'font-size': 'medium',
+        'font-weight': 'bold'
+      };
+    } else if (activeStatus == 'Y') {
+      return {
+        'color': 'LimeGreen',
+        'font-size': 'medium',
+        'font-weight': 'bold'
+      };
+    } else {
+      return {
+        'color': 'red',
+        'font-size': 'medium',
+        'font-weight': 'bold'
+
+      };
+    }
+  }
+
   getSinglePunchingStyle() {
     if (this.punching.single_punch_type)
       return {
@@ -65,55 +89,12 @@ export class DurationCellComponent {
         'font-weight': 'bold',
         'text-align': 'center',
         'font-size': 'small'
-      };else if (this.punching.single_punch_regularised_by)
+      }; else if (this.punching.single_punch_regularised_by)
       return {
         color: 'black',
       };
-      return '';
-  }
-
-  getComputerHintText(computerHint: string){
-    if(computerHint === 'casual_fn'){
-      return '_FN?' ;
-    }else{
-      return '_AN?' ;
-    }
-  }
-  getLeaveColor() {
-
-    if (this.punching?.leave?.active_status == 'N') {
-      return {
-        'color': 'DeepSkyBlue',
-        'font-size': 'medium',
-        'font-weight': 'bold'
-      };
-    } else if (this.punching?.leave?.active_status == 'Y') {
-      return {
-        'color': 'LimeGreen',
-        'font-size': 'medium',
-        'font-weight': 'bold'
-      };
-    }
-    return 'red';
-
-  }
-  returnedleaveStyle() {
-    if (this.punching.leave?.active_status === 'R')
-      return {
-        'color': 'red',
-        'font-size': 'small',
-        'font-weight': 'bold'
-
-      };
     return '';
-
   }
-  // gethintLeaveStyle() {
-  //   if(){
-  //   }
-
-
-
 
 
 }
