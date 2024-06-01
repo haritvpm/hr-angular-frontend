@@ -11,6 +11,8 @@ export interface LeavePreCheck{
   suffix_holidays : string[] ;
 }
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -54,5 +56,7 @@ export class EmployeeService {
   precheckLeave( data:any ): Observable<any> {
     return this.http.post<LeavePreCheck>(`/api/v1/precheck-leave`,data);
   }
+
+
 
 }

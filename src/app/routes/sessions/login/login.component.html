@@ -50,9 +50,9 @@
           [disabled]="!!loginForm.invalid" [loading]="isSubmitting"
         (click)="login()">{{'login' | translate}}</button>
 
-        <!-- <div>{{'have_no_account' | translate}}?
+        <div>{{'have_no_account' | translate}}?
           <a routerLink="/auth/register">{{'create_one_account' | translate}}</a>
-        </div> -->
+        </div>
       </form>
     </mat-card-content>
   </mat-card>

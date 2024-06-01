@@ -5,15 +5,19 @@ export type ControlsOf<T extends Record<string, any>> = {
 };
 
 export interface IProfile {
-  name: string;
-  name_mal: string;
-  email: string;
-  srismt: string;
+  name: string | null;
+  name_mal: string | null;
+  email: string | null;
+  srismt: string | null;
  // city: string;
-  address: string;
+  address: string  | null;
   // company: string;
-  mobile: string;
-  pan: string;
-  klaid: string;
-  dateOfJoinInKLA: string;
+  mobile: string | null;
+  pan: string | null;
+  electionid: string | null;
+  klaid: string | null;
+  dateOfJoinInKLA: string | null;
+  dateOfEntryInService: string  | null;
+  dateOfCommencementOfContinousService: string  | null;
+  dob: string | null;
 }

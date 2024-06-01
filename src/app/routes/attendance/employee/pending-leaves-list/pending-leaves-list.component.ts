@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -16,7 +16,7 @@ import { Leave, PendingLeave } from '../interface';
   templateUrl: './pending-leaves-list.component.html',
   styleUrl: './pending-leaves-list.component.css'
 })
-export class PendingLeavesListComponent implements OnInit{
+export class PendingLeavesListComponent implements OnInit, OnDestroy{
   @Input() self = false;
   @Input() aadhaarid: string | undefined = undefined;
   private readonly route = inject(ActivatedRoute);
@@ -28,13 +28,14 @@ export class PendingLeavesListComponent implements OnInit{
 
   displayedColumns: string[] = ['date', 'hint', 'punchings',  'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  params$: any;
 
   ngOnInit() {
     console.log('input aadhaarid', this.aadhaarid);
 
 
      // Create an observable representing the params
-    //   this.params$ =
+       this.params$ =
 
            this.auth.user()
             .pipe(
@@ -70,6 +71,9 @@ export class PendingLeavesListComponent implements OnInit{
 
      // this.dataSource = new MatTableDataSource<Leave>(this.employeeLeaves);
       //this.dataSource.paginator = this.paginator;
+  }
+  ngOnDestroy(): void {
+    this.params$.unsubscribe();
   }
 
 }

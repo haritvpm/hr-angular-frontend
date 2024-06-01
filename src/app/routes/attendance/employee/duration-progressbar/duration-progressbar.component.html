@@ -10,7 +10,7 @@
   }
   @if (punchItem.single_punch_type) {
     <span style="color: orange">
-      @if (punchItem.single_punch_type == 'out') {
+      @if (punchItem.single_punch_type === 'out') {
         Missed Punch-In
       } @else {
         Missed Punch-Out
@@ -19,7 +19,15 @@
   }
   @if (punchItem.leave) {
     <span [style.color]="getLeaveColor(punchItem.leave.active_status)">
-      {{ getLeaveType(punchItem.leave.leave_type) }}
+      @if (punchItem.leave.leave_cat === 'H') {
+        @if (punchItem.leave.leave_type === 'FN') {
+          {{ getLeaveType(punchItem.leave.leave_type) }} FN
+        } @else {
+          {{ getLeaveType(punchItem.leave.leave_type) }} AN
+        }
+      } @else {
+        {{ getLeaveType(punchItem.leave.leave_type) }}
+      }
     </span>
   } @else if (punchItem.hint) {
     <span [style.color]="'DeepPink'">

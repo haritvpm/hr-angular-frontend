@@ -122,29 +122,33 @@ export class CellComponent implements OnInit {
 
         const leave = this.item.leave;
 
-        if(leave?.active_status == 'N'){
-          this.text_color = 'DeepSkyBlue';
-          this.casual_color = 'DeepSkyBlue';
-        } else if(leave?.active_status == 'Y'){
-          this.text_color = 'LimeGreen';
-          this.casual_color = 'LimeGreen';
+        if(leave?.active_status == 'N' || leave?.active_status == 'Y'){
+
+          if(leave?.active_status == 'N'){
+            this.text_color = 'DeepSkyBlue';
+            this.casual_color = 'DeepSkyBlue';
+          } else if(leave?.active_status == 'Y'){
+            this.text_color = 'LimeGreen';
+            this.casual_color = 'LimeGreen';
+          }
+
+          this.icon_show = this.item.punching_count >= 1; //even if half cl, show icon
+          if( leave.leave_type == 'CL' || leave.leave_type == 'casual'){
+            if(  leave.leave_cat == 'F'){
+              //this.text_name = 'CL';
+              this.casual = true;
+            } else {
+                if( leave.time_period?.toUpperCase() == 'FN'){
+                  this.casual_fn = true;
+                } else {
+                  this.casual_an = true;
+                }
+            }
+          } else {
+            this.text_name = leaveList.find((x:any) => x.value == leave.leave_type || x.short == leave.leave_type)?.short || 'X';
+          }
         }
 
-        this.icon_show = this.item.punching_count >= 1; //even if half cl, show icon
-        if( leave.leave_type == 'CL' || leave.leave_type == 'casual'){
-          if(  leave.leave_cat == 'F'){
-            //this.text_name = 'CL';
-            this.casual = true;
-          } else {
-              if( leave.time_period?.toUpperCase() == 'FN'){
-                this.casual_fn = true;
-              } else {
-                this.casual_an = true;
-              }
-          }
-        } else {
-          this.text_name = leaveList.find((x:any) => x.value == leave.leave_type)?.short || 'X';
-        }
       }
 
       if (this.item.hint && this.item.hint !== 'clear' ) {
