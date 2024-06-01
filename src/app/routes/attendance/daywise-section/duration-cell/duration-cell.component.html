@@ -1,63 +1,63 @@
-@if (punching.punching_count >= 2 && !punching.computer_hint) {
-  {{ punching.duration_str }}
-}
-@if (punching.punching_count >= 2 && punching.computer_hint && punching.is_unauthorised) {
-  @if (punching.computer_hint === 'casual_fn') {
-    <span [style.color]="casual_half_unauthcolor" class="computer-hint">
-      <small [innerHtml]="casual_half_text + '?'"></small>
-    </span>
-    {{ punching.duration_str }}
-  } @else if (punching.computer_hint === 'casual_an') {
-    {{ punching.duration_str }}
-    <span [style.color]="casual_half_unauthcolor" class="computer-hint">
-      <small [innerHtml]="casual_half_text + '?'"></small>
-    </span>
-  }
-} @else if (punching.punching_count >= 2 && punching.computer_hint && !punching.is_unauthorised) {
-  @if (punching.computer_hint === 'casual_fn') {
-    <span [style.color]="casual_half_authcolor" class="computer-hint">
-      <small [innerHtml]="casual_half_text"></small>
-    </span>
-    {{ punching.duration_str }}
-  } @else if (punching.computer_hint === 'casual_an') {
-    {{ punching.duration_str }}
-    <span [style.color]="casual_half_authcolor" class="computer-hint">
-      <small [innerHtml]="casual_half_text"></small>
-    </span>
-  }
-} @else if (
-  punching.punching_count >= 2 && !is_holiday && !is_today && (punching.computer_hint)
-) {
-  {{ punching.duration_str }}
-} @else if (is_today && punching.punching_count < 2 && !is_holiday) {
-  <span [style]="getTodaysStyle()"> - </span>
-} @else if (punching.is_unauthorised && !punching.leave) {
-  <span [style.color]="'red'"> Unauthorised </span>
-} @else if (
-  !is_today && (punching.punching_count === 1 || punching.single_punch_type) && !is_holiday
-) {
-  <span [style]="getSinglePunchingStyle()"> One-Time Punching </span>
-} @else if (
-  !is_today &&
-  !is_holiday &&
-  punching.punching_count < 2 &&
-  (punching.leave?.active_status === 'Y' || punching.leave?.active_status === 'N')
-) {
-  <span [style.color]="getLeaveColor()" [style.font-weight]="'bold'" [style.font-size]="'medium'">
-    {{ punching.leave?.leave_type }}
-  </span>
-} @else if(punching.leave && punching.leave.active_status === 'R'){
-  <span [style]="returnedleaveStyle()">
-    {{punching.leave.active_status}}
-    <small [innerHtml]="returned_leaveText"></small>
-  </span>
-
+@if (is_today && punching.punching_count < 2 && !is_holiday) {
+  <span [style.color]="'black'" [style.text-align]="'center'"> - </span>
 }
 
-@else {
-  @if ((punching.hint && punching.hint !== 'clear') || !punching.hint) {
-    <span [style.color]="'red'">
-      {{ getLeaveText(punching) }}
+@if (punching.duration_str) {
+  @if (punching.is_unauthorised) {
+    @if (punching.computer_hint && !punching.leave) {
+      @if (punching.computer_hint === 'casual_fn') {
+        <span [style.color]="'orange'" [style.font-weight]="'bold'">
+          <small [innerHtml]="casual_half_text"></small><small>_FN?</small></span
+        >
+        {{ punching.duration_str }}
+      } @else if (punching.computer_hint === 'casual_an') {
+        {{ punching.duration_str }}
+        <span [style.color]="'orange'" [style.font-weight]="'bold'"
+          ><small [innerHtml]="casual_half_text"></small><small>_AN?</small></span
+        >
+      }
+    }
+    @else {
+      {{ punching.duration_str }}
+    }
+  }
+  @else {
+    {{ punching.duration_str }}<br />
+  }
+} @else {
+  @if (punching.is_unauthorised && !is_today && !punching.leave) {
+    <span [style.color]="'red'">Unauthorised</span>
+    <!-- {{ punching.duration_str }} -->
+  }
+}
+@if (punching.single_punch_type) {
+  <span [style]="getSinglePunchingStyle()">
+    @if (punching.single_punch_type === 'in') {
+      Missed Punch Out
+    } @else {
+      Missed Punch In
+    }
+  </span>
+}
+
+@if (punching.leave && !is_today) {
+  @if (punching.leave.leave_cat === 'H') {
+    @if (punching.leave.time_period === 'FN') {
+      <span [style]="getLeaveStyle(punching.leave.active_status)">
+        <small [innerHtml]="casual_half_text"></small><small>_FN</small></span
+      >
+      <!-- {{ punching.duration_str }} -->
+    } @else {
+      <!-- {{ punching.duration_str }} -->
+      <span [style]="getLeaveStyle(punching.leave.active_status)">
+        <small [innerHtml]="casual_half_text"></small><small>_AN</small></span
+      >
+    }
+  } @else {
+    <span [style]="getLeaveStyle(punching.leave.active_status)">
+      {{ getLeaveText(punching.leave.leave_type) }}
     </span>
   }
+} @else if (punching.hint) {
+  <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
 }
