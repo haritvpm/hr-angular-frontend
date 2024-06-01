@@ -31,16 +31,16 @@
     }
 
     Gr (Month):
-    <span [style.color]="data.monthlyPunching.total_grace_sec > 300 * 60 ? 'red' : 'primary'">
-      {{ data.monthlyPunching.total_grace_str || 0 }}
+    <span [style.color]="data.monthlyPunching?.total_grace_sec > 300 * 60 ? 'red' : 'primary'">
+      {{ data.monthlyPunching?.total_grace_str || 0 }}
     </span>
     min<br />
 
-    @if (data.monthlyPunching.total_grace_exceeded300_date) {
+    @if (data.monthlyPunching?.total_grace_exceeded300_date) {
       Exceeded 300 on: {{ getDateExceeded300() }} <br />
     }
     <mat-divider class="m-b-4"></mat-divider>
-    Ex (Month): {{ data.monthlyPunching.total_extra_str || 0 }} hours <br />
+    Ex (Month): {{ data.monthlyPunching?.total_extra_str || 0 }} hours <br />
   </small>
 </div>
 <!--

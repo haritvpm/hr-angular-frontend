@@ -153,6 +153,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
   mark(row: EmployeePunchingInfo) {
     console.log(row);
     //  if (this.is_holiday && row.punching_count == 0) return;
+    //if(!this.monthlyData) return;
 
     const drawerRef = this.drawer.open(MarkHintDrawerComponent, {
       width: '300px',
