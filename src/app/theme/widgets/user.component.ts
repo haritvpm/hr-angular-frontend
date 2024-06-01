@@ -14,7 +14,13 @@ import { AuthService, SettingsService, User } from '@core';
     <button class="r-full" mat-button [matMenuTriggerFor]="menu">
       <!-- <img matButtonIcon class="avatar r-full" [src]="user.avatar" width="24" alt="avatar" /> -->
       <mat-icon>person</mat-icon>
-      <span class="m-x-8">{{ user.username?.toUpperCase() }}</span>
+      <span class="m-x-8">
+        @if(user.name){
+        {{  user.name?.toUpperCase()}}&nbsp;({{  user.username?.toUpperCase()}})
+        }@else{
+          {{  user.username?.toUpperCase()}}
+        }
+      </span>
     </button>
 
     <mat-menu #menu="matMenu">
