@@ -186,7 +186,7 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
 
       this.apiService.saveHint(row.aadhaarid, row.date, res).subscribe((_data) => {
         console.log('hint saved');
-        this.router.navigate(['/employee/', this.aadhaarid, row.date]);
+        this.router.navigate(['/attendance/employee/', this.aadhaarid, row.date]);
         //  this.fetchData(moment(this.date.value).format('YYYY-MM-DD'));
       });
     });
