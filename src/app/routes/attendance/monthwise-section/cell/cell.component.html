@@ -1,6 +1,6 @@
   <!-- can be in the future. -->
 @if(item.in_section){
-  <span *ngIf="casual" [style.color]="casual_color" class="computer-hint"> {{casual_text}} </span>
+  <span *ngIf="casual" [style.color]="casual_color" class="computer-hint">  <small  [innerHtml]="casual_text"></small></span>
   <span *ngIf="casual_fn" [style.color]="casual_color"   class="computer-hint"> <small  [innerHtml]="casual_half_text"></small>  </span>
   <span *ngIf="time_exceeded_fn" [style.color]="'red'" ><small>>1H</small></span>
 
