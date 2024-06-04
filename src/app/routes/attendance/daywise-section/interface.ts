@@ -51,7 +51,10 @@ export interface DailyPunching {
   is_unauthorised: boolean
   leave?: Leave
   flexi_time: string
-
+  in_section: string
+  calendar: Calender
+  grace_exceeded300_and_today_has_grace :boolean
+  grace_total_exceeded_one_hour:number
 
 }
 
