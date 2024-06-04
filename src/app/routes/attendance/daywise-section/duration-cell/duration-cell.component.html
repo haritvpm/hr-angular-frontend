@@ -1,7 +1,6 @@
 @if (is_today && punching.punching_count < 2 && !is_holiday) {
   <span [style.color]="'black'" [style.text-align]="'center'"> - </span>
 }
-
 @if (punching.duration_str) {
   @if (punching.is_unauthorised) {
     @if (punching.computer_hint && !punching.leave) {
@@ -39,7 +38,6 @@
     }
   </span>
 }
-
 @if (punching.leave && !is_today) {
   @if (punching.leave.leave_cat === 'H') {
     @if (punching.leave.time_period === 'FN') {
@@ -61,3 +59,4 @@
 } @else if (punching.hint) {
   <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
 }
+

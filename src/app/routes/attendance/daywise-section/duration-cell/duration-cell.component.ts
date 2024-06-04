@@ -49,7 +49,8 @@ export class DurationCellComponent {
   getLeaveText(leaveType: any) {
 
     if (leaveType) {
-      const txt = leaveList.find((x: any) => x.value == leaveType || x.short == leaveType)?.label || null;
+      const txt = leaveList.find((x: any) => x.value == leaveType
+        || x.short == leaveType)?.label || null;
       if (txt) return txt;
     }
     // else if (row.computer_hint) {
