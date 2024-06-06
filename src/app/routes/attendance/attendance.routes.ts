@@ -5,6 +5,7 @@ import { ApplyLeaveComponent } from './employee/apply-leave/apply-leave.componen
 import { aadhaardateFromEmptyqueryResolver, aadhaardateFromqueryResolver } from '@core/resolvers/aadhaardateFromqueryResolver.resolver';
 import { AttendanceRegisterComponent } from './daywise-section/daywise-register.component';
 import { SearchAttendanceComponent } from './search-attendance/search-attendance.component';
+import { ApplyFlexiComponent } from './employee/apply-flexi/apply-flexi.component';
 
 export const routes: Routes = [
   // { path: '', component: AttendanceRegisterComponent },

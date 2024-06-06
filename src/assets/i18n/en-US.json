@@ -2,6 +2,7 @@
   "menu": {
     "settings": "Settings",
     "settings.employee": "Employees",
+    "settings.applyflexi": "FlexiTime Request",
     "attendance": "Attendance",
     "attendance.monthwiseregister": "Monthwise Register",
     "attendance.daywiseregister": "Daywise Register",

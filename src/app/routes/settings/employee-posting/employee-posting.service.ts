@@ -6,6 +6,19 @@ import { Employee, MySectionEmployees } from './interfaces';
 @Injectable({
   providedIn: 'root'
 })
+
+export interface UserFlexiSetting{
+  name: string;
+  aadhaarid : string;
+  timeOptions: string[];
+  flexi_time_wef_upcoming : string;
+  flexi_minutes_upcoming : number;
+  flexi_time_wef_current : string;
+  flexi_minutes_current : number;
+  canChangeFlexi : boolean;
+}
+
+
 export class EmployeePostingService {
 
 
@@ -20,6 +33,9 @@ export class EmployeePostingService {
     return this.httpClient.patch<any>( `${this.apiUrl}/${id}`, {
       end_date,
    } );
+  }
+  getUserFlexiSetting(): any {
+    return this.httpClient.get<UserFlexiSetting>( `${this.apiUrl}/user-flexi-setting` );
   }
   updateEmployeeSetting(id: number, data: any): any {
     return this.httpClient.patch<any>( `${this.apiUrl}/setting/${id}`, data );

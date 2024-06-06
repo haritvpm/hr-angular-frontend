@@ -10,7 +10,9 @@ export class SearchAttendanceService {
   
   search(formdata: any) {
     return this.http.post<any>(`${this.apiUrl}`,formdata);
-
+  }
+  getFlexiEmployees() {
+    return this.http.get<any>('/api/v1/employee-to-flexis');
   }
 
   constructor(private http: HttpClient) { }
