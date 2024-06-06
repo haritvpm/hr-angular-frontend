@@ -50,7 +50,7 @@ export default {
           type: 'link',
           icon: 'search',
           permissions: {
-            only: ['section_access', 'can_view_all_section_attendance'],
+            only: ['can_view_all_section_attendance'],
           },
         },
       ],

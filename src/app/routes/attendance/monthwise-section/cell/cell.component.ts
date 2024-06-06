@@ -103,9 +103,9 @@ export class CellComponent implements OnInit {
           this.icon_name = 'close';
           this.icon_color = 'DeepPink'; //'#6017ff';
          }
-          
+
       }
-      
+
       //special case of single punchin set by controller
       if (this.item.single_punch_type) {
         this.icon_name = 'looks_one';
