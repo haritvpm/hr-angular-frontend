@@ -76,8 +76,26 @@ export interface UserFlexiSetting{
   time_group : string;
 }
 
+export interface Seat {
+  seat_id : number;
+  seat_name : string;
+  employee_name : string;
+}
+export interface FlexiApplication {
+  employee_id : number;
+  aadhaarid : string;
+  flexi_minutes : number;
+  with_effect_from : string;
+  owner_seat : number;
+  approved_by : string;
+  approved_on : string;
+  created_at : string;
+}
+
 
 export interface UserFlexiSettingApi {
   officeTimes : any;
   employee_setting : UserFlexiSetting;
+  forwardable_seats : Seat[];
+  prev_flexi_applications : FlexiApplication[];
 }

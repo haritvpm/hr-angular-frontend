@@ -95,6 +95,40 @@ export default {
       ],
 
     },
+    {
+      route: 'flexi',
+      name: 'flexi',
+      type: 'sub',
+      icon: 'sick',
+      children: [
+        {
+          route: 'approve',
+          name: 'approve',
+          type: 'link',
+          permissions: {
+            only: ['leaf_access'],
+          },
+        },
+        {
+          route: 'view',
+          name: 'view',
+          type: 'link',
+          permissions: {
+            only: ['self_attendance_access'],
+          },
+        },
+        {
+          route: 'apply',
+          name: 'apply',
+          type: 'link',
+          icon: 'person',
+          permissions: {
+            only: ['self_attendance_access'],
+          },
+        },
+        
+      ],
+    },
 
     {
       route: 'settings',
@@ -106,16 +140,11 @@ export default {
           route: 'employee',
           name: 'employee',
           type: 'link',
-        },
-        {
-          route: 'self/apply-flexi',
-          name: 'applyflexi',
-          type: 'link',
-          icon: 'person',
           permissions: {
-            only: ['self_attendance_access'],
+            only: ['section_access'],
           },
         },
+        
 
       ],
       permissions: {

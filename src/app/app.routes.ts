@@ -29,6 +29,7 @@ export const routes: Routes = [
 
       { path: 'settings', loadChildren: () => import('./routes/settings/settings.routes').then(m => m.routes) },
       { path: 'leaves', loadChildren: () => import('./routes/leaves/leaves.routes').then(m => m.routes) },
+      { path: 'flexi', loadChildren: () => import('./routes/flexi/flexi.routes').then(m => m.routes) },
     ],
   },
   {

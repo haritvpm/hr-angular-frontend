@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MtxAlertModule } from '@ng-matero/extensions/alert';
+import { EmployeePostingService } from 'app/routes/settings/employee-posting/employee-posting.service';
 import { UserFlexiSettingApi } from 'app/routes/settings/employee-posting/interfaces';
 import moment from 'moment';
 import { map } from 'rxjs';
@@ -20,27 +21,27 @@ import { map } from 'rxjs';
   imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
     FormsModule, MatFormFieldModule, MatSelectModule, MatIconModule,
     MatInputModule, MatDatepickerModule,
-    MtxAlertModule],  templateUrl: './apply-flexi.component.html',
-  styleUrl: './apply-flexi.component.css'
+    MtxAlertModule],  
+    templateUrl: './apply.component.html',
+  styleUrl: './apply.component.css'
 })
-export class ApplyFlexiComponent implements OnInit{
+export class FlexiApplyComponent implements OnInit{
 
   data: UserFlexiSettingApi;
   canChangeFlexi = false;
   tomorrow = new Date();
   lastChangedtext = 'never';
   timeOptions : { value:number, label : string }[] = [];
+  isSubmitting = false;
 
   applyFlexiForm = new FormGroup({
     flexi_minutes: new FormControl(0, Validators.required),
-    wef: new FormControl('', [
-      Validators.required,
-
-    ]),
+    wef: new FormControl('', [ Validators.required,]),
+    forwardto : new FormControl(0, [ Validators.required,]),
 
   });
   constructor(
-
+    private employeeService: EmployeePostingService,
     private router: Router,
     private route: ActivatedRoute,
 
@@ -49,12 +50,7 @@ export class ApplyFlexiComponent implements OnInit{
   }
 
 
-cancel() {
-throw new Error('Method not implemented.');
-}
-applyFlexi() {
-throw new Error('Method not implemented.');
-}
+
 ngOnInit() {
 
   this.route.data
@@ -64,7 +60,10 @@ ngOnInit() {
   .subscribe(response => {
     console.log(response);
     this.data = response as UserFlexiSettingApi;
-
+    //set default forwardto
+    this.applyFlexiForm.patchValue({
+      forwardto: this.data.forwardable_seats[0].seat_id,
+    });
   });
 
  // console.log(this.data);
@@ -127,5 +126,21 @@ ngOnInit() {
   }
 
 }
+
+
+cancel() {
+  throw new Error('Method not implemented.');
+  }
+  applyFlexi() {
+
+    this.isSubmitting = true;
+    const formdata = this.applyFlexiForm.value;
+    this.employeeService.saveUserFlexiSetting(formdata)
+    .subscribe((res: any) => {
+      
+      this.isSubmitting = false;
+      this.router.navigate(['/settings/employee-posting']);
+    });
+  }
 
 }

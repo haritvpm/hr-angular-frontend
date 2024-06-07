@@ -3,6 +3,11 @@
     "settings": "Settings",
     "settings.employee": "Employees",
     "settings.applyflexi": "FlexiTime Request",
+    "flexi": "FlexiTime",
+    "flexi.view": "My Requests",
+    "flexi.apply": "New Request",
+    "flexi.approve": "Approve",
+
     "attendance": "Attendance",
     "attendance.monthwiseregister": "Monthwise Register",
     "attendance.daywiseregister": "Daywise Register",
