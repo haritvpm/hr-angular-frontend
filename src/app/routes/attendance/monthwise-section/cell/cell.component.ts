@@ -67,6 +67,7 @@ export class CellComponent implements OnInit {
         //computer hints
         this.casual_color = 'orange';
         this.casual_half_text += '?';
+        this.casual_text += '?';
         this.casual = this.item.computer_hint === 'casual';
         if (this.item.grace_total_exceeded_one_hour > 1800) {
           this.casual_fn = this.item.computer_hint === 'casual_fn';
@@ -96,17 +97,13 @@ export class CellComponent implements OnInit {
         if (this.item.single_punch_regularised_by) {
           this.icon_color = 'black';
         }
-      } else if (!this.calendarInfo.holiday && !this.calendarInfo.future_date &&
-                 this.calendarInfo.attendance_trace_fetch_complete) {
-        //zero punching
-          if( this.item.computer_hint == 'unauthorised' ){
-            this.icon_name = 'close';
-            this.icon_color = 'DeepPink'; //'#6017ff';
-          }
-          else {
-            this.icon_name = 'close';
-            this.icon_color = 'DeepPink'; //'#6017ff';
-          }
+      } else if (!this.calendarInfo.holiday && !this.calendarInfo.future_date ) {
+        //zero punching yesterday
+         if( this.item.is_unauthorised || this.calendarInfo.attendance_trace_fetch_complete ){
+          this.icon_name = 'close';
+          this.icon_color = 'DeepPink'; //'#6017ff';
+         }
+
       }
 
       //special case of single punchin set by controller

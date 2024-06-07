@@ -110,6 +110,13 @@
           >
             <small><mat-icon>close</mat-icon></small></span
           >
+          <span
+          *ngIf="employee.grace_total_exceeded_one_hour"
+          [style.color]="'red'"
+          >
+          <small>>1H</small>
+
+          </span>
         </td>
         <!-- <td mat-cell [style.color]="employee.punchin_trace?.att_time > '10:30:00'? 'red': ''" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
         <!-- <td mat-cell [style]="getPunchInStyle(employee)" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
@@ -136,6 +143,7 @@
           >
             <small><mat-icon>close</mat-icon></small></span
           >
+
         </td>
       </ng-container>
       <ng-container matColumnDef="duration_str">

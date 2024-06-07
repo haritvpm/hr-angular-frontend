@@ -50,7 +50,7 @@ export default {
           type: 'link',
           icon: 'search',
           permissions: {
-            only: ['section_access', 'can_view_all_section_attendance'],
+            only: ['can_view_all_section_attendance'],
           },
         },
       ],
@@ -91,7 +91,7 @@ export default {
             only: ['self_attendance_access'],
           },
         },
-
+        
       ],
 
     },
@@ -106,7 +106,16 @@ export default {
           route: 'employee',
           name: 'employee',
           type: 'link',
-        }
+        },
+        {
+          route: 'self/apply-flexi',
+          name: 'applyflexi',
+          type: 'link',
+          icon: 'person',
+          permissions: {
+            only: ['self_attendance_access'],
+          },
+        },
 
       ],
       permissions: {

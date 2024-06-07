@@ -14,6 +14,8 @@ import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ViewFlexiEmployeesComponent } from './view-flexi-employees/view-flexi-employees.component';
 
 interface FoodNode {
   index : number;
@@ -59,16 +61,14 @@ interface ExampleFlatNode {
 
 
 @Component({
-  selector: 'app-search-attendance',
-  standalone: true,
-  // providers: [provideNativeDateAdapter()],
-  imports: [MatTableModule, MatInputModule, MatCheckboxModule, MatButtonModule,
-    MatIconModule, MatFormFieldModule, MatDatepickerModule,
-    FormsModule, ReactiveFormsModule, JsonPipe, DatePipe,
-    MatSelectModule,
-  ],
-  templateUrl: './search-attendance.component.html',
-  styleUrl: './search-attendance.component.css'
+    selector: 'app-search-attendance',
+    standalone: true,
+    templateUrl: './search-attendance.component.html',
+    styleUrl: './search-attendance.component.css',
+    imports: [MatTabsModule, MatTableModule, MatInputModule, MatCheckboxModule, MatButtonModule,
+        MatIconModule, MatFormFieldModule, MatDatepickerModule,
+        FormsModule, ReactiveFormsModule, JsonPipe, DatePipe,
+        MatSelectModule, ViewFlexiEmployeesComponent]
 })
 export class SearchAttendanceComponent implements OnInit {
 

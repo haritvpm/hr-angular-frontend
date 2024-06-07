@@ -2,34 +2,6 @@
   <span [style.color]="'black'" [style.text-align]="'center'"> - </span>
 }
 
-@if (punching.duration_str) {
-  @if (punching.is_unauthorised) {
-    @if (punching.computer_hint && !punching.leave) {
-      @if (punching.computer_hint === 'casual_fn') {
-        <span [style.color]="'orange'" [style.font-weight]="'bold'">
-          <small [innerHtml]="casual_half_text"></small><small>_FN?</small></span
-        >
-        {{ punching.duration_str }}
-      } @else if (punching.computer_hint === 'casual_an') {
-        {{ punching.duration_str }}
-        <span [style.color]="'orange'" [style.font-weight]="'bold'"
-          ><small [innerHtml]="casual_half_text"></small><small>_AN?</small></span
-        >
-      }
-    }
-    @else {
-      {{ punching.duration_str }}
-    }
-  }
-  @else {
-    {{ punching.duration_str }}<br />
-  }
-} @else {
-  @if (punching.is_unauthorised && !is_today && !punching.leave) {
-    <span [style.color]="'red'">Unauthorised</span>
-    <!-- {{ punching.duration_str }} -->
-  }
-}
 @if (punching.single_punch_type) {
   <span [style]="getSinglePunchingStyle()">
     @if (punching.single_punch_type === 'in') {
@@ -40,24 +12,87 @@
   </span>
 }
 
-@if (punching.leave && !is_today) {
-  @if (punching.leave.leave_cat === 'H') {
-    @if (punching.leave.time_period === 'FN') {
-      <span [style]="getLeaveStyle(punching.leave.active_status)">
-        <small [innerHtml]="casual_half_text"></small><small>_FN</small></span
-      >
-      <!-- {{ punching.duration_str }} -->
+@if (
+  punching.is_unauthorised &&
+  !is_today &&
+  !punching.leave &&
+  !punching.computer_hint &&
+  !punching.hint
+) {
+  <span [style.color]="'red'">Unauthorised</span>
+  <!-- {{ punching.duration_str }} -->
+}
+
+@if (punching.leave) {
+  @if (punching.is_unauthorised || !punching.is_unauthorised) {
+    @if (punching.leave.leave_cat === 'H') {
+      @if (punching.leave.time_period === 'FN') {
+        <span [style]="getLeaveStyle(punching.leave.active_status)">
+          <small [innerHtml]="casual_half_text"></small><small>_FN</small></span
+        >
+        {{ punching.duration_str }}
+      } @else {
+        {{ punching.duration_str }}
+        <span [style]="getLeaveStyle(punching.leave.active_status)">
+          <small [innerHtml]="casual_half_text"></small><small>_AN</small></span
+        >
+      }
     } @else {
-      <!-- {{ punching.duration_str }} -->
       <span [style]="getLeaveStyle(punching.leave.active_status)">
-        <small [innerHtml]="casual_half_text"></small><small>_AN</small></span
+        {{ getLeaveText(punching.leave.leave_type) }}
+      </span>
+    }
+  }
+} @else if (punching.computer_hint && !punching.hint) {
+  @if (punching.is_unauthorised || !punching.is_unauthorised) {
+    @if (punching.computer_hint === 'casual_fn') {
+      <span [style.color]="'orange'" [style.font-weight]="'bold'">
+        <small [innerHtml]="casual_half_text"></small><small>_FN?</small></span
+      >
+      {{ punching.duration_str }}
+    } @else if (punching.computer_hint === 'casual_an') {
+      {{ punching.duration_str }}
+      <span [style.color]="'orange'" [style.font-weight]="'bold'"
+        ><small [innerHtml]="casual_half_text"></small><small>_AN?</small></span
       >
     }
-  } @else {
-    <span [style]="getLeaveStyle(punching.leave.active_status)">
-      {{ getLeaveText(punching.leave.leave_type) }}
-    </span>
   }
-} @else if (punching.hint) {
-  <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
+} @else if (punching.hint && punching.hint !== 'clear') {
+  @if (!punching.finalized_by_controller) {
+    @if (punching.hint === 'casual_fn') {
+      <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
+      {{ punching.duration_str }}
+    } @else if (punching.hint === 'casual_an') {
+      {{ punching.duration_str }}
+      <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
+    } @else {
+      <span [style.color]="'Deeppink'">
+        {{ getLeaveText(punching.hint) }}
+      </span>
+    }
+  } @else if (punching.finalized_by_controller) {
+    @if (punching.hint === 'casual_fn') {
+      <span [style.color]="'red'">{{ getLeaveText(punching.hint) }}</span>
+      {{ punching.duration_str }}
+    } @else if (punching.hint === 'casual_an') {
+      {{ punching.duration_str }}
+      <span [style.color]="'red'">{{ getLeaveText(punching.hint) }}</span>
+    } @else {
+      <span [style.color]="'red'">
+        {{ getLeaveText(punching.hint) }}
+      </span>
+    }
+
+  }
+
+
+  <!-- @if(punching.hint === 'casual_fn'){
+    <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
+    {{ punching.duration_str }}
+  }@else {
+    {{ punching.duration_str }}
+    <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
+  } -->
+} @else {
+  {{ punching.duration_str }}
 }
