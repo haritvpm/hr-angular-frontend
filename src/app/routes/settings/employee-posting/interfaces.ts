@@ -62,3 +62,22 @@ export interface MySectionEmployees {
   attendancebooks: AttendanceBook[];
   officeTimes : OfficeTime[];
 }
+
+
+export interface UserFlexiSetting{
+  //name: string;
+  //aadhaarid : string;
+  //timeOptions: string[];
+  flexi_time_wef_upcoming : string;
+  flexi_minutes_upcoming : number;
+  flexi_time_wef_current : string;
+  flexi_minutes_current : number;
+  //canChangeFlexi : boolean;
+  time_group : string;
+}
+
+
+export interface UserFlexiSettingApi {
+  officeTimes : any;
+  employee_setting : UserFlexiSetting;
+}

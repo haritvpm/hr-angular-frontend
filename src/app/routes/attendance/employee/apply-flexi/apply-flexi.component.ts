@@ -8,8 +8,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MtxAlertModule } from '@ng-matero/extensions/alert';
+import { UserFlexiSettingApi } from 'app/routes/settings/employee-posting/interfaces';
 import moment from 'moment';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-apply-flexi',
@@ -22,7 +25,7 @@ import moment from 'moment';
 })
 export class ApplyFlexiComponent implements OnInit{
 
-
+  data: UserFlexiSettingApi;
   canChangeFlexi = false;
   tomorrow = new Date();
   lastChangedtext = 'never';
@@ -36,8 +39,12 @@ export class ApplyFlexiComponent implements OnInit{
     ]),
 
   });
+  constructor(
 
-  constructor() {
+    private router: Router,
+    private route: ActivatedRoute,
+
+  ) {
     this.tomorrow.setDate( moment().add(1, 'days').date() );
   }
 
@@ -50,16 +57,26 @@ throw new Error('Method not implemented.');
 }
 ngOnInit() {
 
-  console.log(this.data);
+  this.route.data
+  .pipe(
+    map(data => data.emp_setting),
+  )
+  .subscribe(response => {
+    console.log(response);
+    this.data = response as UserFlexiSettingApi;
 
-  this.form.get('wef')!.valueChanges.subscribe(x => {
+  });
+
+ // console.log(this.data);
+
+  this.applyFlexiForm.get('wef')!.valueChanges.subscribe(x => {
     this.timeOptions = [];
 
     if(x){
       const selected = moment(x);
       //find timegroup that is effective for the selected date
       for(let i = 0; i < this.data.officeTimes.length; i++){
-        if(this.data.officeTimes[i].groupname == this.data.emp.time_group){
+        if(this.data.officeTimes[i].groupname == this.data.employee_setting.time_group){
 
           const difference =  moment(this.data.officeTimes[i].with_effect_from).diff( selected, 'days' ); // returns difference in seconds
 //alert(difference);
@@ -86,21 +103,21 @@ ngOnInit() {
 
 
 
-  if(this.data.emp.flexi_time_wef_upcoming){
+  if(this.data.employee_setting.flexi_time_wef_upcoming){
 
-    this.form.patchValue({
-      flexi_minutes:  this.data.emp.flexi_minutes_upcoming,
-      wef: this.data.emp.flexi_time_wef_upcoming,
+    this.applyFlexiForm.patchValue({
+      flexi_minutes:  this.data.employee_setting.flexi_minutes_upcoming,
+      wef: this.data.employee_setting.flexi_time_wef_upcoming,
     });
   } else {
-    this.form.patchValue({
+    this.applyFlexiForm.patchValue({
       wef: moment(this.tomorrow).format('YYYY-MM-DD'),
     });
   }
 
   //flexi can be changed if flexi_time_last_updated is not this month OR IF flexi_time_last_updated is null.
-  if(this.data.emp.flexi_time_wef_current){
-    const lastUpdated = moment(this.data.emp.flexi_time_wef_current);
+  if(this.data.employee_setting.flexi_time_wef_current){
+    const lastUpdated = moment(this.data.employee_setting.flexi_time_wef_current);
     this.lastChangedtext = lastUpdated.format('DD MMM YYYY');
     const today = moment();
     const diff = today.diff(lastUpdated, 'days');
