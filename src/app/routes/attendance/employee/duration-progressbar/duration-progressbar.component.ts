@@ -32,8 +32,8 @@ export class DurationProgressbarComponent {
   }
 
   getLeaveType(leaveType: string) {
-    const txt = leaveList.find((x: any) => x.value == leaveType)?.label || null;
-      if (txt) return txt;
+    const txt = leaveList.find((x: any) => x.value == leaveType || x.short == leaveType)?.label || null;
+    if (txt) return txt;
     // if (leaveType === 'CL' || leaveType === 'casual')
     //   return 'Casual Leave';
     // else if (leaveType === 'commuted')
