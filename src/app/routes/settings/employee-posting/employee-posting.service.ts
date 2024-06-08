@@ -23,18 +23,7 @@ export class EmployeePostingService {
       end_date,
    } );
   }
-  getFlexiApplications(): Observable<any> {
-    return this.httpClient.get<any>(`/api/v1/my-flexi-applications`);
-  }
-  getUserFlexiSetting(): any {
-    return this.httpClient.get<UserFlexiSetting>( `/api/v1/user-flexi-setting` );
-  }
-  saveUserFlexiSetting(data : any): any {
-    return this.httpClient.post<UserFlexiSetting>( `/api/v1/my-flexi-applications`, data );
-  }
-  updateEmployeeSetting(id: number, data: any): any {
-    return this.httpClient.patch<any>( `${this.apiUrl}/setting/${id}`, data );
-  }
+
   getFreeEmployees(): Observable<Employee[]> {
     return this.httpClient.get<any>(`${this.apiUrl}/unposted-employees`);
   }

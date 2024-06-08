@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexiApplication } from 'app/routes/settings/employee-posting/interfaces';
 import { EmployeePostingService } from 'app/routes/settings/employee-posting/employee-posting.service';
+import { FlexiService } from '../flexi.service';
 
 @Component({
   selector: 'app-flexi-application-list',
@@ -20,25 +21,34 @@ export class FlexiApplicationListComponent implements OnInit{
 
   displayedColumns: string[] = ['fleximinutes', 'wef', 'created_at','status', 'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   constructor(
-    private employeeService: EmployeePostingService,
+    private flexiService: FlexiService,
     private router: Router,
     private route: ActivatedRoute,
 
   )
   {
-  }  
-
-  ngOnInit(): void {
-    this.employeeService.getFlexiApplications().subscribe((data) => {
-      console.log(data);
-      this.dataSource.data = data.flexi_applications;
-    });
-    
   }
 
-  deleteApplication(_t56: any) {
-    throw new Error('Method not implemented.');
-    }
+  loadData() {
+    this.flexiService.getFlexiApplications().subscribe((data) => {
+      console.log(data);
+
+      this.dataSource.data = data.flexi_applications;
+      this.dataSource.paginator = this.paginator;
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadData();
+
+  }
+
+  deleteApplication(id: number) {
+    this.flexiService.deleteUserFlexiSetting(id).subscribe((data: any) => {
+      console.log(data);
+      this.loadData();
+    });
+  }
 }

@@ -1,54 +1,57 @@
-
 <div class="m-t-4">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
-    
-      <!--- Note that these columns can be defined in any order.
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+    <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
-      >
-    
-      <ng-container matColumnDef="fleximinutes">
-        <th mat-header-cell *matHeaderCellDef> fleximinutes </th>
-        <td [style.white-space]="'nowrap'" mat-cell *matCellDef="let element"> {{element.flexi_minutes}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let element" >   </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="wef">
-        <th mat-header-cell *matHeaderCellDef> wef </th>
-        <td mat-cell *matCellDef="let element"> {{element.wef}} </td>
-      </ng-container>
-         
-      <ng-container matColumnDef="created_at">
-        <th mat-header-cell *matHeaderCellDef> Created </th>
-        <td mat-cell *matCellDef="let element"> {{element.created_at}} </td>
-      </ng-container>
-    
-    
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
-        <td mat-cell *matCellDef="let element">
-    
-          @if ( element.owner_seat === null && element.active_status === 'R' ) {
-           
-    
-            <button mat-button color="warn" (click)="deleteApplication(element)">
-              <mat-icon class="icon-small" >delete</mat-icon>
-              Delete
-            </button>
-          }
-        </td>
-      </ng-container>
-    
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-    
-    <mat-paginator [pageSizeOptions]="[10, 20]"
-    showFirstLastButtons
-    aria-label="Select page">
-    </mat-paginator>
-    </div>
-    
+    >
+
+    <ng-container matColumnDef="fleximinutes">
+      <th mat-header-cell *matHeaderCellDef>Flexi/Normal</th>
+      <td [style.white-space]="'nowrap'" mat-cell *matCellDef="let element">
+        <!-- {{ element.flexi_minutes === -15 ? '15 Minutes Before Normal' : element.flexi_minutes === 15 ? '15 Minutes After Normal' : 'Normal' }} -->
+        {{ element.time_option_str }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+
+
+
+      <td mat-cell *matCellDef="let element">
+        @if (!element.approved_on) {
+          <span [style.color]="'red'" >Pending</span>
+        } @else {
+          <span [style.color]="'green'">Approved</span>
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="wef">
+      <th mat-header-cell *matHeaderCellDef>WithEffectFrom</th>
+      <td mat-cell *matCellDef="let element">{{ element.with_effect_from }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="created_at">
+      <th mat-header-cell *matHeaderCellDef>Created</th>
+      <td mat-cell *matCellDef="let element">{{ element.created_at }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+      <td mat-cell *matCellDef="let element ">
+        @if (element.owner_seat !== null ) {
+          <button mat-button color="warn" (click)="deleteApplication(element.id)">
+            <mat-icon class="icon-small">delete</mat-icon>
+            Delete
+          </button>
+        }
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator  class="mat-elevation-z2" [pageSizeOptions]="[10, 20]" showFirstLastButtons aria-label="Select page">
+  </mat-paginator>
+</div>

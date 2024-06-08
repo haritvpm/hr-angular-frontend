@@ -92,9 +92,18 @@ export interface FlexiApplication {
   created_at : string;
 }
 
+export interface OfficeTime {
+
+  groupname : string;
+  fn_from : string;
+  fn_to : string;
+  an_from : string;
+  an_to : string;
+  with_effect_from : string;
+}
 
 export interface UserFlexiSettingApi {
-  officeTimes : any;
+  officeTimes : OfficeTime[];
   employee_setting : UserFlexiSetting;
   forwardable_seats : Seat[];
   prev_flexi_applications : FlexiApplication[];
