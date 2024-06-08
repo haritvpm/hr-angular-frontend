@@ -21,7 +21,7 @@ export class FlexiApproveComponent implements OnInit {
 
 dataSource = new MatTableDataSource<FlexiApplication>();
 
-displayedColumns: string[] = ['flexi_current', 'flexi_to', 'wef', 'created_at','status', 'action'];
+displayedColumns: string[] = ['employee', 'flexi_current', 'flexi_to', 'wef', 'created_at','status', 'action'];
 @ViewChild(MatPaginator) paginator: MatPaginator;
 
 constructor(
@@ -47,7 +47,10 @@ constructor(
     });
   }
 
-  approveApplication(arg0: any) {
-    throw new Error('Method not implemented.');
+  approveApplication(id: number) {
+    this.flexiService.approveFlexiApplication(id).subscribe((data: any) => {
+      console.log(data);
+      this.ngOnInit();
+    });
     }
 }

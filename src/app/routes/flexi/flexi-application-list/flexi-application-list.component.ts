@@ -19,7 +19,7 @@ export class FlexiApplicationListComponent implements OnInit{
 
   dataSource = new MatTableDataSource<FlexiApplication>();
 
-  displayedColumns: string[] = ['fleximinutes', 'wef', 'created_at','status', 'action'];
+  displayedColumns: string[] = ['fleximinutes', 'wef', 'created_at', 'owner' , 'status', 'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(

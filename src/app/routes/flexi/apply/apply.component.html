@@ -1,5 +1,8 @@
       <p>Flexi time (current): {{  applyFlexiForm.get('time_option_current_str')?.value }}</p>
-      <p>Last Changed: {{ lastChangedtext }}</p>
+      @if(upcommingFlexiTime){
+      <p>Upcomming : {{  upcommingFlexiTime }} w.e.f {{data.employee_setting.flexi_time_wef_upcoming}}</p>
+      }
+
 
       <form  [formGroup]="applyFlexiForm" >
 
@@ -21,11 +24,6 @@
 
           </mat-select>
         </mat-form-field>
-
-      } @else {
-       Flexi time can not be changed now
-      }
-
 
       <mat-form-field class="w-full">
         <mat-label>Select Approver</mat-label>
@@ -51,6 +49,8 @@
             <button mat-flat-button class="m-l-4" color="primary"   (click)="cancel()">Cancel</button>
           </div>
         </div>
-
+      } @else {
+        Flexi time can not be changed now
+       }
       </form>
 

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class FlexiService {
 
 
+
   constructor(private httpClient: HttpClient) { }
 
   private apiUrl = '/api/v1/my-sectionemployees';
@@ -33,5 +34,7 @@ export class FlexiService {
   getFlexiApplicationsForApproval(): Observable<any> {
     return this.httpClient.get<any>(`/api/v1/flexi-applications`);
   }
-
+  approveFlexiApplication(id: number) {
+    return this.httpClient.post<any>( `/api/v1/flexi-applications`, {id, action: 'approve'});
+  }
 }

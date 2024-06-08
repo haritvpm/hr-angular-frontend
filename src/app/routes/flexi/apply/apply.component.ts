@@ -35,9 +35,10 @@ export class FlexiApplyComponent implements OnInit {
   lastChangedtext = 'never';
   timeOptions: TimeOption[] = [];
   isSubmitting = false;
+  upcommingFlexiTime: string = '';
 
   applyFlexiForm = new FormGroup({
-    flexi_minutes: new FormControl(0, Validators.required),
+    flexi_minutes: new FormControl(null, Validators.required),
     wef: new FormControl('', [Validators.required,]),
     forwardto: new FormControl(0, [Validators.required,]),
     time_option_str: new FormControl('', []),
@@ -68,9 +69,15 @@ export class FlexiApplyComponent implements OnInit {
         this.applyFlexiForm.patchValue({
           forwardto: this.data.forwardable_seats[0].seat_id,
           time_option_current_str: getTimeOptionStringFromFlexiMinute(
-            this.data.employee_setting.flexi_minutes_current, this.data.employee_setting.time_group,this.data.officeTimes),
+            this.data.employee_setting.flexi_minutes_current,
+            this.data.employee_setting.time_group, this.data.officeTimes),
         });
 
+        if (this.data.employee_setting.flexi_minutes_upcoming) {
+          this.upcommingFlexiTime = getTimeOptionStringFromFlexiMinute(
+            this.data.employee_setting.flexi_minutes_upcoming,
+            this.data.employee_setting.time_group, this.data.officeTimes);
+        }
 
 
       });
@@ -84,20 +91,25 @@ export class FlexiApplyComponent implements OnInit {
 
 
 
-    if (this.data.employee_setting.flexi_time_wef_upcoming) {
+    // if (this.data.employee_setting.flexi_time_wef_upcoming) {
 
-      this.applyFlexiForm.patchValue({
-        flexi_minutes: this.data.employee_setting.flexi_minutes_upcoming,
-        wef: this.data.employee_setting.flexi_time_wef_upcoming,
-      });
-    } else {
+    //   this.applyFlexiForm.patchValue({
+    //     flexi_minutes: this.data.employee_setting.flexi_minutes_upcoming,
+    //     wef: this.data.employee_setting.flexi_time_wef_upcoming,
+    //   });
+    // }
+    // else
+    {
       this.applyFlexiForm.patchValue({
         wef: moment(this.tomorrow).format('YYYY-MM-DD'),
       });
     }
 
     //flexi can be changed if flexi_time_last_updated is not this month OR IF flexi_time_last_updated is null.
+    //if there is an upcoming change, do not allow change
     const { canChangeFlexi, lastChangedtext } = canChangeFlexiFunc(
+      this.data.employee_setting.flexi_time_wef_upcoming ?
+      this.data.employee_setting.flexi_time_wef_upcoming :
       this.data.employee_setting.flexi_time_wef_current);
 
     this.lastChangedtext = lastChangedtext;
@@ -110,10 +122,14 @@ export class FlexiApplyComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   applyFlexi() {
-
-    this.isSubmitting = true;
     const formdata = this.applyFlexiForm.value;
-    const timeOption = this.timeOptions.find(to => to.value === formdata.flexi_minutes);
+
+    if (this.applyFlexiForm.invalid || !formdata.flexi_minutes) {
+      return;
+    }
+    this.isSubmitting = true;
+
+    const timeOption = this.timeOptions.find(to => to.value === formdata.flexi_minutes!);
     const time_option_str = timeOption ? timeOption.label : '';
 
     this.applyFlexiForm.controls.time_option_str.setValue(time_option_str);
