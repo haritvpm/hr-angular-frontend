@@ -76,7 +76,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     dob : [''],
     post : [''],
-    dept : [''],
+    dept : ['Secretariat of the Kerala Legislature'],
     pay : [''],
     scaleofpay : [''],
     doe : [''],

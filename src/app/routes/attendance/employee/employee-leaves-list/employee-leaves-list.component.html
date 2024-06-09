@@ -83,7 +83,7 @@
           <mat-icon class="icon-small" >delete</mat-icon>
           Delete
         </button>
-      } @else {
+      } @else if( ['casual', 'compen_for_extra', 'compen'].indexOf(element.leave_type) === -1  ) {
         <button mat-button (click)="printLeave(element)">
           <mat-icon class="icon-small" >picture_as_pdf</mat-icon>
           View

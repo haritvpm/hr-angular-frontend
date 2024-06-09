@@ -43,7 +43,7 @@ export class EmployeeLeavesListComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['period', 'count', 'leave_type', 'reason', 'active_status', 'leave_cat', 'creation_date', 'action'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
+user : any = undefined;
   params$: any;
 
   ngOnInit() {
@@ -65,6 +65,8 @@ export class EmployeeLeavesListComponent implements OnInit, OnDestroy {
            this.auth.user()
             .pipe(
                 switchMap(user => {
+                    this.user = user;
+
                     console.log(user);
                     // if (!user.aadhaarid) { can be audit
                     //     throw new Error('User does not have aadhaarid');
@@ -91,7 +93,7 @@ export class EmployeeLeavesListComponent implements OnInit, OnDestroy {
       ).subscribe(leaves => {
         this.dataSource = new MatTableDataSource<Leave>(leaves);
         this.dataSource.paginator = this.paginator;
-     //   console.log('Leavesddddddddddddddddd', leaves);
+        console.log('Leavesddddddddddddddddd', leaves);
         console.log('self', this.self);
       });
 
@@ -151,24 +153,33 @@ export class EmployeeLeavesListComponent implements OnInit, OnDestroy {
 
   }
 
-  printLeave(_t92: any) {
+  printLeave(element: any) {
+
+    let prefix = '';
+    if(element.leaveform.prefix) prefix = 'pre: '+element.leaveform.prefix;
+    if(element.leaveform.suffix) prefix += ' suf: ' + element.leaveform.suffix;
+
+    let leavetype: string = element.leave_type;
+    leavetype = leavetype[0].toUpperCase() + leavetype.slice(1);
+
+    const nature = `${leavetype} (${element.leave_count} days) ${element.start_date} -  ${element.end_date}`;
 
     const inputs = [
       {
-        "name": "Type Something...",
-        "dob": "Type Something...",
-        "post": "Type Something...",
-        "dept": "Type Something...",
-        "pay": "Type Something...",
-        "doe": "Type Something...",
-        "docc": "Type Something...",
-        "confirmation": "Type Something...\n",
-        "address": "Type Something...\n",
-        "hra": "Type Something...\n",
-        "nature": "Type Something...\n",
-        "prefix": "Type Something...\n",
-        "ground": "hgjghjghjghjg ghfgh  gfh fgh fgh fgh fgh fgh hfg fgh fgh fh fg hfgh fgh fgh fhfgh fgggggggggggg 978978",
-        "dor": "Type Something...\n"
+        "name": this.user.name,
+        "dob": element.leaveform.dob,
+        "post": element.leaveform.post,
+        "dept": element.leaveform.dept,
+        "pay": element.leaveform.pay + " /-" + (element.leaveform.scaleofpay || ''),
+        "doe": element.leaveform.doe,
+        "docc":element.leaveform.docc,
+        "confirmation": element.leaveform.confirmation,
+        "address": element.leaveform.address,
+        "hra": element.leaveform.hra,
+        "nature":nature,
+        "prefix":prefix,
+        "ground": element.reason,
+        "dor": element.leaveform.last_leave_info || '',
       }
     ];
 
