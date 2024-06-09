@@ -83,6 +83,11 @@
           <mat-icon class="icon-small" >delete</mat-icon>
           Delete
         </button>
+      } @else {
+        <button mat-button (click)="printLeave(element)">
+          <mat-icon class="icon-small" >picture_as_pdf</mat-icon>
+          View
+        </button>
       }
     </td>
   </ng-container>
