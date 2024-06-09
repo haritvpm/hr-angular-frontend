@@ -71,6 +71,33 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     inLieofMonth: [''],
     leave_count: [0, [Validators.required, Validators.min(0.5)]],
     multipleDays : [false],
+    // "dob": "Type Something...",
+    // "post": "Type Something...",
+    // "dept": "Type Something...",
+    // "pay": "Type Something...",
+    // "doe": "Type Something...",
+    // "docc": "Type Something...",
+    // "confirmation": "Type Something...\n",
+    // "address": "Type Something...\n",
+    // "hra": "Type Something...\n",
+    // "nature": "Type Something...\n",
+    // "prefix": "Type Something...\n",
+    // "ground": "hgjghjghjghjg ghfgh  gfh fgh fgh fgh fgh fgh hfg fgh fgh fh fg hfgh fgh fgh fhfgh fgggggggggggg 978978",
+    // "dor": "Type Something...\n"
+    dob : [''],
+    post : [''],
+    dept : [''],
+    pay : [''],
+    doe : [''],
+    docc : [''],
+    confirmation : [''],
+    address : [''],
+    hra : [''],
+    // nature : [''],
+    prefix : [''],
+    suffix : [''],
+    dor : [''],
+
   });
 
   readonly leaveapplyTypes = [
@@ -147,11 +174,11 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     // }));
 
     this.subscriptions.push(this.applyLeaveForm.valueChanges
-      
+
       .subscribe((value) => {
         this.onFormChange(value);
     }));
-    
+
     this.subscriptions.push(this.applyLeaveForm.valueChanges
       .pipe(
         distinctUntilChanged(),
@@ -165,8 +192,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         this.suffix_holidays = res.suffix_holidays;
     }));
 /**
- * 
- * 
+ *
+ *
  * this.empService.precheckLeave( this.applyLeaveForm.value )
     .pipe(
       distinctUntilChanged(),
