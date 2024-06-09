@@ -151,6 +151,20 @@
 
   @if (!isCasualOrCompenOrCompenExtra) {
 
+    <div class="d-flex row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Prefix</mat-label>
+        <input matInput formControlName="prefix" placeholder="prefix" />
+      </mat-form-field>
+
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Suffix</mat-label>
+        <input matInput formControlName="suffix" placeholder="suffix" />
+      </mat-form-field>
+    </div>
+
+
+
     <div class="row">
 
       <mat-form-field  class="col" appearance="fill">
@@ -173,9 +187,13 @@
         <input matInput formControlName="dept" placeholder="Department, Office and section" />
       </mat-form-field>
 
+      <mat-form-field>
+        <mat-label>Pay</mat-label>
+        <input matInput formControlName="pay" placeholder="Pay" />
+      </mat-form-field>
       <mat-form-field class="col" appearance="fill">
-        <mat-label>Pay and scale of Pay</mat-label>
-        <input matInput formControlName="pay" placeholder="Pay and scale of Pay" />
+        <mat-label>Scale of Pay</mat-label>
+        <input matInput formControlName="scaleofpay" placeholder="Scale of Pay" />
       </mat-form-field>
     </div>
 
@@ -223,17 +241,7 @@
     </div>
 
 
-    <div class="d-flex row">
-      <mat-form-field class="col" appearance="fill">
-        <mat-label>Prefix</mat-label>
-        <input matInput formControlName="prefix" placeholder="prefix" />
-      </mat-form-field>
 
-      <mat-form-field class="col" appearance="fill">
-        <mat-label>Suffix</mat-label>
-        <input matInput formControlName="suffix" placeholder="suffix" />
-      </mat-form-field>
-    </div>
     <div class="d-flex row">
 
 

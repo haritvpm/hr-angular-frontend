@@ -88,6 +88,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     post : [''],
     dept : [''],
     pay : [''],
+    scaleofpay : [''],
     doe : [''],
     docc : [''],
     confirmation : [''],
