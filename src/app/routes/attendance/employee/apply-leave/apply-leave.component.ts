@@ -73,19 +73,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     inLieofMonth: [''],
     leave_count: [0, [Validators.required, Validators.min(0.5)]],
     multipleDays : [false],
-    // "dob": "Type Something...",
-    // "post": "Type Something...",
-    // "dept": "Type Something...",
-    // "pay": "Type Something...",
-    // "doe": "Type Something...",
-    // "docc": "Type Something...",
-    // "confirmation": "Type Something...\n",
-    // "address": "Type Something...\n",
-    // "hra": "Type Something...\n",
-    // "nature": "Type Something...\n",
-    // "prefix": "Type Something...\n",
-    // "ground": "hgjghjghjghjg ghfgh  gfh fgh fgh fgh fgh fgh hfg fgh fgh fh fg hfgh fgh fgh fhfgh fgggggggggggg 978978",
-    // "dor": "Type Something...\n"
+
     dob : [''],
     post : [''],
     dept : [''],
@@ -93,7 +81,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     scaleofpay : [''],
     doe : [''],
     docc : [''],
-    confirmation : ['N/A'],
+    confirmation_info : ['N/A'],
     address : [''],
     hra : [''],
     // nature : [''],
@@ -210,24 +198,15 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         this.warningMessages = res.warnings;
         this.prefix_holidays = res.prefix_holidays;
         this.suffix_holidays = res.suffix_holidays;
+        if( this.prefix_holidays.length > 0 ){
+           this.applyLeaveForm.get('prefix')?.setValue(this.prefix_holidays.join(','), { emitEvent: false });
+        }
+        if( this.suffix_holidays.length > 0 ){
+          this.applyLeaveForm.get('suffix')?.setValue(this.suffix_holidays.join(','), { emitEvent: false });
+        }
+
     }));
-/**
- *
- *
- * this.empService.precheckLeave( this.applyLeaveForm.value )
-    .pipe(
-      distinctUntilChanged(),
-      debounceTime(350),
-    ).subscribe( res => {
-      this.errorMessages = res.errors;
-      this.warningMessages = res.warnings;
-      this.prefix_holidays = res.prefix_holidays;
-      this.suffix_holidays = res.suffix_holidays;
 
-    }
-
-    );
-*/
   }
   // onLeaveCountChange(leave_count: any) {
   //   this.precheckLeave();
@@ -472,21 +451,26 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
   }
 
-  precheckLeave(){
-    this.empService.precheckLeave( this.applyLeaveForm.value )
-    .pipe(
-      distinctUntilChanged(),
-      debounceTime(350),
-    ).subscribe( res => {
-      this.errorMessages = res.errors;
-      this.warningMessages = res.warnings;
-      this.prefix_holidays = res.prefix_holidays;
-      this.suffix_holidays = res.suffix_holidays;
+  // precheckLeave(){
+  //   this.empService.precheckLeave( this.applyLeaveForm.value )
+  //   .pipe(
+  //     distinctUntilChanged(),
+  //     debounceTime(350),
+  //   ).subscribe( res => {
+  //     this.errorMessages = res.errors;
+  //     this.warningMessages = res.warnings;
+  //     this.prefix_holidays = res.prefix_holidays;
+  //     this.suffix_holidays = res.suffix_holidays;
 
-    }
+  //     this.applyLeaveForm.patchValue({
+  //       prefix: this.prefix_holidays.join(','),
+  //       suffix: this.suffix_holidays.join(',')
+  //     });
 
-    );
-  }
+  //   }
+
+  //   );
+  // }
 
   clearEndDate() {
     this.applyLeaveForm.get('end_date')?.setValue(''); //emitEvent: false to avoid infinite loop

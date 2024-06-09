@@ -219,7 +219,7 @@
 
       <mat-form-field class="col" appearance="fill">
         <mat-label>Whether got confirmation in any post, if so, the date and post</mat-label>
-        <textarea matInput formControlName="confirmation" placeholder="Whether got confirmation. if so, date and post" ></textarea>
+        <textarea matInput formControlName="confirmation_info" placeholder="Whether got confirmation. if so, date and post" ></textarea>
       </mat-form-field>
 
       <mat-form-field class="col" appearance="fill">
@@ -267,7 +267,7 @@
   </div>
 
 </form>
-
+<!--
 @if (prefix_holidays && prefix_holidays.length) {
    <mtx-alert type="info"> Prefix: {{ prefix_holidays.toString() }}</mtx-alert>
 }
@@ -275,7 +275,7 @@
 @if (suffix_holidays && suffix_holidays.length) {
     <mtx-alert type="info"> Suffix: {{ suffix_holidays.toString() }}</mtx-alert>
 
-}
+} -->
 
 
 <!-- {{ applyLeaveForm.value | json }} -->
