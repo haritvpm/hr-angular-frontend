@@ -17,6 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LeavesService } from 'app/routes/leaves/leaves.service';
+import { IProfile } from '@shared/interfaces';
+import { LoginService } from '@core/authentication';
 
 @Component({
   selector: 'app-apply-leave',
@@ -91,7 +93,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     scaleofpay : [''],
     doe : [''],
     docc : [''],
-    confirmation : [''],
+    confirmation : ['N/A'],
     address : [''],
     hra : [''],
     // nature : [''],
@@ -119,17 +121,34 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   allholidays: string[] = [];
   holidaysInPeriod: string[] = [];
 
+  profile : IProfile | null = null;
+
+
   constructor(
     private fb: FormBuilder,
     private empService: EmployeeService,
     private router: Router,
     private route: ActivatedRoute,
-    private leaveService: LeavesService
+    private leaveService: LeavesService,
+    private loginService: LoginService,
   ) { }
 
-
-
   ngOnInit() {
+
+    this.loginService.getProfile().subscribe((profile) => {
+      this.profile = profile;
+      this.applyLeaveForm.patchValue({
+        dob: this.profile.dob,
+
+        //pay: this.profile.pay,
+        //scaleofpay: this.profile.scaleofpay,
+        doe: this.profile.dateOfEntryInService,
+        docc: this.profile.dateOfCommencementOfContinousService,
+
+        address: this.profile.address,
+
+      });
+    });
 
     this.id = this.route.snapshot.params.id;
     this.isAddMode = !this.id;
