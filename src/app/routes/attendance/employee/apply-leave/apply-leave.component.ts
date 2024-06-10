@@ -200,9 +200,13 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         this.suffix_holidays = res.suffix_holidays;
         if( this.prefix_holidays.length > 0 ){
            this.applyLeaveForm.get('prefix')?.setValue(this.prefix_holidays.join(','), { emitEvent: false });
+        } else {
+          this.applyLeaveForm.get('prefix')?.setValue('', { emitEvent: false });
         }
         if( this.suffix_holidays.length > 0 ){
           this.applyLeaveForm.get('suffix')?.setValue(this.suffix_holidays.join(','), { emitEvent: false });
+        } else {
+          this.applyLeaveForm.get('suffix')?.setValue('', { emitEvent: false });
         }
 
     }));
