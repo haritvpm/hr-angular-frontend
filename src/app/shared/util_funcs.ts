@@ -18,7 +18,7 @@ export function getTimeOptionStringFromFlexiMinute(flexi_minutes: number,  time_
         return 'Normal (' + from.format('h:mm a') + ' - ' + to .format('h:mm a') + ')';
         }
         if(flexi_minutes < 0){
-         'Flexi (' + from.add(-flexi,'minute').format('h:mm a') + ' - ' + to.add(-flexi,'minute').format('h:mm a') + ')';
+         return 'Flexi (' + from.add(-flexi,'minute').format('h:mm a') + ' - ' + to.add(-flexi,'minute').format('h:mm a') + ')';
         }
         return 'Flexi (' + from.add(flexi,'minute').format('h:mm a') + ' - ' + to.add(flexi,'minute').format('h:mm a') + ')';
     }

@@ -124,7 +124,7 @@ export class FlexiApplyComponent implements OnInit {
   applyFlexi() {
     const formdata = this.applyFlexiForm.value;
 
-    if (this.applyFlexiForm.invalid || !formdata.flexi_minutes) {
+    if (this.applyFlexiForm.invalid || formdata.flexi_minutes===null) {
       return;
     }
     this.isSubmitting = true;
