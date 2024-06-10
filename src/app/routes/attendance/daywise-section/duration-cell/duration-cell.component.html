@@ -23,7 +23,7 @@
   <!-- {{ punching.duration_str }} -->
 }
 
-@if (punching.leave) {
+@if (punching.leave && !is_today) {
   @if (punching.is_unauthorised || !punching.is_unauthorised) {
     @if (punching.leave.leave_cat === 'H') {
       @if (punching.leave.time_period === 'FN') {
