@@ -1,0 +1,56 @@
+      <p>Flexi time (current): {{  applyFlexiForm.get('time_option_current_str')?.value }}</p>
+      @if(upcommingFlexiTime){
+      <p>Upcomming : {{  upcommingFlexiTime }} w.e.f {{data.employee_setting.flexi_time_wef_upcoming}}</p>
+      }
+
+
+      <form  [formGroup]="applyFlexiForm" >
+
+        @if(canChangeFlexi){
+          <mat-form-field class="w-full">
+            <mat-label>With effect from</mat-label>
+            <input readonly matInput [matDatepicker]="picker" [min]="tomorrow"  formControlName="wef">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Select a new flexi time</mat-label>
+          <mat-select  formControlName="flexi_minutes">
+
+            @for (timeOption of timeOptions ; track timeOption) {
+            <mat-option [value]="timeOption.value">{{timeOption.label}}</mat-option>
+            }
+
+          </mat-select>
+        </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Select Approver</mat-label>
+        <mat-select  formControlName="forwardto">
+
+          @for (forwardto of data.forwardable_seats; track forwardto.seat_id) {
+          <mat-option [value]="forwardto.seat_id">{{forwardto.seat_name}}-({{forwardto.employee_name}})</mat-option>
+          }
+
+        </mat-select>
+      </mat-form-field>
+
+        <!-- {{end_date}} -->
+        <div class="d-flex row">
+
+
+          <div class="col d-flex justify-content-end">
+            <button mat-flat-button
+            [disabled]="!applyFlexiForm.valid"
+            color="accent"
+            (click)="applyFlexi()"
+            >Apply Flexi Change</button>
+            <button mat-flat-button class="m-l-4" color="primary"   (click)="cancel()">Cancel</button>
+          </div>
+        </div>
+      } @else {
+        Flexi time can not be changed now
+       }
+      </form>
+

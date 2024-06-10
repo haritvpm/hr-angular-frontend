@@ -26,6 +26,7 @@ import { filter, switchMap, take } from 'rxjs';
 import { EmployeePostingEndComponent } from './employee-posting-end/employee-posting-end.component';
 import { Router } from '@angular/router';
 import { EmployeePostingEditComponent } from './employee-posting-edit/employee-posting-edit.component';
+import { FlexiService } from 'app/routes/flexi/flexi.service';
 
 @Component({
     selector: 'app-settings-employee',
@@ -49,6 +50,7 @@ export class EmployeePostingComponent implements OnInit {
   sections : Section[] = [];
   officeTimes : OfficeTime[] = [];
   constructor(private employeeService: EmployeePostingService,
+    private flexiService: FlexiService,
     private _liveAnnouncer: LiveAnnouncer, private mtxDialog: MtxDialog, private router: Router) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -113,7 +115,7 @@ export class EmployeePostingComponent implements OnInit {
       take(1),
       filter((data: any) => data !== undefined),
       switchMap((data: any) => {
-        return this.employeeService.updateEmployeeSetting(
+        return this.flexiService.updateEmployeeSetting(
           emp.employee_id, data );
       }
     )).subscribe(() => {

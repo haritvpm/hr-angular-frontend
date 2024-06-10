@@ -148,6 +148,112 @@
       }
     </mat-form-field>
   </div>
+
+  @if (!isCasualOrCompenOrCompenExtra) {
+
+    <div class="d-flex row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Prefix</mat-label>
+        <input matInput formControlName="prefix" placeholder="prefix" />
+      </mat-form-field>
+
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Suffix</mat-label>
+        <input matInput formControlName="suffix" placeholder="suffix" />
+      </mat-form-field>
+    </div>
+
+
+
+    <div class="row">
+
+      <mat-form-field  class="col" appearance="fill">
+        <mat-label>Date of birth </mat-label>
+        <input readonly [max]="today" matInput [matDatepicker]="picker3" placeholder="Date of birth"
+          formControlName="dob">
+        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+        <mat-datepicker  #picker3></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Post held</mat-label>
+        <input matInput formControlName="post" placeholder="Post held" />
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Department, Office and section</mat-label>
+        <input matInput formControlName="dept" placeholder="Department, Office and section" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Pay</mat-label>
+        <input matInput formControlName="pay" placeholder="Pay" />
+      </mat-form-field>
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Scale of Pay</mat-label>
+        <input matInput formControlName="scaleofpay" placeholder="Scale of Pay" />
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex row">
+         <mat-form-field  class="col" appearance="fill">
+        <mat-label>Date of entry in service </mat-label>
+        <input readonly [max]="today" matInput [matDatepicker]="pickerdoe" placeholder="Date of entry in service"
+          formControlName="doe">
+        <mat-datepicker-toggle matSuffix [for]="pickerdoe"></mat-datepicker-toggle>
+        <mat-datepicker  #pickerdoe></mat-datepicker>
+      </mat-form-field>
+     <mat-form-field class="col" appearance="fill">
+        <mat-label>Date of commencement of Continuous service</mat-label>
+        <input readonly [max]="today" matInput [matDatepicker]="pickerdocc" placeholder="Date of commencement of Continuous service"
+          formControlName="docc">
+        <mat-datepicker-toggle matSuffix [for]="pickerdocc"></mat-datepicker-toggle>
+        <mat-datepicker  #pickerdocc></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+
+    <div class="d-flex row">
+
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Whether got confirmation in any post, if so, the date and post</mat-label>
+        <textarea matInput formControlName="confirmation_info" placeholder="Whether got confirmation. if so, date and post" ></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Address during leave</mat-label>
+        <textarea matInput formControlName="address" placeholder="Address during leave" ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex row">
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>HRA, CA or other compensatory allowance drawn in the present post</mat-label>
+        <input matInput formControlName="hra" placeholder="HRA, CA or other compensatory allowance drawn in the present post" />
+      </mat-form-field>
+<!--
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>nature</mat-label>
+        <input matInput formControlName="nature" placeholder="nature" />
+      </mat-form-field> -->
+    </div>
+
+
+
+    <div class="d-flex row">
+
+
+      <mat-form-field class="col" appearance="fill">
+        <mat-label>Date of return from last leave and nature and period of that leave</mat-label>
+        <input matInput formControlName="dor" placeholder="Date of return from last leave and nature and period of that leave" />
+      </mat-form-field>
+    </div>
+
+  }
+
+
 }
   <div class="d-flex row">
     <div class="col d-flex justify-content-end">
@@ -161,7 +267,7 @@
   </div>
 
 </form>
-
+<!--
 @if (prefix_holidays && prefix_holidays.length) {
    <mtx-alert type="info"> Prefix: {{ prefix_holidays.toString() }}</mtx-alert>
 }
@@ -169,7 +275,7 @@
 @if (suffix_holidays && suffix_holidays.length) {
     <mtx-alert type="info"> Suffix: {{ suffix_holidays.toString() }}</mtx-alert>
 
-}
+} -->
 
 
 <!-- {{ applyLeaveForm.value | json }} -->

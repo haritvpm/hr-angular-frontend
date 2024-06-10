@@ -16,7 +16,7 @@ import { AuthService, SettingsService, User } from '@core';
       <mat-icon>person</mat-icon>
       <span class="m-x-8">
         @if(user.name){
-        {{  user.name?.toUpperCase()}}&nbsp;({{  user.username?.toUpperCase()}})
+        {{  user.name.toUpperCase()}}&nbsp;({{  user.username?.toUpperCase()}})
         }@else{
           {{  user.username?.toUpperCase()}}
         }
