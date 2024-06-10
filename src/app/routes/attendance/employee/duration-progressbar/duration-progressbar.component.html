@@ -39,6 +39,8 @@
     } @else {
       <span [style.color]="'Red'"> Unauthorised </span>
     }
+  } @else if (punchItem.computer_hint === 'casual_an') {
+    <small [style.color]="'orange'">Casual AN?</small>
   }
   @if (punchItem.is_holiday && !punchItem.punching_count) {
     -
