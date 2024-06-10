@@ -20,7 +20,7 @@ export function getTimeOptionStringFromFlexiMinute(flexi_minutes: number,  time_
         if(flexi_minutes < 0){
          'Flexi (' + from.add(-flexi,'minute').format('h:mm a') + ' - ' + to.add(-flexi,'minute').format('h:mm a') + ')';
         }
-        return 'Flexi (' + from.add(flexi*2,'minute').format('h:mm a') + ' - ' + to.add(flexi*2,'minute').format('h:mm a') + ')';
+        return 'Flexi (' + from.add(flexi,'minute').format('h:mm a') + ' - ' + to.add(flexi,'minute').format('h:mm a') + ')';
     }
   }
 
