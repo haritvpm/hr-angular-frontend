@@ -67,7 +67,7 @@ export class FlexiApplyComponent implements OnInit {
         this.data = response as UserFlexiSettingApi;
         //set default forwardto
         this.applyFlexiForm.patchValue({
-          forwardto: this.data.forwardable_seats[0].seat_id,
+          forwardto: this.data.forwardable_seats.length? this.data.forwardable_seats[0].seat_id : null,
           time_option_current_str: getTimeOptionStringFromFlexiMinute(
             this.data.employee_setting.flexi_minutes_current,
             this.data.employee_setting.time_group, this.data.officeTimes),

@@ -55,6 +55,7 @@ export function getTimeOptions(
           if(current_flexi_minutes !==  -flexi){
           timeOptions.push( { value: -flexi, label: 'Flexi (' + from.add(-flexi,'minute').format('h:mm a') + ' - ' + to.add(-flexi,'minute').format('h:mm a') + ')'});
           }
+          //not above operation modifies 'from' and 'to' so we need add twice the minutes
           if(current_flexi_minutes !==  flexi){
           timeOptions.push( { value: flexi, label: 'Flexi (' + from.add(flexi*2,'minute').format('h:mm a') + ' - ' + to.add(flexi*2,'minute').format('h:mm a') + ')'});
           }
