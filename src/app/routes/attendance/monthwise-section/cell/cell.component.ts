@@ -86,14 +86,12 @@ export class CellComponent implements OnInit {
 
         this.icon_color = this.grace_exceeded300_and_today_has_grace_alarm_show ? 'OrangeRed'  : 'gray';
 
-        this.icon_name = this.item.punching_count == 2 ? 'looks_two' :
-          this.item.punching_count == 3 ? 'looks_3' :
-            this.item.punching_count == 4 ? 'looks_4' :
-              this.item.punching_count == 5 ? 'looks_5' : 'looks_6';
+        this.icon_name = 'check_circle_outline';
+
       }
       else if (this.item.punching_count === 1) {
         this.icon_name = 'looks_one';
-        this.icon_color = !this.calendarInfo.is_today ? 'orange' : 'black';
+        this.icon_color = !this.calendarInfo.is_today ? 'OrangeRed' : 'black';
         if (this.item.single_punch_regularised_by) {
           this.icon_color = 'black';
         }
