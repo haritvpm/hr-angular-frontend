@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MtxAlert } from '@ng-matero/extensions/alert';
 import { BreadcrumbComponent } from '@shared';
 
 @Component({
@@ -7,7 +8,8 @@ import { BreadcrumbComponent } from '@shared';
   styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [BreadcrumbComponent],
+  imports: [BreadcrumbComponent,    MtxAlert,
+  ],
 })
 export class DashboardComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef) {}
