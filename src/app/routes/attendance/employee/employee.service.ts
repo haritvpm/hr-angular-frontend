@@ -9,6 +9,7 @@ export interface LeavePreCheck{
   warnings : string[] ;
   prefix_holidays : string[] ;
   suffix_holidays : string[] ;
+  allholidays : any;
 }
 
 

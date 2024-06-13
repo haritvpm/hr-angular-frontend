@@ -153,11 +153,11 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
         .subscribe(x => this.applyLeaveForm.patchValue(x.data));
     }
 
-
+/*
     this.empService.getHolidays().subscribe((value) => {
       this.allholidays = value.holidays.map(g => g.date);
     });
-
+*/
     this.subscriptions.push(this.applyLeaveForm.get('start_date')!.valueChanges
       .subscribe((value) => {
         this.onFromDateChange(value);
@@ -225,6 +225,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
       debounceTime(350),
       switchMap(value => this.empService.precheckLeave(this.applyLeaveForm.value))
     ).subscribe(res => {
+      console.log(res);
+      this.allholidays = res.allholidays.map((g: { date: any; }) => g.date);
       this.errorMessages = res.errors;
       this.warningMessages = res.warnings;
       this.prefix_holidays = res.prefix_holidays;
