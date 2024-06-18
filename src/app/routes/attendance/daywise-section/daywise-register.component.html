@@ -115,8 +115,17 @@
           [style.color]="'red'"
           >
           <small>>1H</small>
-
           </span>
+
+          <span
+          *ngIf="employee.single_punch_regularised_by"
+          [style.color]="employee.single_punch_regularised_by? '' : 'Black'"
+          >
+          {{employee?.controller_set_punch_in | date: 'HH:mm'}}<small><mat-icon>close</mat-icon></small>
+          </span>
+
+
+
         </td>
         <!-- <td mat-cell [style.color]="employee.punchin_trace?.att_time > '10:30:00'? 'red': ''" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
         <!-- <td mat-cell [style]="getPunchInStyle(employee)" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
@@ -144,6 +153,12 @@
             <small><mat-icon>close</mat-icon></small></span
           >
 
+          <span
+          *ngIf="employee.single_punch_regularised_by"
+          [style.color]="employee.single_punch_regularised_by? '' : 'Black'"
+          >
+          {{employee?.controller_set_punch_out | date: 'HH:mm'}}
+          </span>
         </td>
       </ng-container>
       <ng-container matColumnDef="duration_str">
