@@ -10,6 +10,9 @@
       Missed Punch In
     }
   </span>
+  @if (punching.single_punch_regularised_by) {
+    <span [style.color]="'black'" [style.font-size]="'small'" [style.font-weight]="'bold'">Regularised</span>
+  }
 }
 
 @if (
@@ -17,7 +20,8 @@
   !is_today &&
   !punching.leave &&
   !punching.computer_hint &&
-  !punching.hint
+  !punching.hint &&
+  !punching.single_punch_regularised_by
 ) {
   <span [style.color]="'red'">Unauthorised</span>
   <!-- {{ punching.duration_str }} -->
@@ -57,7 +61,7 @@
       >
     }
   }
-} @else if (punching.hint && punching.hint !== 'clear') {
+} @else if (punching.hint && punching.hint !== 'clear' && !punching.single_punch_regularised_by) {
   @if (!punching.finalized_by_controller) {
     @if (punching.hint === 'casual_fn') {
       <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
@@ -82,9 +86,7 @@
         {{ getLeaveText(punching.hint) }}
       </span>
     }
-
   }
-
 
   <!-- @if(punching.hint === 'casual_fn'){
     <span [style.color]="'DeepPink'">{{ getLeaveText(punching.hint) }}</span>
