@@ -29,8 +29,10 @@
         {{ getLeaveType(punchItem.leave.leave_type) }}
       }
     </span>
+  } @else if (punchItem.single_punch_regularised_by) {
+    <br>Regularised
   } @else if (punchItem.hint) {
-    <span [style.color]="'DeepPink'">
+    <br><span [style.color]="'DeepPink'">
       {{ getLeaveType(punchItem.hint) }}
     </span>
   } @else if (punchItem.is_unauthorised) {
@@ -39,6 +41,8 @@
     } @else {
       <span [style.color]="'Red'"> Unauthorised </span>
     }
+  } @else if (punchItem.computer_hint === 'casual_an') {
+    <small [style.color]="'orange'">Casual AN?</small>
   }
   @if (punchItem.is_holiday && !punchItem.punching_count) {
     -
