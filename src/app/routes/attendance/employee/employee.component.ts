@@ -22,7 +22,7 @@ import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mar
 import { EmployeeYearlyAttendanceListComponent } from './employee-yearly-attendance-list/employee-yearly-attendance-list.component';
 import { DurationProgressbarComponent } from './duration-progressbar/duration-progressbar.component';
 import { PendingLeavesListComponent } from './pending-leaves-list/pending-leaves-list.component';
-
+import { BreadcrumbComponent } from "../../../shared/components/breadcrumb/breadcrumb.component";
 
 export const MY_FORMATS = {
   parse: {
@@ -35,17 +35,18 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
+
 @Component({
-    selector: 'app-monthwiseregister-employee',
-    templateUrl: './employee.component.html',
-    styleUrls: ['./employee.component.css'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: true,
-    providers: [provideMomentDateAdapter(MY_FORMATS),],
-    imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
-        MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
-        EmployeeLeavesListComponent, MatDatepickerModule, MatNativeDateModule,
-        FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, DurationProgressbarComponent, PendingLeavesListComponent]
+  selector: 'app-monthwiseregister-employee',
+  templateUrl: './employee.component.html',
+  styleUrls: ['./employee.component.css'],
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  providers: [provideMomentDateAdapter(MY_FORMATS),],
+  imports: [MatTableModule, DatePipe, NgIf, MatFormField, MatLabel,
+    MatInputModule, MatButtonModule, MatIconModule, MatCardModule, MatTabsModule,
+    EmployeeLeavesListComponent, MatDatepickerModule, MatNativeDateModule,
+    FormsModule, CommonModule, ReactiveFormsModule, EmployeeYearlyAttendanceListComponent, DurationProgressbarComponent, PendingLeavesListComponent, BreadcrumbComponent]
 })
 
 export class MonthwiseregisterEmployeeComponent implements OnInit {
@@ -192,5 +193,9 @@ export class MonthwiseregisterEmployeeComponent implements OnInit {
     });
   }
 
+  getMissedPunchColor(regularised: string) {
+    if (regularised) return 'Black';
+    else return 'DeepPink';
+  }
 }
 
