@@ -244,7 +244,9 @@
         </th>
         <td mat-cell [style]="getGraceStyleTotal(employee)" *matCellDef="let employee">
           <span *ngIf="!is_holiday">
-            {{ 300 - roundValue(employee.total_grace_sec / 60) }}
+            <!-- {{ 300 - roundValue(employee.total_grace_sec / 60) }} -->
+              {{employee.grace_limit - roundValue(employee.total_grace_sec / 60)}}
+
           </span>
         </td>
       </ng-container>

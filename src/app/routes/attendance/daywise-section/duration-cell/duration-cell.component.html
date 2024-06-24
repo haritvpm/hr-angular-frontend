@@ -59,6 +59,12 @@
       <span [style.color]="'orange'" [style.font-weight]="'bold'"
         ><small [innerHtml]="casual_half_text"></small><small>_AN?</small></span
       >
+    }@else if(punching.computer_hint === 'casual' && !is_today) {
+      {{ punching.duration_str }}
+      <span [style.color]="'orange'" [style.font-weight]="'bold'"
+        ><small>Casual?</small></span
+      >
+
     }
   }
 } @else if (punching.hint && punching.hint !== 'clear' && !punching.single_punch_regularised_by) {
