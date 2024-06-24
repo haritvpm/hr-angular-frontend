@@ -36,6 +36,7 @@ export interface MonthlyData {
   unauthorised_count : number;
   single_punchings: number;
   month_name: string;
+  grace_minutes: number;
 }
 export interface YearlyData {
   id: number;
