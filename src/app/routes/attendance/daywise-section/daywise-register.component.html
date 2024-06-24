@@ -48,8 +48,12 @@
             <b>{{ selectedDateHint }}</b>
 
             <span *ngIf="is_holiday" [style.color]="'red'">&nbsp;(H)</span>
-            <span *ngIf="calender?.office_ends_at==='3pm'" [style.color]="'red'">&nbsp;(3p.m.)</span>
-            <span *ngIf="calender?.office_ends_at==='noon'" [style.color]="'red'">&nbsp;(Noon)</span>
+            <span *ngIf="calender?.office_ends_at === '3pm'" [style.color]="'red'"
+              >&nbsp;(3p.m.)</span
+            >
+            <span *ngIf="calender?.office_ends_at === 'noon'" [style.color]="'red'"
+              >&nbsp;(Noon)</span
+            >
 
             <button mat-icon-button (click)="onNextDay()">
               <mat-icon>chevron_right</mat-icon>
@@ -101,8 +105,8 @@
         <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
           {{ employee?.in_time }}
           <span
-            *ngIf="!employee.punching_count && !is_holiday"
-            [style.color]="employee.finalized_by_controller? '' : 'DeepPink'"
+            *ngIf="!employee.punchin_trace && !is_holiday"
+            [style.color]="employee.single_punch_regularised_by ? '' : 'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
             [matTooltipShowDelay]="500"
@@ -110,22 +114,13 @@
           >
             <small><mat-icon>close</mat-icon></small></span
           >
-          <span
-          *ngIf="employee.grace_total_exceeded_one_hour"
-          [style.color]="'red'"
-          >
-          <small>>1H</small>
+          <span *ngIf="employee.grace_total_exceeded_one_hour" [style.color]="'red'">
+            <small>>1H</small>
           </span>
 
-          <span
-          *ngIf="employee.single_punch_regularised_by"
-          [style.color]="employee.single_punch_regularised_by? '' : 'Black'"
-          >
-          {{employee?.controller_set_punch_in | date: 'HH:mm'}}<small><mat-icon>close</mat-icon></small>
+          <span *ngIf="employee.single_punch_regularised_by">
+            {{ employee?.controller_set_punch_in | date: 'HH:mm' }}
           </span>
-
-
-
         </td>
         <!-- <td mat-cell [style.color]="employee.punchin_trace?.att_time > '10:30:00'? 'red': ''" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
         <!-- <td mat-cell [style]="getPunchInStyle(employee)" *matCellDef="let employee">{{ employee.punchin_trace?.att_time }}</td> -->
@@ -143,7 +138,7 @@
         <td mat-cell *matCellDef="let employee" (click)="mark(employee)">
           {{ employee?.out_time }}
           <span
-            *ngIf="employee.punching_count < 2 && !is_today && !is_holiday"
+            *ngIf="!employee.punchout_trace && !is_today && !is_holiday"
             [style.color]="employee.single_punch_regularised_by ? '' : 'DeepPink'"
             [matTooltip]="getTooltipContent(employee)"
             matTooltipPosition="above"
@@ -153,11 +148,8 @@
             <small><mat-icon>close</mat-icon></small></span
           >
 
-          <span
-          *ngIf="employee.single_punch_regularised_by"
-          [style.color]="employee.single_punch_regularised_by? '' : 'Black'"
-          >
-          {{employee?.controller_set_punch_out | date: 'HH:mm'}}
+          <span *ngIf="employee.single_punch_regularised_by">
+            {{ employee?.controller_set_punch_out | date: 'HH:mm' }}
           </span>
         </td>
       </ng-container>
@@ -203,7 +195,7 @@
         <td mat-cell [style]="getExtratimeColor(employee)" *matCellDef="let employee">
           <span *ngIf="!is_holiday">
             <!-- {{ roundValue(employee.total_extra_sec / 60) }} -->
-            {{employee.total_extra_str}}
+            {{ employee.total_extra_str }}
           </span>
         </td>
       </ng-container>
@@ -216,7 +208,12 @@
         >
           Grace(Day)
         </th>
-        <td mat-cell [style]="getGraceStyle(employee)" *matCellDef="let employee" (click)="mark(employee)">
+        <td
+          mat-cell
+          [style]="getGraceStyle(employee)"
+          *matCellDef="let employee"
+          (click)="mark(employee)"
+        >
           {{ employee.grace_str }}
         </td>
       </ng-container>
@@ -259,7 +256,8 @@
           mat-sort-header
           sortActionDescription="Sort by CL Mark Sub"
         >
-        CL <br> Mark|Sub ({{date_dmY | date: 'yyyy'}})
+          CL <br />
+          Mark|Sub ({{ date_dmY | date: 'yyyy' }})
         </th>
         <td mat-cell *matCellDef="let punchinfo">
           <!-- <span *ngIf="!is_holiday">
@@ -276,17 +274,16 @@
           mat-sort-header
           sortActionDescription="Sort by Comp Mark Sub"
         >
-          Comp <br> Mark|Sub ({{date_dmY | date: 'yyyy'}})
+          Comp <br />
+          Mark|Sub ({{ date_dmY | date: 'yyyy' }})
         </th>
         <td mat-cell *matCellDef="let punchinfo">
           <!-- <span *ngIf="!is_holiday">
             {{ 300 - roundValue(employee.total_grace_sec / 60) }}
           </span> -->
-          {{ punchinfo.compen_marked }} / {{punchinfo.compen_submitted}}
+          {{ punchinfo.compen_marked }} / {{ punchinfo.compen_submitted }}
         </td>
       </ng-container>
-
-
 
       <ng-container matColumnDef="remarks">
         <th

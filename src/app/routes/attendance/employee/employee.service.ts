@@ -47,9 +47,16 @@ export class EmployeeService {
   getHolidays(date?: string): Observable<HolidayApiData> {
     return this.http.get<HolidayApiData>(`/api/v1/holidays`);
   }
+
+  
+  getLeaveforwardableSeat(): Observable<any> {
+    return this.http.get<any>(`/api/v1/leaves/forwardable-seats`);
+  }
+
   applyLeave(data:any): Observable<any> {
     return this.http.post<any>(`/api/v1/leaves/`,data);
   }
+
   updateLeave(id:number,  data:any): Observable<any> {
     return this.http.patch<any>(`/api/v1/leaves/${id}`,data);
   }

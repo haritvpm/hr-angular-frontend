@@ -256,6 +256,12 @@
 
 }
   <div class="d-flex row">
+    @if(forwarableSeats.length){
+    <div class="col d-flex justify-content-begin">
+      Forwards to {{ forwarableSeats[0].title }}
+    </div>
+     }
+
     <div class="col d-flex justify-content-end">
       <button mat-flat-button
       [disabled]="isSubmitting || !applyLeaveForm.valid  || errorMessages.length > 0"
