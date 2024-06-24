@@ -62,6 +62,9 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   isCasualOrCompenOrCompenExtra = false;
   isSubmitting = false;
   fromDateMax = moment().add(1, 'year').toDate();
+
+  forwarableSeats: any[] = [];
+
   applyLeaveForm = this.fb.group({
     leave_type: ['', Validators.required],
     start_date: ['', Validators.required],
@@ -137,6 +140,12 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
       });
     });
+
+    this.empService.getLeaveforwardableSeat().subscribe((value) => {
+      this.forwarableSeats = value.seats;
+      console.log(this.forwarableSeats);
+    });
+
 
     this.id = this.route.snapshot.params.id;
     this.isAddMode = !this.id;
