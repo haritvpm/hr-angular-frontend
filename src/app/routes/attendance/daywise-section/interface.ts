@@ -56,6 +56,7 @@ export interface DailyPunching {
   grace_exceeded300_and_today_has_grace :boolean
   grace_total_exceeded_one_hour:number
 
+
 }
 
 export interface Calender {
