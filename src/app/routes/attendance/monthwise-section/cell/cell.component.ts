@@ -51,7 +51,7 @@ export class CellComponent implements OnInit {
 
 
     if (this.item) {
-      this.showDash = !this.calendarInfo.future_date && (!this.item.in_section || !this.item.designation)
+      this.showDash = !this.calendarInfo.holiday && !this.calendarInfo.future_date && (!this.item.in_section || !this.item.designation)
 
       //hints
       if (this.item.hint && !this.item.leave) { //dont use computer_hint if real hint set by SO exists
