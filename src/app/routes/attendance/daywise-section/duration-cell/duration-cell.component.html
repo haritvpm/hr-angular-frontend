@@ -47,7 +47,7 @@
       </span>
     }
   }
-} @else if (punching.computer_hint && !punching.hint) {
+} @else if (punching.computer_hint && !punching.hint && !is_today) {
   @if (punching.is_unauthorised || !punching.is_unauthorised) {
     @if (punching.computer_hint === 'casual_fn') {
       <span [style.color]="'orange'" [style.font-weight]="'bold'">
