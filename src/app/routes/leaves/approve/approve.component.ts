@@ -7,14 +7,15 @@ import { LeaveToApprove, LeavesService } from '../leaves.service';
 import { MtxDialog } from '@ng-matero/extensions/dialog';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 
 @Component({
-  selector: 'app-leaves-approve',
-  templateUrl: './approve.component.html',
-  styleUrl: './approve.component.css',
-  standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule,
-    MatIconModule, RouterLink, MatTooltipModule]
+    selector: 'app-leaves-approve',
+    templateUrl: './approve.component.html',
+    styleUrl: './approve.component.css',
+    standalone: true,
+    imports: [MatTableModule, MatPaginatorModule, MatButtonModule,
+        MatIconModule, RouterLink, MatTooltipModule, BreadcrumbComponent]
 })
 export class LeavesApproveComponent implements OnInit {
   dataSource = new MatTableDataSource<LeaveToApprove>();

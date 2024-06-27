@@ -23,20 +23,21 @@ import { MarkHintDrawerComponent } from '@shared/components/mark-hint-drawer/mar
 import { leaveList } from '@shared/components/mark-hint-drawer/leave-types';
 import { DurationCellComponent } from './duration-cell/duration-cell.component';
 import { EmployeeService } from '../employee/employee.service';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 
 const moment = _rollupMoment || _moment;
 
 @Component({
-  selector: 'app-mattable-mattableapi',
-  templateUrl: './daywise-register.component.html',
-  styleUrls: ['./daywise-register.component.css'],
-  standalone: true,
-  imports: [MatTableModule, RouterLink,
-    MatPaginatorModule,
-    MatSortModule, CommonModule, MatInputModule,
-    MatDatepickerModule, MatIconModule, MatBadgeModule,
-    FormsModule, ReactiveFormsModule, NgIf,
-    MatTooltipModule, MatSelectModule, MatButtonModule, DurationCellComponent]
+    selector: 'app-mattable-mattableapi',
+    templateUrl: './daywise-register.component.html',
+    styleUrls: ['./daywise-register.component.css'],
+    standalone: true,
+    imports: [MatTableModule, RouterLink,
+        MatPaginatorModule,
+        MatSortModule, CommonModule, MatInputModule,
+        MatDatepickerModule, MatIconModule, MatBadgeModule,
+        FormsModule, ReactiveFormsModule, NgIf,
+        MatTooltipModule, MatSelectModule, MatButtonModule, DurationCellComponent, BreadcrumbComponent]
 })
 
 export class AttendanceRegisterComponent implements OnInit {

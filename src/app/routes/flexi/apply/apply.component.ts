@@ -16,16 +16,17 @@ import { UserFlexiSettingApi } from 'app/routes/settings/employee-posting/interf
 import moment from 'moment';
 import { finalize, map } from 'rxjs';
 import { FlexiService } from '../flexi.service';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 
 @Component({
-  selector: 'app-apply-flexi',
-  standalone: true,
-  imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
-    FormsModule, MatFormFieldModule, MatSelectModule, MatIconModule,
-    MatInputModule, MatDatepickerModule,
-    MtxAlertModule],
-  templateUrl: './apply.component.html',
-  styleUrl: './apply.component.css'
+    selector: 'app-apply-flexi',
+    standalone: true,
+    templateUrl: './apply.component.html',
+    styleUrl: './apply.component.css',
+    imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
+        FormsModule, MatFormFieldModule, MatSelectModule, MatIconModule,
+        MatInputModule, MatDatepickerModule,
+        MtxAlertModule, BreadcrumbComponent]
 })
 export class FlexiApplyComponent implements OnInit {
 

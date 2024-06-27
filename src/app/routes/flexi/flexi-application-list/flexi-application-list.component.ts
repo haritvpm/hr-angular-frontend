@@ -7,13 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { FlexiApplication } from 'app/routes/settings/employee-posting/interfaces';
 import { EmployeePostingService } from 'app/routes/settings/employee-posting/employee-posting.service';
 import { FlexiService } from '../flexi.service';
+import { BreadcrumbComponent } from '../../../shared/components/breadcrumb/breadcrumb.component';
 
 @Component({
-  selector: 'app-flexi-application-list',
-  standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule],
-  templateUrl: './flexi-application-list.component.html',
-  styleUrl: './flexi-application-list.component.css'
+    selector: 'app-flexi-application-list',
+    standalone: true,
+    templateUrl: './flexi-application-list.component.html',
+    styleUrl: './flexi-application-list.component.css',
+    imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule, BreadcrumbComponent]
 })
 export class FlexiApplicationListComponent implements OnInit{
 

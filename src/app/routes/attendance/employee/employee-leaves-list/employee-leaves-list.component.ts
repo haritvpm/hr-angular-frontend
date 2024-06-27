@@ -16,12 +16,13 @@ import { generate } from "@pdfme/generator";
 import { Template, Font } from '@pdfme/common';
 
 
+
 @Component({
-  selector: 'app-employee-leaves-list',
-  standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule],
-  templateUrl: './employee-leaves-list.component.html',
-  styleUrl: './employee-leaves-list.component.css'
+    selector: 'app-employee-leaves-list',
+    standalone: true,
+    templateUrl: './employee-leaves-list.component.html',
+    styleUrl: './employee-leaves-list.component.css',
+    imports: [MatTableModule, MatPaginatorModule, MatButtonModule, MatIconModule]
 })
 export class EmployeeLeavesListComponent implements OnInit, OnDestroy {
 

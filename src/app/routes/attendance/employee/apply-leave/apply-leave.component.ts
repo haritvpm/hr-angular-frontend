@@ -19,16 +19,17 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LeavesService } from 'app/routes/leaves/leaves.service';
 import { IProfile } from '@shared/interfaces';
 import { LoginService } from '@core/authentication';
+import { BreadcrumbComponent } from '../../../../shared/components/breadcrumb/breadcrumb.component';
 
 @Component({
-  selector: 'app-apply-leave',
-  standalone: true,
-  imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
-    FormsModule, MatFormFieldModule, MatSelectModule, MatIconModule,
-    MatInputModule, MatDatepickerModule, MatDatepickerModule, NgxMultipleDatesModule,
-    MtxAlertModule, MatCheckboxModule],
-  templateUrl: './apply-leave.component.html',
-  styleUrl: './apply-leave.component.css'
+    selector: 'app-apply-leave',
+    standalone: true,
+    templateUrl: './apply-leave.component.html',
+    styleUrl: './apply-leave.component.css',
+    imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
+        FormsModule, MatFormFieldModule, MatSelectModule, MatIconModule,
+        MatInputModule, MatDatepickerModule, MatDatepickerModule, NgxMultipleDatesModule,
+        MtxAlertModule, MatCheckboxModule, BreadcrumbComponent]
 })
 export class ApplyLeaveComponent implements OnInit, OnDestroy {
   //leave_count: number = 0;
