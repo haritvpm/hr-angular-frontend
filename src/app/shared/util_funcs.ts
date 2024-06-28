@@ -34,6 +34,7 @@ export function getTimeOptions(
   const timeOptions : TimeOption[] = [];
 
   if(wef){
+   // alert(wef);
     const selected = moment(wef);
     //find timegroup that is effective for the selected date
     for(let i = 0; i < officeTimes.length; i++){
@@ -89,3 +90,4 @@ export function canChangeFlexiFunc(flexi_time_wef_current: string|null)
   return {canChangeFlexi, lastChangedtext};
 
 }
+
