@@ -37,6 +37,8 @@ export class FlexiApplyComponent implements OnInit {
   timeOptions: TimeOption[] = [];
   isSubmitting = false;
   upcommingFlexiTime: string = '';
+  initial = false;
+  allowable_wef_dates: string[] = [];
 
   applyFlexiForm = new FormGroup({
     flexi_minutes: new FormControl(null, Validators.required),
@@ -80,14 +82,34 @@ export class FlexiApplyComponent implements OnInit {
             this.data.employee_setting.time_group, this.data.officeTimes);
         }
 
+        const { initial, canChangeFlexi, lastChangedtext, dates } = this.getFlexiDates(
+      
+          this.data.employee_setting.flexi_time_wef_current, this.data.employee_setting.flexi_time_wef_upcoming,);
+          
+          this.lastChangedtext = lastChangedtext;
+          this.initial = initial;
+          this.allowable_wef_dates = dates;
+          this.canChangeFlexi = canChangeFlexi;
+
+          if(initial){
+            this.applyFlexiForm.patchValue({
+              wef: moment(this.tomorrow).format('YYYY-MM-DD'),
+            }, {emitEvent: true});
+          } else {
+            this.applyFlexiForm.patchValue({
+              wef: dates[0],
+            }, {emitEvent: true});
+          }
+
+          this.updateTimeOptions(this.applyFlexiForm.get('wef')!.value);
+
 
       });
 
     // console.log(this.data);
 
     this.applyFlexiForm.get('wef')!.valueChanges.subscribe(wef => {
-      this.timeOptions = getTimeOptions(wef, this.data.employee_setting.flexi_minutes_current,
-        this.data.employee_setting.time_group, this.data.officeTimes);
+      this.updateTimeOptions(wef);
     });
 
 
@@ -100,14 +122,11 @@ export class FlexiApplyComponent implements OnInit {
     //   });
     // }
     // else
-    {
-      this.applyFlexiForm.patchValue({
-        wef: moment(this.tomorrow).format('YYYY-MM-DD'),
-      });
-    }
+   
 
     //flexi can be changed if flexi_time_last_updated is not this month OR IF flexi_time_last_updated is null.
     //if there is an upcoming change, do not allow change
+    /*
     const { canChangeFlexi, lastChangedtext } = canChangeFlexiFunc(
       this.data.employee_setting.flexi_time_wef_upcoming ?
       this.data.employee_setting.flexi_time_wef_upcoming :
@@ -115,9 +134,69 @@ export class FlexiApplyComponent implements OnInit {
 
     this.lastChangedtext = lastChangedtext;
     this.canChangeFlexi = canChangeFlexi;
+    */
+
+   
 
   }
 
+  updateTimeOptions(wef: string | null) {
+    this.timeOptions = getTimeOptions(wef, this.data.employee_setting.flexi_minutes_current,
+    this.data.employee_setting.time_group, this.data.officeTimes);
+  }
+
+  myAllowableDaysFilter = (d: Date | null): boolean => {
+
+    if(!d){
+      return false;
+    }
+
+    //get d as string'
+    const time = moment(d).format('YYYY-MM-DD');
+
+
+    return !!this.allowable_wef_dates.find(x=>x==time);
+
+  };
+
+  getFlexiDates(flexi_time_wef_current: string|null, flexi_time_wef_upcoming: string|null)
+  : {initial: boolean, canChangeFlexi: boolean, lastChangedtext: string, dates: string[]} { 
+    //flexi can be changed if flexi_time has not yet been changed.
+    //other wise can change with effect from next month 1st
+    let initial = false;
+    let lastChangedtext = 'never';
+    let dates: string[] = [];
+    let canChangeFlexi = true;
+  
+    const today = moment();
+
+    if(flexi_time_wef_current){
+
+      //if there is an upcoming change, do not allow change
+      if(flexi_time_wef_upcoming){
+        canChangeFlexi = false;
+        const lastUpdated = moment(flexi_time_wef_upcoming);
+        lastChangedtext = lastUpdated.format('DD MMM YYYY');
+
+      } else {
+
+          const lastUpdated = moment(flexi_time_wef_current);
+          lastChangedtext = lastUpdated.format('DD MMM YYYY');
+         
+          //get list of upcoming month 1st date of next 6 months
+          //get next month 1st date
+          let nextMonth = today.clone().add(1, 'months').startOf('month');
+          dates.push(nextMonth.format('YYYY-MM-DD'));
+      }
+     
+    }else{
+      initial = true;
+    }
+  
+    return {initial, canChangeFlexi, lastChangedtext, dates};
+  
+  }
+  
 
   cancel() {
     throw new Error('Method not implemented.');

@@ -10,12 +10,25 @@
       <form  [formGroup]="applyFlexiForm" >
 
         @if(canChangeFlexi){
-          <mat-form-field class="w-full">
-            <mat-label>With effect from</mat-label>
-            <input readonly matInput [matDatepicker]="picker" [min]="tomorrow"  formControlName="wef">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+
+          @if(initial){
+
+            <mat-form-field class="w-full">
+              <mat-label>With effect from</mat-label>
+              <input readonly matInput [matDatepicker]="picker" [min]="tomorrow"  formControlName="wef">
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+          } @else {
+             <mat-form-field class="w-full">
+              <mat-label>With effect from</mat-label>
+              <input readonly matInput [matDatepicker]="picker" [matDatepickerFilter]="myAllowableDaysFilter"  formControlName="wef">
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            
+          }
 
         <mat-form-field class="w-full">
           <mat-label>Select a new flexi time</mat-label>
@@ -53,7 +66,7 @@
           </div>
         </div>
       } @else {
-        Flexi time cannot be changed now
+        Has an upcoming change. Flexi time cannot be changed now
        }
       </form>
 
