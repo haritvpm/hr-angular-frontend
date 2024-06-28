@@ -169,7 +169,7 @@ export class FlexiApplyComponent implements OnInit {
   
     const today = moment();
 
-    if(flexi_time_wef_current){
+    if(flexi_time_wef_current || flexi_time_wef_upcoming){
 
       //if there is an upcoming change, do not allow change
       if(flexi_time_wef_upcoming){
