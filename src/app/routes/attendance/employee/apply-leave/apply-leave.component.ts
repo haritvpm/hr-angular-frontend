@@ -97,7 +97,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   readonly leaveapplyTypes = [
     { value: 'casual', label: 'Casual Leave' },
     { value: 'compen', label: 'Compensation Leave' },
-    { value: 'compen_for_extra', label: 'Compensation Leave (for extra hours worked)' },
+    { value: 'compen_for_extra', label: 'Compensation Off (in lieu of extra hours worked)' },
     { value: 'commuted', label: 'Commuted Leave' },
     { value: 'earned', label: 'Earned Leave' },
     { value: 'halfpay', label: 'Half Pay Leave' },
