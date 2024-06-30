@@ -28,7 +28,7 @@ import { BreadcrumbComponent } from '../../../../shared/components/breadcrumb/br
     styleUrl: './apply-leave.component.css',
     imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
         FormsModule, MatFormFieldModule, MatSelectModule, MatIconModule,
-        MatInputModule, MatDatepickerModule, MatDatepickerModule, NgxMultipleDatesModule,
+        MatInputModule, MatDatepickerModule, NgxMultipleDatesModule,
         MtxAlertModule, MatCheckboxModule, BreadcrumbComponent]
 })
 export class ApplyLeaveComponent implements OnInit, OnDestroy {
@@ -98,7 +98,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   readonly leaveapplyTypes = [
     { value: 'casual', label: 'Casual Leave' },
     { value: 'compen', label: 'Compensation Leave' },
-    { value: 'compen_for_extra', label: 'Compensation Leave (for extra hours worked)' },
+    { value: 'compen_for_extra', label: 'Compensation Off (in lieu of extra hours worked)' },
     { value: 'commuted', label: 'Commuted Leave' },
     { value: 'earned', label: 'Earned Leave' },
     { value: 'halfpay', label: 'Half Pay Leave' },
@@ -387,7 +387,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     //count days from start date to end date if both are not empty
     const start_date = form.start_date;
     const end_date = form.end_date;
-    console.log('onFormChange' + start_date);
+    //console.log('onFormChange' + start_date);
 
     if (start_date && end_date) {
       const dates = this.enumerateDaysBetweenDates(start_date, end_date);
@@ -407,8 +407,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     } else if (start_date && !end_date) {
       const date = moment(start_date).format('YYYY-MM-DD');
-      console.log('onFormChange' + date);
-      console.log(this.allholidays);
+     // console.log('onFormChange' + date);
+      //console.log(this.allholidays);
 
       if (this.allholidays.indexOf(date) == -1) {
         leave = 1;

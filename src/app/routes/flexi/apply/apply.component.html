@@ -11,24 +11,15 @@
 
         @if(canChangeFlexi){
 
-          @if(initial){
 
-            <mat-form-field class="w-full">
-              <mat-label>With effect from</mat-label>
-              <input readonly matInput [matDatepicker]="picker" [min]="tomorrow"  formControlName="wef">
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-          } @else {
              <mat-form-field class="w-full">
               <mat-label>With effect from</mat-label>
-              <input readonly matInput [matDatepicker]="picker" [matDatepickerFilter]="myAllowableDaysFilter"  formControlName="wef">
+              <input readonly matInput [matDatepicker]="picker" [min]="tomorrow" [matDatepickerFilter]="myAllowableDaysFilter"  formControlName="wef">
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
-            
-          }
+
+
 
         <mat-form-field class="w-full">
           <mat-label>Select a new flexi time</mat-label>
