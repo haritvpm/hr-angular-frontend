@@ -25,7 +25,7 @@ import { LoginService } from '@core/authentication';
   standalone: true,
   imports: [JsonPipe, ReactiveFormsModule, MatButtonModule,
     FormsModule, MatFormFieldModule, MatSelectModule, MatIconModule,
-    MatInputModule, MatDatepickerModule, MatDatepickerModule, NgxMultipleDatesModule,
+    MatInputModule, MatDatepickerModule, NgxMultipleDatesModule,
     MtxAlertModule, MatCheckboxModule],
   templateUrl: './apply-leave.component.html',
   styleUrl: './apply-leave.component.css'

@@ -16,6 +16,7 @@ import { UserFlexiSettingApi } from 'app/routes/settings/employee-posting/interf
 import moment from 'moment';
 import { finalize, map } from 'rxjs';
 import { FlexiService } from '../flexi.service';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-apply-flexi',
@@ -25,7 +26,9 @@ import { FlexiService } from '../flexi.service';
     MatInputModule, MatDatepickerModule,
     MtxAlertModule],
   templateUrl: './apply.component.html',
-  styleUrl: './apply.component.css'
+  styleUrl: './apply.component.css',
+  //providers: [provideNativeDateAdapter()],
+
 })
 export class FlexiApplyComponent implements OnInit {
 
@@ -53,7 +56,7 @@ export class FlexiApplyComponent implements OnInit {
     private route: ActivatedRoute,
 
   ) {
-    this.tomorrow.setDate(moment().add(1, 'days').date());
+    this.tomorrow.setDate(this.tomorrow.getDate() + 1);
   }
 
 
@@ -82,9 +85,9 @@ export class FlexiApplyComponent implements OnInit {
         }
 
         const { initial, canChangeFlexi, lastChangedtext, dates } = this.getFlexiDates(
-      
+
           this.data.employee_setting.flexi_time_wef_current, this.data.employee_setting.flexi_time_wef_upcoming,);
-          
+
           this.lastChangedtext = lastChangedtext;
           this.initial = initial;
           this.allowable_wef_dates = dates;
@@ -121,7 +124,7 @@ export class FlexiApplyComponent implements OnInit {
     //   });
     // }
     // else
-   
+
 
     //flexi can be changed if flexi_time_last_updated is not this month OR IF flexi_time_last_updated is null.
     //if there is an upcoming change, do not allow change
@@ -135,7 +138,7 @@ export class FlexiApplyComponent implements OnInit {
     this.canChangeFlexi = canChangeFlexi;
     */
 
-   
+
 
   }
 
@@ -146,8 +149,18 @@ export class FlexiApplyComponent implements OnInit {
 
   myAllowableDaysFilter = (d: Date | null): boolean => {
 
+    //console.log(d);
+
     if(!d){
       return false;
+    }
+    //console.log(d, this.tomorrow);
+    if(this.initial){
+     // console.log(d, this.tomorrow);
+     //return if d is tomorrow or later
+    //  return d >= this.tomorrow;
+    const isSameOrAfter = moment(d).isSameOrAfter(this.tomorrow , 'day');
+    return isSameOrAfter;
     }
 
     //get d as string'
@@ -159,14 +172,14 @@ export class FlexiApplyComponent implements OnInit {
   };
 
   getFlexiDates(flexi_time_wef_current: string|null, flexi_time_wef_upcoming: string|null)
-  : {initial: boolean, canChangeFlexi: boolean, lastChangedtext: string, dates: string[]} { 
+  : {initial: boolean, canChangeFlexi: boolean, lastChangedtext: string, dates: string[]} {
     //flexi can be changed if flexi_time has not yet been changed.
     //other wise can change with effect from next month 1st
     let initial = false;
     let lastChangedtext = 'never';
-    let dates: string[] = [];
+    const dates: string[] = [];
     let canChangeFlexi = true;
-  
+
     const today = moment();
 
     if(flexi_time_wef_current || flexi_time_wef_upcoming){
@@ -181,21 +194,21 @@ export class FlexiApplyComponent implements OnInit {
 
           const lastUpdated = moment(flexi_time_wef_current);
           lastChangedtext = lastUpdated.format('DD MMM YYYY');
-         
+
           //get list of upcoming month 1st date of next 6 months
           //get next month 1st date
-          let nextMonth = today.clone().add(1, 'months').startOf('month');
+          const nextMonth = today.clone().add(1, 'months').startOf('month');
           dates.push(nextMonth.format('YYYY-MM-DD'));
       }
-     
+
     }else{
       initial = true;
     }
-  
+
     return {initial, canChangeFlexi, lastChangedtext, dates};
-  
+
   }
-  
+
 
   cancel() {
     throw new Error('Method not implemented.');

@@ -1,7 +1,7 @@
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { RouteReuseStrategy, provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import { RouteReuseStrategy, provideRouter, withComponentInputBinding, withHashLocation, withInMemoryScrolling } from '@angular/router';
 
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_CARD_CONFIG } from '@angular/material/card';
@@ -38,7 +38,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
-      withComponentInputBinding()
+      withComponentInputBinding(),
+     // withHashLocation()
     ),
     importProvidersFrom(
       NgProgressHttpModule,

@@ -28,10 +28,20 @@ export function getTimeOptionStringFromFlexiMinute(flexi_minutes: number,  time_
 
 }
 
+function getFromToDates(officeTime : OfficeTime) {
+  const from = moment( '2024-01-01 '+ officeTime.fn_from); //parttime does not have an_from
+  //remove seconds from 'from' and 'to'
+  const to_str = officeTime.an_to || officeTime.fn_to; //parttime does not have an_to
+  const to = moment('2024-01-01 '+ to_str);
+  return {from, to};
+}
+
 export function getTimeOptions(
   wef: string|null, current_flexi_minutes:number, time_group: string, officeTimes: OfficeTime[] ) : TimeOption[] {
 
   const timeOptions : TimeOption[] = [];
+
+
 
   if(wef){
    // alert(wef);
@@ -43,22 +53,22 @@ export function getTimeOptions(
         const difference =  moment(officeTimes[i].with_effect_from).diff( selected, 'days' );
 //alert(difference);
         if( difference <= 0 ){
-
+         // alert(officeTimes[i].flexi_minutes);
           const flexi = officeTimes[i].flexi_minutes;
-          const from = moment( '2024-01-01 '+ officeTimes[i].fn_from); //parttime does not have an_from
-          //remove seconds from 'from' and 'to'
-          const to_str = officeTimes[i].an_to || officeTimes[i].fn_to; //parttime does not have an_to
-          const to = moment('2024-01-01 '+ to_str);
+          const {from, to} = getFromToDates(officeTimes[i]);
 
           if(current_flexi_minutes !== 0){
           timeOptions.push( { value: 0, label: 'Normal (' + from.format('h:mm a') + ' - ' + to .format('h:mm a') + ')'});
           }
           if(current_flexi_minutes !==  -flexi){
+
           timeOptions.push( { value: -flexi, label: 'Flexi (' + from.add(-flexi,'minute').format('h:mm a') + ' - ' + to.add(-flexi,'minute').format('h:mm a') + ')'});
           }
-          //not above operation modifies 'from' and 'to' so we need add twice the minutes
+          //not above operation might modify 'from' and 'to' so we need to get them again
           if(current_flexi_minutes !==  flexi){
-          timeOptions.push( { value: flexi, label: 'Flexi (' + from.add(flexi*2,'minute').format('h:mm a') + ' - ' + to.add(flexi*2,'minute').format('h:mm a') + ')'});
+            const {from, to} = getFromToDates(officeTimes[i]);
+
+          timeOptions.push( { value: flexi, label: 'Flexi (' + from.add(flexi,'minute').format('h:mm a') + ' - ' + to.add(flexi,'minute').format('h:mm a') + ')'});
           }
 
           break;
