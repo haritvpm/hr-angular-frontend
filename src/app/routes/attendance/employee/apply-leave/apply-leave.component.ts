@@ -386,7 +386,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
     //count days from start date to end date if both are not empty
     const start_date = form.start_date;
     const end_date = form.end_date;
-    console.log('onFormChange' + start_date);
+    //console.log('onFormChange' + start_date);
 
     if (start_date && end_date) {
       const dates = this.enumerateDaysBetweenDates(start_date, end_date);
@@ -406,8 +406,8 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
     } else if (start_date && !end_date) {
       const date = moment(start_date).format('YYYY-MM-DD');
-      console.log('onFormChange' + date);
-      console.log(this.allholidays);
+     // console.log('onFormChange' + date);
+      //console.log(this.allholidays);
 
       if (this.allholidays.indexOf(date) == -1) {
         leave = 1;
