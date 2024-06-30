@@ -129,7 +129,7 @@ export class MarkHintDrawerComponent implements OnInit {
       this.canMarkLeave = true;
     }
     if( this.data.punchingInfo.single_punch_regularised_by == null && logged_in_user_is_superior ) {
-      this.canMarkSinglePunch = !this.data.calender.is_today && !this.data.calender.future_date &&
+      this.canMarkSinglePunch = !this.data.calender.holiday &&  !this.data.calender.is_today && !this.data.calender.future_date &&
                 (this.data.punchingInfo.punching_count == 1 || //can be singlepunch if they punch twice within minutes at evening
                 (this.data.punchingInfo?.single_punch_type && this.data.punchingInfo?.single_punch_type !== null //&& this.data.punchingInfo.single_punch_regularised_by == null
 
