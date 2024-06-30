@@ -91,7 +91,7 @@ export default {
             only: ['self_attendance_access'],
           },
         },
-        
+
       ],
 
     },
@@ -99,7 +99,7 @@ export default {
       route: 'flexi',
       name: 'flexi',
       type: 'sub',
-      icon: 'sick',
+      icon: 'more_time',
       children: [
         {
           route: 'approve',
@@ -126,7 +126,7 @@ export default {
             only: ['self_attendance_access'],
           },
         },
-        
+
       ],
     },
 
@@ -144,7 +144,7 @@ export default {
             only: ['section_access'],
           },
         },
-        
+
 
       ],
       permissions: {
