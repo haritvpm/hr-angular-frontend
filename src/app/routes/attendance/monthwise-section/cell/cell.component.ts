@@ -35,6 +35,7 @@ export class CellComponent implements OnInit {
   time_exceeded_an: boolean = false;
   time_exceeded_fn: boolean = false;
   grace_exceeded300_and_today_has_grace_alarm_show: boolean = true;
+  isUnauthorised: boolean = false;
 
   text_name: string = '';
   text_color: string = 'DeepPink';
@@ -51,7 +52,7 @@ export class CellComponent implements OnInit {
 
 
     if (this.item) {
-      this.showDash = !this.calendarInfo.holiday && !this.calendarInfo.future_date && (!this.item.in_section || !this.item.designation)
+      this.showDash = !this.calendarInfo.holiday && !this.calendarInfo.future_date && (!this.item.in_section || !this.item.designation);
 
       //hints
       if (this.item.hint && !this.item.leave) { //dont use computer_hint if real hint set by SO exists
@@ -90,6 +91,12 @@ export class CellComponent implements OnInit {
 
         this.icon_name = 'check_circle_outline';
 
+        if( !this.calendarInfo.holiday && !this.calendarInfo.future_date && this.item.is_unauthorised ){
+          this.isUnauthorised = true;
+          this.text_name = 'U';
+          this.text_color = 'DeepPink';
+          this.icon_show = false;
+         }
       }
       else if (this.item.punching_count === 1) {
         this.icon_name = 'looks_one';
