@@ -16,14 +16,9 @@
 }
 
 @if (
-  punching.is_unauthorised &&
-  !is_today &&
-  !punching.leave &&
-  !punching.computer_hint &&
-  !punching.hint &&
-  !punching.single_punch_regularised_by
+  punching.is_unauthorised
 ) {
-  <span [style.color]="'red'">Unauthorised</span>
+  <span [style.color]="'red'">Unauthorised </span>
   <!-- {{ punching.duration_str }} -->
 }
 
