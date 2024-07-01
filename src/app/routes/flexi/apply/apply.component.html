@@ -24,7 +24,6 @@
         <mat-form-field class="w-full">
           <mat-label>Select a new flexi time</mat-label>
           <mat-select  formControlName="flexi_minutes">
-
             @for (timeOption of timeOptions ; track timeOption) {
             <mat-option [value]="timeOption.value">{{timeOption.label}}</mat-option>
             }
@@ -35,6 +34,7 @@
       <mat-form-field class="w-full">
         <mat-label>Select Approver</mat-label>
         <mat-select  formControlName="forwardto">
+          <mat-option value=''>Please select</mat-option> 
 
           @for (forwardto of data.forwardable_seats; track forwardto.seat_id) {
           <mat-option [value]="forwardto.seat_id">{{forwardto.seat_name}}-({{forwardto.employee_name}})</mat-option>

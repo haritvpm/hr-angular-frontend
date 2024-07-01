@@ -44,7 +44,7 @@ export class FlexiApplyComponent implements OnInit {
   applyFlexiForm = new FormGroup({
     flexi_minutes: new FormControl(null, Validators.required),
     wef: new FormControl('', [Validators.required,]),
-    forwardto: new FormControl(0, [Validators.required,]),
+    forwardto: new FormControl(null, [Validators.required,]),
     time_option_str: new FormControl('', []),
     time_option_current_str: new FormControl('', []),
 
@@ -71,7 +71,7 @@ export class FlexiApplyComponent implements OnInit {
         this.data = response as UserFlexiSettingApi;
         //set default forwardto
         this.applyFlexiForm.patchValue({
-          forwardto: this.data.forwardable_seats.length? this.data.forwardable_seats[0].seat_id : null,
+         // forwardto: this.data.forwardable_seats.length? this.data.forwardable_seats[0].seat_id : null,
           time_option_current_str: getTimeOptionStringFromFlexiMinute(
             this.data.employee_setting.flexi_minutes_current,
             this.data.employee_setting.time_group, this.data.officeTimes),
@@ -210,7 +210,8 @@ export class FlexiApplyComponent implements OnInit {
 
 
   cancel() {
-    throw new Error('Method not implemented.');
+    //throw new Error('Method not implemented.');
+    this.router.navigate(['/flexi/view']);
   }
   applyFlexi() {
     const formdata = this.applyFlexiForm.value;
