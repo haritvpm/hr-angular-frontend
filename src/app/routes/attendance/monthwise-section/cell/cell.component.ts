@@ -93,8 +93,7 @@ export class CellComponent implements OnInit {
 
         if( !this.calendarInfo.holiday && !this.calendarInfo.future_date && this.item.is_unauthorised ){
           this.isUnauthorised = true;
-          this.text_name = 'U';
-          this.text_color = 'DeepPink';
+
           this.icon_show = false;
          }
       }
@@ -155,15 +154,13 @@ export class CellComponent implements OnInit {
 
       }
 
-      if (this.item.hint && this.item.hint !== 'clear' ) {
-        this.icon_show = this.item.punching_count > 0  ; //if zero punching then no need to show icon since there is hint
+      if (this.item.hint && this.item.hint !== 'clear'  ) {
+        this.icon_show = this.icon_show && this.item.punching_count > 0  ; //if zero punching then no need to show icon since there is hint
         //^^^^ show icon if hint is set like casual. because it will be missed if not shown and leave added
         if(!this.casual && !this.casual_fn && !this.casual_an ){ //we show 1/2 cl text if casual_fn or casual_an is set
          this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
         }
       }
-
-
     }
 
   }
