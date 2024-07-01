@@ -35,6 +35,7 @@ export class CellComponent implements OnInit {
   time_exceeded_an: boolean = false;
   time_exceeded_fn: boolean = false;
   grace_exceeded300_and_today_has_grace_alarm_show: boolean = true;
+  isUnauthorised: boolean = false;
 
   text_name: string = '';
   text_color: string = 'DeepPink';
@@ -51,7 +52,7 @@ export class CellComponent implements OnInit {
 
 
     if (this.item) {
-      this.showDash = !this.calendarInfo.holiday && !this.calendarInfo.future_date && (!this.item.in_section || !this.item.designation)
+      this.showDash = !this.calendarInfo.holiday && !this.calendarInfo.future_date && (!this.item.in_section || !this.item.designation);
 
       //hints
       if (this.item.hint && !this.item.leave) { //dont use computer_hint if real hint set by SO exists
@@ -80,6 +81,11 @@ export class CellComponent implements OnInit {
         }
       }
 
+      if(this.item.grace_total_exceeded_one_hour){
+        this.isUnauthorised = true;
+        this.icon_show = false;
+      }
+
       //icon to show
       if (this.item.punching_count >= 2) {
 
@@ -90,6 +96,11 @@ export class CellComponent implements OnInit {
 
         this.icon_name = 'check_circle_outline';
 
+        if( !this.calendarInfo.holiday && !this.calendarInfo.future_date && this.item.is_unauthorised ){
+          this.isUnauthorised = true;
+
+          this.icon_show = false;
+         }
       }
       else if (this.item.punching_count === 1) {
         this.icon_name = 'looks_one';
@@ -148,15 +159,13 @@ export class CellComponent implements OnInit {
 
       }
 
-      if (this.item.hint && this.item.hint !== 'clear' ) {
-        this.icon_show = this.item.punching_count > 0  ; //if zero punching then no need to show icon since there is hint
+      if (this.item.hint && this.item.hint !== 'clear'  ) {
+        this.icon_show = this.icon_show && this.item.punching_count > 0  ; //if zero punching then no need to show icon since there is hint
         //^^^^ show icon if hint is set like casual. because it will be missed if not shown and leave added
         if(!this.casual && !this.casual_fn && !this.casual_an ){ //we show 1/2 cl text if casual_fn or casual_an is set
          this.text_name = leaveList.find((x:any) => x.value == this.item.hint)?.short || 'X';
         }
       }
-
-
     }
 
   }

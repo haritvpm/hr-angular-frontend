@@ -6,8 +6,9 @@
 
   <!-- not downloaded and not today -->
   <!-- <span *ngIf="fetch_pending && !calendarInfo.is_today"  style="color: lightgrey;" ><mat-icon  class="icon-small">arrow_downward</mat-icon></span> -->
+  <span *ngIf="isUnauthorised"  [style.color]="'Red'" > <b>U</b>  </span>
   <span *ngIf="icon_show"  [style.color]="icon_color" ><mat-icon>{{icon_name}}</mat-icon></span>
-  <span *ngIf="text_name"  [style.color]="text_color" > <b>{{text_name}}</b>  </span>
+  <span *ngIf="text_name"  [style.color]="text_color" > <small> {{text_name}} </small> </span>
   <span *ngIf="casual_an" [style.color]="casual_color"   class="computer-hint"> <small [innerHtml]="casual_half_text"></small> </span>
   <span *ngIf="time_exceeded_an" [style.color]="'red'" ><small>>1H</small></span>
 

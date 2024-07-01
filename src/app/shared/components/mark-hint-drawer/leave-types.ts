@@ -15,7 +15,7 @@ export const leaveList: any[] = [
   { label: 'RH', value: 'restricted', desc:'Restricted', min_pun: 0, short: 'RH', showOnHoliday:false, showForCntrlOnly : false  },//punchingcounts = 0,1,2
   { label: 'Tour', value: 'tour', desc:'Tour', min_pun: 0, short: 'T', showOnHoliday:true, showForCntrlOnly : false  },//punchingcounts = 0,1,2
   { label: 'Other', value: 'other', desc:'Other', min_pun: 0, short: 'O', showOnHoliday:true , showForCntrlOnly : false },//punchingcounts = 0,1,2
-  { label: 'Unauthorized', value: 'unauthorised', desc:'Unauthorized Absense', min_pun: 0, short: 'U', showOnHoliday: false, showForCntrlOnly : false  },
+  /*{ label: 'Unauthorized', value: 'unauthorised', desc:'Unauthorized Absense', min_pun: 0, short: 'U', showOnHoliday: false, showForCntrlOnly : false  },*/
   { label: 'Clear', value: 'clear', desc:'', min_pun: 0, short: '', showOnHoliday:true , showForCntrlOnly : false }, //punchingcounts = 1,2
 
 ];

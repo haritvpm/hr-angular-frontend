@@ -63,21 +63,21 @@ export class DurationCellComponent {
 
     if (activeStatus == 'N') {
       return {
-        'color': 'DeepSkyBlue',
-        'font-size': 'medium',
-        'font-weight': 'bold'
+        color: 'DeepSkyBlue',
+        // 'font-size': 'medium',
+        // 'font-weight': 'bold'
       };
     } else if (activeStatus == 'Y') {
       return {
-        'color': 'LimeGreen',
-        'font-size': 'medium',
-        'font-weight': 'bold'
+        color: 'LimeGreen',
+        // 'font-size': 'medium',
+        // 'font-weight': 'bold'
       };
     } else {
       return {
-        'color': 'red',
-        'font-size': 'medium',
-        'font-weight': 'bold'
+        color: 'red',
+        // 'font-size': 'medium',
+        // 'font-weight': 'bold'
 
       };
     }

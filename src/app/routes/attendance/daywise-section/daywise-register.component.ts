@@ -147,7 +147,13 @@ calender: Calender;
       // split string per '$' to array
       const filterArray = filters.split('$');
       const searchTxt = filterArray[0];
-      const section = filterArray[1].replace('/', '');
+     // const section =  filterArray[1].replace('/', '');
+
+     //IF attendance book selected, it will be in format /attendance_book_name
+      //if first character is / remove it, else keep it
+
+      const section = (filterArray[1].charAt(0) == '/') ? filterArray[1].slice(1) : filterArray[1];
+
       // console.log('searchTxt'+searchTxt);
       const matchFilter = [];
 

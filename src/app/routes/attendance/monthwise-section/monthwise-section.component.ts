@@ -198,7 +198,7 @@ export class MonthwiseSectionAttendanceComponent implements OnInit {
       // split string per '$' to array
       const filterArray = filters.split('$');
       const searchTxt = filterArray[0];
-      const section = filterArray[1].replace('/', '');
+      const section = (filterArray[1].charAt(0) == '/') ? filterArray[1].slice(1) : filterArray[1];
       // console.log('searchTxt'+searchTxt);
       const matchFilter = [];
 
