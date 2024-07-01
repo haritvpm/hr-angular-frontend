@@ -27,6 +27,7 @@ export interface Section {
   id: number;
   name: string;
   short_code: string | null;
+  short_name: string | null;
   type: string | null;
   works_nights_during_session: number;
   created_at: string | null;
