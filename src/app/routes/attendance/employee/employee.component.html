@@ -137,7 +137,10 @@
               } @else  -->
               @if (item.is_holiday && item.punching_count === 0 && !item.is_future) {
                 -
-              } @else if (item.attendance_trace_fetch_complete !== 0) {
+              }
+               @else
+
+               {
                 @if (!item.punchout_trace) {
                   <span [style.color]="getMissedPunchColor(item.single_punch_regularised_by)">
                     <small><mat-icon>close</mat-icon></small>
