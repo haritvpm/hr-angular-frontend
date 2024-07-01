@@ -8,7 +8,7 @@ export const environment = {
   // baseUrl: 'http://172.20.19.20:8000/',
   baseUrl: 'http://172.24.18.28',
   // baseUrl: 'http://127.0.0.1:8000',
-  useHash: false,
+  useHash: true,
 };
 
 /*

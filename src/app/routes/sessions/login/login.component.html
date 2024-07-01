@@ -10,7 +10,7 @@
       <form class="form-field-full" [formGroup]="loginForm">
         <mat-form-field appearance="outline">
           <mat-label>{{'username' | translate}}: </mat-label>
-          <input matInput placeholder="itadmin" formControlName="username" required>
+          <input matInput placeholder="username" formControlName="username" required>
           @if (username.invalid) {
             <mat-error>
               @if (username.errors?.required) {
@@ -27,7 +27,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{'password' | translate}}:</mat-label>
-          <input matInput placeholder="itadmin" type="password"
+          <input matInput placeholder="password" type="password"
             formControlName="password" required>
           @if (password.invalid) {
             <mat-error>
