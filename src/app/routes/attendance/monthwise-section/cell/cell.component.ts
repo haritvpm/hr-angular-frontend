@@ -81,6 +81,11 @@ export class CellComponent implements OnInit {
         }
       }
 
+      if(this.item.grace_total_exceeded_one_hour){
+        this.isUnauthorised = true;
+        this.icon_show = false;
+      }
+
       //icon to show
       if (this.item.punching_count >= 2) {
 
