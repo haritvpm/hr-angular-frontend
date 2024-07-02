@@ -137,7 +137,8 @@ user : any = undefined;
   }
 
   onApplyLeave() {
-    this.router.navigate(['/attendance/self/apply-leave']);
+   // this.router.navigate(['/attendance/self/apply-leave']);
+    this.router.navigate(['/leaves/apply-leave']);
   }
 
   deleteLeave(leave: Leave) {
@@ -150,7 +151,8 @@ user : any = undefined;
 
   }
   editLeave(leave: Leave) {
-    this.router.navigate(['/attendance/self/apply-leave', leave.id]);
+    //this.router.navigate(['/attendance/self/apply-leave', leave.id]);
+    this.router.navigate(['/leaves/apply-leave', leave.id]);
 
   }
 

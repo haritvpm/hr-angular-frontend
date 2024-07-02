@@ -59,13 +59,13 @@ export default {
     },
 
     {
-      route: '',
+      route: 'leaves',
       name: 'leaves',
       type: 'sub',
       icon: 'sick',
       children: [
         {
-          route: 'leaves/approve',
+          route: 'approve',
           name: 'approve',
           type: 'link',
           permissions: {
@@ -73,7 +73,7 @@ export default {
           },
         },
         {
-          route: 'leaves/view',
+          route: 'view',
           name: 'view',
           type: 'link',
           permissions: {
@@ -81,7 +81,7 @@ export default {
           },
         },
         {
-          route: 'attendance/self/apply-leave',
+          route: 'apply-leave',
           name: 'self',
           type: 'link',
           icon: 'person',
