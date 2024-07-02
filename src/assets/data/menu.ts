@@ -71,7 +71,7 @@ export default {
           name: 'approve',
           type: 'link',
           permissions: {
-            only: ['leaf_access'],
+            only: ['leave_approve_access'],
           },
         },
         {
@@ -79,7 +79,7 @@ export default {
           name: 'view',
           type: 'link',
           permissions: {
-            only: ['self_attendance_access'],
+            only: ['leave_apply_access'],
           },
         },
         {
@@ -88,7 +88,7 @@ export default {
           type: 'link',
           icon: 'person',
           permissions: {
-            only: ['self_attendance_access'],
+            only: ['leave_apply_access'],
           },
         },
 
@@ -106,7 +106,7 @@ export default {
           name: 'approve',
           type: 'link',
           permissions: {
-            only: ['leaf_access'],
+            only: ['flexi_approve_access'],
           },
         },
         {
@@ -114,7 +114,7 @@ export default {
           name: 'view',
           type: 'link',
           permissions: {
-            only: ['self_attendance_access'],
+            only: ['flexi_apply_access'],
           },
         },
         {
@@ -123,7 +123,7 @@ export default {
           type: 'link',
           icon: 'person',
           permissions: {
-            only: ['self_attendance_access'],
+            only: ['flexi_apply_access'],
           },
         },
 
