@@ -95,7 +95,7 @@
             <th mat-header-cell *matHeaderCellDef>Time Slot</th>
             <td mat-cell *matCellDef="let item">
               @if (!item?.flexi_time && !item.is_future && !item.is_holiday) {
-                n/a
+
               } @else {
                 <span *ngIf="!item.is_future && !item.is_holiday">
                   {{ item.flexi_time }}

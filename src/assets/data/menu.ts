@@ -6,9 +6,7 @@ export default {
       name: 'dashboard',
       type: 'link',
       icon: 'dashboard',
-      permissions: {
-        only: ['section_access'],
-      },
+
     },
 
     {
@@ -71,7 +69,7 @@ export default {
           name: 'approve',
           type: 'link',
           permissions: {
-            only: ['leave_approve_access'],
+            only: ['section_access'],
           },
         },
         {
@@ -106,7 +104,7 @@ export default {
           name: 'approve',
           type: 'link',
           permissions: {
-            only: ['flexi_approve_access'],
+            only: ['section_access'],
           },
         },
         {
