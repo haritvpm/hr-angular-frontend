@@ -52,8 +52,8 @@
   <div class="d-flex row align-items-stretch justify-content-center">
     <mat-form-field class="col" appearance="fill">
       <mat-label> {{this.applyLeaveForm.get('multipleDays')?.value || !isCasualOrCompenOrCompenExtra ? 'Leave date (from)' : 'Leave date'}}</mat-label>
-      <input matInput [matDatepicker]="pickerf"  (focus)="pickerf.open()" (click)="pickerf.open()"
-      [max]="fromDateMax"
+      <input matInput [matDatepicker]="pickerf"   (focus)="pickerf.open()" (click)="pickerf.open()"
+      [max]="fromDateMax" [min]="fromDateMin"
       formControlName="start_date" readonly="true" />
       <!-- <mat-hint>YYYY-MM-DD</mat-hint> -->
       <mat-datepicker-toggle matIconSuffix [for]="pickerf"></mat-datepicker-toggle>

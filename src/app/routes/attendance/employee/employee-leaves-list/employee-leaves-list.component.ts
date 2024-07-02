@@ -165,13 +165,14 @@ user : any = undefined;
 
     const nature = `${leavetype} (${element.leave_count} days) ${element.start_date} -  ${element.end_date}`;
 
+    const pay = element.leaveform.pay ? element.leaveform.pay + " /-" + (element.leaveform.scaleofpay || '') : '';
     const inputs = [
       {
         "name": this.user.name,
         "dob": element.leaveform.dob,
         "post": element.leaveform.post,
         "dept": element.leaveform.dept,
-        "pay": element.leaveform.pay + " /-" + (element.leaveform.scaleofpay || ''),
+        "pay": pay,
         "doe": element.leaveform.doe,
         "docc":element.leaveform.docc,
         "confirmation": element.leaveform.confirmation,

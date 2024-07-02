@@ -63,6 +63,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
   isCasualOrCompenOrCompenExtra = false;
   isSubmitting = false;
   fromDateMax = moment().add(1, 'year').toDate();
+  fromDateMin = new Date('2024-07-01');
 
   forwarableSeats: any[] = [];
 
@@ -656,7 +657,7 @@ export class ApplyLeaveComponent implements OnInit, OnDestroy {
 
   cancel() {
     this.applyLeaveForm.reset();
-    this.router.navigateByUrl('/attendance/self');
+    this.router.navigateByUrl('/leaves/view');
   }
 
 }
